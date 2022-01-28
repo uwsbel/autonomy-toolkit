@@ -1,0 +1,528 @@
+<!doctype html>
+<html class="no-js">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/><link rel="index" title="Index" href="#" /><link rel="search" title="Search" href="search.html" />
+
+    <link rel="shortcut icon" href="_static/cropped-SBEL-32x32.png"/><meta name="generator" content="sphinx-3.4.2, furo 2020.12.30.beta24"/><title>Index - Autonomous Vehicle Toolbox 0.0.2 documentation</title>
+<link rel="stylesheet" href="_static/styles/furo.css?digest=33d2fc4f3f180ec1ffc6524e273e21d7d58cbe49">
+    <link rel="stylesheet" href="_static/pygments.css">
+    <link media="(prefers-color-scheme: dark)" rel="stylesheet" href="_static/pygments_dark.css">
+    
+
+
+<style>
+  :root {
+    --color-code-background: #f0f0f0;
+  --color-code-foreground: black;
+  
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+  }
+
+  /* For allowing end-user-specific overrides */
+  .override-light {
+    --color-code-background: #f0f0f0;
+  --color-code-foreground: black;
+  
+  }
+  .override-dark {
+    --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+  }
+</style><link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="_static/css/custom.css" />
+    <link rel="stylesheet" href="_static/styles/furo-extensions.css?digest=26485485040e7aaf717c13fd0188a5ad2c2deb60">
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script defer="defer" src="_static/jquery.js"></script>
+    <script defer="defer" src="_static/underscore.js"></script>
+    <script defer="defer" src="_static/doctools.js"></script>
+    <script defer src="_static/scripts/main.js?digest=e931d09b2a40c1bb82b542effe772014573baf67"></script></head>
+  <body dir="">
+    
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+      stroke-width="1.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+      <path stroke="none" d="M0 0h24v24H0z"/>
+      <line x1="4" y1="6" x2="20" y2="6" />
+      <line x1="10" y1="12" x2="20" y2="12" />
+      <line x1="6" y1="18" x2="20" y2="18" />
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+      class="feather feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+      class="feather feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<div class="announcement">
+  <aside class="announcement-content">
+     
+        <a style="text-decoration: none; color: white;" 
+           href="https://sbel.wisc.edu">
+           <img src="https://github.com/uwsbel/avtoolbox/blob/master/docs/_static/cropped-SBEL-192x192.png?raw=true" 
+                style="vertical-align: middle; display: inline; padding-right: 7.5px; height: 20px;"/>
+           Checkout our website!
+        </a>
+     
+  </aside>
+</div>
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="index.html"><div class="brand">Autonomous Vehicle Toolbox 0.0.2 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
+  
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo only-light" src="_static/SBEL-light.png" alt="Light Logo"/>
+    <img class="sidebar-logo only-dark" src="_static/SBEL-dark.png" alt="Dark Logo"/>
+  </div>
+  
+  
+</a><form class="sidebar-search-container" method="get" action="search.html">
+  <input class="sidebar-search" placeholder=Search name="q">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul>
+<li class="toctree-l1"><a class="reference internal" href="index.html">Home</a></li>
+<li class="toctree-l1"><a class="reference internal" href="background.html">Background</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">Setup</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="tutorials/index.html">Tutorials</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label for="toctree-checkbox-1"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/using_the_development_environment.html">Using the AV Development Environment</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="usage/index.html">API Reference</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label for="toctree-checkbox-2"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="usage/cli.html">CLI Documentation</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="usage/api/avtoolbox/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">avtoolbox</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label for="toctree-checkbox-3"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="usage/api/avtoolbox/ros/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">avtoolbox.ros</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label for="toctree-checkbox-4"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="usage/api/avtoolbox/ros/messages/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">avtoolbox.ros.messages</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="usage/api/avtoolbox/utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">avtoolbox.utils</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label for="toctree-checkbox-5"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="usage/api/avtoolbox/utils/files/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">avtoolbox.utils.files</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="usage/api/avtoolbox/utils/logger/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">avtoolbox.utils.logger</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="usage/api/avtoolbox/utils/yaml_parser/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">avtoolbox.utils.yaml_parser</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="usage/api/avtoolbox/db/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">avtoolbox.db</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="usage/api/avtoolbox/dev/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">avtoolbox.dev</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
+</ul>
+<p><span class="caption-text">External Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://pypi.org/project/avtoolbox/">PyPI</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/uwsbel/avtoolbox">Github</a></li>
+</ul>
+
+</div>
+</div>
+      </div>
+      
+    </div>
+  </aside>
+  <main class="main">
+    <div class="content">
+      <article role="main">
+        <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+          <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+        </label>
+        
+<section class="genindex-section">
+  <h1 id="index">Index</h1>
+  <div class="genindex-jumpbox">
+  <a href="#_"><strong>_</strong></a> | <a href="#A"><strong>A</strong></a> | <a href="#C"><strong>C</strong></a> | <a href="#D"><strong>D</strong></a> | <a href="#F"><strong>F</strong></a> | <a href="#G"><strong>G</strong></a> | <a href="#L"><strong>L</strong></a> | <a href="#M"><strong>M</strong></a> | <a href="#N"><strong>N</strong></a> | <a href="#O"><strong>O</strong></a> | <a href="#P"><strong>P</strong></a> | <a href="#R"><strong>R</strong></a> | <a href="#S"><strong>S</strong></a> | <a href="#T"><strong>T</strong></a>
+  </div>
+</section>
+<section id="_" class="genindex-section">
+  <h2>_</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="usage/api/avtoolbox/index.html#avtoolbox.__author__">__author__ (in module avtoolbox)</a>
+</li>
+        <li><a href="usage/api/avtoolbox/db/index.html#avtoolbox.db.AVDataFile.__enter__">__enter__() (AVDataFile method)</a>
+
+        <ul>
+          <li><a href="usage/api/avtoolbox/db/index.html#avtoolbox.db.AVDataFileReader.__enter__">(AVDataFileReader method)</a>
+</li>
+          <li><a href="usage/api/avtoolbox/db/index.html#avtoolbox.db.AVDataFileWriter.__enter__">(AVDataFileWriter method)</a>
+</li>
+        </ul></li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="usage/api/avtoolbox/db/index.html#avtoolbox.db.AVDataFile.__exit__">__exit__() (AVDataFile method)</a>
+
+        <ul>
+          <li><a href="usage/api/avtoolbox/db/index.html#avtoolbox.db.AVDataFileReader.__exit__">(AVDataFileReader method)</a>
+</li>
+          <li><a href="usage/api/avtoolbox/db/index.html#avtoolbox.db.AVDataFileWriter.__exit__">(AVDataFileWriter method)</a>
+</li>
+        </ul></li>
+        <li><a href="usage/api/avtoolbox/db/index.html#avtoolbox.db.AVDataFileReader.__iter__">__iter__() (AVDataFileReader method)</a>
+</li>
+        <li><a href="usage/api/avtoolbox/index.html#avtoolbox.__license__">__license__ (in module avtoolbox)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="A" class="genindex-section">
+  <h2>A</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="usage/api/avtoolbox/utils/files/index.html#avtoolbox.utils.files.as_path">as_path() (in module avtoolbox.utils.files)</a>
+</li>
+        <li><a href="usage/api/avtoolbox/db/index.html#avtoolbox.db.AVDatabase">AVDatabase (class in avtoolbox.db)</a>
+</li>
+        <li><a href="usage/api/avtoolbox/db/index.html#avtoolbox.db.AVDataFile">AVDataFile (class in avtoolbox.db)</a>
+</li>
+        <li><a href="usage/api/avtoolbox/db/index.html#avtoolbox.db.AVDataFileReader">AVDataFileReader (class in avtoolbox.db)</a>
+</li>
+        <li><a href="usage/api/avtoolbox/db/index.html#avtoolbox.db.AVDataFileWriter">AVDataFileWriter (class in avtoolbox.db)</a>
+</li>
+        <li>
+    avtoolbox
+
+        <ul>
+          <li><a href="usage/api/avtoolbox/index.html#module-avtoolbox">module</a>
+</li>
+        </ul></li>
+        <li>
+    avtoolbox._av_base
+
+        <ul>
+          <li><a href="usage/api/avtoolbox/_av_base/index.html#module-avtoolbox._av_base">module</a>
+</li>
+        </ul></li>
+        <li>
+    avtoolbox.db
+
+        <ul>
+          <li><a href="usage/api/avtoolbox/db/index.html#module-avtoolbox.db">module</a>
+</li>
+        </ul></li>
+        <li>
+    avtoolbox.dev
+
+        <ul>
+          <li><a href="usage/api/avtoolbox/dev/index.html#module-avtoolbox.dev">module</a>
+</li>
+        </ul></li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li>
+    avtoolbox.ros
+
+        <ul>
+          <li><a href="usage/api/avtoolbox/ros/index.html#module-avtoolbox.ros">module</a>
+</li>
+        </ul></li>
+        <li>
+    avtoolbox.ros.messages
+
+        <ul>
+          <li><a href="usage/api/avtoolbox/ros/messages/index.html#module-avtoolbox.ros.messages">module</a>
+</li>
+        </ul></li>
+        <li>
+    avtoolbox.utils
+
+        <ul>
+          <li><a href="usage/api/avtoolbox/utils/index.html#module-avtoolbox.utils">module</a>
+</li>
+        </ul></li>
+        <li>
+    avtoolbox.utils.files
+
+        <ul>
+          <li><a href="usage/api/avtoolbox/utils/files/index.html#module-avtoolbox.utils.files">module</a>
+</li>
+        </ul></li>
+        <li>
+    avtoolbox.utils.logger
+
+        <ul>
+          <li><a href="usage/api/avtoolbox/utils/logger/index.html#module-avtoolbox.utils.logger">module</a>
+</li>
+        </ul></li>
+        <li>
+    avtoolbox.utils.yaml_parser
+
+        <ul>
+          <li><a href="usage/api/avtoolbox/utils/yaml_parser/index.html#module-avtoolbox.utils.yaml_parser">module</a>
+</li>
+        </ul></li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="C" class="genindex-section">
+  <h2>C</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="usage/api/avtoolbox/db/index.html#avtoolbox.db.AVDataFile.close">close() (AVDataFile method)</a>
+
+        <ul>
+          <li><a href="usage/api/avtoolbox/db/index.html#avtoolbox.db.AVDataFileReader.close">(AVDataFileReader method)</a>
+</li>
+          <li><a href="usage/api/avtoolbox/db/index.html#avtoolbox.db.AVDataFileWriter.close">(AVDataFileWriter method)</a>
+</li>
+        </ul></li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="usage/api/avtoolbox/db/index.html#avtoolbox.db.AVDataFile.combine">combine() (AVDataFile static method)</a>
+</li>
+        <li><a href="usage/api/avtoolbox/db/index.html#avtoolbox.db.AVDataFileReader.convert_to_pandas_df">convert_to_pandas_df() (AVDataFileReader method)</a>
+</li>
+        <li><a href="usage/api/avtoolbox/utils/files/index.html#avtoolbox.utils.files.copy_file">copy_file() (in module avtoolbox.utils.files)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="D" class="genindex-section">
+  <h2>D</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="usage/api/avtoolbox/db/index.html#avtoolbox.db.AVDataFile.db_name">db_name() (AVDataFile property)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="usage/api/avtoolbox/utils/logger/index.html#avtoolbox.utils.logger.dumps_dict">dumps_dict() (in module avtoolbox.utils.logger)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="F" class="genindex-section">
+  <h2>F</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="usage/api/avtoolbox/utils/files/index.html#avtoolbox.utils.files.file_exists">file_exists() (in module avtoolbox.utils.files)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="G" class="genindex-section">
+  <h2>G</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="usage/api/avtoolbox/utils/files/index.html#avtoolbox.utils.files.get_file_extension">get_file_extension() (in module avtoolbox.utils.files)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="usage/api/avtoolbox/utils/files/index.html#avtoolbox.utils.files.get_file_type">get_file_type() (in module avtoolbox.utils.files)</a>
+</li>
+        <li><a href="usage/api/avtoolbox/utils/files/index.html#avtoolbox.utils.files.get_resolved_path">get_resolved_path() (in module avtoolbox.utils.files)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="L" class="genindex-section">
+  <h2>L</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="usage/api/avtoolbox/db/index.html#avtoolbox.db.AVDatabase.ls">ls() (AVDatabase method)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="M" class="genindex-section">
+  <h2>M</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="usage/api/avtoolbox/ros/messages/index.html#avtoolbox.ros.messages.MessageType">MessageType (class in avtoolbox.ros.messages)</a>
+</li>
+        <li>
+    module
+
+        <ul>
+          <li><a href="usage/api/avtoolbox/index.html#module-avtoolbox">avtoolbox</a>
+</li>
+          <li><a href="usage/api/avtoolbox/_av_base/index.html#module-avtoolbox._av_base">avtoolbox._av_base</a>
+</li>
+          <li><a href="usage/api/avtoolbox/db/index.html#module-avtoolbox.db">avtoolbox.db</a>
+</li>
+          <li><a href="usage/api/avtoolbox/dev/index.html#module-avtoolbox.dev">avtoolbox.dev</a>
+</li>
+          <li><a href="usage/api/avtoolbox/ros/index.html#module-avtoolbox.ros">avtoolbox.ros</a>
+</li>
+          <li><a href="usage/api/avtoolbox/ros/messages/index.html#module-avtoolbox.ros.messages">avtoolbox.ros.messages</a>
+</li>
+          <li><a href="usage/api/avtoolbox/utils/index.html#module-avtoolbox.utils">avtoolbox.utils</a>
+</li>
+          <li><a href="usage/api/avtoolbox/utils/files/index.html#module-avtoolbox.utils.files">avtoolbox.utils.files</a>
+</li>
+          <li><a href="usage/api/avtoolbox/utils/logger/index.html#module-avtoolbox.utils.logger">avtoolbox.utils.logger</a>
+</li>
+          <li><a href="usage/api/avtoolbox/utils/yaml_parser/index.html#module-avtoolbox.utils.yaml_parser">avtoolbox.utils.yaml_parser</a>
+</li>
+        </ul></li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="N" class="genindex-section">
+  <h2>N</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="usage/api/avtoolbox/db/index.html#avtoolbox.db.AVDataFile.name">name() (AVDataFile property)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="O" class="genindex-section">
+  <h2>O</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="usage/api/avtoolbox/db/index.html#avtoolbox.db.AVDataFile.open">open() (AVDataFile method)</a>
+
+        <ul>
+          <li><a href="usage/api/avtoolbox/db/index.html#avtoolbox.db.AVDataFileReader.open">(AVDataFileReader method)</a>
+</li>
+          <li><a href="usage/api/avtoolbox/db/index.html#avtoolbox.db.AVDataFileWriter.open">(AVDataFileWriter method)</a>
+</li>
+        </ul></li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="P" class="genindex-section">
+  <h2>P</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="usage/api/avtoolbox/db/index.html#avtoolbox.db.AVDataFile.path">path() (AVDataFile property)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="usage/api/avtoolbox/db/index.html#avtoolbox.db.AVDatabase.pull">pull() (AVDatabase method)</a>
+</li>
+        <li><a href="usage/api/avtoolbox/db/index.html#avtoolbox.db.AVDatabase.push">push() (AVDatabase method)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="R" class="genindex-section">
+  <h2>R</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="usage/api/avtoolbox/utils/files/index.html#avtoolbox.utils.files.read_text">read_text() (in module avtoolbox.utils.files)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="usage/api/avtoolbox/db/index.html#avtoolbox.db.AVDataFile.reader">reader() (AVDataFile property)</a>
+</li>
+        <li><a href="usage/api/avtoolbox/db/index.html#avtoolbox.db.register_type">register_type() (in module avtoolbox.db)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="S" class="genindex-section">
+  <h2>S</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="usage/api/avtoolbox/utils/files/index.html#avtoolbox.utils.files.search_upwards_for_file">search_upwards_for_file() (in module avtoolbox.utils.files)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="usage/api/avtoolbox/utils/logger/index.html#avtoolbox.utils.logger.set_verbosity">set_verbosity() (in module avtoolbox.utils.logger)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="T" class="genindex-section">
+  <h2>T</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="usage/api/avtoolbox/db/index.html#avtoolbox.db.AVDataFile.to_ros1">to_ros1() (AVDataFile method)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="usage/api/avtoolbox/db/index.html#avtoolbox.db.AVDataFile.to_ros2">to_ros2() (AVDataFile method)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+
+      </article>
+      <footer>
+        
+        <div class="related-pages">
+          
+          
+        </div>
+
+        <div class="related-information">
+              Copyright &#169; 2022, Simulation Based Engineering Laboratory
+            |
+            Built with <a href="https://www.sphinx-doc.org/">Sphinx</a>
+              and
+              <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+              <a href="https://github.com/pradyunsg/furo">Furo theme</a>.
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer no-toc">
+      
+      
+      
+    </aside>
+  </main>
+</div>
+  </body>
+</html>

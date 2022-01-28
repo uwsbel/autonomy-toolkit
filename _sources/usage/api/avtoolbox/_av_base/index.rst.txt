@@ -1,0 +1,16 @@
+:orphan:
+
+:mod:`avtoolbox._av_base`
+=========================
+
+.. py:module:: avtoolbox._av_base
+
+.. autoapi-nested-parse::
+
+   The entrypoint for the AV Toolkit CLI is `av`
+   The main parser will have a few commands, such as verbosity or a help menu.
+   For the most part, the entrypoint will be used to access subparsers,
+   such as `db` to interact with the AV database.
+
+
+

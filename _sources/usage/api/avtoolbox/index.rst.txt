@@ -1,0 +1,43 @@
+:orphan:
+
+:mod:`avtoolbox`
+================
+
+.. py:module:: avtoolbox
+
+
+Subpackages
+-----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 3
+
+   ros/index.rst
+   utils/index.rst
+
+
+Submodules
+----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+
+   db/index.rst
+   dev/index.rst
+
+
+Package Contents
+----------------
+
+.. data:: __author__
+   :annotation: = Simulation Based Engineering Laboratory (negrut@.wisc.edu)
+
+   Simulation Based Engineering Laboratory (negrut@wisc.edu)
+
+
+.. data:: __license__
+   :annotation: = BSD3
+
+   BSD3
+
+

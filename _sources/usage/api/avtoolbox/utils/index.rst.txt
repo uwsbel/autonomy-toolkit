@@ -1,0 +1,22 @@
+:mod:`avtoolbox.utils`
+======================
+
+.. py:module:: avtoolbox.utils
+
+.. autoapi-nested-parse::
+
+   Utilities for the avtoolbox package
+
+
+
+Submodules
+----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+
+   files/index.rst
+   logger/index.rst
+   yaml_parser/index.rst
+
+

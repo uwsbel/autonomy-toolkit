@@ -1,0 +1,392 @@
+:mod:`avtoolbox.db`
+===================
+
+.. py:module:: avtoolbox.db
+
+.. autoapi-nested-parse::
+
+   CLI command that handles interacting with the AV database.
+
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   avtoolbox.db.AVDatabase
+   avtoolbox.db.AVDataFile
+   avtoolbox.db.AVDataFileWriter
+   avtoolbox.db.AVDataFileReader
+
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   avtoolbox.db.register_type
+
+
+.. function:: register_type(msg_file: Union['Path', str], name: str = None)
+
+   Registers a custom message type so that it can be read by ``rosbags``
+
+   In order for custom messages to be read from ROS 2 bags, they must be registered with the ``rosbags``
+   type system. This is do to an internal issue with ros2 bags that is going to fixed in an upcoming
+   release (`see this issue <https://github.com/ros2/rosbag2/issues/782>`_).
+
+   To register a message type, you must provide the file that the message is stored in (either with an
+   extension ``.msg`` or an extension ``.idl``), and the name of the the message (i.e. std_msgs/msg/Header).
+
+   :Parameters: * **msg_file** (*Union[Path, str]*) -- The path the message definition is in. Must have an extension ``.msg`` or ``.idl``
+                * **name** (*str, optional*) -- The name of the custom message. Only optional if an ``idl`` file is passed.
+
+
+.. py:class:: AVDatabase(local_path: Union['Path', str])
+
+   This class allows you to programatically interact with the AV database.
+
+   Typically, the AV CLI will be enough for pushing and pulling to and from the database.
+   However, it may be desired to write scripts which pull data from the database. This class can be
+   used in these instances.
+
+   The AV database is contructed in a way that the `bag-database <https://swri-robotics.github.io/bag-database/>`_
+   application can be used. Most of the restrictive descisions made for this package (i.e. using ROS 1 and ROS 2 bags)
+   comes from requirements based on this package. The ``bag-database`` reads ros1 bag files from a regular directory
+   and displays them, along with some additional features, in a web application. It is very helpful for development.
+
+   The database, therefore, is really just a directory. The directory is filled with ros1 bag files and can either
+   be managed locally or remotely with a url.
+
+   .. warning::
+
+       Currently only local databases are supported with the :meth:`~push` and :meth:`~pull` commands.
+
+       .. raw:: html
+
+          </div></div>
+
+   .. method:: push(self, bag: Union['AVDataFile', str], keep: bool = True)
+
+      Push a database file to the AV database.
+
+      The database is strictly made up of ros1 bags, so :meth:`~AVDataFile.to_ros1` will always
+      be called. The file will then be copied (i.e. the original file still remains) to the database.
+
+      :Parameters: * **bag** (*Union[AVDataFile, str]*) -- The bag file to push.
+                   * **keep** (*bool, optional*) -- If False, will delete the file after pushing it.
+
+
+   .. method:: pull(self, name: str, dest: str = None, as_rosbag: bool = False) -> 'AVDataFile'
+
+      Pulls (downloads) a database file from the AV database
+
+      Provided a name of the file to download, the file will be copied locally.
+
+      :Parameters: * **name** (*str*) -- The name of the file to pull. Includes the extension.
+                   * **dest** (*str, optional*) -- The destination of the file to be saved locally. If unset, will save with the same name is in the database.
+                   * **as_rosbag** (*bool, optional*) -- If True, the pulled file will be saved as a ros1 bag.
+
+
+   .. method:: ls(self, path: str = '')
+
+      List the contents of the directory at the database root + ``path``.
+
+      See `the man pages <https://man7.org/linux/man-pages/man1/ls.1.html>`_ for more information on ``ls``.
+
+      :Parameters: **path** (*str, optional*) -- Additional paths to navigate when running ``ls``.
+
+
+
+.. py:class:: AVDataFile(path: str)
+
+   This class represents a bag file that is stored locally.
+
+   The file stored in the AV Database is a `rosbag <http://wiki.ros.org/rosbag>`_, or a
+   data storage method introduced in ROS 1. Although ROS 1 bags are stored in the database
+   itself, either ROS 1 or ROS 2 bags can be used to push to the remote database. Conversions
+   between the different data types when pushing to and pulling from the database.
+
+   This class was created to abstract away the ROS 1/2 bag types from the database itself. In the future,
+   when ROS 2 is more fully adopted, this class could simply use ROS 2 bags.
+   It is desired to utilize ROS 2 bags now, but it is currently not possible to describe
+   custom message types in a ROS 2 bag, `see this issue <https://github.com/ros2/rosbag2/issues/782>`_.
+
+   When in the AV database, a data file is idenfiable by it's name. The name has the following characteristics:
+   - Begins with ``AV-``
+   - Ends with the date the file was created in the format of ``mm-dd-YYYY-HH-MM-SS``
+
+   For example, if a file was created on January 13th, 2022, at 9:00:00am, the database file will have the
+   following name: ``AV-01-13-2022-15-00-00``.
+
+   .. note::
+
+       The ``HH-MM-SS`` (i.e. hour-minute-second) is defined in terms of the Universal Coordinate Time (UTC).
+
+       .. raw:: html
+
+          </div></div>
+
+   ROS 1 bags are files with extension ``.bag``, i.e. ``AV-01-13-2022-15-00-00.bag``. ROS 2 bags are
+   directories, i.e. ``AV-01-13-2022-15-00-00/``.
+
+   When pulling a file from the database, it *will* have a name. If you're working with a file locally and have
+   not interacted with the database at all, it will generate a new name using the aforementioned structure.
+
+   .. method:: path(self)
+      :property:
+
+      Path property.
+
+
+   .. method:: name(self)
+      :property:
+
+      Name property.
+
+      As a reminder, the format of the name is ``AV-mm-dd-YYYY-HH-MM-SS``. It *should* be unique.
+
+
+   .. method:: db_name(self)
+      :property:
+
+      Database name property.
+
+      The file name of the bag stored in the database. This differs from :attr:`name` in that it may include
+      an extension (i.e. ``.bag``)
+
+
+   .. method:: reader(self)
+      :property:
+
+      Get the reader object for this data file
+
+      :returns: *AVDataFileReader* -- The file reader
+
+      :raises RuntimeError: The reader hasn't been initialized yet. See :meth:`~__enter__`.
+
+
+   .. method:: to_ros1(self)
+
+      Converts this database file to a ros1 bag.
+
+      If the bag that this object represents is already a ros1 bag, nothing is done (a warning will be made).
+      If it represents a ros2 bag, a conversion will be done to ros1.
+
+
+   .. method:: to_ros2(self)
+
+      Converts this database file to a ros2 bag
+
+      If the bag that this object represents is already a ros2 bag, nothing is done (a warning will be made).
+      If it represents a ros1 bag, a conversion will be done to ros2.
+
+
+   .. method:: combine(ros1_bag: str, ros2_bag: str, output_bag: str, ros1_topics: List[str] = [], ros2_topics: List[str] = [], ros1_types: List[MessageType] = [], ros2_types: List[MessageType] = [])
+      :staticmethod:
+
+      Combine command.
+
+      Will combine a ros1 and ros2 bag. The output is a ros2 bag with both messages
+      in the data with the respective timestamps. Additionally, to allow for easy parsing
+      outside of ROS, a new table is created that describes the custom message types within the
+      bag. When parsing, this information is used to register types for the rosbags python
+      package.
+
+      :Parameters: * **ros1_bag** (*str*) -- The ros1 bag file to use in the combine step. ROS 1 uses files ending in .bag. Required.
+                   * **ros2_bag** (*str*) -- The ros2 bag file to use in the combine step. ROS 2 uses folders with a .db3 and metadata.yaml file. This should be a path to a folder. Required.
+                   * **output_bag** (*str*) -- The output ros2 bag file that contains the combined data. ROS 2 uses folders with a .db3 and metadata.yaml file. This should be a path to a folder. Required.
+                   * **ros1_topics** (*List[str], optional*) -- The topics to copy over from the ros1 bag. If empty, will copy all topics. Default is [] (empty).
+                   * **ros2_topics** (*List[str], optional*) -- The topics to copy over from the ros2 bag. If empty, will copy all topics. Default is [] (empty).
+                   * **ros1_types** (*List[av.ros.messages.MessageType], optional*) -- The custom message types to register when reading. Default is [] (will not register any custom message types).
+                   * **ros2_types** (*List[av.ros.messages.MessageType], optional*) -- The custom message types to register when reading. Default is [] (will not register any custom message types).
+
+      :raises KeyError: Raised if an unidentified message type is attempted to be parsed
+
+
+   .. method:: open(self)
+
+      Open up the data file for reading.
+
+      This is *not* a recommended method for reading the AV data file. Instead,
+      you should use the contextmanager with :meth:`~__enter__`.
+
+      It is not recommended because you must explicitly open *and* close the file. If unclosed,
+      the file may become corrupt or other processes may be unable to open it.
+
+      Usage:
+
+      .. highlight:: python
+      .. code-block:: python
+
+          bagfile = "SOME_ROSBAG_FILE.bag"
+
+          # Open the bag file
+          file = AVDataFile(bagfile)
+          file.open()
+
+          for timestamp, connection, msg in file.reader:
+              print(timestamp, msg)
+
+          # Don't forget to close it!!
+          file.close()
+
+      :raises AssertionError: If the reader is already open
+
+
+   .. method:: close(self)
+
+      Close the opened data file.
+
+      This is required to be called if :meth:`~open` is called explicitly. It is instead recommended to use
+      the contextmanager with the :meth:`~__enter__` method.
+
+      :raises AssertionError: If the reader has not been opened yet
+
+
+   .. method:: __enter__(self)
+
+      Read the file when entering contextmanager.
+
+      This is the preferred method of reading a AV database file.
+
+      Examples:
+
+      .. highlight:: python
+      .. code-block:: python
+
+          bagfile = "SOME_ROSBAG_FILE.bag"
+
+          with AVDataFile(bagfile) as file:
+              for timestamp, connection, msg in file.reader:
+                  print(timestamp, msg)
+
+      Alternatively, see :meth:`~open` and :meth:`~close`.
+
+
+   .. method:: __exit__(self, *args, **kwargs)
+
+      Close the file when entering contextmanager.
+
+
+
+.. py:class:: AVDataFileWriter(path: Union[Path, str], type: int = 0)
+
+   Simple wrapper class that allows the writing of ROS 1 *or* ROS 2 bags
+
+   The writer classes do *not* append or overwrite existing bags. They will only write new bags.
+
+   :Parameters: * **path** (*Union[Path, str]*) -- The path to write a file to.
+                * **type** (*int*) -- The ROS version type of the bag you want to write. Can be 1 or 2. If 0, the type will attempted to be inferred.
+
+   .. method:: open(self) -> 'Union[_AVROS1DataFileWriter, _AVROS2DataFileWriter]'
+
+      Method which will return either a :class:`~_AVROS1DataFileWriter` or a
+      :class:`~_AVROS2DataFileWriter`.
+
+      :returns: *Union[_AVROS1DataFileWriter, _AVROS2DataFileWriter]* -- The correct writer for the bag type.
+
+      :raises RuntimeError: If the bag already exists. The writer will only write new bags.
+
+
+   .. method:: close(self)
+
+      Method to close the writer.
+
+      :raises RuntimeError: If the writer was never opened.
+
+
+   .. method:: __enter__(self)
+
+      Open ROS bag when entering contextmanager.
+
+
+   .. method:: __exit__(self, *args, **kwargs)
+
+      Close ROS bag when entering contextmanager.
+
+
+
+.. py:class:: AVDataFileReader(path: Union[Path, str])
+
+   Simple wrapper class that allows the reading of ROS 1 *or* ROS 2 bags
+
+   :Parameters: **path** (*Union[Path, str]*) -- The path to write a file to.
+
+   .. method:: convert_to_pandas_df(self) -> pd.DataFrame
+
+      Convert the sqlite database to a pandas dataframe.
+
+      Orders the database when reading by ascending order in terms of time.
+
+      Example usage:
+
+      .. highlight:: python
+      .. code-block:: python
+
+          from avtoolbox.db import AVDataFileReader
+
+          bagfile = 'bag' # ros2 bag folder
+
+          # Or you can use pandas
+          with AVDataFileReader(bagfile) as reader:
+              df = reader.convert_to_pandas_df()
+              print(df)
+
+      :returns: *pandas.DataFrame* -- The ordered dataframe taken from the database.
+
+
+   .. method:: open(self) -> 'Union[_AVROS1DataFileReader, _AVROS2DataFileReader]'
+
+      Method which will return either a :class:`~_AVROS1DataFileReader` or a
+      :class:`~_AVROS2DataFileReader`.
+
+      :returns: *Union[_AVROS1DataFileReader, _AVROS2DataFileReader]* -- The correct reader for the bag type.
+
+      :raises RuntimeError: If the bag already exists. The writer will only write new bags.
+
+
+   .. method:: close(self)
+
+      Method to close the reader.
+
+      :raises RuntimeError: If the reader was never opened.
+
+
+   .. method:: __enter__(self)
+
+      Open ROS bag when entering contextmanager.
+
+
+   .. method:: __exit__(self, *args, **kwargs)
+
+      Close ROS bag when entering contextmanager.
+
+
+   .. method:: __iter__(self) -> Iterable[Tuple[int, Union['ROS1Connection', ROS2Connection], Any]]
+
+      Iterate method that returns a generator tuple.
+
+      Example usage:
+
+      .. highlight:: python
+      .. code-block:: python
+
+          from avtoolbox.db import AVDataFileReader
+
+          bagfile = 'bag' # ros2 bag folder
+
+          # You can use a generator
+          with AVDataFileReader(bagfile) as reader:
+              for timestamp, connection, msg in reader:
+                  print(timestamp, msg)
+
+      :Yields: *Tuple[int, Union[ROS1Connection, ROS2Connection], Any]* -- The timestamp for the message, the connection object for this message, and the deserialized message
+
+
+

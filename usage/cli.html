@@ -1,0 +1,540 @@
+<!doctype html>
+<html class="no-js">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="avtoolbox" href="api/avtoolbox/index.html" /><link rel="prev" title="API Reference" href="index.html" />
+
+    <link rel="shortcut icon" href="../_static/cropped-SBEL-32x32.png"/><meta name="generator" content="sphinx-3.4.2, furo 2020.12.30.beta24"/>
+        <title>CLI Documentation - Autonomous Vehicle Toolbox 0.0.2 documentation</title>
+      <link rel="stylesheet" href="../_static/styles/furo.css?digest=33d2fc4f3f180ec1ffc6524e273e21d7d58cbe49">
+    <link rel="stylesheet" href="../_static/pygments.css">
+    <link media="(prefers-color-scheme: dark)" rel="stylesheet" href="../_static/pygments_dark.css">
+    
+
+
+<style>
+  :root {
+    --color-code-background: #f0f0f0;
+  --color-code-foreground: black;
+  
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+  }
+
+  /* For allowing end-user-specific overrides */
+  .override-light {
+    --color-code-background: #f0f0f0;
+  --color-code-foreground: black;
+  
+  }
+  .override-dark {
+    --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+  }
+</style><link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom.css" />
+    <link rel="stylesheet" href="../_static/styles/furo-extensions.css?digest=26485485040e7aaf717c13fd0188a5ad2c2deb60">
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script defer="defer" src="../_static/jquery.js"></script>
+    <script defer="defer" src="../_static/underscore.js"></script>
+    <script defer="defer" src="../_static/doctools.js"></script>
+    <script defer src="../_static/scripts/main.js?digest=e931d09b2a40c1bb82b542effe772014573baf67"></script></head>
+  <body dir="">
+    
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+      stroke-width="1.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+      <path stroke="none" d="M0 0h24v24H0z"/>
+      <line x1="4" y1="6" x2="20" y2="6" />
+      <line x1="10" y1="12" x2="20" y2="12" />
+      <line x1="6" y1="18" x2="20" y2="18" />
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+      class="feather feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+      class="feather feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<div class="announcement">
+  <aside class="announcement-content">
+     
+        <a style="text-decoration: none; color: white;" 
+           href="https://sbel.wisc.edu">
+           <img src="https://github.com/uwsbel/avtoolbox/blob/master/docs/_static/cropped-SBEL-192x192.png?raw=true" 
+                style="vertical-align: middle; display: inline; padding-right: 7.5px; height: 20px;"/>
+           Checkout our website!
+        </a>
+     
+  </aside>
+</div>
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">Autonomous Vehicle Toolbox 0.0.2 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo only-light" src="../_static/SBEL-light.png" alt="Light Logo"/>
+    <img class="sidebar-logo only-dark" src="../_static/SBEL-dark.png" alt="Dark Logo"/>
+  </div>
+  
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html">
+  <input class="sidebar-search" placeholder=Search name="q">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Home</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../background.html">Background</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../setup.html">Setup</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../tutorials/index.html">Tutorials</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label for="toctree-checkbox-1"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/using_the_development_environment.html">Using the AV Development Environment</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">API Reference</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label for="toctree-checkbox-2"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">CLI Documentation</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="api/avtoolbox/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">avtoolbox</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label for="toctree-checkbox-3"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="api/avtoolbox/ros/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">avtoolbox.ros</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label for="toctree-checkbox-4"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/avtoolbox/ros/messages/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">avtoolbox.ros.messages</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="api/avtoolbox/utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">avtoolbox.utils</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label for="toctree-checkbox-5"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/avtoolbox/utils/files/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">avtoolbox.utils.files</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/avtoolbox/utils/logger/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">avtoolbox.utils.logger</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/avtoolbox/utils/yaml_parser/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">avtoolbox.utils.yaml_parser</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api/avtoolbox/db/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">avtoolbox.db</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/avtoolbox/dev/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">avtoolbox.dev</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing</a></li>
+</ul>
+<p><span class="caption-text">External Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://pypi.org/project/avtoolbox/">PyPI</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/uwsbel/avtoolbox">Github</a></li>
+</ul>
+
+</div>
+</div>
+      </div>
+      
+    </div>
+  </aside>
+  <main class="main">
+    <div class="content">
+      <article role="main">
+        <label class="toc-overlay-icon toc-content-icon" for="__toc">
+          <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+        </label>
+        <section id="cli-documentation">
+<h1>CLI Documentation<a class="headerlink" href="#cli-documentation" title="Permalink to this headline">¶</a></h1>
+<style>
+	h4 {text-transform: lowercase;}
+</style><section id="av">
+<h2><code class="docutils literal notranslate"><span class="pre">av</span></code><a class="headerlink" href="#av" title="Permalink to this headline">¶</a></h2>
+<p>The root entrypoint for the AV CLI is <code class="docutils literal notranslate"><span class="pre">av</span></code>. This the first command you need to access the CLI. All subsequent subcommands succeed <code class="docutils literal notranslate"><span class="pre">av</span></code>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">usage</span><span class="p">:</span> <span class="n">av</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">v</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">dry</span><span class="o">-</span><span class="n">run</span><span class="p">]</span> <span class="p">{</span><span class="n">db</span><span class="p">,</span><span class="n">dev</span><span class="p">}</span> <span class="o">...</span>
+</pre></div>
+</div>
+<section id="Named Arguments">
+<h3>Named Arguments<a class="headerlink" href="#Named Arguments" title="Permalink to this headline">¶</a></h3>
+<dl class="option-list">
+<dt><kbd>-v, --verbose</kbd></dt>
+<dd><p>Level of verbosity</p>
+<p>Default: 0</p>
+</dd>
+<dt><kbd>--dry-run</kbd></dt>
+<dd><p>Test run that will print out the commands it would run but not actually run them</p>
+<p>Default: False</p>
+</dd>
+</dl>
+</section>
+</section>
+<section id="sub-commands">
+<h2>Sub-commands<a class="headerlink" href="#sub-commands" title="Permalink to this headline">¶</a></h2>
+<p>Subcommands immediately succeed the <code class="docutils literal notranslate"><span class="pre">av</span></code> command. They implement additional logic. Having subcommands rather than arguments directly to <code class="docutils literal notranslate"><span class="pre">av</span></code> increases expandability as it will allow for additional features to be implemented without convoluting the help menu of the base <code class="docutils literal notranslate"><span class="pre">av</span></code> command.</p>
+<section id="dev">
+<h3><code class="docutils literal notranslate"><span class="pre">dev</span></code><a class="headerlink" href="#dev" title="Permalink to this headline">¶</a></h3>
+<p>Initializer method for the <code class="docutils literal notranslate"><span class="pre">dev</span></code> entrypoint</p>
+<p>This entrypoint provides easy access to the AV development environment. The dev environment
+leverages <a class="reference external" href="https://docker.com">Docker</a> to allow interoperability across operating systems. <code class="docutils literal notranslate"><span class="pre">docker-compose</span></code>
+is used to build, spin up, attach, and tear down the containers. The <code class="docutils literal notranslate"><span class="pre">dev</span></code> entrypoint will basically wrap
+the <code class="docutils literal notranslate"><span class="pre">docker-compose</span></code> commands to make it easier to customize the workflow to work best for AV.</p>
+<p>The primary container, titled <code class="docutils literal notranslate"><span class="pre">dev</span></code> in the <code class="docutils literal notranslate"><span class="pre">docker-compose.yml</span></code> file in the
+<a class="reference external" href="https://github.com/uwsbel/avtoolbox"><code class="docutils literal notranslate"><span class="pre">av</span></code> github</a>, has <a class="reference external" href="https://docs.ros.org/en/galactic/index.html">ROS 2</a>
+pre-installed. The software stack for the AV vehicle utilizes ROS 2 and will use
+the same container that is used for development.</p>
+<p>Additional containers may be provided to allow for GUI windows or run simulations.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">usage</span><span class="p">:</span> <span class="n">av</span> <span class="n">dev</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">b</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">u</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">d</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">a</span><span class="p">]</span> <span class="p">{</span><span class="n">env</span><span class="p">}</span> <span class="o">...</span>
+</pre></div>
+</div>
+<section id="Named Arguments">
+<h4>Named Arguments<a class="headerlink" href="#Named Arguments" title="Permalink to this headline">¶</a></h4>
+<dl class="option-list">
+<dt><kbd>-b, --build</kbd></dt>
+<dd><p>Build the env.</p>
+<p>Default: False</p>
+</dd>
+<dt><kbd>-u, --up</kbd></dt>
+<dd><p>Spin up the env.</p>
+<p>Default: False</p>
+</dd>
+<dt><kbd>-d, --down</kbd></dt>
+<dd><p>Tear down the env.</p>
+<p>Default: False</p>
+</dd>
+<dt><kbd>-a, --attach</kbd></dt>
+<dd><p>Attach to the env.</p>
+<p>Default: False</p>
+</dd>
+</dl>
+</section>
+<section id="dev-env">
+<h4><code class="docutils literal notranslate"><span class="pre">dev</span> <span class="pre">env</span></code><a class="headerlink" href="#dev-env" title="Permalink to this headline">¶</a></h4>
+<p>Entrypoint for the <code class="docutils literal notranslate"><span class="pre">dev</span> <span class="pre">env</span></code> command.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">env</span></code> command essentially wraps <code class="docutils literal notranslate"><span class="pre">docker-compose</span></code> to automatically build, spin-up, attach, and
+tear down the AV development environment.</p>
+<p>The command is completely redundant; it simply combines all the building, starting, attaching, and destroying
+into a single command. It allows users to quickly start and attach to the AV development environment based
+on the docker-compose file.</p>
+<p>There are four possible options that can be used using the <code class="docutils literal notranslate"><span class="pre">env</span></code> subcommand:
+<code class="docutils literal notranslate"><span class="pre">build</span></code>, <code class="docutils literal notranslate"><span class="pre">up</span></code>, <code class="docutils literal notranslate"><span class="pre">down</span></code>, and <code class="docutils literal notranslate"><span class="pre">attach</span></code>. For example, if you’d like to build the container, you’d run
+the following command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>av dev env --build
+</pre></div>
+</div>
+<p>If you’d like to build, start the container, then attach to it, run the following command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>av dev env --build --up --attach
+<span class="c1"># OR</span>
+av dev env -b -u -a
+<span class="c1"># OR</span>
+av dev env -bua
+</pre></div>
+</div>
+<p>If no arguments are passed, this is equivalent to the following command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>av dev env --up --attach
+</pre></div>
+</div>
+<p>If desired, pass <code class="docutils literal notranslate"><span class="pre">--down</span></code> to stop the container. Further, if the container exists and changes are
+made to the repository, the container will <em>not</em> be built automatically. To do that, add the
+<code class="docutils literal notranslate"><span class="pre">--build</span></code> argument.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code class="docutils literal notranslate"><span class="pre">av</span> <span class="pre">dev</span></code> is an alias for <code class="docutils literal notranslate"><span class="pre">av</span> <span class="pre">dev</span> <span class="pre">env</span></code>. <code class="docutils literal notranslate"><span class="pre">env</span></code> can therefore be omitted for brevity.</p>
+</div>
+
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">usage</span><span class="p">:</span> <span class="n">av</span> <span class="n">dev</span> <span class="n">env</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">b</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">u</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">d</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">a</span><span class="p">]</span>
+</pre></div>
+</div>
+<section id="Named Arguments">
+<h5>Named Arguments<a class="headerlink" href="#Named Arguments" title="Permalink to this headline">¶</a></h5>
+<dl class="option-list">
+<dt><kbd>-b, --build</kbd></dt>
+<dd><p>Build the env.</p>
+<p>Default: False</p>
+</dd>
+<dt><kbd>-u, --up</kbd></dt>
+<dd><p>Spin up the env.</p>
+<p>Default: False</p>
+</dd>
+<dt><kbd>-d, --down</kbd></dt>
+<dd><p>Tear down the env.</p>
+<p>Default: False</p>
+</dd>
+<dt><kbd>-a, --attach</kbd></dt>
+<dd><p>Attach to the env.</p>
+<p>Default: False</p>
+</dd>
+</dl>
+</section>
+</section>
+</section>
+<section id="db">
+<h3><code class="docutils literal notranslate"><span class="pre">db</span></code><a class="headerlink" href="#db" title="Permalink to this headline">¶</a></h3>
+<p>Initializer method for the <code class="docutils literal notranslate"><span class="pre">db</span></code> entrypoint</p>
+<p>This entrypoint provides easy manipulation of the AV database. The database is simply organized
+in a directory located either on a remote system or locally. The directory holds ROS 1 bags. At the time of
+creation, it was desired to have a way to parse the database in a rich GUI environment and be able to visually
+inspect topics, bags, and other relevant data. To easily do this, the <a class="reference external" href="https://github.com/swri-robotics/bag-database">bag-database</a>
+application is used. When written, <a class="reference external" href="https://github.com/ros2/rosbag2/issues/782">ROS 2 bags</a> lack the ability
+to contain information regarding custom message types (the next release of ROS in May, 2022, should implement this feature).</p>
+<p>This cli tool will therefore then provide a way to easily convert ROS 2 bags to ROS 1 to store in the AV
+database. Commands will simplify the “pushing” and “pulling” to and from the database. Furthermore, additional
+tools have been written such as combining ROS 1 and ROS 2 bags into a single ROS 2 bag.</p>
+<p>In the future, the workflow can be adjusted to use ROS 2 bags once <code class="docutils literal notranslate"><span class="pre">bag-database</span></code> implements it, assuming the
+next release of ROS 2 and ros2 bags supports it.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">usage</span><span class="p">:</span> <span class="n">av</span> <span class="n">db</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">{</span><span class="n">push</span><span class="p">,</span><span class="n">combine</span><span class="p">,</span><span class="n">read</span><span class="p">}</span> <span class="o">...</span>
+</pre></div>
+</div>
+<section id="db-combine">
+<h4><code class="docutils literal notranslate"><span class="pre">db</span> <span class="pre">combine</span></code><a class="headerlink" href="#db-combine" title="Permalink to this headline">¶</a></h4>
+<p>Command to combine a ROS 1 bag file and a ROS 2 bag into a single ROS 2 bag.</p>
+<p>The original motivation for this command is that the <a class="reference external" href="http://wiki.ros.org/mocap_optitrack">mocap optitrack</a>
+package was only supported in ROS 1, but the control stack we were using was in ROS 2. It is desired that
+the bagfiles are combined, timestamp corrected, so that replaying the data includes the ground truth of the
+robot.</p>
+<p>Example usage:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>av -vv db combine -c configuration.yml
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">configuration.yml</span></code>:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">output</span><span class="p">:</span>
+  <span class="nt">file</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">output</span>
+
+<span class="nt">rosbag1</span><span class="p">:</span>
+  <span class="nt">file</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ros1.bag</span>
+  <span class="nt">topics</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">/mocap_node/av/pose</span>
+
+<span class="nt">rosbag2</span><span class="p">:</span>
+  <span class="nt">file</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ros2bag/</span>
+  <span class="nt">messages</span><span class="p">:</span>
+    <span class="nt">vehicle_input</span><span class="p">:</span>
+      <span class="nt">file</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">data/VehicleInput.msg</span>
+      <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">custom_msgs/msg/VehicleInput</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">usage</span><span class="p">:</span> <span class="n">av</span> <span class="n">db</span> <span class="n">combine</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">r1</span> <span class="n">ROS1BAG</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">r2</span> <span class="n">ROS2BAG</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">o</span> <span class="n">OUTPUT</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">c</span> <span class="n">CONFIG</span><span class="p">]</span>
+                     <span class="p">[</span><span class="o">--</span><span class="n">ros1_topics</span> <span class="n">ROS1_TOPICS</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">ros2_topics</span> <span class="n">ROS2_TOPICS</span><span class="p">]</span>
+                     <span class="p">[</span><span class="o">--</span><span class="n">ros1_messages</span> <span class="n">ROS1_MESSAGES</span><span class="p">]</span>
+                     <span class="p">[</span><span class="o">--</span><span class="n">ros2_messages</span> <span class="n">ROS2_MESSAGES</span><span class="p">]</span>
+</pre></div>
+</div>
+<section id="Named Arguments">
+<h5>Named Arguments<a class="headerlink" href="#Named Arguments" title="Permalink to this headline">¶</a></h5>
+<dl class="option-list">
+<dt><kbd>-r1, --ros1bag</kbd></dt>
+<dd><p>ROS1 bag file. Will be overridden if present in the yaml.</p>
+<p>Default: “”</p>
+</dd>
+<dt><kbd>-r2, --ros2bag</kbd></dt>
+<dd><p>ROS2 bag file. Will be overridden if present in the yaml.</p>
+<p>Default: “”</p>
+</dd>
+<dt><kbd>-o, --output</kbd></dt>
+<dd><p>The output filename for the sqlite3 database</p>
+<p>Default: “”</p>
+</dd>
+<dt><kbd>-c, --config</kbd></dt>
+<dd><p>YAML file that defines the conversion process</p>
+<p>Default: “”</p>
+</dd>
+<dt><kbd>--ros1_topics</kbd></dt>
+<dd><p>The ros1 topics</p>
+<p>Default: []</p>
+</dd>
+<dt><kbd>--ros2_topics</kbd></dt>
+<dd><p>The ros2 topics</p>
+<p>Default: []</p>
+</dd>
+<dt><kbd>--ros1_messages</kbd></dt>
+<dd><p>The ros1 messages</p>
+<p>Default: {}</p>
+</dd>
+<dt><kbd>--ros2_messages</kbd></dt>
+<dd><p>The ros2 messages</p>
+<p>Default: {}</p>
+</dd>
+</dl>
+</section>
+</section>
+<section id="db-read">
+<h4><code class="docutils literal notranslate"><span class="pre">db</span> <span class="pre">read</span></code><a class="headerlink" href="#db-read" title="Permalink to this headline">¶</a></h4>
+<p>Command to read a AV database file.</p>
+<p>The AV database files are unique in that they allow you to read a ROS 2 bag with custom message types.
+With ROS 2 Galatic, <a class="reference external" href="https://github.com/ros2/rosbag2/issues/782">this is not possible</a>, hence the need to
+do this ourselves. To implement this, the <code class="docutils literal notranslate"><span class="pre">rosbags</span></code> package (<a class="reference external" href="https://ternaris.gitlab.io/rosbags/">documentation</a>)
+is utilize to convert between ROS 1 and ROS 2 bags without using either as an actual dependency. By default,
+ROS 2 bags are stored in an sqlite database and to inform the reader of the bag of the custom message types,
+a new sqlite table is added with the custom definition (stored as a pickle that <code class="docutils literal notranslate"><span class="pre">rosbags</span></code> can use to register
+the message types).</p>
+<p>The advantage of adding our own table and keeping to the sqlite structure is that you can still replay the ros2
+bag as if it was recorded normally and unaffected (assuming you have sourced a workspace with the custom msg
+types).</p>
+<p>This command is simply a debug tool for reading a AV database file.</p>
+<p>Example usage:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>av -vv db <span class="nb">read</span> input
+
+<span class="c1"># OR</span>
+
+av -vv db <span class="nb">read</span> configuration.yaml
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">configuration.yml</span></code>:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">input</span><span class="p">:</span>
+  <span class="nt">file</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">input</span>
+  <span class="nt">messages</span><span class="p">:</span>
+    <span class="nt">vehicle_input</span><span class="p">:</span>
+      <span class="nt">file</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">data/VehicleInput.msg</span>
+      <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">custom_msgs/msg/VehicleInput</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">usage</span><span class="p">:</span> <span class="n">av</span> <span class="n">db</span> <span class="n">read</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">i</span> <span class="n">INPUT</span><span class="p">]</span> <span class="n">config</span>
+</pre></div>
+</div>
+<section id="Positional Arguments">
+<h5>Positional Arguments<a class="headerlink" href="#Positional Arguments" title="Permalink to this headline">¶</a></h5>
+<dl class="option-list">
+<dt><kbd>config</kbd></dt>
+<dd><p>YAML file that defines the read process</p>
+</dd>
+</dl>
+</section>
+<section id="Named Arguments">
+<h5>Named Arguments<a class="headerlink" href="#Named Arguments" title="Permalink to this headline">¶</a></h5>
+<dl class="option-list">
+<dt><kbd>-i, --input</kbd></dt>
+<dd><p>The database file to read</p>
+</dd>
+</dl>
+</section>
+</section>
+</section>
+</section>
+</section>
+
+      </article>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="api/avtoolbox/index.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">avtoolbox</span></code></div>
+              </div>
+              <svg><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="index.html">
+              <svg><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">API Reference</div>
+                
+              </div>
+            </a>
+        </div>
+
+        <div class="related-information">
+              Copyright &#169; 2022, Simulation Based Engineering Laboratory
+            |
+            Built with <a href="https://www.sphinx-doc.org/">Sphinx</a>
+              and
+              <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+              <a href="https://github.com/pradyunsg/furo">Furo theme</a>.
+            |
+            <a class="muted-link" href="../_sources/usage/cli.md.txt"
+               rel="nofollow">
+              Show Source
+            </a>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            Contents
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">CLI Documentation</a><ul>
+<li><a class="reference internal" href="#av"><code class="docutils literal notranslate"><span class="pre">av</span></code></a><ul>
+<li><a class="reference internal" href="#Named Arguments">Named Arguments</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#sub-commands">Sub-commands</a><ul>
+<li><a class="reference internal" href="#dev"><code class="docutils literal notranslate"><span class="pre">dev</span></code></a><ul>
+<li><a class="reference internal" href="#Named Arguments">Named Arguments</a></li>
+<li><a class="reference internal" href="#dev-env"><code class="docutils literal notranslate"><span class="pre">dev</span> <span class="pre">env</span></code></a><ul>
+<li><a class="reference internal" href="#Named Arguments">Named Arguments</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#db"><code class="docutils literal notranslate"><span class="pre">db</span></code></a><ul>
+<li><a class="reference internal" href="#db-combine"><code class="docutils literal notranslate"><span class="pre">db</span> <span class="pre">combine</span></code></a><ul>
+<li><a class="reference internal" href="#Named Arguments">Named Arguments</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#db-read"><code class="docutils literal notranslate"><span class="pre">db</span> <span class="pre">read</span></code></a><ul>
+<li><a class="reference internal" href="#Positional Arguments">Positional Arguments</a></li>
+<li><a class="reference internal" href="#Named Arguments">Named Arguments</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </main>
+</div>
+  </body>
+</html>
