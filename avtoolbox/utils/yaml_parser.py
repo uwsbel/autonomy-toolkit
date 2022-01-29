@@ -50,6 +50,10 @@ class YAMLParser:
         """
         LOGGER.debug(f"Checking if {self._filename} contains nested attributes: {args}...")
 
+        # If no data is available, always return False:
+        if self._data is None:
+            return False
+
         _contains = True
         temp = self._data
         for arg in args:
@@ -91,14 +95,15 @@ class YAMLParser:
         LOGGER.debug(f"Getting nested attributes from {self._filename}: {args}...")
 
         temp = self._data
-        for arg in args:
-            if arg not in temp:
-                LOGGER.info(f"{self._filename} does not contain nested attributes: {args}.")
-                if default is not None:
-                    LOGGER.info(f"Using default: {default}.")
-                temp = default
-                break
-            temp = temp[arg]
+        if temp is not None:
+            for arg in args:
+                if arg not in temp:
+                    LOGGER.info(f"{self._filename} does not contain nested attributes: {args}.")
+                    if default is not None:
+                        LOGGER.info(f"Using default: {default}.")
+                    temp = default
+                    break
+                temp = temp[arg]
 
         if temp is None and throw_error:
             raise AttributeError(f"Default is not set and the nested attribute was not found: {args}.")

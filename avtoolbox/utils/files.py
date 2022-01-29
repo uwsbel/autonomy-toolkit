@@ -7,7 +7,7 @@ from avtoolbox.utils.logger import LOGGER
 
 # External library imports
 from pathlib import Path
-from typing import Union
+from typing import Union, Tuple
 import shutil
 
 def as_path(path: str) -> Path:
@@ -124,7 +124,7 @@ def read_text(filename: str) -> str:
     """
     return Path(filename).read_text()
 
-def search_upwards_for_file(filename: str) -> str:
+def search_upwards_for_file(filename: str) -> Path:
     """Search in the current directory and all directories above it 
     for a file of a particular name.
 
@@ -132,7 +132,7 @@ def search_upwards_for_file(filename: str) -> str:
         filename (str): the filename to look for.
 
     Returns:
-        str: the location of the first file found or None, if none was found
+        Path: the location of the first file found or None, if none was found
     """
     d = Path.cwd()
     root = Path(d.root)
@@ -140,7 +140,7 @@ def search_upwards_for_file(filename: str) -> str:
     while d != root:
         attempt = d / filename
         if attempt.exists():
-            return str(attempt)
+            return attempt
         d = d.parent
 
     return None

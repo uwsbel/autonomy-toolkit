@@ -10,7 +10,7 @@ include LICENSE.txt
 include setup.py
 
 # Include any config files
-include avtoolbox/config
+include avtoolbox/docker
 
 # Ignore non-package folders
 prune demos
