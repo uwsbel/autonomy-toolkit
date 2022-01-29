@@ -99,7 +99,7 @@ Functions
    :returns: *str* -- The text inside filename
 
 
-.. function:: search_upwards_for_file(filename: str) -> str
+.. function:: search_upwards_for_file(filename: str) -> Path
 
    Search in the current directory and all directories above it
    for a file of a particular name.
@@ -107,6 +107,6 @@ Functions
    Arg:
        filename (str): the filename to look for.
 
-   :returns: *str* -- the location of the first file found or None, if none was found
+   :returns: *Path* -- the location of the first file found or None, if none was found
 
 

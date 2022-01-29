@@ -209,7 +209,7 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#avtoolbox.utils.files.read_text" title="avtoolbox.utils.files.read_text"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_text</span></code></a>(filename: str) → str</p></td>
 <td><p>Read a file and return the text inside that file as a string</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#avtoolbox.utils.files.search_upwards_for_file" title="avtoolbox.utils.files.search_upwards_for_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">search_upwards_for_file</span></code></a>(filename: str) → str</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#avtoolbox.utils.files.search_upwards_for_file" title="avtoolbox.utils.files.search_upwards_for_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">search_upwards_for_file</span></code></a>(filename: str) → Path</p></td>
 <td><p>Search in the current directory and all directories above it</p></td>
 </tr>
 </tbody>
@@ -323,7 +323,7 @@ the desired filename is relative to the <code class="docutils literal notranslat
 </dd></dl>
 <dl class="py function">
 <dt id="avtoolbox.utils.files.search_upwards_for_file">
-<code class="sig-name descname">search_upwards_for_file</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> → str<a class="reference internal" href="../../../../../_modules/avtoolbox/utils/files.html#search_upwards_for_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#avtoolbox.utils.files.search_upwards_for_file" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">search_upwards_for_file</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> → Path<a class="reference internal" href="../../../../../_modules/avtoolbox/utils/files.html#search_upwards_for_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#avtoolbox.utils.files.search_upwards_for_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Search in the current directory and all directories above it
 for a file of a particular name.</p>
 <dl class="simple">
@@ -332,7 +332,7 @@ for a file of a particular name.</p>
 </dl>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p><em>str</em> – the location of the first file found or None, if none was found</p>
+<dd class="field-odd"><p><em>Path</em> – the location of the first file found or None, if none was found</p>
 </dd>
 </dl>
 </dd></dl>
