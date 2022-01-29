@@ -96,14 +96,20 @@ def _run_env(args):
     #   gid: <int> (optional)
     #       The group id to use. If not set, will grab it from the current user. (NOT USED)
     #
-    # docker: <dict> (optional)
-    #   context: <path> (optional)
+    # dev: <dict> (optional)
+    #   scripts: <path> (optional)
     #     This is the directory that holds any docker specific files (like custom dockerfiles or
     #     packages/scripts/dependencies that needed to be used when building the docker image).
     #     The path is relative to the .avtoolbox.yml file.
     #
-    #   dependences: <list> (optional)
-    #     A list of dependencies that should be installed in the docker container.
+    #   apt-dependences: <list> (optional)
+    #       A list of requirements that should be installed in the image through apt.
+    #
+    #   pip-requirements: <list> (optional)
+    #       A list of requirements that should be installed in the image through pip.
+    #
+    #   ports: <list> (optional)
+    #       A list of ports to be exposed.
     #
     # vnc: <dict> (optional)
     #   novnc_port: <int> (optional)
@@ -150,9 +156,10 @@ def _run_env(args):
 
     # Docker
     dev_dockerfile, dev_dockerfile_path = read_data("docker", "dev", "dev.dockerfile")
-    scripts = get_attr("dev", "scripts", default=os.path.join("docker", "dev", "scripts"))
     apt_dependencies = ' '.join(get_attr("dev", "apt-dependencies", default=""))
     pip_requirements = ' '.join(get_attr("dev", "pip-requirements", default=""))
+    scripts = get_attr("dev", "scripts", default=os.path.join("docker", "dev", "scripts"))
+    ports = get_attr("dev", "ports", default=[])
 
     # ROS
     workspace = get_attr("ros", "workspace", default="workspace")
@@ -189,7 +196,7 @@ def _run_env(args):
         v = str(v)
         docker_compose = docker_compose.replace(k, v)
     docker_compose_yml = yaml.load(docker_compose, Loader=yaml.SafeLoader)
-    
+
     # If no command is passed, start up the container and attach to it
     cmds = [args.build, args.up, args.down, args.attach] 
     if all(not c for c in cmds):
@@ -260,16 +267,32 @@ def _run_env(args):
                     # stop trying.
                     LOGGER.debug("Checking if any host ports are already in use for service '{service_name}'.")
 
+                    # Add any custom ports
+                    if 'dev' in service_name:
+                        if 'ports' in service:
+                            service['ports'].extend(ports)
+                        else:
+                            service['ports'] = ports
+
                     if not 'ports' in service:
                         LOGGER.debug(f"'{service_name}' has no ports mapped. Continuing to next service...")
                         continue
 
                     for port in service['ports']:
                         for i in range(5):
-                            if _is_port_in_use(port['published']):
-                                LOGGER.warn(f"Tried to map container port '{port['target']}' to host port '{port['published']}' for service '{service_name}', but it is in use. Trying again with '{port['published'] + 1}'.")
-                                port['published'] += 1
-                            break
+                            published = port['published'] if isinstance(port, dict) else int(port.split(":")[0])
+                            target = port['target'] if isinstance(port, dict) else port.split(":")[1]
+                            if _is_port_in_use(published):
+                                LOGGER.warn(f"Tried to map container port '{target}' to host port '{published}' for service '{service_name}', but it is in use. Trying again with '{published + 1}'.")
+                                published += 1
+                                if isinstance(port, str):
+                                    port = f"{published}:{target}"
+                            else:
+                                break
+
+                # Write the config again to solidify any changes
+                with open(tmp.name, 'w') as yaml_file:
+                    yaml.dump(config, yaml_file)
 
                 client.compose.up(detach=True)
 
