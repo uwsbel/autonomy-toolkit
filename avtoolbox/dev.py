@@ -161,8 +161,12 @@ def _run_env(args):
     dev_dockerfile, dev_dockerfile_path = read_data("docker", "dev", "dev.dockerfile")
     apt_dependencies = ' '.join(get_attr("dev", "apt-dependencies", default=""))
     pip_requirements = ' '.join(get_attr("dev", "pip-requirements", default=""))
-    scripts = get_attr("dev", "scripts", default=os.path.join("docker", "dev", "scripts"))
     ports = get_attr("dev", "ports", default=[])
+
+    scripts = get_attr("dev", "scripts", default=os.path.join("docker", "dev", "scripts"))
+    if not os.path.isdir(scripts):
+        LOGGER.fatal(f"dev.scripts must be a directory, got '{scripts}'")
+        return
 
     # ROS
     workspace = get_attr("ros", "workspace", default="workspace")
