@@ -39,7 +39,7 @@ RUN pip install $REQUIREMENTS
 # Should be used to install additional packages
 ARG SCRIPTS
 COPY $SCRIPTS /tmp/scripts/
-RUN for f in /tmp/scripts/*; do [ -x $f ] && [ -f $f ] && ./$f || exit 0; done
+RUN for f in /tmp/scripts/*; do [ -x $f ] && [ -f $f ] && $f || continue; done
 RUN rm -rf /tmp/scripts
 
 # Clean up to reduce image size

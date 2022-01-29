@@ -252,16 +252,16 @@ def _run_env(args):
                 LOGGER.info(f"Building...")
                 client.compose.build()
 
+            # Ignore all running services
+            config['services'] = {name : service for name, service in config['services'].items() if len(docker.container.list(filters={"name": service["container_name"]})) == 0 }
+
+            # If all the services are already running, don't try to spin up
+            if len(config['services']) == 0:
+                LOGGER.warn(f"No services need to be initialized. Turning off 'up'. If you didn't explicitly call 'up', this may be safely ignored.")
+                args.up = False
+
             if args.up:
                 LOGGER.info(f"Spinning up...")
-
-                # Ignore all running services
-                config['services'] = {name : service for name, service in config['services'].items() if len(docker.container.list(filters={"name": service["container_name"]})) == 0 }
-
-                # If all the services are already running, don't try to spin up
-                if len(config['services']) == 0:
-                    LOGGER.warn(f"No services need to be initialized. Turning off 'up'. If you didn't explicitly call 'up', this may be safely ignored.")
-                    args.up = False
 
                 for service_name, service in config['services'].items():
 
