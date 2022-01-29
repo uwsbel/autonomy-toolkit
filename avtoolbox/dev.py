@@ -149,6 +149,9 @@ def _run_env(args):
     if project is None:
         LOGGER.fatal(f"'project' must be provided in '.avtoolbox.yml'. Wasn't found, cannot continue.")
         return
+    elif any(c.isupper() for c in project):
+        LOGGER.fatal(f"'project' is set to '{project}' which is not allowed since it has capital letters. Please choose a name with only lowercase.")
+        return
 
     username = get_attr("user", "name", default=os.getlogin())
     uid = get_attr("user", "uid", default=os.getuid())
@@ -284,9 +287,10 @@ def _run_env(args):
                             target = port['target'] if isinstance(port, dict) else port.split(":")[1]
                             if _is_port_in_use(published):
                                 LOGGER.warn(f"Tried to map container port '{target}' to host port '{published}' for service '{service_name}', but it is in use. Trying again with '{published + 1}'.")
-                                published += 1
                                 if isinstance(port, str):
-                                    port = f"{published}:{target}"
+                                    port = f"{published + 1}:{target}"
+                                else:
+                                    port['published'] += 1
                             else:
                                 break
 
