@@ -9,7 +9,7 @@ services:
       dockerfile: ${DEV.DOCKERFILE}
       network: host
       args:
-        CONTEXT: ${CONTEXT}
+        SCRIPTS: ${SCRIPTS}
         PROJECT: ${PROJECT}
         ROSDISTRO: ${ROSDISTRO} 
         WORKSPACE: ${WORKSPACE}

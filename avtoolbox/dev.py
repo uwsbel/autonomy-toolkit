@@ -150,7 +150,7 @@ def _run_env(args):
 
     # Docker
     dev_dockerfile, dev_dockerfile_path = read_data("docker", "dev", "dev.dockerfile")
-    context = root / get_attr("dev", "context", default="docker")
+    scripts = get_attr("dev", "scripts", default=os.path.join("docker", "dev", "scripts"))
     apt_dependencies = ' '.join(get_attr("dev", "apt-dependencies", default=""))
     pip_requirements = ' '.join(get_attr("dev", "pip-requirements", default=""))
 
@@ -174,7 +174,7 @@ def _run_env(args):
         "VNC.DOCKERFILE": vnc_dockerfile_path,
         "USERNAME": username,
         "USER": f"{uid}:{gid}",
-        "CONTEXT": context,
+        "SCRIPTS": scripts,
         "APT-DEPENDENCIES": apt_dependencies,
         "PIP-REQUIREMENTS": pip_requirements,
         "NOVNC_PORT": novnc_port,

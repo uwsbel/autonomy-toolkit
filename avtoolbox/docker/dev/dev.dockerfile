@@ -4,7 +4,6 @@ FROM ros:${ROSDISTRO}
 
 LABEL maintainer="Simulation Based Engineering Laboratory <negrut@wisc.edu>"
 
-ARG CONTEXT
 ARG PROJECT
 ARG ROSDISTRO
 ARG DEBIAN_FRONTEND=noninteractive
@@ -30,7 +29,7 @@ RUN apt-get install --no-install-recommends -y $DEPENDENCIES
 ARG WORKSPACE
 COPY $WORKSPACE/src /tmp/workspace/src/
 RUN cd /tmp/workspace && rosdep update && rosdep install --from-paths src --ignore-src -r -y
-RUN cd /tmp/ && rm -rf workspace
+RUN rm -rf /tmp/workspace
 
 # Install some python packages
 ARG REQUIREMENTS
@@ -38,7 +37,8 @@ RUN pip install $REQUIREMENTS
 
 # Run any user scripts
 # Should be used to install additional packages
-COPY *${CONTEXT}/scripts/ /tmp/scripts/
+ARG SCRIPTS
+COPY $SCRIPTS /tmp/scripts/
 RUN for f in /tmp/scripts/*; do [ -x $f ] && [ -f $f ] && ./$f || exit 0; done
 RUN rm -rf /tmp/scripts
 
