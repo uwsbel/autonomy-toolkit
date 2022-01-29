@@ -4,13 +4,13 @@ include pyproject.toml
 include README.md
 
 # Include the license file
-include LICENSE.txt
+include LICENSE
 
 # Include setup.py
 include setup.py
 
 # Include any config files
-include avtoolbox/docker
+recursive-include avtoolbox/docker/
 
 # Ignore non-package folders
 prune demos

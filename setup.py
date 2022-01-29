@@ -33,6 +33,7 @@ setup(
     author='UW Simulation Based Engineering Lab',  # Optional
     license="BSD3",
     packages=find_packages(),  # Required
+    include_package_data=True,
     python_requires='>=3.8.2, <4',
     install_requires=parse_requirements(),  # Optional
     url="https://projects.sbel.org/avtoolbox",
