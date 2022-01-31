@@ -164,7 +164,7 @@ def _run_env(args):
     ports = get_attr("dev", "ports", default=[])
 
     scripts = get_attr("dev", "scripts", default=os.path.join("docker", "dev", "scripts"))
-    if not os.path.isdir(scripts):
+    if not os.path.isdir(root / scripts):
         LOGGER.fatal(f"dev.scripts must be a directory, got '{scripts}'")
         return
 
@@ -257,16 +257,17 @@ def _run_env(args):
                 client.compose.build()
 
             # Ignore all running services
-            config['services'] = {name : service for name, service in config['services'].items() if len(docker.container.list(filters={"name": service["container_name"]})) == 0 }
+            services = {name : service for name, service in config['services'].items() if len(docker.container.list(filters={"name": service["container_name"]})) == 0 }
 
             # If all the services are already running, don't try to spin up
-            if len(config['services']) == 0:
+            if len(services) == 0:
                 LOGGER.warn(f"No services need to be initialized. Turning off 'up'. If you didn't explicitly call 'up', this may be safely ignored.")
                 args.up = False
 
             if args.up:
                 LOGGER.info(f"Spinning up...")
 
+                config['services'] = services
                 for service_name, service in config['services'].items():
 
                     # For each port in each service, make sure they map to available ports
