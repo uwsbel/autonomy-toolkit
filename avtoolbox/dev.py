@@ -159,7 +159,7 @@ def _run_env(args):
     uid = get_attr("user", "uid", default=os.getuid())
     gid = get_attr("user", "gid", default=os.getgid())
 
-    # docker
+    # dev
     dev_dockerfile, dev_dockerfile_path = read_data("docker", "dev", "dev.dockerfile")
     apt_dependencies = ' '.join(get_attr("dev", "apt-dependencies", default=""))
     pip_requirements = ' '.join(get_attr("dev", "pip-requirements", default=""))
@@ -171,7 +171,7 @@ def _run_env(args):
         LOGGER.fatal(f"dev.scripts must be a directory, got '{scripts}'")
         return
 
-    # docker.ros
+    # dev.ros
     workspace = get_attr("ros", "workspace", default="workspace")
     distro = get_attr("ros", "distro", default="galactic")
     
@@ -311,7 +311,7 @@ def _run_env(args):
                 with open(tmp.name, 'w') as yaml_file:
                     yaml.dump(config, yaml_file)
 
-                print(client.compose.up(detach=True))
+                client.compose.up(detach=True)
 
             if args.attach:
                 LOGGER.info(f"Attaching...")
