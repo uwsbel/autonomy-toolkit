@@ -1,6 +1,6 @@
 # Contributing
 
-Contributing to the repository is fairly easy. The CLI was developed to be scalable and provide easy flexibiliity when creating new commands. There could be bugs or additional subcommands that would like to be added, so please see below for instructions on how to actually make contributions to this project.
+Contributing to the repository is fairly easy. The CLI was developed to be scalable and provide easy flexibility when creating new commands. There could be bugs or additional subcommands that would like to be added, so please see below for instructions on how to actually make contributions to this project.
 
 > Note: If you're contributing to the repository, it can be assumed you know what you're doing. Please be thoughtful in your changes and consult the correct people if you're looking to make changes.
 
@@ -15,7 +15,7 @@ There are two forms of contributions: source code or documentation. Editing the 
 Clone the repo as normal:
 
 ```bash
-git clone https://github.com/uwsbel/avtoolbox.git && cd av
+git clone https://github.com/uwsbel/avtoolbox.git && cd avtoolbox
 ```
 
 ### Installing a Symbolic Linked Version for Testing

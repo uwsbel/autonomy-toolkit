@@ -183,16 +183,9 @@
 <ul class="simple">
 <li><p>You have cloned the <a class="reference external" href="https://github.com/uwsbel/avtoolbox">avtoolbox</a> repository</p></li>
 <li><p>You have installed Docker (<a class="reference external" href="https://docs.docker.com/get-docker/">resource for that</a>)</p></li>
-<li><p>You have installed docker-compose (<a class="reference external" href="https://docs.docker.com/compose/install/">resource for that</a>)</p></li>
+<li><p>You have installed docker compose v2 (<a class="reference external" href="https://docs.docker.com/compose/cli-command/">resource for that</a>)</p></li>
 <li><p>You have installed <code class="docutils literal notranslate"><span class="pre">avtoolbox</span></code> (<a class="reference external" href="https://projects.sbel.org/avtoolbox/setup.html">resources for that</a>)</p></li>
 </ul>
-<section id="additional-prerequisites-for-linux-users">
-<h3>Additional Prerequisites For Linux Users<a class="headerlink" href="#additional-prerequisites-for-linux-users" title="Permalink to this headline">¶</a></h3>
-<ul class="simple">
-<li><p>You have installed Docker compose v2 (<a class="reference external" href="https://docs.docker.com/compose/cli-command/">resource for that</a>)</p></li>
-<li><p>You can run Docker as a non-root user and have activated the Docker daemon (<a class="reference external" href="https://docs.docker.com/engine/install/linux-postinstall/">resource for that</a>)</p></li>
-</ul>
-</section>
 </section>
 <section id="design-considerations">
 <h2>Design Considerations<a class="headerlink" href="#design-considerations" title="Permalink to this headline">¶</a></h2>
@@ -204,48 +197,7 @@
 <p>To begin, Docker is a tool for virtualizing applications from a main operating system. What this means is that you can run full OS containers within a host OS. The primary purpose behind Docker, and similar tools, is to isolate development environments and to consistently deploy applications across computers. Docker is typically used on servers (think AWS or Azure) to isolate users and to deploy websites and web apps. Docker simply provides the ability to run these isolated containers, it is the users job to create the content that goes inside the containers. For more information on Docker, plesae see their <a class="reference external" href="https://www.docker.com/">official website</a>.</p>
 <p>For robotics, containers can be a valuable tool for creating consistent development environments for users with different operating systems or different use cases. For example, a Docker container can be generated that has the entire simulation platform already installed; then, the user can simply run their simulation script in the container without the need to install any dependencies.</p>
 <p>To help facilitate complicated scenarios, it is common practice to utilize multiple containers. Think, for instance, with multiple containers, you can have multiple independent systems that can be interchanged easily. Then, each isolated container communicates with the others in some capacity. This is what we will do here, where we have one container for the control stack, another for the simulation, and then other optional containers with other desired features: for example, <code class="docutils literal notranslate"><span class="pre">vnc</span></code> for visualizing gui apps.</p>
-<p>To implement the system we’ve discussed, <code class="docutils literal notranslate"><span class="pre">docker-compose</span></code> is utilized. The <code class="docutils literal notranslate"><span class="pre">docker-compose.yml</span></code> file located at the root of the <code class="docutils literal notranslate"><span class="pre">miniav</span></code> repository is displayed below.</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">version</span><span class="p">:</span> <span class="s">"3.9"</span>
-<span class="nt">services</span><span class="p">:</span>
-  <span class="nt">dev</span><span class="p">:</span>
-    <span class="nt">container_name</span><span class="p">:</span> <span class="s">'miniav-dev'</span>
-    <span class="nt">hostname</span><span class="p">:</span> <span class="s">'miniav-dev'</span>
-    <span class="nt">image</span><span class="p">:</span> <span class="s">'sbel/miniav:dev'</span>
-    <span class="nt">build</span><span class="p">:</span>
-      <span class="nt">context</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">./</span>
-      <span class="nt">dockerfile</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">./docker/dev/dev.dockerfile</span>
-      <span class="nt">network</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">host</span>
-      <span class="nt">args</span><span class="p">:</span>
-        <span class="nt">CONTEXT</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">docker/dev</span>
-        <span class="nt">REPONAME</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">miniav</span>
-        <span class="nt">ROSDISTRO</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">galactic</span>
-    <span class="nt">volumes</span><span class="p">:</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">.:/root/miniav</span>
-    <span class="nt">environment</span><span class="p">:</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">DISPLAY=novnc:0.0</span>
-    <span class="nt">working_dir</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/root/</span>
-    <span class="nt">tty</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
-    <span class="nt">networks</span><span class="p">:</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">miniav</span>
-  <span class="nt">vnc</span><span class="p">:</span>
-    <span class="nt">container_name</span><span class="p">:</span> <span class="s">'miniav-vnc'</span>
-    <span class="nt">hostname</span><span class="p">:</span> <span class="s">'miniav-vnc'</span>
-    <span class="nt">build</span><span class="p">:</span>
-      <span class="nt">context</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">./docker/vnc/</span>
-      <span class="nt">dockerfile</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">./vnc.dockerfile</span>
-      <span class="nt">network</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">host</span>
-    <span class="nt">environment</span><span class="p">:</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">RUN_XTERM=no</span>
-    <span class="nt">ports</span><span class="p">:</span>
-      <span class="p p-Indicator">-</span> <span class="s">"8080:8080"</span>
-      <span class="p p-Indicator">-</span> <span class="s">"5900:5900"</span>
-    <span class="nt">networks</span><span class="p">:</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">miniav</span>
-<span class="nt">networks</span><span class="p">:</span>
-  <span class="nt">miniav</span><span class="p">:</span>
-</pre></div>
-</div>
-<p>As it can be seen, there are two <code class="docutils literal notranslate"><span class="pre">services</span></code>: <code class="docutils literal notranslate"><span class="pre">dev</span></code> and <code class="docutils literal notranslate"><span class="pre">vnc</span></code>. <code class="docutils literal notranslate"><span class="pre">dev</span></code> is the ROS 2 development environment we’ll use to write the ROS 2 code. <code class="docutils literal notranslate"><span class="pre">vnc</span></code> is the container used to visualize gui apps. Various attributes are included in the <code class="docutils literal notranslate"><span class="pre">.yml</span></code> file, such as build context, ROS version types, and environment variables. As seen in the <code class="docutils literal notranslate"><span class="pre">volumes</span></code> section under the <code class="docutils literal notranslate"><span class="pre">dev</span></code> service, the entire <code class="docutils literal notranslate"><span class="pre">miniav</span></code> repository will be mounted inside the container. A <a class="reference external" href="https://docs.docker.com/storage/volumes/">volume</a> is simply a folder that is shared between the host OS and the container. This means any and all code additions should be made <em>only</em> inside of this folder; if you edit any files outside of <code class="docutils literal notranslate"><span class="pre">/root/miniav</span></code>, then the changes will not be saved when the container is exited.</p>
+<p>There are two <code class="docutils literal notranslate"><span class="pre">services</span></code> (or containers) that will be created: <code class="docutils literal notranslate"><span class="pre">dev</span></code> and <code class="docutils literal notranslate"><span class="pre">vnc</span></code>. <code class="docutils literal notranslate"><span class="pre">dev</span></code> is the ROS 2 development environment we’ll use to write the ROS 2 code. <code class="docutils literal notranslate"><span class="pre">vnc</span></code> is the container used to visualize gui apps. Various attributes are included in the <code class="docutils literal notranslate"><span class="pre">.yml</span></code> file, such as build context, ROS version types, and environment variables. As seen in the <code class="docutils literal notranslate"><span class="pre">volumes</span></code> section under the <code class="docutils literal notranslate"><span class="pre">dev</span></code> service, the entire <code class="docutils literal notranslate"><span class="pre">miniav</span></code> repository will be mounted inside the container. A <a class="reference external" href="https://docs.docker.com/storage/volumes/">volume</a> is simply a folder that is shared between the host OS and the container. This means any and all code additions should be made <em>only</em> inside of this folder; if you edit any files outside of <code class="docutils literal notranslate"><span class="pre">/root/miniav</span></code>, then the changes will not be saved when the container is exited.</p>
 </section>
 <section id="setup">
 <h2>Setup<a class="headerlink" href="#setup" title="Permalink to this headline">¶</a></h2>
@@ -254,7 +206,7 @@
 <section id="usage">
 <h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
 <p>To use the development environment, very convenient commands are provided through the <code class="docutils literal notranslate"><span class="pre">avtoolbox</span></code> CLI. The documentation for the <code class="docutils literal notranslate"><span class="pre">dev</span></code> command can be found <a class="reference external" href="http://projects.sbel.org/avtoolbox/usage/cli.html#dev">here</a>.</p>
-<p>As described in the documentation, the <code class="docutils literal notranslate"><span class="pre">dev</span></code> command has four arguments: <code class="docutils literal notranslate"><span class="pre">build</span></code>, <code class="docutils literal notranslate"><span class="pre">up</span></code>, <code class="docutils literal notranslate"><span class="pre">down</span></code>, and <code class="docutils literal notranslate"><span class="pre">attach</span></code>. These may sound familiar if you’ve used <code class="docutils literal notranslate"><span class="pre">docker-compose</span></code> before because the <code class="docutils literal notranslate"><span class="pre">dev</span></code> command essentially wraps <code class="docutils literal notranslate"><span class="pre">docker-compose</span></code>. Everything that the <code class="docutils literal notranslate"><span class="pre">av</span> <span class="pre">dev</span></code> command does, <code class="docutils literal notranslate"><span class="pre">docker-compose</span></code> can also do; the <code class="docutils literal notranslate"><span class="pre">av</span> <span class="pre">dev</span></code> cli command is simply made to expedite the process of entering a container and may also provide an easy mechanism to add additional functionality in the future.</p>
+<p>As described in the documentation, the <code class="docutils literal notranslate"><span class="pre">dev</span></code> command has four arguments: <code class="docutils literal notranslate"><span class="pre">build</span></code>, <code class="docutils literal notranslate"><span class="pre">up</span></code>, <code class="docutils literal notranslate"><span class="pre">down</span></code>, and <code class="docutils literal notranslate"><span class="pre">attach</span></code>. These may sound familiar if you’ve used <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span></code> before because the <code class="docutils literal notranslate"><span class="pre">dev</span></code> command essentially wraps <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span></code>. Everything that the <code class="docutils literal notranslate"><span class="pre">av</span> <span class="pre">dev</span></code> command does, <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span></code> can also do; the <code class="docutils literal notranslate"><span class="pre">av</span> <span class="pre">dev</span></code> cli command is simply made to expedite the process of entering a container and may also provide an easy mechanism to add additional functionality in the future.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>For any commands mentioned herein, it will be assumed they are run from within the <code class="docutils literal notranslate"><span class="pre">av</span></code> repository.</p>
@@ -366,10 +318,7 @@ av-dev:~$
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">Using the AV Development Environment</a><ul>
-<li><a class="reference internal" href="#prerequisites">Prerequisites</a><ul>
-<li><a class="reference internal" href="#additional-prerequisites-for-linux-users">Additional Prerequisites For Linux Users</a></li>
-</ul>
-</li>
+<li><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
 <li><a class="reference internal" href="#design-considerations">Design Considerations</a></li>
 <li><a class="reference internal" href="#background">Background</a></li>
 <li><a class="reference internal" href="#setup">Setup</a></li>
