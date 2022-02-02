@@ -59,7 +59,7 @@ class YAMLParser:
         for arg in args:
             if arg not in temp:
                 _contains = False
-                LOGGER.info(f"{self._filename} does not contain nested attributes: {args}.")
+                LOGGER.debug(f"{self._filename} does not contain nested attributes: {args}.")
                 break
             temp = temp[arg]
         return _contains

@@ -15,9 +15,6 @@ ARG USERSHELL=bash
 ARG USERSHELLPATH="/bin/${USERSHELL}"
 ARG USERSHELLPROFILE="$USERHOME/.${USERSHELL}rc"
 
-# Use mirrors instead of main server
-RUN sed -i 's|deb http://.*ubuntu.com.* \(focal.*\)|deb mirror://mirrors.ubuntu.com/mirrors.txt \1|g' /etc/apt/sources.list
-
 # Check for updates
 RUN apt-get update && apt-get upgrade -y
 

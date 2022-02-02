@@ -8,7 +8,7 @@ from avtoolbox.utils.yaml_parser import YAMLParser
 from avtoolbox.utils.files import search_upwards_for_file, read_text
 
 # Other imports
-from python_on_whales import docker, DockerClient, exceptions as docker_exceptions
+from python_on_whales import docker, DockerClient, exceptions as docker_exceptions, get_docker_client_binary_path
 import yaml
 import pkgutil
 import os
@@ -18,49 +18,49 @@ import pathlib
 
 def _run_env(args):
     """
-    Entrypoint for the `dev env` command.
+    Entrypoint for the `dev` command.
 
-    The `env` command essentially wraps `docker-compose` to automatically build, spin-up, attach, and
+    The `dev` command essentially wraps `docker-compose` to automatically build, spin-up, attach, and
     tear down the AV development environment.
 
     The command is completely redundant; it simply combines all the building, starting, attaching, and destroying
     into a single command. It allows users to quickly start and attach to the AV development environment based
     on the docker-compose file.
 
-    There are four possible options that can be used using the `env` subcommand:
+    There are four possible options that can be used using the `idev` subcommand:
     `build`, `up`, `down`, and `attach`. For example, if you'd like to build the container, you'd run 
     the following command:
 
     ```bash
-    av dev env --build
+    av dev --build
     ```
 
     If you'd like to build, start the container, then attach to it, run the following command:
 
     ```bash
-    av dev env --build --up --attach
+    av dev --build --up --attach
     # OR
-    av dev env -b -u -a
+    av dev -b -u -a
     # OR
-    av dev env -bua
+    av dev -bua
     ```
 
     If no arguments are passed, this is equivalent to the following command:
 
     ```bash
-    av dev env --up --attach
+    av dev --up --attach
     ```
 
     If desired, pass `--down` to stop the container. Further, if the container exists and changes are
     made to the repository, the container will _not_ be built automatically. To do that, add the 
     `--build` argument.
-
-    ```{note}
-    `av dev` is an alias for `av dev env`. `env` can therefore be omitted for brevity.
-    </div></div>
-    ```
     """
-    LOGGER.info("Running 'dev env' entrypoint...")
+    LOGGER.info("Running 'dev' entrypoint...")
+
+    # Check docker is installed
+    if get_docker_client_binary_path() is None:
+        LOGGER.fatal(f"Docker was not found to be installed. Cannot continue.")
+        return
 
     # Check docker-compose is installed
     LOGGER.debug("Checking if 'docker compose' (V2) is installed...")
@@ -111,6 +111,15 @@ def _run_env(args):
     #   ports: <list> (optional)
     #       A list of ports to be exposed.
     #
+    #   ros: <dict> (optional)
+    #     workspace: <path> (optional)
+    #       This is the directory which holds the ROS 2 workspace code
+    #       The path is relative to the .avtoolbox.yml file.
+    #
+    #     distro: <str> (optional)
+    #         The ros 2 distro to use. Must be compatible with osrf/ros distrobutions
+    #         on DockerHub. Defaults to galactic.
+    #
     # vnc: <dict> (optional)
     #   novnc_port: <int> (optional)
     #       The port that novnc is displayed on. Defaults to 8080.
@@ -120,15 +129,6 @@ def _run_env(args):
     #
     #   password: <str> (optional)
     #       The password to use for vnc. Defaults to the project name.
-    #
-    # ros: <dict> (optional)
-    #   workspace: <path> (optional)
-    #     This is the directory which holds the ROS 2 workspace code
-    #     The path is relative to the .avtoolbox.yml file.
-    #
-    #   distro: <str> (optional)
-    #       The ros 2 distro to use. Must be compatible with osrf/ros distrobutions
-    #       on DockerHub. Defaults to galactic.
 
     LOGGER.debug("Parsering '.avtoolbox.yml' file.")
     conf_parser = YAMLParser(conf)
@@ -145,6 +145,7 @@ def _run_env(args):
         path = os.path.realpath(os.path.join(__file__, "..", *args))
         return read_text(path), path
 
+    # project
     project = get_attr("project")
     if project is None:
         LOGGER.fatal(f"'project' must be provided in '.avtoolbox.yml'. Wasn't found, cannot continue.")
@@ -153,26 +154,28 @@ def _run_env(args):
         LOGGER.fatal(f"'project' is set to '{project}' which is not allowed since it has capital letters. Please choose a name with only lowercase.")
         return
 
+    # user
     username = get_attr("user", "name", default=os.getlogin())
     uid = get_attr("user", "uid", default=os.getuid())
     gid = get_attr("user", "gid", default=os.getgid())
 
-    # Docker
+    # docker
     dev_dockerfile, dev_dockerfile_path = read_data("docker", "dev", "dev.dockerfile")
     apt_dependencies = ' '.join(get_attr("dev", "apt-dependencies", default=""))
     pip_requirements = ' '.join(get_attr("dev", "pip-requirements", default=""))
     ports = get_attr("dev", "ports", default=[])
+    expose = get_attr("dev", "expose", default=[])
 
     scripts = get_attr("dev", "scripts", default=os.path.join("docker", "dev", "scripts"))
     if not os.path.isdir(root / scripts):
         LOGGER.fatal(f"dev.scripts must be a directory, got '{scripts}'")
         return
 
-    # ROS
+    # docker.ros
     workspace = get_attr("ros", "workspace", default="workspace")
     distro = get_attr("ros", "distro", default="galactic")
     
-    # VNC
+    # vnc
     novnc_port = get_attr("vnc", "novnc_port", default="8080")
     vnc_port = get_attr("vnc", "vnc_port", default="5900")
     vnc_password = get_attr("vnc", "password", default=project)
@@ -282,6 +285,11 @@ def _run_env(args):
                         else:
                             service['ports'] = ports
 
+                        if 'expose' in service:
+                            service['expose'].extend(expose)
+                        else:
+                            service['expose'] = expose
+
                     if not 'ports' in service:
                         LOGGER.debug(f"'{service_name}' has no ports mapped. Continuing to next service...")
                         continue
@@ -303,7 +311,7 @@ def _run_env(args):
                 with open(tmp.name, 'w') as yaml_file:
                     yaml.dump(config, yaml_file)
 
-                client.compose.up(detach=True)
+                print(client.compose.up(detach=True))
 
             if args.attach:
                 LOGGER.info(f"Attaching...")
@@ -318,10 +326,14 @@ def _run_env(args):
             msg = str(e)
             if 'Error response from daemon:' in msg:
                 msg = msg.split('Error response from daemon:')[1][:-3]
-            LOGGER.error(f"Docker command raised exception: {msg}")
+            elif "The content of stdout can be found above the stacktrace (it wasn't captured)" in msg:
+                LOGGER.warn(f"Got error in Docker container. You can probably ignore this message.")
+            else:
+                LOGGER.error(f"Docker command raised exception: {msg}")
         finally:
             tmp.close()
             os.unlink(tmp.name)
+
 
 def _init(subparser):
     """Initializer method for the `dev` entrypoint
@@ -340,20 +352,10 @@ def _init(subparser):
     """
     LOGGER.debug("Initializing 'dev' entrypoint...")
 
-    def _add_dev_commands(parser):
-        parser.add_argument("-b", "--build", action="store_true", help="Build the env.", default=False)
-        parser.add_argument("-u", "--up", action="store_true", help="Spin up the env.", default=False)
-        parser.add_argument("-d", "--down", action="store_true", help="Tear down the env.", default=False)
-        parser.add_argument("-a", "--attach", action="store_true", help="Attach to the env.", default=False)
-        parser.set_defaults(cmd=_run_env)
-
     # Add a base 
-    _add_dev_commands(subparser)
-
-    # Create some entrypoints for additinal commands
-    subparsers = subparser.add_subparsers(required=False)
-
-    # Subcommand that can build, spin up, attach and tear down the dev environment
-    env = subparsers.add_parser("env", description="Command to simplify usage of the docker-based development workflow. Basically wraps docker-compose.")
-    _add_dev_commands(env)
+    subparser.add_argument("-b", "--build", action="store_true", help="Build the env.", default=False)
+    subparser.add_argument("-u", "--up", action="store_true", help="Spin up the env.", default=False)
+    subparser.add_argument("-d", "--down", action="store_true", help="Tear down the env.", default=False)
+    subparser.add_argument("-a", "--attach", action="store_true", help="Attach to the env.", default=False)
+    subparser.set_defaults(cmd=_run_env)
 
