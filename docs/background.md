@@ -1,10 +1,18 @@
 # Background
 
+## Development Environment
+
+```{todo}
+To write...
+```
+
+## MiniAV Platform
+
 The MiniAV platform is purpose built to be an all-in-one test platform for autonomous algorithm development and simulation validation. Provided is documented hardware, a pre-made control stack, an optimized development-to-deployment workflow, and a database system to easily store and interact with ROS-based data files.
 
 In this guide, general background of the project is discussed and an overview of design decisions is provided. 
 
-## Purpose
+### Purpose
 
 As mentioned before, the MiniAV platform is an all-in-one test platform for autonomous vehicles. Providing this platform aims to leverage the high-fidelity simulation engine [Chrono](https://projectchrono.org) as the test method prior to deploying the code on the real car. Furthermore, the development workflow and data processing pipeline is meant to be generic and scalable to other hardware beyond the MiniAV. Utilizing [ROS 2](https://docs.ros.org/en/galactic/index.html) for the control stack, the sensing support is built on packages from the ROS community and will continue to grow as ROS 2 is further adapted of the first iteration of ROS.
 

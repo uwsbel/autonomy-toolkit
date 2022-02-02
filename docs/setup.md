@@ -9,7 +9,11 @@ Setup and installation information is provided in this guide.
 Before you can install the `avtoolbox` package, you will need to install a few other packages. Please see the linked installation instructions before continuing.
 - Python >= 3.8.2: [Further details below](#python-environments)
 - [Docker](https://docker.com): [Installation instructions](https://docs.docker.com/get-docker/)
-- [docker-compose](https://docs.docker.com/compose/): [Installation instructions](https://docs.docker.com/compose/install/)
+- [docker compose v2](https://docs.docker.com/compose/): [Installation instructions](https://docs.docker.com/compose/cli-command/)
+
+### Additional Prerequisites For Linux Users
+
+- You can run Docker as a non-root user and have activated the Docker daemon ([resource for that](https://docs.docker.com/engine/install/linux-postinstall/))
 
 Once the [prerequisites](#prerequisites) have been installed, you may proceed to installing the `avtoolbox` package.
 

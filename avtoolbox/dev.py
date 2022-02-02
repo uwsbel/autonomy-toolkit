@@ -20,12 +20,12 @@ def _run_env(args):
     """
     Entrypoint for the `dev` command.
 
-    The `dev` command essentially wraps `docker-compose` to automatically build, spin-up, attach, and
-    tear down the AV development environment.
+    The `dev` command essentially wraps `docker compose` to automatically build, spin-up, attach, and
+    tear down the AV development environment. `docker compose` is therefore necessary to install.
 
-    The command is completely redundant; it simply combines all the building, starting, attaching, and destroying
-    into a single command. It allows users to quickly start and attach to the AV development environment based
-    on the docker-compose file.
+    The `dev` command will search for a file called `.avtoolbox.yml`. This is a hidden file, and it defines some custom
+    configurations for the development environment. It allows users to quickly start and attach to the AV development environment
+    based on a shared docker-compose file and any Dockerfile build configurations. 
 
     There are four possible options that can be used using the `idev` subcommand:
     `build`, `up`, `down`, and `attach`. For example, if you'd like to build the container, you'd run 
@@ -62,7 +62,7 @@ def _run_env(args):
         LOGGER.fatal(f"Docker was not found to be installed. Cannot continue.")
         return
 
-    # Check docker-compose is installed
+    # Check docker compose is installed
     LOGGER.debug("Checking if 'docker compose' (V2) is installed...")
     if not docker.compose.is_installed():
         LOGGER.fatal("The command 'docker compose' is not installed. See http://projects.sbel.org/avtoolbox/tutorials/using_the_development_environment.html for more information.")
@@ -339,12 +339,11 @@ def _init(subparser):
     """Initializer method for the `dev` entrypoint
 
     This entrypoint provides easy access to the AV development environment. The dev environment
-    leverages [Docker](https://docker.com) to allow interoperability across operating systems. `docker-compose`
+    leverages [Docker](https://docker.com) to allow interoperability across operating systems. `docker compose`
     is used to build, spin up, attach, and tear down the containers. The `dev` entrypoint will basically wrap
-    the `docker-compose` commands to make it easier to customize the workflow to work best for AV.
+    the `docker compose` commands to make it easier to customize the workflow to work best for AV.
 
-    The primary container, titled `dev` in the `docker-compose.yml` file in the 
-    [`av` github](https://github.com/uwsbel/avtoolbox), has [ROS 2](https://docs.ros.org/en/galactic/index.html)
+    The primary container, titled `dev`, has [ROS 2](https://docs.ros.org/en/galactic/index.html)
     pre-installed. The software stack for the AV vehicle utilizes ROS 2 and will use
     the same container that is used for development. 
 

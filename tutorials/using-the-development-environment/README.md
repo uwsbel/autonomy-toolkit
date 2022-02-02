@@ -6,13 +6,8 @@ The AV development environment has been created to expedite the process from alg
 
 - You have cloned the [avtoolbox](https://github.com/uwsbel/avtoolbox) repository
 - You have installed Docker ([resource for that](https://docs.docker.com/get-docker/))
-- You have installed docker-compose ([resource for that](https://docs.docker.com/compose/install/))
+- You have installed docker compose v2 ([resource for that](https://docs.docker.com/compose/cli-command/))
 - You have installed `avtoolbox` ([resources for that](https://projects.sbel.org/avtoolbox/setup.html))
-
-### Additional Prerequisites For Linux Users
-
-- You have installed Docker compose v2 ([resource for that](https://docs.docker.com/compose/cli-command/))
-- You can run Docker as a non-root user and have activated the Docker daemon ([resource for that](https://docs.docker.com/engine/install/linux-postinstall/))
 
 ## Design Considerations
 
@@ -28,50 +23,7 @@ For robotics, containers can be a valuable tool for creating consistent developm
 
 To help facilitate complicated scenarios, it is common practice to utilize multiple containers. Think, for instance, with multiple containers, you can have multiple independent systems that can be interchanged easily. Then, each isolated container communicates with the others in some capacity. This is what we will do here, where we have one container for the control stack, another for the simulation, and then other optional containers with other desired features: for example, `vnc` for visualizing gui apps.
 
-To implement the system we've discussed, `docker-compose` is utilized. The `docker-compose.yml` file located at the root of the `miniav` repository is displayed below.
-
-```yaml
-version: "3.9"
-services:
-  dev:
-    container_name: 'miniav-dev'
-    hostname: 'miniav-dev'
-    image: 'sbel/miniav:dev'
-    build:
-      context: ./
-      dockerfile: ./docker/dev/dev.dockerfile
-      network: host
-      args:
-        CONTEXT: docker/dev
-        REPONAME: miniav
-        ROSDISTRO: galactic
-    volumes:
-      - .:/root/miniav
-    environment:
-      - DISPLAY=novnc:0.0
-    working_dir: /root/
-    tty: true
-    networks:
-      - miniav
-  vnc:
-    container_name: 'miniav-vnc'
-    hostname: 'miniav-vnc'
-    build:
-      context: ./docker/vnc/
-      dockerfile: ./vnc.dockerfile
-      network: host
-    environment:
-      - RUN_XTERM=no
-    ports:
-      - "8080:8080"
-      - "5900:5900"
-    networks:
-      - miniav
-networks:
-  miniav:
-```
-
-As it can be seen, there are two `services`: `dev` and `vnc`. `dev` is the ROS 2 development environment we'll use to write the ROS 2 code. `vnc` is the container used to visualize gui apps. Various attributes are included in the `.yml` file, such as build context, ROS version types, and environment variables. As seen in the `volumes` section under the `dev` service, the entire `miniav` repository will be mounted inside the container. A [volume](https://docs.docker.com/storage/volumes/) is simply a folder that is shared between the host OS and the container. This means any and all code additions should be made _only_ inside of this folder; if you edit any files outside of `/root/miniav`, then the changes will not be saved when the container is exited.
+There are two `services` (or containers) that will be created: `dev` and `vnc`. `dev` is the ROS 2 development environment we'll use to write the ROS 2 code. `vnc` is the container used to visualize gui apps. Various attributes are included in the `.yml` file, such as build context, ROS version types, and environment variables. As seen in the `volumes` section under the `dev` service, the entire `miniav` repository will be mounted inside the container. A [volume](https://docs.docker.com/storage/volumes/) is simply a folder that is shared between the host OS and the container. This means any and all code additions should be made _only_ inside of this folder; if you edit any files outside of `/root/miniav`, then the changes will not be saved when the container is exited.
 
 ## Setup
 
@@ -81,7 +33,7 @@ Beyond installing the packages outlined in [prerequisites](#prerequisites), ther
 
 To use the development environment, very convenient commands are provided through the `avtoolbox` CLI. The documentation for the `dev` command can be found [here](http://projects.sbel.org/avtoolbox/usage/cli.html#dev).
 
-As described in the documentation, the `dev` command has four arguments: `build`, `up`, `down`, and `attach`. These may sound familiar if you've used `docker-compose` before because the `dev` command essentially wraps `docker-compose`. Everything that the `av dev` command does, `docker-compose` can also do; the `av dev` cli command is simply made to expedite the process of entering a container and may also provide an easy mechanism to add additional functionality in the future.
+As described in the documentation, the `dev` command has four arguments: `build`, `up`, `down`, and `attach`. These may sound familiar if you've used `docker compose` before because the `dev` command essentially wraps `docker compose`. Everything that the `av dev` command does, `docker compose` can also do; the `av dev` cli command is simply made to expedite the process of entering a container and may also provide an easy mechanism to add additional functionality in the future.
 
 ```{note}
 For any commands mentioned herein, it will be assumed they are run from within the `av` repository.
