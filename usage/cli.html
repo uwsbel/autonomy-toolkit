@@ -5,7 +5,7 @@
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="avtoolbox" href="api/avtoolbox/index.html" /><link rel="prev" title="API Reference" href="index.html" />
 
     <link rel="shortcut icon" href="../_static/cropped-SBEL-32x32.png"/><meta name="generator" content="sphinx-3.4.2, furo 2020.12.30.beta24"/>
-        <title>CLI Documentation - Autonomous Vehicle Toolbox 0.0.11 documentation</title>
+        <title>CLI Documentation - Autonomous Vehicle Toolbox 0.0.12 documentation</title>
       <link rel="stylesheet" href="../_static/styles/furo.css?digest=33d2fc4f3f180ec1ffc6524e273e21d7d58cbe49">
     <link rel="stylesheet" href="../_static/pygments.css">
     <link media="(prefers-color-scheme: dark)" rel="stylesheet" href="../_static/pygments_dark.css">
@@ -104,7 +104,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">Autonomous Vehicle Toolbox 0.0.11 documentation</div></a>
+      <a href="../index.html"><div class="brand">Autonomous Vehicle Toolbox 0.0.12 documentation</div></a>
     </div>
     <div class="header-right">
       <label class="toc-overlay-icon toc-header-icon" for="__toc">
@@ -206,15 +206,14 @@
 <h3><code class="docutils literal notranslate"><span class="pre">dev</span></code><a class="headerlink" href="#dev" title="Permalink to this headline">¶</a></h3>
 <p>Initializer method for the <code class="docutils literal notranslate"><span class="pre">dev</span></code> entrypoint</p>
 <p>This entrypoint provides easy access to the AV development environment. The dev environment
-leverages <a class="reference external" href="https://docker.com">Docker</a> to allow interoperability across operating systems. <code class="docutils literal notranslate"><span class="pre">docker-compose</span></code>
+leverages <a class="reference external" href="https://docker.com">Docker</a> to allow interoperability across operating systems. <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span></code>
 is used to build, spin up, attach, and tear down the containers. The <code class="docutils literal notranslate"><span class="pre">dev</span></code> entrypoint will basically wrap
-the <code class="docutils literal notranslate"><span class="pre">docker-compose</span></code> commands to make it easier to customize the workflow to work best for AV.</p>
-<p>The primary container, titled <code class="docutils literal notranslate"><span class="pre">dev</span></code> in the <code class="docutils literal notranslate"><span class="pre">docker-compose.yml</span></code> file in the
-<a class="reference external" href="https://github.com/uwsbel/avtoolbox"><code class="docutils literal notranslate"><span class="pre">av</span></code> github</a>, has <a class="reference external" href="https://docs.ros.org/en/galactic/index.html">ROS 2</a>
+the <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span></code> commands to make it easier to customize the workflow to work best for AV.</p>
+<p>The primary container, titled <code class="docutils literal notranslate"><span class="pre">dev</span></code>, has <a class="reference external" href="https://docs.ros.org/en/galactic/index.html">ROS 2</a>
 pre-installed. The software stack for the AV vehicle utilizes ROS 2 and will use
 the same container that is used for development.</p>
 <p>Additional containers may be provided to allow for GUI windows or run simulations.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">usage</span><span class="p">:</span> <span class="n">av</span> <span class="n">dev</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">b</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">u</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">d</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">a</span><span class="p">]</span> <span class="p">{</span><span class="n">env</span><span class="p">}</span> <span class="o">...</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">usage</span><span class="p">:</span> <span class="n">av</span> <span class="n">dev</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">b</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">u</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">d</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">a</span><span class="p">]</span>
 </pre></div>
 </div>
 <section id="Named Arguments">
@@ -237,65 +236,6 @@ the same container that is used for development.</p>
 <p>Default: False</p>
 </dd>
 </dl>
-</section>
-<section id="dev-env">
-<h4><code class="docutils literal notranslate"><span class="pre">dev</span> <span class="pre">env</span></code><a class="headerlink" href="#dev-env" title="Permalink to this headline">¶</a></h4>
-<p>Entrypoint for the <code class="docutils literal notranslate"><span class="pre">dev</span> <span class="pre">env</span></code> command.</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">env</span></code> command essentially wraps <code class="docutils literal notranslate"><span class="pre">docker-compose</span></code> to automatically build, spin-up, attach, and
-tear down the AV development environment.</p>
-<p>The command is completely redundant; it simply combines all the building, starting, attaching, and destroying
-into a single command. It allows users to quickly start and attach to the AV development environment based
-on the docker-compose file.</p>
-<p>There are four possible options that can be used using the <code class="docutils literal notranslate"><span class="pre">env</span></code> subcommand:
-<code class="docutils literal notranslate"><span class="pre">build</span></code>, <code class="docutils literal notranslate"><span class="pre">up</span></code>, <code class="docutils literal notranslate"><span class="pre">down</span></code>, and <code class="docutils literal notranslate"><span class="pre">attach</span></code>. For example, if you’d like to build the container, you’d run
-the following command:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>av dev env --build
-</pre></div>
-</div>
-<p>If you’d like to build, start the container, then attach to it, run the following command:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>av dev env --build --up --attach
-<span class="c1"># OR</span>
-av dev env -b -u -a
-<span class="c1"># OR</span>
-av dev env -bua
-</pre></div>
-</div>
-<p>If no arguments are passed, this is equivalent to the following command:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>av dev env --up --attach
-</pre></div>
-</div>
-<p>If desired, pass <code class="docutils literal notranslate"><span class="pre">--down</span></code> to stop the container. Further, if the container exists and changes are
-made to the repository, the container will <em>not</em> be built automatically. To do that, add the
-<code class="docutils literal notranslate"><span class="pre">--build</span></code> argument.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p><code class="docutils literal notranslate"><span class="pre">av</span> <span class="pre">dev</span></code> is an alias for <code class="docutils literal notranslate"><span class="pre">av</span> <span class="pre">dev</span> <span class="pre">env</span></code>. <code class="docutils literal notranslate"><span class="pre">env</span></code> can therefore be omitted for brevity.</p>
-</div>
-
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">usage</span><span class="p">:</span> <span class="n">av</span> <span class="n">dev</span> <span class="n">env</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">b</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">u</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">d</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">a</span><span class="p">]</span>
-</pre></div>
-</div>
-<section id="Named Arguments">
-<h5>Named Arguments<a class="headerlink" href="#Named Arguments" title="Permalink to this headline">¶</a></h5>
-<dl class="option-list">
-<dt><kbd>-b, --build</kbd></dt>
-<dd><p>Build the env.</p>
-<p>Default: False</p>
-</dd>
-<dt><kbd>-u, --up</kbd></dt>
-<dd><p>Spin up the env.</p>
-<p>Default: False</p>
-</dd>
-<dt><kbd>-d, --down</kbd></dt>
-<dd><p>Tear down the env.</p>
-<p>Default: False</p>
-</dd>
-<dt><kbd>-a, --attach</kbd></dt>
-<dd><p>Attach to the env.</p>
-<p>Default: False</p>
-</dd>
-</dl>
-</section>
 </section>
 </section>
 <section id="db">
@@ -504,10 +444,6 @@ av -vv db <span class="nb">read</span> configuration.yaml
 <li><a class="reference internal" href="#sub-commands">Sub-commands</a><ul>
 <li><a class="reference internal" href="#dev"><code class="docutils literal notranslate"><span class="pre">dev</span></code></a><ul>
 <li><a class="reference internal" href="#Named Arguments">Named Arguments</a></li>
-<li><a class="reference internal" href="#dev-env"><code class="docutils literal notranslate"><span class="pre">dev</span> <span class="pre">env</span></code></a><ul>
-<li><a class="reference internal" href="#Named Arguments">Named Arguments</a></li>
-</ul>
-</li>
 </ul>
 </li>
 <li><a class="reference internal" href="#db"><code class="docutils literal notranslate"><span class="pre">db</span></code></a><ul>

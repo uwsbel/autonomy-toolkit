@@ -44,22 +44,6 @@ nodescription:
 ---
 ```
 
-#### `dev env`
-
-```{autosimple} avtoolbox.dev._run_env
-```
-
-```{argparse}
----
-module: avtoolbox._av_base
-func: _init
-prog: av
-path: dev env 
-nosubcommands:
-nodescription:
----
-```
-
 ### `db`
 
 ```{autosimple} avtoolbox.db._init
