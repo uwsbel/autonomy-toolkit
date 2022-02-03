@@ -35,7 +35,7 @@ services:
         VNC_PASSWORD: ${VNC_PASSWORD}
     environment:
       - RUN_XTERM=no
-      - RUN_FLUXBOX=no
+      - RUN_FLUXBOX=yes
     ports:
       - "${NOVNC_PORT}:8080"
       - "${VNC_PORT}:5900"
