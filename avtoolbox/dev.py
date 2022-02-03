@@ -156,8 +156,8 @@ def _run_env(args):
 
     # user
     username = get_attr("user", "name", default=os.getlogin())
-    uid = get_attr("user", "uid", default=os.getuid())
-    gid = get_attr("user", "gid", default=os.getgid())
+    # uid = get_attr("user", "uid", default=os.getuid())
+    # gid = get_attr("user", "gid", default=os.getgid())
 
     # dev
     dev_dockerfile, dev_dockerfile_path = read_data("docker", "dev", "dev.dockerfile")
@@ -190,7 +190,6 @@ def _run_env(args):
         "DEV.DOCKERFILE": dev_dockerfile_path,
         "VNC.DOCKERFILE": vnc_dockerfile_path,
         "USERNAME": username,
-        "USER": f"{uid}:{gid}",
         "SCRIPTS": scripts,
         "APT-DEPENDENCIES": apt_dependencies,
         "PIP-REQUIREMENTS": pip_requirements,
