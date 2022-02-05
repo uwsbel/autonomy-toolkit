@@ -1,11 +1,11 @@
-ARG ROSDISTRO
+ARG ROS_DISTRO
 
-FROM ros:${ROSDISTRO}
+FROM ros:${ROS_DISTRO}
 
 LABEL maintainer="Simulation Based Engineering Laboratory <negrut@wisc.edu>"
 
 ARG PROJECT
-ARG ROSDISTRO
+ARG ROS_DISTRO
 ARG DEBIAN_FRONTEND=noninteractive
 
 # Various arguments and user settings
@@ -19,23 +19,23 @@ ARG USERSHELLPROFILE="$USERHOME/.${USERSHELL}rc"
 RUN apt-get update && apt-get upgrade -y
 
 # Install dependencies
-ARG DEPENDENCIES
-RUN apt-get install --no-install-recommends -y $DEPENDENCIES
+ARG APT_DEPENDENCIES
+RUN apt-get install --no-install-recommends -y $APT_DEPENDENCIES
 
 # Install needed ros packages
-ARG WORKSPACE
-COPY $WORKSPACE/src /tmp/workspace/src/
+ARG ROS_WORKSPACE
+COPY $ROS_WORKSPACE/src /tmp/workspace/src/
 RUN cd /tmp/workspace && rosdep update && rosdep install --from-paths src --ignore-src -r -y
 RUN rm -rf /tmp/workspace
 
 # Install some python packages
-ARG REQUIREMENTS
-RUN pip install $REQUIREMENTS
+ARG PIP_REQUIREMENTS
+RUN pip install $PIP_REQUIREMENTS
 
 # Run any user scripts
 # Should be used to install additional packages
-ARG SCRIPTS
-COPY $SCRIPTS /tmp/scripts/
+ARG SCRIPTS_DIR
+COPY $SCRIPTS_DIR /tmp/scripts/
 RUN for f in /tmp/scripts/*; do [ -x $f ] && [ -f $f ] && $f || continue; done
 RUN rm -rf /tmp/scripts
 
@@ -49,9 +49,9 @@ RUN adduser --shell /bin/bash --disabled-password --gecos "" $USERNAME && \
 
 # ROS Setup
 RUN sed -i 's|source|#source|g' /ros_entrypoint.sh
-RUN echo ". /opt/ros/$ROSDISTRO/setup.sh" >> $USERSHELLPROFILE
+RUN echo ". /opt/ros/$ROS_DISTRO/setup.sh" >> $USERSHELLPROFILE
 RUN echo "[ -f $USERHOME/$PROJECT/workspace/install/setup.$USERSHELL ] && . $USERHOME/$PROJECT/workspace/install/setup.$USERSHELL" >> $USERSHELLPROFILE
-RUN /bin/$USERSHELL -c "source /opt/ros/$ROSDISTRO/setup.$USERSHELL"
+RUN /bin/$USERSHELL -c "source /opt/ros/$ROS_DISTRO/setup.$USERSHELL"
 
 # Default bash config
 RUN [ "$USERSHELL" = "bash" ] && echo 'export TERM=xterm-256color' >> $USERSHELLPROFILE && echo 'export PS1="\[\033[38;5;40m\]\h\[$(tput sgr0)\]:\[$(tput sgr0)\]\[\033[38;5;39m\]\w\[$(tput sgr0)\]\\$ \[$(tput sgr0)\]"' >> $USERSHELLPROFILE

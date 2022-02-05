@@ -1,0 +1,45 @@
+version: "3.9"
+services:
+  dev:
+    image: avtoolbox/{project}:dev
+    hostname: {project}-dev
+    container_name: {project}-dev
+    build:
+      context: {str(root)}
+      dockerfile: {os.path.realpath(os.path.join(__file__, "..", "docker", "dev", "dev.dockerfile"))}
+      network: "host"
+      args:
+        PROJECT: {project}
+        USERNAME: {username}
+        SCRIPTS_DIR: {os.path.join("docker", "dev", "scripts")}
+        ROS_DISTRO: "galactic"
+        ROS_WORKSPACE: "workspace"
+        APT_DEPENDENCIES: []
+        PIP_REQUIREMENTS: []
+    environment:
+      - DISPLAY=vnc:0.0
+    tty: true
+    volumes: 
+      - {root}:/home/{username}/{project}
+    networks:
+      - {project}
+  vnc:
+    image: avtoolbox/{project}:vnc
+    hostname: {project}-vnc
+    container_name: {project}-vnc
+    build:
+      context: {str(root)}
+      dockerfile: {os.path.realpath(os.path.join(__file__, "..", "docker", "vnc", "vnc.dockerfile"))}
+      network: "host"
+      args:
+        VNC_PASSWORD: {project}
+    environment:
+      - RUN_XTERM=no
+      - RUN_FLUXBOX=yes
+    ports:
+      - "8080:8080"
+      - "5900:5900"
+    networks:
+      - {project}
+networks:
+  {project}:

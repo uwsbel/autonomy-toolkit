@@ -12,18 +12,25 @@ from avtoolbox.utils.files import file_exists, get_file_type
 import yaml
 
 class YAMLParser:
-    def __init__(self, filename):
-        # Do some checks first
-        self._filename = filename
-        if not file_exists(filename):
-            self._data = {}
-            return
+    def __init__(self, filename=None, text=None):
+        if filename is not None:
+            # Do some checks first
+            self._filename = filename
+            if not file_exists(filename):
+                self._data = {}
+                return
 
-        # Load in the file
-        LOGGER.info(f"Reading {filename} as yaml...")
-        with open(filename, "r") as f:
-            self._data = yaml.safe_load(f)
-        LOGGER.debug(f"Read {filename} as yaml.")
+            # Load in the file
+            LOGGER.info(f"Reading {filename} as yaml...")
+
+            with open(filename, "r") as f:
+                text = f.read()
+
+            LOGGER.debug(f"Read {filename} as yaml.")
+        elif text is None:
+            raise RuntimeError(f"filename and text are both set to None")
+
+        self._data = yaml.safe_load(text)
 
     def contains(self, *args) -> bool:
         """
@@ -109,3 +116,14 @@ class YAMLParser:
             raise AttributeError(f"Default is not set and the nested attribute was not found: {args}.")
 
         return temp 
+
+    def get_data(self) -> dict:
+        """Get the dictionary that stores the yaml data
+
+        Returns:
+            dict: the yaml data
+        """
+        return self._data
+
+    def __str__(self):
+        return str(self._data)
