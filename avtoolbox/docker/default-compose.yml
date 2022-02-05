@@ -14,8 +14,8 @@ services:
         SCRIPTS_DIR: {os.path.join("docker", "dev", "scripts")}
         ROS_DISTRO: "galactic"
         ROS_WORKSPACE: "workspace"
-        APT_DEPENDENCIES: []
-        PIP_REQUIREMENTS: []
+        APT_DEPENDENCIES: ""
+        PIP_REQUIREMENTS: ""
     environment:
       - DISPLAY=vnc:0.0
     tty: true
