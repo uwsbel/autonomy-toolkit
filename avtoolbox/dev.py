@@ -6,10 +6,10 @@ CLI command that handles working with the AV development environment
 from avtoolbox.utils.logger import LOGGER
 from avtoolbox.utils.yaml_parser import YAMLParser
 from avtoolbox.utils.files import search_upwards_for_file
-from avtoolbox.utils.docker import get_docker_client_binary_path, run_docker_cmd, compose_is_installed, DockerComposeClient
+from avtoolbox.utils.docker import get_docker_client_binary_path, run_docker_cmd, compose_is_installed, DockerComposeClient, norm_ports, find_available_port
 
 # Other imports
-import yaml, os, argparse, json, subprocess
+import yaml, os, socket
 
 def _check_avtoolbox(avtoolbox_yml, *args, default=None):
     if not avtoolbox_yml.contains(*args):
@@ -113,13 +113,6 @@ def _run_env(args):
         LOGGER.fatal(f"'project' is set to '{project}' which is not allowed since it has capital letters. Please choose a name with only lowercase.")
         return
 
-    # Get the services we'll use
-    if args.services is None: args.services = default_services 
-    if 'dev' not in args.services and 'all' not in args.services and args.attach:
-        LOGGER.fatal(f"'--services' requires 'dev' (or 'all') when attach is set to true.")
-        return
-    args.services = args.services if 'all' not in args.services else []
-
     # Load in the default values
     default_compose_yml = os.path.realpath(os.path.join(__file__, "..", "docker", "default-compose.yml"))
     with open(default_compose_yml, "r") as f:
@@ -137,12 +130,19 @@ def _run_env(args):
         args.up = True
         args.attach = True
 
+    # Get the services we'll use
+    if args.services is None: args.services = default_services 
+    if 'dev' not in args.services and 'all' not in args.services and args.attach:
+        LOGGER.fatal(f"'--services' requires 'dev' (or 'all') when attach is set to true.")
+        return
+    args.services = args.services if 'all' not in args.services else []
+
     # Complete the arguments
     if not args.dry_run:
 
         try:
-            yaml_file = open(root / "docker-compose.yml", "w")
-            yaml.dump(docker_compose, yaml_file)
+            with open(root / "docker-compose.yml", "w") as yaml_file:
+                yaml.dump(docker_compose, yaml_file)
 
             client = DockerComposeClient(project=project, services=args.services, compose_file=yaml_file.name)
 
@@ -159,6 +159,26 @@ def _run_env(args):
             if args.up:
                 LOGGER.info(f"Spinning up...")
 
+                # For each service that we're spinning up, check some arguments
+                # For instance, if two ports match between different containers (common if you 
+                # have different projects which is the avtoolbox framework and export the same ports),
+                # you will run into issues when they're both running
+                config = YAMLParser(text=client.run("config", stdout=-1))
+                for service_name, service in config.get_data()['services'].items():
+                    # Check ports
+                    for ports in service.get('ports', []):
+                        port = find_available_port(ports['published'])
+                        if port is None:
+                            LOGGER.fatal(f"PORT CONFLICT: Could not find an available port within range of '{ports['published']}' to use for the '{service_name}' service.")
+                            return
+                        elif port != ports['published']:
+                            LOGGER.warn(f"PORT CONFLICT: Adjusted port mapping for '{service_name}' service from '{ports['published']}' to '{port}'.")
+                            ports['published'] = port 
+
+                # Rewrite with the parsed config
+                with open(root / "docker-compose.yml", "w") as yaml_file:
+                    yaml.dump(config.get_data(), yaml_file)
+
                 client.run("up", "-d")
 
             if args.attach:
@@ -171,7 +191,6 @@ def _run_env(args):
 
                 client.run("exec", "dev", exec_cmd=shellcmd)
         finally:
-            yaml_file.close()
             if not args.keep_yml:
                 os.unlink(yaml_file.name)
 

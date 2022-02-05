@@ -22,9 +22,9 @@ class DockerComposeClient:
     def run(self, cmd,  *args, **kwargs):
         if cmd == "exec":
             exec_cmd = kwargs.pop("exec_cmd")
-            run_compose_cmd(*self._pre, cmd, *args, exec_cmd, *self._post, **kwargs)
+            return run_compose_cmd(*self._pre, cmd, *args, exec_cmd, *self._post, **kwargs)
         else:
-            run_compose_cmd(*self._pre, cmd, *args, *self._services, *self._post, **kwargs)
+            return run_compose_cmd(*self._pre, cmd, *args, *self._services, *self._post, **kwargs)
 
 def get_docker_client_binary_path() -> Optional[Path]:
     """Return the path of the docker client binary file.
@@ -74,3 +74,50 @@ def _run(*args, **kwargs):
     completed_process = subprocess.run(*args, **kwargs)
     return post_process_stream(completed_process.stdout)
 
+# Ports
+# From https://github.com/containers/podman-compose/blob/devel/podman_compose.py
+def port_dict_to_str(port_desc):
+    # NOTE: `mode: host|ingress` is ignored
+    cnt_port = port_desc.get("target", None)
+    published = port_desc.get("published", None) or ""
+    host_ip = port_desc.get("host_ip", None)
+    protocol = port_desc.get("protocol", None) or "tcp"
+    if not cnt_port:
+        raise ValueError("target container port must be specified")
+    if host_ip:
+        ret = f"{host_ip}:{published}:{cnt_port}"
+    else:
+        ret = f"{published}:{cnt_port}" if published else f"{cnt_port}"
+    if protocol!="tcp":
+        ret+= f"/{protocol}"
+    return ret
+
+def norm_ports(ports_in):
+    if not ports_in:
+        ports_in = []
+    if isinstance(ports_in, str):
+        ports_in = [ports_in]
+    ports_out = []
+    for port in ports_in:
+        if isinstance(port, dict):
+            port = port_dict_to_str(port)
+        elif not isinstance(port, str):
+            raise TypeError("port should be either string or dict")
+        ports_out.append(port)
+    return ports_out
+
+def find_available_port(port, trys=5):
+    import socket
+
+    orig_port = port
+    for _ in range(5):
+        # Check if port is in use
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+            in_use = s.connect_ex(('localhost', port)) == 0
+
+        if in_use:
+            LOGGER.info(f"Port '{port}' already in use. Trying with '{port+1}'.")
+            port += 1
+        else:
+            break
+    return port if not in_use else None
