@@ -5,11 +5,11 @@ CLI command that handles working with the AV development environment
 # Imports from av
 from avtoolbox.utils.logger import LOGGER
 from avtoolbox.utils.yaml_parser import YAMLParser
-from avtoolbox.utils.files import search_upwards_for_file, read_text
+from avtoolbox.utils.files import search_upwards_for_file
+from avtoolbox.utils.docker import get_docker_client_binary_path, run_docker_cmd, compose_is_installed, DockerComposeClient
 
 # Other imports
-from python_on_whales import docker, DockerClient, exceptions as docker_exceptions, get_docker_client_binary_path
-import yaml, os, argparse
+import yaml, os, argparse, json, subprocess
 
 def _check_avtoolbox(avtoolbox_yml, *args, default=None):
     if not avtoolbox_yml.contains(*args):
@@ -41,7 +41,7 @@ def _run_env(args):
     configurations for the development environment. It allows users to quickly start and attach to the AV development environment
     based on a shared docker-compose file and any Dockerfile build configurations. 
 
-    There are four possible options that can be used using the `idev` subcommand:
+    There are four possible options that can be used using the `dev` subcommand:
     `build`, `up`, `down`, and `attach`. For example, if you'd like to build the container, you'd run 
     the following command:
 
@@ -72,8 +72,8 @@ def _run_env(args):
     LOGGER.info("Running 'dev' entrypoint...")
 
     # Validate cli args
-    if 'dev' not in args.services and args.attach:
-        LOGGER.fatal(f"'--services' requires 'dev' when attach is set to true. '{args.services} does not contain 'dev'.")
+    if 'dev' not in args.services and 'all' not in args.services and args.attach:
+        LOGGER.fatal(f"'--services' requires 'dev' (or 'all') when attach is set to true.")
         return
     args.services = args.services if 'all' not in args.services else []
 
@@ -84,7 +84,7 @@ def _run_env(args):
 
     # Check docker compose is installed
     LOGGER.debug("Checking if 'docker compose' (V2) is installed...")
-    if not docker.compose.is_installed():
+    if not compose_is_installed():
         LOGGER.fatal("The command 'docker compose' is not installed. See http://projects.sbel.org/avtoolbox/tutorials/using_the_development_environment.html for more information.")
         return
     LOGGER.debug("'docker compose' (V2) is installed.")
@@ -137,41 +137,37 @@ def _run_env(args):
 
     # Complete the arguments
     if not args.dry_run:
-        client = DockerClient(compose_project_name=project)
 
         try:
             yaml_file = open(root / "docker-compose.yml", "w")
             yaml.dump(docker_compose, yaml_file)
 
+            client = DockerComposeClient(project=project, services=args.services, compose_file=yaml_file.name)
+
             if args.down:
                 LOGGER.info(f"Tearing down...")
-                client.compose.down()
+
+                client.run("down")
 
             if args.build:
                 LOGGER.info(f"Building...")
-                client.compose.build(services=args.services)
+
+                client.run("build")
 
             if args.up:
                 LOGGER.info(f"Spinning up...")
 
-                client.compose.up(services=args.services, detach=True)
+                client.run("up", "-d")
 
             if args.attach:
                 LOGGER.info(f"Attaching...")
 
                 # Get the shell we'll use
-                dev_name = client.compose.config(return_json=True)["services"]["dev"]["container_name"]
-                usershell = [e for e in client.container.inspect(dev_name).config.env if "USERSHELL" in e][0]
-                shellcmd = usershell.split("=")[-1]
+                dev_name = docker_compose["services"]["dev"]["container_name"]
+                env = run_docker_cmd("exec", dev_name, "env", stdout=-1)
+                shellcmd = env.split("USERSHELLPATH=")[1].split('\n')[0]
 
-                # TODO: python_on_whales doesn't support exec currently
-                os.system(f"{get_docker_client_binary_path()} compose exec dev {shellcmd}") 
-        except docker_exceptions.DockerException as e:
-            msg = str(e)
-            if 'Error response from daemon:' in msg:
-                msg = msg.split('Error response from daemon:')[1][:-3]
-
-            LOGGER.error(f"Docker command raised exception: {msg}")
+                client.run("exec", "dev", exec_cmd=shellcmd)
         finally:
             yaml_file.close()
             if not args.keep_yml:
@@ -199,6 +195,6 @@ def _init(subparser):
     subparser.add_argument("-d", "--down", action="store_true", help="Tear down the env.", default=False)
     subparser.add_argument("-a", "--attach", action="store_true", help="Attach to the env.", default=False)
     subparser.add_argument("--keep-yml", action="store_true", help="Don't delete the generated docker-compose file.", default=False)
-    subparser.add_argument("--services", nargs='+', help="The services to use. Defaults to 'dev' and 'vnc'. 'dev' is required. If 'all' is passed, all the services are used.", default=["dev", "vnc"])
+    subparser.add_argument("--services", nargs='+', help="The services to use. Defaults to 'all' or whatever 'default_services' is set to in .avtoolbox.yml. 'dev' is required for the 'attach' argument. If 'all' is passed, all the services are used.", default=["dev", "vnc"])
     subparser.set_defaults(cmd=_run_env)
 

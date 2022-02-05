@@ -28,7 +28,7 @@ services:
     hostname: {project}-vnc
     container_name: {project}-vnc
     build:
-      context: {str(root)}
+      context: {os.path.realpath(os.path.join(__file__, "..", "docker", "vnc"))}
       dockerfile: {os.path.realpath(os.path.join(__file__, "..", "docker", "vnc", "vnc.dockerfile"))}
       network: "host"
       args:
