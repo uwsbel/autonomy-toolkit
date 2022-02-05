@@ -22,7 +22,7 @@ services:
     volumes: 
       - {root}:/home/{username}/{project}
     networks:
-      - {project}
+      {project}:
   vnc:
     image: avtoolbox/{project}:vnc
     hostname: {project}-vnc
@@ -40,6 +40,6 @@ services:
       - "8080:8080"
       - "5900:5900"
     networks:
-      - {project}
+      {project}:
 networks:
   {project}:

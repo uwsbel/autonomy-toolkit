@@ -125,7 +125,9 @@ def _run_env(args):
 
     # The docker containers are generated from a docker-compose.yml file
     # We'll write this ourselves from the .avtoolbox file and the defaults
-    docker_compose = _merge_dictionaries({"services": services}, default_configs)
+    temp = dict(**avtoolbox_yml.get_data())
+    temp.pop("project", None); temp.pop("username", None)
+    docker_compose = _merge_dictionaries(temp, default_configs)
 
     # If no command is passed, start up the container and attach to it
     cmds = [args.build, args.up, args.down, args.attach] 
@@ -135,29 +137,31 @@ def _run_env(args):
 
     # Complete the arguments
     if not args.dry_run:
+        client = DockerClient(compose_project_name=project)
+
         try:
             yaml_file = open(root / "docker-compose.yml", "w")
             yaml.dump(docker_compose, yaml_file)
 
             if args.down:
                 LOGGER.info(f"Tearing down...")
-                docker.compose.down()
+                client.compose.down()
 
             if args.build:
                 LOGGER.info(f"Building...")
-                docker.compose.build(services=args.services)
+                client.compose.build(services=args.services)
 
             if args.up:
                 LOGGER.info(f"Spinning up...")
 
-                docker.compose.up(services=args.services, detach=True)
+                client.compose.up(services=args.services, detach=True)
 
             if args.attach:
                 LOGGER.info(f"Attaching...")
 
                 # Get the shell we'll use
-                dev_name = docker.compose.config(return_json=True)["services"]["dev"]["container_name"]
-                usershell = [e for e in docker.container.inspect(dev_name).config.env if "USERSHELL" in e][0]
+                dev_name = client.compose.config(return_json=True)["services"]["dev"]["container_name"]
+                usershell = [e for e in client.container.inspect(dev_name).config.env if "USERSHELL" in e][0]
                 shellcmd = usershell.split("=")[-1]
 
                 # TODO: python_on_whales doesn't support exec currently
