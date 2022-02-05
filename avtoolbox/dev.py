@@ -71,12 +71,6 @@ def _run_env(args):
     """
     LOGGER.info("Running 'dev' entrypoint...")
 
-    # Validate cli args
-    if 'dev' not in args.services and 'all' not in args.services and args.attach:
-        LOGGER.fatal(f"'--services' requires 'dev' (or 'all') when attach is set to true.")
-        return
-    args.services = args.services if 'all' not in args.services else []
-
     # Check docker is installed
     if get_docker_client_binary_path() is None:
         LOGGER.fatal(f"Docker was not found to be installed. Cannot continue.")
@@ -107,6 +101,7 @@ def _run_env(args):
     project = _check_avtoolbox(avtoolbox_yml, "project")
     if project is None: return
     username = _check_avtoolbox(avtoolbox_yml, "username", default=os.getlogin())
+    default_services = _check_avtoolbox(avtoolbox_yml, "default_services", default=["dev"])
     services = _check_avtoolbox(avtoolbox_yml, "services")
     if services is None: return
     dev = _check_avtoolbox(avtoolbox_yml, "services", "dev")
@@ -118,6 +113,13 @@ def _run_env(args):
         LOGGER.fatal(f"'project' is set to '{project}' which is not allowed since it has capital letters. Please choose a name with only lowercase.")
         return
 
+    # Get the services we'll use
+    if args.services is None: args.services = default_services 
+    if 'dev' not in args.services and 'all' not in args.services and args.attach:
+        LOGGER.fatal(f"'--services' requires 'dev' (or 'all') when attach is set to true.")
+        return
+    args.services = args.services if 'all' not in args.services else []
+
     # Load in the default values
     default_compose_yml = os.path.realpath(os.path.join(__file__, "..", "docker", "default-compose.yml"))
     with open(default_compose_yml, "r") as f:
@@ -126,7 +128,7 @@ def _run_env(args):
     # The docker containers are generated from a docker-compose.yml file
     # We'll write this ourselves from the .avtoolbox file and the defaults
     temp = dict(**avtoolbox_yml.get_data())
-    temp.pop("project", None); temp.pop("username", None)
+    temp.pop("project", None); temp.pop("username", None); temp.pop("default_services", None)
     docker_compose = _merge_dictionaries(temp, default_configs)
 
     # If no command is passed, start up the container and attach to it
@@ -195,6 +197,6 @@ def _init(subparser):
     subparser.add_argument("-d", "--down", action="store_true", help="Tear down the env.", default=False)
     subparser.add_argument("-a", "--attach", action="store_true", help="Attach to the env.", default=False)
     subparser.add_argument("--keep-yml", action="store_true", help="Don't delete the generated docker-compose file.", default=False)
-    subparser.add_argument("--services", nargs='+', help="The services to use. Defaults to 'all' or whatever 'default_services' is set to in .avtoolbox.yml. 'dev' is required for the 'attach' argument. If 'all' is passed, all the services are used.", default=["dev", "vnc"])
+    subparser.add_argument("--services", nargs='+', help="The services to use. Defaults to 'all' or whatever 'default_services' is set to in .avtoolbox.yml. 'dev' or 'all' is required for the 'attach' argument. If 'all' is passed, all the services are used.", default=None)
     subparser.set_defaults(cmd=_run_env)
 

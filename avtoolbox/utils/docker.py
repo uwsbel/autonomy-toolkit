@@ -22,7 +22,7 @@ class DockerComposeClient:
     def run(self, cmd,  *args, **kwargs):
         if cmd == "exec":
             exec_cmd = kwargs.pop("exec_cmd")
-            run_compose_cmd(*self._pre, cmd, *args, *self._services, exec_cmd, *self._post, **kwargs)
+            run_compose_cmd(*self._pre, cmd, *args, exec_cmd, *self._post, **kwargs)
         else:
             run_compose_cmd(*self._pre, cmd, *args, *self._services, *self._post, **kwargs)
 
