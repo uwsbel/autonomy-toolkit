@@ -154,7 +154,8 @@ def _run_env(args):
             if args.build:
                 LOGGER.info(f"Building...")
 
-                client.run("build")
+                no_cache = "--no-cache" if args.no_cache else ""
+                client.run("build", no_cache)
 
             if args.up:
                 LOGGER.info(f"Spinning up...")
@@ -215,6 +216,7 @@ def _init(subparser):
     subparser.add_argument("-u", "--up", action="store_true", help="Spin up the env.", default=False)
     subparser.add_argument("-d", "--down", action="store_true", help="Tear down the env.", default=False)
     subparser.add_argument("-a", "--attach", action="store_true", help="Attach to the env.", default=False)
+    subparser.add_argument("--no-cache", action="store_true", help="Build with no cache. Only used if --build is set to True.", default=False)
     subparser.add_argument("--keep-yml", action="store_true", help="Don't delete the generated docker-compose file.", default=False)
     subparser.add_argument("--services", nargs='+', help="The services to use. Defaults to 'all' or whatever 'default_services' is set to in .avtoolbox.yml. 'dev' or 'all' is required for the 'attach' argument. If 'all' is passed, all the services are used.", default=None)
     subparser.set_defaults(cmd=_run_env)

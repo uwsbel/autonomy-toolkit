@@ -27,8 +27,8 @@ def _init():
 
     # Initialize the subparsers
     subparsers = parser.add_subparsers()
-    db._init(subparsers.add_parser("db", description="Interact with the niAV database"))  # noqa
-    dev._init(subparsers.add_parser("dev", description="Work with the niAV development environment"))
+    db._init(subparsers.add_parser("db", description="Interact with the AV database"))  # noqa
+    dev._init(subparsers.add_parser("dev", description="Work with the AV development environment"))
 
     return parser
 

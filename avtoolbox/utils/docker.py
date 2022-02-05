@@ -110,7 +110,7 @@ def find_available_port(port, trys=5):
     import socket
 
     orig_port = port
-    for _ in range(5):
+    for _ in range(trys):
         # Check if port is in use
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             in_use = s.connect_ex(('localhost', port)) == 0
