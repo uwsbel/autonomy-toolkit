@@ -47,7 +47,7 @@ def compose_is_installed() -> bool:
     Returns:
         bool: whether docker compose (v2) is installed.
     """
-    help_output = run_docker_cmd("compose", "--help", stdout=subprocess.PIPE)
+    help_output, _ = run_docker_cmd("compose", "--help", stdout=subprocess.PIPE)
     return "compose" in help_output
 
 def run_compose_cmd(*args, **kwargs):
@@ -73,7 +73,7 @@ def _run(*args, **kwargs):
 
     args = [arg for arg in args if arg]
     completed_process = subprocess.run(args, **kwargs)
-    return post_process_stream(completed_process.stdout)
+    return post_process_stream(completed_process.stdout), post_process_stream(completed_process.stderr)
 
 # Ports
 # From https://github.com/containers/podman-compose/blob/devel/podman_compose.py

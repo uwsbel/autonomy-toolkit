@@ -97,12 +97,14 @@ def _run_env(args):
     LOGGER.debug("Parsering '.avtoolbox.yml' file.")
     avtoolbox_yml = YAMLParser(conf)
 
-    # Read the avtoolbox yml fil
+    # Read the avtoolbox yml file
     project = _check_avtoolbox(avtoolbox_yml, "project")
     if project is None: return
     username = _check_avtoolbox(avtoolbox_yml, "username", default=project)
-    uid_gid = str(os.getuid())+":"+str(os.getgid()) if os.name=='posix' else "0:0"
-    _check_avtoolbox(avtoolbox_yml,"uid_gid",default=str(os.getuid())+":"+str(os.getgid()))
+    uid_gid = f"{os.getuid()}:{os.getgid()}" if os.name == "posix" else "0:0"
+    _check_avtoolbox(avtoolbox_yml, "uid_gid", default=uid_gid)
+    uid = _check_avtoolbox(avtoolbox_yml, "uid", default=os.getuid())
+    gid = _check_avtoolbox(avtoolbox_yml, "gid", default=os.getgid())
     default_services = _check_avtoolbox(avtoolbox_yml, "default_services", default=["dev"])
     services = _check_avtoolbox(avtoolbox_yml, "services")
     if services is None: return
@@ -123,7 +125,7 @@ def _run_env(args):
     # The docker containers are generated from a docker-compose.yml file
     # We'll write this ourselves from the .avtoolbox file and the defaults
     temp = dict(**avtoolbox_yml.get_data())
-    temp.pop("project", None); temp.pop("username", None); temp.pop("default_services", None)
+    temp = { key: temp[key] for key in ['version', 'services', 'networks'] if key in temp }
     docker_compose = _merge_dictionaries(temp, default_configs)
 
     # If no command is passed, start up the container and attach to it
@@ -166,7 +168,7 @@ def _run_env(args):
                 # For instance, if two ports match between different containers (common if you 
                 # have different projects which is the avtoolbox framework and export the same ports),
                 # you will run into issues when they're both running
-                config = YAMLParser(text=client.run("config", stdout=-1))
+                config = YAMLParser(text=client.run("config", stdout=-1)[0])
                 for service_name, service in config.get_data()['services'].items():
                     # Check ports
                     for ports in service.get('ports', []):
@@ -189,7 +191,14 @@ def _run_env(args):
 
                 # Get the shell we'll use
                 dev_name = docker_compose["services"]["dev"]["container_name"]
-                env = run_docker_cmd("exec", dev_name, "env", stdout=-1)
+                env, err = run_docker_cmd("exec", dev_name, "env", stdout=-1, stderr=-1)
+                if err:
+                    if "Error: No such container: " in err:
+                        LOGGER.fatal(f"Please rerun the command with '--up'. The container cannot be attached to since it hasn't been created.")
+                        return
+                    else:
+                        LOGGER.fatal(f"Got error while trying to attach to the container: '{err}'.")
+                        return
                 shellcmd = env.split("USERSHELLPATH=")[1].split('\n')[0]
 
                 client.run("exec", "dev", exec_cmd=shellcmd)

@@ -11,7 +11,6 @@ services:
       args:
         PROJECT: {project}
         USERNAME: {username}
-        USER: {uid_gid}
         SCRIPTS_DIR: {os.path.join("docker", "dev", "scripts")}
         ROS_DISTRO: "galactic"
         ROS_WORKSPACE: "workspace"
@@ -19,8 +18,9 @@ services:
         PIP_REQUIREMENTS: ""
     environment:
       - DISPLAY=vnc:0.0
+      - USER_UID={uid}
+      - USER_GID={gid}
     tty: true
-    user: {uid_gid}
     volumes: 
       - {root}:/home/{username}/{project}
     networks:

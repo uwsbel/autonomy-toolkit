@@ -43,7 +43,7 @@ RUN rm -rf /tmp/scripts
 RUN apt-get clean && apt-get autoremove -y && rm -rf /var/lib/apt/lists/*
 
 # Add user and grant sudo permission.
-RUN adduser --shell /bin/bash --disabled-password --gecos "" $USERNAME && \
+RUN adduser --shell $USERSHELLPATH --disabled-password --gecos "" $USERNAME && \
     echo "$USERNAME ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/$USERNAME && \
     chmod 0440 /etc/sudoers.d/$USERNAME
 
@@ -60,9 +60,15 @@ RUN if [ "$USERSHELL" = "bash" ]; then \
 		fi
 
 # Set user and work directory
-USER $USERNAME 
-WORKDIR $USERHOME
-ENV HOME=/home/$USERNAME
+# https://stackoverflow.com/a/46057716
+RUN sed -i '$ d' /ros_entrypoint.sh && echo " \
+set -x \n\
+sudo usermod -u \$USER_UID -g \$USER_GID $USERNAME \n\
+exec "\$@" " >> /ros_entrypoint.sh
 
+USER $USERNAME
+WORKDIR $USERHOME
+ENV HOME=$USERHOME
 ENV USERSHELLPATH=$USERSHELLPATH
+
 CMD $USERSHELLPATH
