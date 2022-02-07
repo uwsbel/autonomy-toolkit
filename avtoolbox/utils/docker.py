@@ -58,10 +58,10 @@ def run_docker_cmd(*args, **kwargs):
     """
 
     docker_binary = get_docker_client_binary_path()
-    return _run([docker_binary, *args], **kwargs)
+    return _run(*[docker_binary, *args], **kwargs)
 
 def _run(*args, **kwargs):
-    LOGGER.info(f"{' '.join([str(arg) for arg in args[0]])}")
+    LOGGER.info(f"{' '.join([str(arg) for arg in args])}")
 
     def post_process_stream(stream: Optional[bytes]):
         if stream is None:
@@ -71,7 +71,8 @@ def _run(*args, **kwargs):
             stream = stream[:-1]
         return stream
 
-    completed_process = subprocess.run(*args, **kwargs)
+    args = [arg for arg in args if arg]
+    completed_process = subprocess.run(args, **kwargs)
     return post_process_stream(completed_process.stdout)
 
 # Ports
