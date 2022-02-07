@@ -100,7 +100,9 @@ def _run_env(args):
     # Read the avtoolbox yml fil
     project = _check_avtoolbox(avtoolbox_yml, "project")
     if project is None: return
-    username = _check_avtoolbox(avtoolbox_yml, "username", default=os.getlogin())
+    username = _check_avtoolbox(avtoolbox_yml, "username", default=project)
+    uid_gid = str(os.getuid())+":"+str(os.getgid()) if os.name=='posix' else "0:0"
+    _check_avtoolbox(avtoolbox_yml,"uid_gid",default=str(os.getuid())+":"+str(os.getgid()))
     default_services = _check_avtoolbox(avtoolbox_yml, "default_services", default=["dev"])
     services = _check_avtoolbox(avtoolbox_yml, "services")
     if services is None: return
