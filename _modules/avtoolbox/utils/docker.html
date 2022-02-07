@@ -225,7 +225,7 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        bool: whether docker compose (v2) is installed.</span>
 <span class="sd">    """</span>
-    <span class="n">help_output</span> <span class="o">=</span> <span class="n">run_docker_cmd</span><span class="p">(</span><span class="s2">"compose"</span><span class="p">,</span> <span class="s2">"--help"</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">)</span>
+    <span class="n">help_output</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">run_docker_cmd</span><span class="p">(</span><span class="s2">"compose"</span><span class="p">,</span> <span class="s2">"--help"</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">)</span>
     <span class="k">return</span> <span class="s2">"compose"</span> <span class="ow">in</span> <span class="n">help_output</span></div>
 
 <span class="k">def</span> <span class="nf">run_compose_cmd</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -251,7 +251,7 @@
 
     <span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="n">arg</span> <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">args</span> <span class="k">if</span> <span class="n">arg</span><span class="p">]</span>
     <span class="n">completed_process</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">post_process_stream</span><span class="p">(</span><span class="n">completed_process</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">post_process_stream</span><span class="p">(</span><span class="n">completed_process</span><span class="o">.</span><span class="n">stdout</span><span class="p">),</span> <span class="n">post_process_stream</span><span class="p">(</span><span class="n">completed_process</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
 
 <span class="c1"># Ports</span>
 <span class="c1"># From https://github.com/containers/podman-compose/blob/devel/podman_compose.py</span>
