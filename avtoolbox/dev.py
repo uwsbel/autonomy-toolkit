@@ -98,13 +98,13 @@ def _run_env(args):
     avtoolbox_yml = YAMLParser(conf)
 
     # Read the avtoolbox yml file
+    custom_attrs = ["project", "user", "default_services"]
     project = _check_avtoolbox(avtoolbox_yml, "project")
     if project is None: return
-    username = _check_avtoolbox(avtoolbox_yml, "username", default=project)
-    uid_gid = f"{os.getuid()}:{os.getgid()}" if os.name == "posix" else "0:0"
-    _check_avtoolbox(avtoolbox_yml, "uid_gid", default=uid_gid)
-    uid = _check_avtoolbox(avtoolbox_yml, "uid", default=os.getuid())
-    gid = _check_avtoolbox(avtoolbox_yml, "gid", default=os.getgid())
+    username = _check_avtoolbox(avtoolbox_yml, "user", "username", default=project)
+    is_posix = lambda  : os.name == "posix"
+    uid = _check_avtoolbox(avtoolbox_yml, "user", "uid", default=os.getuid() if is_posix() else 1000)
+    gid = _check_avtoolbox(avtoolbox_yml, "user", "gid", default=os.getgid() if is_posix() else 1000)
     default_services = _check_avtoolbox(avtoolbox_yml, "default_services", default=["dev"])
     services = _check_avtoolbox(avtoolbox_yml, "services")
     if services is None: return
@@ -122,10 +122,20 @@ def _run_env(args):
     with open(default_compose_yml, "r") as f:
         default_configs = YAMLParser(text=eval(f"f'''{f.read()}'''")).get_data()
 
+    # Grab the default dockerignore file
+    dockerignore = ""
+    default_dockerignore = os.path.realpath(os.path.join(__file__, "..", "docker", "dockerignore"))
+    with open(default_dockerignore, "r") as f:
+        dockerignore = f.read()
+    existing_dockerignore = search_upwards_for_file('.dockerignore')
+    if existing_dockerignore is not None:
+        with open(existing_dockerignore, "r") as f:
+            dockerignore += f.read()
+
     # The docker containers are generated from a docker-compose.yml file
     # We'll write this ourselves from the .avtoolbox file and the defaults
     temp = dict(**avtoolbox_yml.get_data())
-    temp = { key: temp[key] for key in ['version', 'services', 'networks'] if key in temp }
+    temp = { k: v for k,v in temp.items() if k not in custom_attrs }
     docker_compose = _merge_dictionaries(temp, default_configs)
 
     # If no command is passed, start up the container and attach to it
@@ -145,8 +155,13 @@ def _run_env(args):
     if not args.dry_run:
 
         try:
+            # Write the compose file
             with open(root / "docker-compose.yml", "w") as yaml_file:
                 yaml.dump(docker_compose, yaml_file)
+
+            # Write the dockerignore
+            with open(root / ".dockerignore", "w") as dockerignore_file:
+                dockerignore_file.write(dockerignore)
 
             client = DockerComposeClient(project=project, services=args.services, compose_file=yaml_file.name)
 
@@ -203,6 +218,7 @@ def _run_env(args):
 
                 client.run("exec", "dev", exec_cmd=shellcmd)
         finally:
+            os.unlink(dockerignore_file.name)
             if not args.keep_yml:
                 os.unlink(yaml_file.name)
 
