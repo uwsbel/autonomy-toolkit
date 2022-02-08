@@ -112,6 +112,12 @@ def _run_env(args):
     if dev is None: return
     networks = _check_avtoolbox(avtoolbox_yml, "networks", default={})
 
+    info, err = run_docker_cmd("--debug", "info", stdout=-1, stderr=-1)
+    avail_runtimes = info.split("Runtimes: ")[1].split('\n')[0].split(' ')
+    runtime_name = info.split("Default Runtime: ")[1].split('\n')[0].split(' ')
+    if("nvidia" in avail_runtimes):
+        runtime_name = "nvidia"
+
     # Additional checks
     if any(c.isupper() for c in project):
         LOGGER.fatal(f"'project' is set to '{project}' which is not allowed since it has capital letters. Please choose a name with only lowercase.")

@@ -20,7 +20,9 @@ services:
       - DISPLAY=vnc:0.0
       - USER_UID={uid}
       - USER_GID={gid}
+      - NVIDIA_VISIBLE_DEVICES=all
     tty: true
+    runtime: {runtime_name}
     volumes: 
       - {root}:/home/{username}/{project}
     networks:
