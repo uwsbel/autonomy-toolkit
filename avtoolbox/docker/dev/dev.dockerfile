@@ -63,6 +63,9 @@ RUN if [ "$USERSHELL" = "bash" ]; then \
 # https://stackoverflow.com/a/46057716
 RUN sed -i '$ d' /ros_entrypoint.sh && echo " \
 set -x \n\
+if [ !\$(getent group \$USER_GID) ]; then \n\
+	sudo groupmod -g \$USER_GID $USERNAME \n\
+fi \n\
 sudo usermod -u \$USER_UID -g \$USER_GID $USERNAME \n\
 exec "\$@" " >> /ros_entrypoint.sh
 
