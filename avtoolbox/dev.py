@@ -114,7 +114,7 @@ def _run_env(args):
 
     info, err = run_docker_cmd("--debug", "info", stdout=-1, stderr=-1)
     avail_runtimes = info.split("Runtimes: ")[1].split('\n')[0].split(' ')
-    runtime_name = info.split("Default Runtime: ")[1].split('\n')[0].split(' ')
+    runtime_name = info.split("Default Runtime: ")[1].split('\n')[0].split(' ')[0]
     if("nvidia" in avail_runtimes):
         runtime_name = "nvidia"
 
