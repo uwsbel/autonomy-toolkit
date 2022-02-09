@@ -6,10 +6,10 @@ CLI command that handles working with the AV development environment
 from avtoolbox.utils.logger import LOGGER
 from avtoolbox.utils.yaml_parser import YAMLParser
 from avtoolbox.utils.files import search_upwards_for_file
-from avtoolbox.utils.docker import get_docker_client_binary_path, run_docker_cmd, compose_is_installed, DockerComposeClient, norm_ports, find_available_port
+from avtoolbox.utils.docker import get_docker_client_binary_path, run_docker_cmd, compose_is_installed, DockerComposeClient, norm_ports, find_available_port, parse_devices
 
 # Other imports
-import yaml, os, socket
+import yaml, os, socket, platform
 
 def _check_avtoolbox(avtoolbox_yml, *args, default=None):
     if not avtoolbox_yml.contains(*args):
@@ -98,7 +98,7 @@ def _run_env(args):
     avtoolbox_yml = YAMLParser(conf)
 
     # Read the avtoolbox yml file
-    custom_attrs = ["project", "user", "default_services"]
+    custom_attrs = ["project", "user", "default_services", "optional_devices"]
     project = _check_avtoolbox(avtoolbox_yml, "project")
     if project is None: return
     username = _check_avtoolbox(avtoolbox_yml, "user", "username", default=project)
@@ -111,11 +111,12 @@ def _run_env(args):
     dev = _check_avtoolbox(avtoolbox_yml, "services", "dev")
     if dev is None: return
     networks = _check_avtoolbox(avtoolbox_yml, "networks", default={})
+    optional_devices = _check_avtoolbox(avtoolbox_yml, "optional_devices", default={})
 
     info, err = run_docker_cmd("--debug", "info", stdout=-1, stderr=-1)
     avail_runtimes = info.split("Runtimes: ")[1].split('\n')[0].split(' ')
     runtime_name = info.split("Default Runtime: ")[1].split('\n')[0].split(' ')[0]
-    if("nvidia" in avail_runtimes):
+    if "nvidia" in avail_runtimes:
         runtime_name = "nvidia"
 
     # Additional checks
@@ -200,6 +201,18 @@ def _run_env(args):
                         elif port != ports['published']:
                             LOGGER.warn(f"PORT CONFLICT: Adjusted port mapping for '{service_name}' service from '{ports['published']}' to '{port}'.")
                             ports['published'] = port 
+
+                    # Add devices (if they're present)
+                    # Will check the devices available on the system. If they don't match what's provided in the .avtoolbox.yml file, ignore them
+					# https://stackoverflow.com/a/68402011
+                    for device_service_name, device_list in optional_devices.items():
+                        if device_service_name == service_name:
+                            for device in parse_devices(device_list):
+                                if os.path.exists(device["PathOnHost"]):
+                                    if 'devices' in service:
+                                        service['devices'].append(device['Original'])
+                                    else:
+                                        service['devices'] = [device['Original']]
 
                 # Rewrite with the parsed config
                 with open(root / "docker-compose.yml", "w") as yaml_file:

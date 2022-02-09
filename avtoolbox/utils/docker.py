@@ -122,3 +122,33 @@ def find_available_port(port, trys=5):
         else:
             break
     return port if not in_use else None
+
+# Devices
+def parse_devices(devices):
+    device_list = []
+    for device in devices:
+        if isinstance(device, dict):
+            device_list.append(device)
+            continue
+        if not isinstance(device, str):
+            raise errors.DockerException(
+                f'Invalid device type {type(device)}'
+            )
+        device_mapping = device.split(':')
+        if device_mapping:
+            path_on_host = device_mapping[0]
+            if len(device_mapping) > 1:
+                path_in_container = device_mapping[1]
+            else:
+                path_in_container = path_on_host
+            if len(device_mapping) > 2:
+                permissions = device_mapping[2]
+            else:
+                permissions = 'rwm'
+            device_list.append({
+                'PathOnHost': path_on_host,
+                'PathInContainer': path_in_container,
+                'CgroupPermissions': permissions,
+                'Original': device
+            })
+    return device_list
