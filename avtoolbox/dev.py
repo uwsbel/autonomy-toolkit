@@ -184,6 +184,14 @@ def _run_env(args):
                 client.run("build", no_cache)
 
             if args.up:
+                # First check if the dev container is running.
+                # If it is, don't run args.up
+                stdout, stderr = client.run("ps", "--services", *args.services, "--filter", "status=running", stdout=-1, stderr=-1)
+                if "no such service: dev" not in stderr:
+                    LOGGER.warn("'dev' service is already running. If you didn't explicitly call '--up', you can safely ignore this warning.")
+                    args.up = False
+
+            if args.up:
                 LOGGER.info(f"Spinning up...")
 
                 # For each service that we're spinning up, check some arguments
@@ -237,8 +245,9 @@ def _run_env(args):
 
                 client.run("exec", "dev", exec_cmd=shellcmd)
         finally:
-            os.unlink(dockerignore_file.name)
-            if not args.keep_yml:
+            if os.path.isfile(dockerignore_file.name):
+                os.unlink(dockerignore_file.name)
+            if not args.keep_yml and os.path.isfile(yaml_file.name):
                 os.unlink(yaml_file.name)
 
 def _init(subparser):
