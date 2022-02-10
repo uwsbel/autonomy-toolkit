@@ -65,7 +65,7 @@ RUN if [ "$USERSHELL" = "bash" ]; then \
 RUN sed -i '$ d' /ros_entrypoint.sh && echo " \
 set -x \n\
 sudo groupmod -o -g \$USER_GID $USERNAME \n\
-sudo usermod -o -u \$USER_UID -g \$USER_GID $USERNAME \n\
+sudo usermod -u \$USER_UID -g \$USER_GID $USERNAME \n\
 exec "\$@" " >> /ros_entrypoint.sh
 
 # Set user and work directory
