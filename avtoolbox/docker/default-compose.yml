@@ -11,7 +11,7 @@ services:
       args:
         PROJECT: {project}
         USERNAME: {username}
-        SCRIPTS_DIR: {os.path.join("docker", "dev", "scripts")}
+        SCRIPTS_DIR: "docker/dev/scripts"
         ROS_DISTRO: "galactic"
         ROS_WORKSPACE: "workspace"
         APT_DEPENDENCIES: ""

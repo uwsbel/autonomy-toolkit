@@ -125,19 +125,27 @@ def _run_env(args):
         return
 
     # Load in the default values
+    LOGGER.debug("Reading the default-compose.yml file...")
     default_compose_yml = os.path.realpath(os.path.join(__file__, "..", "docker", "default-compose.yml"))
     with open(default_compose_yml, "r") as f:
         default_configs = YAMLParser(text=eval(f"f'''{f.read()}'''")).get_data()
+    LOGGER.debug("Finished parsing the default-compose.yml and updating values.")
 
     # Grab the default dockerignore file
+    LOGGER.debug("Reading default dockerignore file...")
     dockerignore = ""
     default_dockerignore = os.path.realpath(os.path.join(__file__, "..", "docker", "dockerignore"))
     with open(default_dockerignore, "r") as f:
         dockerignore = f.read()
+    LOGGER.debug("Reading existing dockerignore file...")
     existing_dockerignore = search_upwards_for_file('.dockerignore')
+    print('test')
     if existing_dockerignore is not None:
+        print('tes324323t')
         with open(existing_dockerignore, "r") as f:
+            print('st')
             dockerignore += f.read()
+    LOGGER.debug("Finished reading dockerignore files.")
 
     # The docker containers are generated from a docker-compose.yml file
     # We'll write this ourselves from the .avtoolbox file and the defaults
@@ -162,13 +170,17 @@ def _run_env(args):
     if not args.dry_run:
 
         try:
+            LOGGER.info(f"Writing to '{str(root / 'docker-compose.yml')}'...")
             # Write the compose file
             with open(root / "docker-compose.yml", "w") as yaml_file:
                 yaml.dump(docker_compose, yaml_file)
+            LOGGER.info(f"Done writing to '{str(root / 'docker-compose.yml')}'.")
 
             # Write the dockerignore
+            LOGGER.info(f"Writing to '{str(root / '.dockerignore')}'...")
             with open(root / ".dockerignore", "w") as dockerignore_file:
                 dockerignore_file.write(dockerignore)
+            LOGGER.info(f"Done writing to '{str(root / '.dockerignore')}'.")
 
             client = DockerComposeClient(project=project, services=args.services, compose_file=yaml_file.name)
 

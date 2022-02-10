@@ -141,6 +141,8 @@ def search_upwards_for_file(filename: str) -> Path:
         attempt = d / filename
         if attempt.exists():
             return attempt
+        if d == d.parent:
+            break
         d = d.parent
 
     return None
