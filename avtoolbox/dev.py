@@ -21,11 +21,16 @@ def _check_avtoolbox(avtoolbox_yml, *args, default=None):
             return default
     return avtoolbox_yml.get(*args)
 
-def _merge_dictionaries(source, destination):
+def _merge_dictionaries(source, destination, overwrite_lists=False):
     for key, value in source.items():
         if isinstance(value, dict):
             node = destination.setdefault(key, {})
-            _merge_dictionaries(value, node)
+            _merge_dictionaries(value, node, overwrite_lists)
+        elif not overwrite_lists and key in destination and isinstance(destination[key], list):
+            if isinstance(value, list):
+                destination[key].extend(value)
+            else:
+                destination[key].append(value)
         else:
             destination[key] = value
 
@@ -100,7 +105,7 @@ def _run_env(args):
 
     # Read the avtoolbox yml file
     custom_config = {}
-    custom_attrs = ["project", "user", "default_services", "optional_devices", "desired_runtime"]
+    custom_attrs = ["project", "user", "default_services", "optional_devices", "desired_runtime", "overwrite_lists"]
     try:
         # Custom config
         custom_config["root"] = root
@@ -111,6 +116,7 @@ def _run_env(args):
         custom_config["default_services"] = _check_avtoolbox(avtoolbox_yml, "default_services", default=["dev"])
         custom_config["optional_devices"] = _check_avtoolbox(avtoolbox_yml, "optional_devices", default={})
         custom_config["runtime"] = get_docker_runtime(_check_avtoolbox(avtoolbox_yml, "desired_runtime", default="nvidia"))
+        custom_config["overwrite_lists"] = _check_avtoolbox(avtoolbox_yml, "overwrite_lists", default=False)
 
         # Check these two attributes exist
         # Will exit if they don't
@@ -147,7 +153,7 @@ def _run_env(args):
     # We'll write this ourselves from the .avtoolbox file and the defaults
     temp = dict(**avtoolbox_yml.get_data())
     temp = { k: v for k,v in temp.items() if k not in custom_attrs }
-    docker_compose = _merge_dictionaries(temp, default_configs)
+    docker_compose = _merge_dictionaries(temp, default_configs, custom_config["overwrite_lists"])
 
     # If no command is passed, start up the container and attach to it
     cmds = [args.build, args.up, args.down, args.attach] 
@@ -192,10 +198,14 @@ def _run_env(args):
             if args.up:
                 # First check if the dev container is running.
                 # If it is, don't run args.up
-                stdout, stderr = client.run("ps", "--services", *args.services, "--filter", "status=running", stdout=-1, stderr=-1)
-                if "no such service: dev" not in stderr:
-                    LOGGER.warn("'dev' service is already running. If you didn't explicitly call '--up', you can safely ignore this warning.")
+                try:
+                    stdout, stderr = client.run("ps", "--services", *args.services, "--filter", "status=running", stdout=-1, stderr=-1)
+                    LOGGER.warn("The services are already running. If you didn't explicitly call '--up', you can safely ignore this warning.")
                     args.up = False
+                except DockerException as e:
+                    if "no such service: " not in e.stderr:
+                        raise e
+
 
             if args.up:
                 LOGGER.info(f"Spinning up...")

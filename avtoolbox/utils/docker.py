@@ -10,8 +10,10 @@ from pathlib import Path
 from typing import Optional
 
 class DockerException(Exception):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self, message, stdout=None, stderr=None):
+        super().__init__(message)
+        self.stdout = stdout
+        self.stderr = stderr
 
 class DockerComposeClient:
     def __init__(self, project=None, services=[], compose_file='docker-compose.yml'):
@@ -100,7 +102,7 @@ def _run(*args, **kwargs):
     stderr = post_process_stream(completed_process.stderr)
     
     if completed_process.returncode:
-        raise DockerException(f"Got an error code of '{completed_process.returncode}': {cmd}")
+        raise DockerException(f"Got an error code of '{completed_process.returncode}': {cmd}", stdout, stderr)
 
     return stdout, stderr
 
