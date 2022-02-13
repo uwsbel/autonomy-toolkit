@@ -24,7 +24,7 @@ Functions
    avtoolbox.utils.docker.run_docker_cmd
 
 
-.. py:exception:: DockerException(*args, **kwargs)
+.. py:exception:: DockerException(message, stdout=None, stderr=None)
 
    Bases: :class:`Exception`
 
