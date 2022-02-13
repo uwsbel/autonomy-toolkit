@@ -5,7 +5,7 @@
 <link rel="index" title="Index" href="../../../../../genindex.html" /><link rel="search" title="Search" href="../../../../../search.html" /><link rel="next" title="avtoolbox.utils.files" href="../files/index.html" /><link rel="prev" title="avtoolbox.utils" href="../index.html" />
 
     <link rel="shortcut icon" href="../../../../../_static/cropped-SBEL-32x32.png"/><meta name="generator" content="sphinx-3.4.2, furo 2020.12.30.beta24"/>
-        <title>avtoolbox.utils.docker - Autonomous Vehicle Toolbox 0.0.28 documentation</title>
+        <title>avtoolbox.utils.docker - Autonomous Vehicle Toolbox 0.0.29 documentation</title>
       <link rel="stylesheet" href="../../../../../_static/styles/furo.css?digest=33d2fc4f3f180ec1ffc6524e273e21d7d58cbe49">
     <link rel="stylesheet" href="../../../../../_static/pygments.css">
     <link media="(prefers-color-scheme: dark)" rel="stylesheet" href="../../../../../_static/pygments_dark.css">
@@ -104,7 +104,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../../index.html"><div class="brand">Autonomous Vehicle Toolbox 0.0.28 documentation</div></a>
+      <a href="../../../../../index.html"><div class="brand">Autonomous Vehicle Toolbox 0.0.29 documentation</div></a>
     </div>
     <div class="header-right">
       <label class="toc-overlay-icon toc-header-icon" for="__toc">
@@ -189,17 +189,39 @@
 <col style="width: 90%"/>
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#avtoolbox.utils.docker.get_docker_client_binary_path" title="avtoolbox.utils.docker.get_docker_client_binary_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_docker_client_binary_path</span></code></a>() → Optional[Path]</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#avtoolbox.utils.docker.get_docker_runtime" title="avtoolbox.utils.docker.get_docker_runtime"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_docker_runtime</span></code></a>(desired: str) → str</p></td>
+<td><p>Checks dockers available runtimes and will return desired if it’s available</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#avtoolbox.utils.docker.get_docker_client_binary_path" title="avtoolbox.utils.docker.get_docker_client_binary_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_docker_client_binary_path</span></code></a>() → Optional[Path]</p></td>
 <td><p>Return the path of the docker client binary file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#avtoolbox.utils.docker.compose_is_installed" title="avtoolbox.utils.docker.compose_is_installed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compose_is_installed</span></code></a>() → bool</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#avtoolbox.utils.docker.compose_is_installed" title="avtoolbox.utils.docker.compose_is_installed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compose_is_installed</span></code></a>() → bool</p></td>
 <td><p>Returns <cite>True</cite> if docker compose (the one written in Go)</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#avtoolbox.utils.docker.run_docker_cmd" title="avtoolbox.utils.docker.run_docker_cmd"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_docker_cmd</span></code></a>(*args, **kwargs)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#avtoolbox.utils.docker.run_docker_cmd" title="avtoolbox.utils.docker.run_docker_cmd"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_docker_cmd</span></code></a>(*args, **kwargs)</p></td>
 <td><p>Run a docker command.</p></td>
 </tr>
 </tbody>
 </table></div>
+<dl class="py exception">
+<dt id="avtoolbox.utils.docker.DockerException">
+<em class="property">exception </em><code class="sig-name descname">DockerException</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/avtoolbox/utils/docker.html#DockerException"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#avtoolbox.utils.docker.DockerException" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Common base class for all non-exit exceptions.</p>
+</dd></dl>
+<dl class="py function">
+<dt id="avtoolbox.utils.docker.get_docker_runtime">
+<code class="sig-name descname">get_docker_runtime</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">desired</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> → str<a class="reference internal" href="../../../../../_modules/avtoolbox/utils/docker.html#get_docker_runtime"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#avtoolbox.utils.docker.get_docker_runtime" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks dockers available runtimes and will return desired if it’s available</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>desired</strong> (<em>str</em>) – The desired runtime, will return this if it’s available</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>str</em> – Either the desired or the default docker runtime if desired is not an actual runtime</p>
+</dd>
+</dl>
+</dd></dl>
 <dl class="py function">
 <dt id="avtoolbox.utils.docker.get_docker_client_binary_path">
 <code class="sig-name descname">get_docker_client_binary_path</code><span class="sig-paren">(</span><span class="sig-paren">)</span> → Optional<span class="p">[</span>Path<span class="p">]</span><a class="reference internal" href="../../../../../_modules/avtoolbox/utils/docker.html#get_docker_client_binary_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#avtoolbox.utils.docker.get_docker_client_binary_path" title="Permalink to this definition">¶</a></dt>
@@ -287,6 +309,8 @@ is installed and working.</p>
 <li><a class="reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">avtoolbox.utils.docker</span></code></a><ul>
 <li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
 <li><a class="reference internal" href="#functions">Functions</a><ul>
+<li><a class="reference internal" href="#avtoolbox.utils.docker.DockerException">DockerException</a></li>
+<li><a class="reference internal" href="#avtoolbox.utils.docker.get_docker_runtime">get_docker_runtime</a></li>
 <li><a class="reference internal" href="#avtoolbox.utils.docker.get_docker_client_binary_path">get_docker_client_binary_path</a></li>
 <li><a class="reference internal" href="#avtoolbox.utils.docker.compose_is_installed">compose_is_installed</a></li>
 <li><a class="reference internal" href="#avtoolbox.utils.docker.run_docker_cmd">run_docker_cmd</a></li>

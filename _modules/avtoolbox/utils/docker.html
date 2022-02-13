@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
     <link rel="shortcut icon" href="../../../_static/cropped-SBEL-32x32.png"/><meta name="generator" content="sphinx-3.4.2, furo 2020.12.30.beta24"/>
-        <title>avtoolbox.utils.docker - Autonomous Vehicle Toolbox 0.0.28 documentation</title>
+        <title>avtoolbox.utils.docker - Autonomous Vehicle Toolbox 0.0.29 documentation</title>
       <link rel="stylesheet" href="../../../_static/styles/furo.css?digest=33d2fc4f3f180ec1ffc6524e273e21d7d58cbe49">
     <link rel="stylesheet" href="../../../_static/pygments.css">
     <link media="(prefers-color-scheme: dark)" rel="stylesheet" href="../../../_static/pygments_dark.css">
@@ -103,7 +103,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">Autonomous Vehicle Toolbox 0.0.28 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">Autonomous Vehicle Toolbox 0.0.29 documentation</div></a>
     </div>
     <div class="header-right">
       <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
@@ -187,6 +187,10 @@
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="k">import</span> <span class="n">Path</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Optional</span>
 
+<div class="viewcode-block" id="DockerException"><a class="viewcode-back" href="../../../usage/api/avtoolbox/utils/docker/index.html#avtoolbox.utils.docker.DockerException">[docs]</a><span class="k">class</span> <span class="nc">DockerException</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
 <span class="k">class</span> <span class="nc">DockerComposeClient</span><span class="p">:</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">services</span><span class="o">=</span><span class="p">[],</span> <span class="n">compose_file</span><span class="o">=</span><span class="s1">'docker-compose.yml'</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_services</span> <span class="o">=</span> <span class="n">services</span>
@@ -203,6 +207,23 @@
             <span class="k">return</span> <span class="n">run_compose_cmd</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_pre</span><span class="p">,</span> <span class="n">cmd</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">exec_cmd</span><span class="p">,</span> <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_post</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">run_compose_cmd</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_pre</span><span class="p">,</span> <span class="n">cmd</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_services</span><span class="p">,</span> <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_post</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+<div class="viewcode-block" id="get_docker_runtime"><a class="viewcode-back" href="../../../usage/api/avtoolbox/utils/docker/index.html#avtoolbox.utils.docker.get_docker_runtime">[docs]</a><span class="k">def</span> <span class="nf">get_docker_runtime</span><span class="p">(</span><span class="n">desired</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="sd">"""Checks dockers available runtimes and will return desired if it's available</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        desired (str): The desired runtime, will return this if it's available</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        str: Either the desired or the default docker runtime if desired is not an actual runtime</span>
+<span class="sd">    """</span>
+    <span class="kn">import</span> <span class="nn">re</span>
+
+    <span class="n">stdout</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">run_docker_cmd</span><span class="p">(</span><span class="s2">"--debug"</span><span class="p">,</span> <span class="s2">"info"</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">f</span><span class="s2">"Runtimes:.*</span><span class="si">{desired}</span><span class="s2">"</span><span class="p">,</span> <span class="n">stdout</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">desired</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s2">"Default Runtime: (.*)"</span><span class="p">,</span> <span class="n">stdout</span><span class="p">)</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="get_docker_client_binary_path"><a class="viewcode-back" href="../../../usage/api/avtoolbox/utils/docker/index.html#avtoolbox.utils.docker.get_docker_client_binary_path">[docs]</a><span class="k">def</span> <span class="nf">get_docker_client_binary_path</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Path</span><span class="p">]:</span>
     <span class="sd">"""Return the path of the docker client binary file.</span>
@@ -239,7 +260,8 @@
     <span class="k">return</span> <span class="n">_run</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">docker_binary</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 <span class="k">def</span> <span class="nf">_run</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="n">LOGGER</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">f</span><span class="s2">"{' '.join([str(arg) for arg in args])}"</span><span class="p">)</span>
+    <span class="n">cmd</span> <span class="o">=</span> <span class="s1">' '</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span> <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">args</span><span class="p">])</span>
+    <span class="n">LOGGER</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">f</span><span class="s2">"</span><span class="si">{cmd}</span><span class="s2">"</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">post_process_stream</span><span class="p">(</span><span class="n">stream</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bytes</span><span class="p">]):</span>
         <span class="k">if</span> <span class="n">stream</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -251,7 +273,14 @@
 
     <span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="n">arg</span> <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">args</span> <span class="k">if</span> <span class="n">arg</span><span class="p">]</span>
     <span class="n">completed_process</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">post_process_stream</span><span class="p">(</span><span class="n">completed_process</span><span class="o">.</span><span class="n">stdout</span><span class="p">),</span> <span class="n">post_process_stream</span><span class="p">(</span><span class="n">completed_process</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+
+    <span class="n">stdout</span> <span class="o">=</span> <span class="n">post_process_stream</span><span class="p">(</span><span class="n">completed_process</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
+    <span class="n">stderr</span> <span class="o">=</span> <span class="n">post_process_stream</span><span class="p">(</span><span class="n">completed_process</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">completed_process</span><span class="o">.</span><span class="n">returncode</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">DockerException</span><span class="p">(</span><span class="n">f</span><span class="s2">"Got an error code of '</span><span class="si">{completed_process.returncode}</span><span class="s2">': </span><span class="si">{cmd}</span><span class="s2">"</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">stdout</span><span class="p">,</span> <span class="n">stderr</span>
 
 <span class="c1"># Ports</span>
 <span class="c1"># From https://github.com/containers/podman-compose/blob/devel/podman_compose.py</span>

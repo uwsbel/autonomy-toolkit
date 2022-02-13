@@ -18,9 +18,26 @@ Functions
 
 .. autoapisummary::
 
+   avtoolbox.utils.docker.get_docker_runtime
    avtoolbox.utils.docker.get_docker_client_binary_path
    avtoolbox.utils.docker.compose_is_installed
    avtoolbox.utils.docker.run_docker_cmd
+
+
+.. py:exception:: DockerException(*args, **kwargs)
+
+   Bases: :class:`Exception`
+
+   Common base class for all non-exit exceptions.
+
+
+.. function:: get_docker_runtime(desired: str) -> str
+
+   Checks dockers available runtimes and will return desired if it's available
+
+   :Parameters: **desired** (*str*) -- The desired runtime, will return this if it's available
+
+   :returns: *str* -- Either the desired or the default docker runtime if desired is not an actual runtime
 
 
 .. function:: get_docker_client_binary_path() -> Optional[Path]

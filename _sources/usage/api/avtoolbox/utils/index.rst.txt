@@ -21,3 +21,22 @@ Submodules
    yaml_parser/index.rst
 
 
+Package Contents
+----------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   avtoolbox.utils.is_posix
+
+
+.. function:: is_posix()
+
+   Determine whether the current OS is a posix (Linux, Mac) system.
+
+   :returns: *bool* -- whether current OS is a posix system
+
+
