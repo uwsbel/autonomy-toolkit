@@ -3,19 +3,20 @@ CLI command that handles working with the AV development environment
 """
 
 # Imports from av
+from avtoolbox.utils import is_posix
 from avtoolbox.utils.logger import LOGGER
 from avtoolbox.utils.yaml_parser import YAMLParser
 from avtoolbox.utils.files import search_upwards_for_file
-from avtoolbox.utils.docker import get_docker_client_binary_path, run_docker_cmd, compose_is_installed, DockerComposeClient, norm_ports, find_available_port, parse_devices
+from avtoolbox.utils.docker import get_docker_client_binary_path, run_docker_cmd, compose_is_installed, DockerComposeClient, norm_ports, find_available_port, parse_devices, DockerException, get_docker_runtime
 
 # Other imports
-import yaml, os, socket, platform
+import yaml, os, argparse
 
 def _check_avtoolbox(avtoolbox_yml, *args, default=None):
     if not avtoolbox_yml.contains(*args):
         if default is None:
             LOGGER.fatal(f"'{'.'.join(*args)}' must be in '.avtoolbox.yml'. '{'.'.join(*args)}'")
-            return None
+            raise AttributeError('')
         else:
             return default
     return avtoolbox_yml.get(*args)
@@ -98,29 +99,28 @@ def _run_env(args):
     avtoolbox_yml = YAMLParser(conf)
 
     # Read the avtoolbox yml file
-    custom_attrs = ["project", "user", "default_services", "optional_devices"]
-    project = _check_avtoolbox(avtoolbox_yml, "project")
-    if project is None: return
-    username = _check_avtoolbox(avtoolbox_yml, "user", "username", default=project)
-    is_posix = lambda  : os.name == "posix"
-    uid = _check_avtoolbox(avtoolbox_yml, "user", "uid", default=os.getuid() if is_posix() else 1000)
-    gid = _check_avtoolbox(avtoolbox_yml, "user", "gid", default=os.getgid() if is_posix() else 1000)
-    default_services = _check_avtoolbox(avtoolbox_yml, "default_services", default=["dev"])
-    services = _check_avtoolbox(avtoolbox_yml, "services")
-    if services is None: return
-    dev = _check_avtoolbox(avtoolbox_yml, "services", "dev")
-    if dev is None: return
-    networks = _check_avtoolbox(avtoolbox_yml, "networks", default={})
-    optional_devices = _check_avtoolbox(avtoolbox_yml, "optional_devices", default={})
+    custom_config = {}
+    custom_attrs = ["project", "user", "default_services", "optional_devices", "desired_runtime"]
+    try:
+        # Custom config
+        custom_config["root"] = root
+        custom_config["project"] = _check_avtoolbox(avtoolbox_yml, "project")
+        custom_config["username"] = _check_avtoolbox(avtoolbox_yml, "user", "username", default=custom_config["project"])
+        custom_config["uid"] = _check_avtoolbox(avtoolbox_yml, "user", "uid", default=os.getuid() if is_posix() else 1000)
+        custom_config["gid"] = _check_avtoolbox(avtoolbox_yml, "user", "gid", default=os.getgid() if is_posix() else 1000)
+        custom_config["default_services"] = _check_avtoolbox(avtoolbox_yml, "default_services", default=["dev"])
+        custom_config["optional_devices"] = _check_avtoolbox(avtoolbox_yml, "optional_devices", default={})
+        custom_config["runtime"] = get_docker_runtime(_check_avtoolbox(avtoolbox_yml, "desired_runtime", default="nvidia"))
 
-    info, err = run_docker_cmd("--debug", "info", stdout=-1, stderr=-1)
-    avail_runtimes = info.split("Runtimes: ")[1].split('\n')[0].split(' ')
-    runtime_name = info.split("Default Runtime: ")[1].split('\n')[0].split(' ')[0]
-    if "nvidia" in avail_runtimes:
-        runtime_name = "nvidia"
+        # Check these two attributes exist
+        # Will exit if they don't
+        _check_avtoolbox(avtoolbox_yml, "services")
+        _check_avtoolbox(avtoolbox_yml, "services", "dev")
+    except AttributeError as e:
+        return
 
     # Additional checks
-    if any(c.isupper() for c in project):
+    if any(c.isupper() for c in custom_config["project"]):
         LOGGER.fatal(f"'project' is set to '{project}' which is not allowed since it has capital letters. Please choose a name with only lowercase.")
         return
 
@@ -128,22 +128,18 @@ def _run_env(args):
     LOGGER.debug("Reading the default-compose.yml file...")
     default_compose_yml = os.path.realpath(os.path.join(__file__, "..", "docker", "default-compose.yml"))
     with open(default_compose_yml, "r") as f:
-        default_configs = YAMLParser(text=eval(f"f'''{f.read()}'''")).get_data()
+        default_configs = YAMLParser(text=eval(f"f'''{f.read()}'''", globals(), custom_config)).get_data()
     LOGGER.debug("Finished parsing the default-compose.yml and updating values.")
 
     # Grab the default dockerignore file
     LOGGER.debug("Reading default dockerignore file...")
     dockerignore = ""
-    default_dockerignore = os.path.realpath(os.path.join(__file__, "..", "docker", "dockerignore"))
-    with open(default_dockerignore, "r") as f:
+    with open(os.path.realpath(os.path.join(__file__, "..", "docker", "dockerignore")), "r") as f:
         dockerignore = f.read()
+
     LOGGER.debug("Reading existing dockerignore file...")
-    existing_dockerignore = search_upwards_for_file('.dockerignore')
-    print('test')
-    if existing_dockerignore is not None:
-        print('tes324323t')
+    if existing_dockerfile := search_upwards_for_file('.dockerignore') is not None:
         with open(existing_dockerignore, "r") as f:
-            print('st')
             dockerignore += f.read()
     LOGGER.debug("Finished reading dockerignore files.")
 
@@ -159,11 +155,10 @@ def _run_env(args):
         args.up = True
         args.attach = True
 
+
     # Get the services we'll use
-    if args.services is None: args.services = default_services 
-    if 'dev' not in args.services and 'all' not in args.services and args.attach:
-        LOGGER.fatal(f"'--services' requires 'dev' (or 'all') when attach is set to true.")
-        return
+    if args.services is None: 
+        args.services = custom_config["default_services"]
     args.services = args.services if 'all' not in args.services else []
 
     # Complete the arguments
@@ -182,18 +177,17 @@ def _run_env(args):
                 dockerignore_file.write(dockerignore)
             LOGGER.info(f"Done writing to '{str(root / '.dockerignore')}'.")
 
-            client = DockerComposeClient(project=project, services=args.services, compose_file=yaml_file.name)
+            client = DockerComposeClient(project=custom_config["project"], services=args.services, compose_file=yaml_file.name)
 
             if args.down:
                 LOGGER.info(f"Tearing down...")
 
-                client.run("down")
+                client.run("down", *args.args)
 
             if args.build:
                 LOGGER.info(f"Building...")
 
-                no_cache = "--no-cache" if args.no_cache else ""
-                client.run("build", no_cache)
+                client.run("build", *args.args)
 
             if args.up:
                 # First check if the dev container is running.
@@ -225,7 +219,7 @@ def _run_env(args):
                     # Add devices (if they're present)
                     # Will check the devices available on the system. If they don't match what's provided in the .avtoolbox.yml file, ignore them
 					# https://stackoverflow.com/a/68402011
-                    for device_service_name, device_list in optional_devices.items():
+                    for device_service_name, device_list in custom_config["optional_devices"].items():
                         if device_service_name == service_name:
                             for device in parse_devices(device_list):
                                 if os.path.exists(device["PathOnHost"]):
@@ -238,10 +232,14 @@ def _run_env(args):
                 with open(root / "docker-compose.yml", "w") as yaml_file:
                     yaml.dump(config.get_data(), yaml_file)
 
-                client.run("up", "-d")
+                client.run("up", "-d", *args.args)
 
             if args.attach:
                 LOGGER.info(f"Attaching...")
+
+                if 'dev' not in args.services and 'all' not in args.services and args.attach:
+                    LOGGER.fatal(f"'--services' requires 'dev' (or 'all') when attach is set to true.")
+                    return
 
                 # Get the shell we'll use
                 dev_name = docker_compose["services"]["dev"]["container_name"]
@@ -255,7 +253,9 @@ def _run_env(args):
                         return
                 shellcmd = env.split("USERSHELLPATH=")[1].split('\n')[0]
 
-                client.run("exec", "dev", exec_cmd=shellcmd)
+                client.run("exec", "dev", exec_cmd=shellcmd, *args.args)
+        except DockerException as e:
+            LOGGER.fatal(e)
         finally:
             if os.path.isfile(dockerignore_file.name):
                 os.unlink(dockerignore_file.name)
@@ -283,8 +283,8 @@ def _init(subparser):
     subparser.add_argument("-u", "--up", action="store_true", help="Spin up the env.", default=False)
     subparser.add_argument("-d", "--down", action="store_true", help="Tear down the env.", default=False)
     subparser.add_argument("-a", "--attach", action="store_true", help="Attach to the env.", default=False)
-    subparser.add_argument("--no-cache", action="store_true", help="Build with no cache. Only used if --build is set to True.", default=False)
     subparser.add_argument("--keep-yml", action="store_true", help="Don't delete the generated docker-compose file.", default=False)
     subparser.add_argument("--services", nargs='+', help="The services to use. Defaults to 'all' or whatever 'default_services' is set to in .avtoolbox.yml. 'dev' or 'all' is required for the 'attach' argument. If 'all' is passed, all the services are used.", default=None)
+    subparser.add_argument("--args", nargs=argparse.REMAINDER, help="Additional arguments to pass to the docker compose command. No logic is done on the args, the docker command will error out if there is a problem.", default=[])
     subparser.set_defaults(cmd=_run_env)
 

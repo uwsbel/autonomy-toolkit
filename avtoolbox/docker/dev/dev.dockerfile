@@ -25,12 +25,12 @@ RUN apt-get update && apt-get upgrade -y
 
 # Install dependencies
 ARG APT_DEPENDENCIES
-RUN apt-get install --no-install-recommends -y $APT_DEPENDENCIES
+RUN apt-get update && apt-get install --no-install-recommends -y $APT_DEPENDENCIES
 
 # Install needed ros packages
 ARG ROS_WORKSPACE
 COPY $ROS_WORKSPACE/src /tmp/workspace/src/
-RUN cd /tmp/workspace && rosdep update && rosdep install --from-paths src --ignore-src -r -y
+RUN cd /tmp/workspace && apt-get update && rosdep update && rosdep install --from-paths src --ignore-src -r -y
 RUN rm -rf /tmp/workspace
 
 # Install some python packages
@@ -41,7 +41,7 @@ RUN pip install $PIP_REQUIREMENTS
 # Should be used to install additional packages or customize the shell
 ARG SCRIPTS_DIR
 COPY $SCRIPTS_DIR /tmp/scripts/
-RUN for f in /tmp/scripts/*; do [ -x $f ] && [ -f $f ] && $f || continue; done
+RUN apt-get update && for f in /tmp/scripts/*; do [ -x $f ] && [ -f $f ] && $f || continue; done
 RUN rm -rf /tmp/scripts
 
 # Clean up to reduce image size

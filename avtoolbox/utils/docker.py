@@ -9,6 +9,10 @@ import shutil
 from pathlib import Path
 from typing import Optional
 
+class DockerException(Exception):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
 class DockerComposeClient:
     def __init__(self, project=None, services=[], compose_file='docker-compose.yml'):
         self._services = services
@@ -25,6 +29,23 @@ class DockerComposeClient:
             return run_compose_cmd(*self._pre, cmd, *args, exec_cmd, *self._post, **kwargs)
         else:
             return run_compose_cmd(*self._pre, cmd, *args, *self._services, *self._post, **kwargs)
+
+def get_docker_runtime(desired: str) -> str:
+    """Checks dockers available runtimes and will return desired if it's available
+
+    Args:
+        desired (str): The desired runtime, will return this if it's available
+
+    Returns:
+        str: Either the desired or the default docker runtime if desired is not an actual runtime
+    """
+    import re
+
+    stdout, _ = run_docker_cmd("--debug", "info", stdout=-1)
+    if re.search(f"Runtimes:.*{desired}", stdout) is not None:
+        return desired
+    else:
+        return re.search("Default Runtime: (.*)", stdout).group(1)
 
 def get_docker_client_binary_path() -> Optional[Path]:
     """Return the path of the docker client binary file.
@@ -61,7 +82,8 @@ def run_docker_cmd(*args, **kwargs):
     return _run(*[docker_binary, *args], **kwargs)
 
 def _run(*args, **kwargs):
-    LOGGER.info(f"{' '.join([str(arg) for arg in args])}")
+    cmd = ' '.join([str(arg) for arg in args])
+    LOGGER.info(f"{cmd}")
 
     def post_process_stream(stream: Optional[bytes]):
         if stream is None:
@@ -73,7 +95,14 @@ def _run(*args, **kwargs):
 
     args = [arg for arg in args if arg]
     completed_process = subprocess.run(args, **kwargs)
-    return post_process_stream(completed_process.stdout), post_process_stream(completed_process.stderr)
+
+    stdout = post_process_stream(completed_process.stdout)
+    stderr = post_process_stream(completed_process.stderr)
+    
+    if completed_process.returncode:
+        raise DockerException(f"Got an error code of '{completed_process.returncode}': {cmd}")
+
+    return stdout, stderr
 
 # Ports
 # From https://github.com/containers/podman-compose/blob/devel/podman_compose.py
