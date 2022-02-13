@@ -144,7 +144,7 @@ def _run_env(args):
         dockerignore = f.read()
 
     LOGGER.debug("Reading existing dockerignore file...")
-    if existing_dockerfile := search_upwards_for_file('.dockerignore') is not None:
+    if (existing_dockerfile := search_upwards_for_file('.dockerignore')) is not None:
         with open(existing_dockerignore, "r") as f:
             dockerignore += f.read()
     LOGGER.debug("Finished reading dockerignore files.")
