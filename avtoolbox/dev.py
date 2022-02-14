@@ -7,7 +7,7 @@ from avtoolbox.utils import is_posix
 from avtoolbox.utils.logger import LOGGER
 from avtoolbox.utils.yaml_parser import YAMLParser
 from avtoolbox.utils.files import search_upwards_for_file
-from avtoolbox.utils.docker import get_docker_client_binary_path, run_docker_cmd, compose_is_installed, DockerComposeClient, norm_ports, find_available_port, parse_devices, DockerException, get_docker_runtime
+from avtoolbox.utils.docker import get_docker_client_binary_path, run_docker_cmd, compose_is_installed, DockerComposeClient, norm_ports, find_available_port, DockerException
 
 # Other imports
 import yaml, os, argparse
@@ -36,7 +36,7 @@ def _merge_dictionaries(source, destination, overwrite_lists=False):
 
     return destination
 
-def _run_env(args):
+def _run_env(args, unknown_args):
     """
     Entrypoint for the `dev` command.
 
@@ -105,7 +105,7 @@ def _run_env(args):
 
     # Read the avtoolbox yml file
     custom_config = {}
-    custom_attrs = ["project", "user", "default_services", "optional_devices", "desired_runtime", "overwrite_lists"]
+    custom_attrs = ["project", "user", "default_services", "desired_runtime", "overwrite_lists", "custom_cli_arguments"]
     try:
         # Custom config
         custom_config["root"] = root
@@ -114,9 +114,8 @@ def _run_env(args):
         custom_config["uid"] = _check_avtoolbox(avtoolbox_yml, "user", "uid", default=os.getuid() if is_posix() else 1000)
         custom_config["gid"] = _check_avtoolbox(avtoolbox_yml, "user", "gid", default=os.getgid() if is_posix() else 1000)
         custom_config["default_services"] = _check_avtoolbox(avtoolbox_yml, "default_services", default=["dev"])
-        custom_config["optional_devices"] = _check_avtoolbox(avtoolbox_yml, "optional_devices", default={})
-        custom_config["runtime"] = get_docker_runtime(_check_avtoolbox(avtoolbox_yml, "desired_runtime", default="nvidia"))
         custom_config["overwrite_lists"] = _check_avtoolbox(avtoolbox_yml, "overwrite_lists", default=False)
+        custom_config["custom_cli_arguments"] = _check_avtoolbox(avtoolbox_yml, "custom_cli_arguments", default={})
 
         # Check these two attributes exist
         # Will exit if they don't
@@ -226,17 +225,10 @@ def _run_env(args):
                             LOGGER.warn(f"PORT CONFLICT: Adjusted port mapping for '{service_name}' service from '{ports['published']}' to '{port}'.")
                             ports['published'] = port 
 
-                    # Add devices (if they're present)
-                    # Will check the devices available on the system. If they don't match what's provided in the .avtoolbox.yml file, ignore them
-					# https://stackoverflow.com/a/68402011
-                    for device_service_name, device_list in custom_config["optional_devices"].items():
-                        if device_service_name == service_name:
-                            for device in parse_devices(device_list):
-                                if os.path.exists(device["PathOnHost"]):
-                                    if 'devices' in service:
-                                        service['devices'].append(device['Original'])
-                                    else:
-                                        service['devices'] = [device['Original']]
+                    # Add custom cli arguments
+                    for arg_name, service_dict in custom_config["custom_cli_arguments"].items():
+                        if arg_name in unknown_args and service_name in service_dict:
+                            service.update(_merge_dictionaries(service, service_dict[service_name]))
 
                 # Rewrite with the parsed config
                 with open(root / "docker-compose.yml", "w") as yaml_file:
@@ -295,8 +287,8 @@ def _init(subparser):
     subparser.add_argument("-u", "--up", action="store_true", help="Spin up the env.", default=False)
     subparser.add_argument("-d", "--down", action="store_true", help="Tear down the env.", default=False)
     subparser.add_argument("-a", "--attach", action="store_true", help="Attach to the env.", default=False)
+    subparser.add_argument("-s", "--services", nargs='+', help="The services to use. Defaults to 'all' or whatever 'default_services' is set to in .avtoolbox.yml. 'dev' or 'all' is required for the 'attach' argument. If 'all' is passed, all the services are used.", default=None)
     subparser.add_argument("--keep-yml", action="store_true", help="Don't delete the generated docker-compose file.", default=False)
-    subparser.add_argument("--services", nargs='+', help="The services to use. Defaults to 'all' or whatever 'default_services' is set to in .avtoolbox.yml. 'dev' or 'all' is required for the 'attach' argument. If 'all' is passed, all the services are used.", default=None)
     subparser.add_argument("--args", nargs=argparse.REMAINDER, help="Additional arguments to pass to the docker compose command. No logic is done on the args, the docker command will error out if there is a problem.", default=[])
     subparser.set_defaults(cmd=_run_env)
 

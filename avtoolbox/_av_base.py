@@ -37,8 +37,12 @@ def _main():
     parser = _init()
 
     # Parse the arguments and update logging
-    args = parser.parse_args()
-    set_verbosity(args.verbosity)
+    known_args, unknown_args = parser.parse_known_args()
+    set_verbosity(known_args.verbosity)
 
     # Calls the cmd for the used subparser
-    args.cmd(args)
+    from inspect import signature
+    if len(signature(known_args.cmd).parameters) == 1:
+        known_args.cmd(known_args)
+    else:
+        known_args.cmd(known_args, unknown_args)
