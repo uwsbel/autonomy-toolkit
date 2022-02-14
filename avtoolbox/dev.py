@@ -174,7 +174,7 @@ def _run_env(args):
             LOGGER.info(f"Writing to '{str(root / 'docker-compose.yml')}'...")
             # Write the compose file
             with open(root / "docker-compose.yml", "w") as yaml_file:
-                yaml.dump(docker_compose, yaml_file)
+                yaml_file.write(eval(f"f'''{yaml.dump(docker_compose)}'''", globals(), custom_config))
             LOGGER.info(f"Done writing to '{str(root / 'docker-compose.yml')}'.")
 
             # Write the dockerignore
@@ -266,6 +266,8 @@ def _run_env(args):
                 client.run("exec", "dev", exec_cmd=shellcmd, *args.args)
         except DockerException as e:
             LOGGER.fatal(e)
+            if e.stderr:
+                LOGGER.fatal(e.stderr)
         finally:
             if os.path.isfile(dockerignore_file.name):
                 os.unlink(dockerignore_file.name)
