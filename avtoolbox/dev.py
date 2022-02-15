@@ -180,7 +180,7 @@ def _run_env(args, unknown_args):
             # Write the compose file
             with open(root / "docker-compose.yml", "w") as yaml_file:
                 docker_compose_str = eval(f"f'''{yaml.dump(docker_compose)}'''", globals(), custom_config)
-                docker_compose = yaml.dump(docker_compose_str)
+                docker_compose = YAMLParser(text=docker_compose_str).get_data()
                 yaml_file.write(docker_compose_str)
             LOGGER.info(f"Done writing to '{str(root / 'docker-compose.yml')}'.")
 
