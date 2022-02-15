@@ -5,7 +5,7 @@
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="avtoolbox" href="api/avtoolbox/index.html" /><link rel="prev" title="API Reference" href="index.html" />
 
     <link rel="shortcut icon" href="../_static/cropped-SBEL-32x32.png"/><meta name="generator" content="sphinx-3.4.2, furo 2020.12.30.beta24"/>
-        <title>CLI Documentation - Autonomous Vehicle Toolbox 0.0.32 documentation</title>
+        <title>CLI Documentation - Autonomous Vehicle Toolbox 0.0.33 documentation</title>
       <link rel="stylesheet" href="../_static/styles/furo.css?digest=33d2fc4f3f180ec1ffc6524e273e21d7d58cbe49">
     <link rel="stylesheet" href="../_static/pygments.css">
     <link media="(prefers-color-scheme: dark)" rel="stylesheet" href="../_static/pygments_dark.css">
@@ -104,7 +104,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">Autonomous Vehicle Toolbox 0.0.32 documentation</div></a>
+      <a href="../index.html"><div class="brand">Autonomous Vehicle Toolbox 0.0.33 documentation</div></a>
     </div>
     <div class="header-right">
       <label class="toc-overlay-icon toc-header-icon" for="__toc">
@@ -214,8 +214,8 @@ the <code class="docutils literal notranslate"><span class="pre">docker</span> <
 pre-installed. The software stack for the AV vehicle utilizes ROS 2 and will use
 the same container that is used for development.</p>
 <p>Additional containers may be provided to allow for GUI windows or run simulations.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">usage</span><span class="p">:</span> <span class="n">av</span> <span class="n">dev</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">b</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">u</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">d</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">a</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">keep</span><span class="o">-</span><span class="n">yml</span><span class="p">]</span>
-              <span class="p">[</span><span class="o">--</span><span class="n">services</span> <span class="n">SERVICES</span> <span class="p">[</span><span class="n">SERVICES</span> <span class="o">...</span><span class="p">]]</span> <span class="p">[</span><span class="o">--</span><span class="n">args</span> <span class="o">...</span><span class="p">]</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">usage</span><span class="p">:</span> <span class="n">av</span> <span class="n">dev</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">b</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">u</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">d</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">a</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">r</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">s</span> <span class="n">SERVICES</span> <span class="p">[</span><span class="n">SERVICES</span> <span class="o">...</span><span class="p">]]</span>
+              <span class="p">[</span><span class="o">--</span><span class="n">keep</span><span class="o">-</span><span class="n">yml</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">args</span> <span class="o">...</span><span class="p">]</span>
 </pre></div>
 </div>
 <section id="Named Arguments">
@@ -237,12 +237,16 @@ the same container that is used for development.</p>
 <dd><p>Attach to the env.</p>
 <p>Default: False</p>
 </dd>
+<dt><kbd>-r, --run</kbd></dt>
+<dd><p>Run a command in the provided service. Only one service may be provided. No other arguments may be called.</p>
+<p>Default: False</p>
+</dd>
+<dt><kbd>-s, --services</kbd></dt>
+<dd><p>The services to use. Defaults to ‘all’ or whatever ‘default_services’ is set to in .avtoolbox.yml. ‘dev’ or ‘all’ is required for the ‘attach’ argument. If ‘all’ is passed, all the services are used.</p>
+</dd>
 <dt><kbd>--keep-yml</kbd></dt>
 <dd><p>Don’t delete the generated docker-compose file.</p>
 <p>Default: False</p>
-</dd>
-<dt><kbd>--services</kbd></dt>
-<dd><p>The services to use. Defaults to ‘all’ or whatever ‘default_services’ is set to in .avtoolbox.yml. ‘dev’ or ‘all’ is required for the ‘attach’ argument. If ‘all’ is passed, all the services are used.</p>
 </dd>
 <dt><kbd>--args</kbd></dt>
 <dd><p>Additional arguments to pass to the docker compose command. No logic is done on the args, the docker command will error out if there is a problem.</p>
