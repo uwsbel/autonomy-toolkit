@@ -133,7 +133,7 @@ def _run_env(args, unknown_args):
     LOGGER.debug("Reading the default-compose.yml file...")
     default_compose_yml = os.path.realpath(os.path.join(__file__, "..", "docker", "default-compose.yml"))
     with open(default_compose_yml, "r") as f:
-        default_configs = YAMLParser(text=eval(f"f'''{f.read()}'''", globals(), custom_config)).get_data()
+        default_configs = YAMLParser(text=f.read()).get_data()
     LOGGER.debug("Finished parsing the default-compose.yml and updating values.")
 
     # Grab the default dockerignore file
@@ -143,7 +143,7 @@ def _run_env(args, unknown_args):
         dockerignore = f.read()
 
     LOGGER.debug("Reading existing dockerignore file...")
-    if (existing_dockerfile := search_upwards_for_file('.dockerignore')) is not None:
+    if (existing_dockerignore := search_upwards_for_file('.dockerignore')) is not None:
         with open(existing_dockerignore, "r") as f:
             dockerignore += f.read()
     LOGGER.debug("Finished reading dockerignore files.")
@@ -155,11 +155,17 @@ def _run_env(args, unknown_args):
     docker_compose = _merge_dictionaries(temp, default_configs, custom_config["overwrite_lists"])
 
     # If no command is passed, start up the container and attach to it
-    cmds = [args.build, args.up, args.down, args.attach] 
+    cmds = [args.build, args.up, args.down, args.attach, args.run] 
     if all(not c for c in cmds):
         args.up = True
         args.attach = True
-
+    
+    if args.run and any([args.build, args.up, args.down, args.attach]):
+        LOGGER.fatal("The '--run' command can be the only command.")
+        return
+    elif args.run and len(args.services) != 1:
+        LOGGER.fatal("The '--run' command requires only one service.")
+        return
 
     # Get the services we'll use
     if args.services is None: 
@@ -256,6 +262,12 @@ def _run_env(args, unknown_args):
                 shellcmd = env.split("USERSHELLPATH=")[1].split('\n')[0]
 
                 client.run("exec", "dev", exec_cmd=shellcmd, *args.args)
+
+            if args.run:
+                LOGGER.info(f"Running...")
+
+                client.run("run", "chrono", *args.args, no_services=True)
+
         except DockerException as e:
             LOGGER.fatal(e)
             if e.stderr:
@@ -287,6 +299,7 @@ def _init(subparser):
     subparser.add_argument("-u", "--up", action="store_true", help="Spin up the env.", default=False)
     subparser.add_argument("-d", "--down", action="store_true", help="Tear down the env.", default=False)
     subparser.add_argument("-a", "--attach", action="store_true", help="Attach to the env.", default=False)
+    subparser.add_argument("-r", "--run", action="store_true", help="Run a command in the provided service. Only one service may be provided. No other arguments may be called.", default=False)
     subparser.add_argument("-s", "--services", nargs='+', help="The services to use. Defaults to 'all' or whatever 'default_services' is set to in .avtoolbox.yml. 'dev' or 'all' is required for the 'attach' argument. If 'all' is passed, all the services are used.", default=None)
     subparser.add_argument("--keep-yml", action="store_true", help="Don't delete the generated docker-compose file.", default=False)
     subparser.add_argument("--args", nargs=argparse.REMAINDER, help="Additional arguments to pass to the docker compose command. No logic is done on the args, the docker command will error out if there is a problem.", default=[])

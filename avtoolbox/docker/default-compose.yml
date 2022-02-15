@@ -1,41 +1,41 @@
 version: "3.9"
 services:
   dev:
-    image: avtoolbox/{project}:dev
-    hostname: {project}-dev
-    container_name: {project}-dev
+    image: "avtoolbox/{project}:dev"
+    hostname: "{project}-dev"
+    container_name: "{project}-dev"
     build:
-      context: {str(root)}
-      dockerfile: {os.path.realpath(os.path.join(__file__, "..", "docker", "dev", "dev.dockerfile"))}
+      context: "{str(root)}"
+      dockerfile: "{os.path.realpath(os.path.join(__file__, \"..\", \"docker\", \"dev\", \"dev.dockerfile\"))}"
       network: "host"
       args:
-        PROJECT: {project}
-        USERNAME: {username}
+        PROJECT: "{project}"
+        USERNAME: "{username}"
         SCRIPTS_DIR: "docker/dev/scripts"
         ROS_DISTRO: "galactic"
         ROS_WORKSPACE: "workspace"
         APT_DEPENDENCIES: ""
         PIP_REQUIREMENTS: ""
     environment:
-      - DISPLAY=vnc:0.0
-      - USER_UID={uid}
-      - USER_GID={gid}
-      - NVIDIA_VISIBLE_DEVICES=all
+      - "DISPLAY=vnc:0.0"
+      - "USER_UID={uid}"
+      - "USER_GID={gid}"
+      - "NVIDIA_VISIBLE_DEVICES=all"
     tty: true
     volumes: 
-      - {root}:/home/{username}/{project}
+      - "{root}:/home/{username}/{project}"
     networks:
-      {project}:
+      "{project}":
   vnc:
-    image: avtoolbox/{project}:vnc
-    hostname: {project}-vnc
-    container_name: {project}-vnc
+    image: "avtoolbox/{project}:vnc"
+    hostname: "{project}-vnc"
+    container_name: "{project}-vnc"
     build:
-      context: {os.path.realpath(os.path.join(__file__, "..", "docker", "vnc"))}
-      dockerfile: {os.path.realpath(os.path.join(__file__, "..", "docker", "vnc", "vnc.dockerfile"))}
+      context: "{os.path.realpath(os.path.join(__file__, \"..\", \"docker\", \"vnc\"))}"
+      dockerfile: "{os.path.realpath(os.path.join(__file__, \"..\", \"docker\", \"vnc\", \"vnc.dockerfile\"))}"
       network: "host"
       args:
-        VNC_PASSWORD: {project}
+        VNC_PASSWORD: "{project}"
     environment:
       - RUN_XTERM=no
       - RUN_FLUXBOX=yes
@@ -43,6 +43,6 @@ services:
       - "8080:8080"
       - "5900:5900"
     networks:
-      {project}:
+      "{project}":
 networks:
-  {project}:
+  "{project}":

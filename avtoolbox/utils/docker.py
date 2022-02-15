@@ -29,6 +29,9 @@ class DockerComposeClient:
         if cmd == "exec":
             exec_cmd = kwargs.pop("exec_cmd")
             return run_compose_cmd(*self._pre, cmd, *args, exec_cmd, *self._post, **kwargs)
+        elif 'no_services' in kwargs:
+            del kwargs['no_services']
+            return run_compose_cmd(*self._pre, cmd, *args, *self._post, **kwargs)
         else:
             return run_compose_cmd(*self._pre, cmd, *args, *self._services, *self._post, **kwargs)
 
