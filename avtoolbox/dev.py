@@ -179,7 +179,9 @@ def _run_env(args, unknown_args):
             LOGGER.info(f"Writing to '{str(root / 'docker-compose.yml')}'...")
             # Write the compose file
             with open(root / "docker-compose.yml", "w") as yaml_file:
-                yaml_file.write(eval(f"f'''{yaml.dump(docker_compose)}'''", globals(), custom_config))
+                docker_compose_str = eval(f"f'''{yaml.dump(docker_compose)}'''", globals(), custom_config)
+                docker_compose = yaml.dump(docker_compose_str)
+                yaml_file.write(docker_compose_str)
             LOGGER.info(f"Done writing to '{str(root / 'docker-compose.yml')}'.")
 
             # Write the dockerignore
@@ -232,6 +234,7 @@ def _run_env(args, unknown_args):
                             ports['published'] = port 
 
                     # Add custom cli arguments
+                    # TODO: Dishas 'requiured' and 'has_argument' as service names
                     for arg_name, service_dict in custom_config["custom_cli_arguments"].items():
                         if arg_name in unknown_args and service_name in service_dict:
                             service.update(_merge_dictionaries(service, service_dict[service_name]))
