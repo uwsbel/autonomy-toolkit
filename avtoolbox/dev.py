@@ -234,10 +234,26 @@ def _run_env(args, unknown_args):
                             ports['published'] = port 
 
                     # Add custom cli arguments
-                    # TODO: Dishas 'requiured' and 'has_argument' as service names
-                    for arg_name, service_dict in custom_config["custom_cli_arguments"].items():
-                        if arg_name in unknown_args and service_name in service_dict:
-                            service.update(_merge_dictionaries(service, service_dict[service_name]))
+                    # TODO: Disable 'argparse' as a service name
+                    service_args = {k: v for k,v in custom_config["custom_cli_arguments"].items() if service_name in v}
+                    if service_args:
+                        # We'll use argparse to parse the unknown flags
+                        parser = argparse.ArgumentParser(prog=service_name, add_help=False)
+                        for arg_name, arg_dict in service_args.items():
+                            if arg_name[:2] != '--':
+                                LOGGER.fatal(f"The argparse argument must begin with '--'. Got '{arg_name}' instead.")
+                                return
+                            parser.add_argument(arg_name, **custom_config["custom_cli_arguments"][arg_name].get("argparse", {}))
+                        known, unknown = parser.parse_known_args(unknown_args)
+                        output = yaml.load(eval(f"f'''{yaml.dump(service_args)}'''", vars(known)), Loader=yaml.Loader)
+                        for k,v in output.items():
+                            # Only use if the arg is set
+                            # Assumed it is set if it passes a boolean conversion
+                            if getattr(known, v.get('argparse', {}).get('dest', k[2:])):
+                                service.update(_merge_dictionaries(service, v[service_name]))
+
+                        if unknown:
+                            LOGGER.warn(f"Found unknown arguments in custom arguents for service '{service_name}': '{', '.join(unknown)}'. Ignoring.")
 
                 # Rewrite with the parsed config
                 with open(root / "docker-compose.yml", "w") as yaml_file:
@@ -248,23 +264,30 @@ def _run_env(args, unknown_args):
             if args.attach:
                 LOGGER.info(f"Attaching...")
 
-                if 'dev' not in args.services and 'all' not in args.services and args.attach:
-                    LOGGER.fatal(f"'--services' requires 'dev' (or 'all') when attach is set to true.")
+                if len(args.services) > 1 and 'dev' not in args.services:
+                    LOGGER.fatal(f"'--services' must have either one service or 'dev' (or 'all', which will attach to 'dev') when attach is set to true.")
                     return
 
+                # Determine the service we'd like to attach to
+                # If 'dev' or 'all' is passed, dev will be attached to
+                # Otherwise, one service must be selected and that service will be attached to
+                service_name = 'dev' if 'dev' in args.services or len(args.services) == 0 else args.services[0]
+
                 # Get the shell we'll use
-                dev_name = docker_compose["services"]["dev"]["container_name"]
-                env, err = run_docker_cmd("exec", dev_name, "env", stdout=-1, stderr=-1)
-                if err:
-                    if "Error: No such container: " in err:
+                container_name = docker_compose["services"][service_name]["container_name"]
+                try:
+                    env, err = run_docker_cmd("exec", container_name, "env", stdout=-1, stderr=-1)
+                except DockerException as e:
+                    if "Error: No such container: " in e.stderr:
                         LOGGER.fatal(f"Please rerun the command with '--up'. The container cannot be attached to since it hasn't been created.")
                         return
-                    else:
-                        LOGGER.fatal(f"Got error while trying to attach to the container: '{err}'.")
-                        return
+                    raise e
+                if "USERSHELLPATH" not in env:
+                    LOGGER.fatal(f"To attach to a container using avtoolbox, the environment variable \"USERSHELLPATH\" must be defined within the container. Was not found, please add it to the container.")
+                    return
                 shellcmd = env.split("USERSHELLPATH=")[1].split('\n')[0]
 
-                client.run("exec", "dev", exec_cmd=shellcmd, *args.args)
+                client.run("exec", service_name, exec_cmd=shellcmd, *args.args)
 
             if args.run:
                 LOGGER.info(f"Running...")

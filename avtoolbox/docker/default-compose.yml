@@ -24,8 +24,6 @@ services:
     tty: true
     volumes: 
       - "{root}:/home/{username}/{project}"
-    networks:
-      "{project}":
   vnc:
     image: "avtoolbox/{project}:vnc"
     hostname: "{project}-vnc"
@@ -42,7 +40,6 @@ services:
     ports:
       - "8080:8080"
       - "5900:5900"
-    networks:
-      "{project}":
 networks:
-  "{project}":
+  default:
+    name: "{project}"
