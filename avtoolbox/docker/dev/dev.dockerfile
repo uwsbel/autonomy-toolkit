@@ -20,6 +20,10 @@ RUN adduser --shell $USERSHELLPATH --disabled-password --gecos "" $USERNAME && \
     echo "$USERNAME ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/$USERNAME && \
     chmod 0440 /etc/sudoers.d/$USERNAME
 
+#device permissions on jetson
+RUN usermod -aG video $USERNAME
+RUN usermod -aG dialout $USERNAME
+
 # Check for updates
 RUN apt-get update && apt-get upgrade -y
 
@@ -51,6 +55,7 @@ RUN apt-get clean && apt-get autoremove -y && rm -rf /var/lib/apt/lists/*
 RUN sed -i 's|source|#source|g' /ros_entrypoint.sh
 RUN echo ". /opt/ros/$ROS_DISTRO/setup.sh" >> $USERSHELLPROFILE
 RUN echo "mkdir -p ~/.ros" >> $USERSHELLPROFILE
+RUN echo 'export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib/aarch64-linux-gnu/tegra/' >> $USERSHELLPROFILE
 RUN echo "[ -f $USERHOME/$PROJECT/workspace/install/setup.$USERSHELL ] && . $USERHOME/$PROJECT/workspace/install/setup.$USERSHELL" >> $USERSHELLPROFILE
 RUN /bin/$USERSHELL -c "source /opt/ros/$ROS_DISTRO/setup.$USERSHELL"
 
