@@ -110,7 +110,8 @@ def _run_env(args, unknown_args):
         # Custom config
         custom_config["root"] = root
         custom_config["project"] = _check_avtoolbox(avtoolbox_yml, "project")
-        custom_config["username"] = _check_avtoolbox(avtoolbox_yml, "user", "username", default=custom_config["project"])
+        custom_config["username"] = _check_avtoolbox(avtoolbox_yml, "user", "container_username", default=custom_config["project"])
+        custom_config["host_username"] = _check_avtoolbox(avtoolbox_yml, "user", "host_username", default=os.getlogin())
         custom_config["uid"] = _check_avtoolbox(avtoolbox_yml, "user", "uid", default=os.getuid() if is_posix() else 1000)
         custom_config["gid"] = _check_avtoolbox(avtoolbox_yml, "user", "gid", default=os.getgid() if is_posix() else 1000)
         custom_config["default_services"] = _check_avtoolbox(avtoolbox_yml, "default_services", default=["dev"])
