@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
     <link rel="shortcut icon" href="../../../_static/cropped-SBEL-32x32.png"/><meta name="generator" content="sphinx-3.4.2, furo 2020.12.30.beta24"/>
-        <title>avtoolbox.utils.docker - Autonomous Vehicle Toolbox 0.0.36 documentation</title>
+        <title>avtoolbox.utils.docker - Autonomous Vehicle Toolbox 0.0.38 documentation</title>
       <link rel="stylesheet" href="../../../_static/styles/furo.css?digest=33d2fc4f3f180ec1ffc6524e273e21d7d58cbe49">
     <link rel="stylesheet" href="../../../_static/pygments.css">
     <link media="(prefers-color-scheme: dark)" rel="stylesheet" href="../../../_static/pygments_dark.css">
@@ -103,7 +103,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">Autonomous Vehicle Toolbox 0.0.36 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">Autonomous Vehicle Toolbox 0.0.38 documentation</div></a>
     </div>
     <div class="header-right">
       <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
@@ -182,10 +182,12 @@
 <span class="kn">from</span> <span class="nn">avtoolbox.utils.logger</span> <span class="k">import</span> <span class="n">LOGGER</span>
 
 <span class="c1"># External imports</span>
-<span class="kn">import</span> <span class="nn">subprocess</span>
-<span class="kn">import</span> <span class="nn">shutil</span>
+<span class="kn">import</span> <span class="nn">subprocess</span><span class="o">,</span> <span class="nn">shutil</span><span class="o">,</span> <span class="nn">os</span>
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="k">import</span> <span class="n">Path</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Optional</span>
+
+<span class="n">ENV</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">ENV</span><span class="p">[</span><span class="s2">"COMPOSE_IGNORE_ORPHANS"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"true"</span>
 
 <div class="viewcode-block" id="DockerException"><a class="viewcode-back" href="../../../usage/api/avtoolbox/utils/docker/index.html#avtoolbox.utils.docker.DockerException">[docs]</a><span class="k">class</span> <span class="nc">DockerException</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -260,7 +262,7 @@
         <span class="k">return</span> <span class="n">stream</span>
 
     <span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="n">arg</span> <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">args</span> <span class="k">if</span> <span class="n">arg</span><span class="p">]</span>
-    <span class="n">completed_process</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">completed_process</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span> <span class="n">env</span><span class="o">=</span><span class="n">ENV</span><span class="p">)</span>
 
     <span class="n">stdout</span> <span class="o">=</span> <span class="n">post_process_stream</span><span class="p">(</span><span class="n">completed_process</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
     <span class="n">stderr</span> <span class="o">=</span> <span class="n">post_process_stream</span><span class="p">(</span><span class="n">completed_process</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
