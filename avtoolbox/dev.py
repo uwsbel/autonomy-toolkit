@@ -14,22 +14,21 @@ import yaml, os, argparse
 
 # Check that the .avtoolbox.conf file is located in this directory or any parent directories
 # This file should be at the root of any avtoolbox compatible stack
-AVTOOLBOX_YML_PATH = search_upwards_for_file('.avtoolbox.yml')
-if AVTOOLBOX_YML_PATH is None:
-    LOGGER.fatal("No .avtoolbox.yml file was found in this directory or any parent directories. Make sure you are running this command in an avtoolbox compatible repository.")
-    exit(-1)
-LOGGER.info(f"Found '.avtoolbox.yml' at {AVTOOLBOX_YML_PATH}.")
+if not os.environ.get("AVTOOLBOX_DOCS", False):
+    AVTOOLBOX_YML_PATH = search_upwards_for_file('.avtoolbox.yml')
+    if AVTOOLBOX_YML_PATH is None:
+        LOGGER.fatal("No .avtoolbox.yml file was found in this directory or any parent directories. Make sure you are running this command in an avtoolbox compatible repository.")
+        exit(-1)
+    LOGGER.info(f"Found '.avtoolbox.yml' at {AVTOOLBOX_YML_PATH}.")
 
-# Globals
-# PATHS
-ROOT = AVTOOLBOX_YML_PATH.parent
-DOCKER_COMPOSE_PATH = ROOT / ".docker-compose.yml"
-DOCKER_IGNORE_PATH = ROOT / ".dockerignore"
-AVTOOLBOX_USER_COUNT_PATH = ROOT / ".avtoolbox.user_count"
-# CUSTOM ATTRIBUTES ALLOWED IN THE AVTOOLBOX_YML FILE
-CUSTOM_ATTRS = ["project", "user", "default_services", "desired_runtime", "overwrite_lists", "custom_cli_arguments"]
-
-
+    # Globals
+    # PATHS
+    ROOT = AVTOOLBOX_YML_PATH.parent
+    DOCKER_COMPOSE_PATH = ROOT / ".docker-compose.yml"
+    DOCKER_IGNORE_PATH = ROOT / ".dockerignore"
+    AVTOOLBOX_USER_COUNT_PATH = ROOT / ".avtoolbox.user_count"
+    # CUSTOM ATTRIBUTES ALLOWED IN THE AVTOOLBOX_YML FILE
+    CUSTOM_ATTRS = ["project", "user", "default_services", "desired_runtime", "overwrite_lists", "custom_cli_arguments"]
 
 def _check_avtoolbox(avtoolbox_yml, *args, default=None):
     if not avtoolbox_yml.contains(*args):
