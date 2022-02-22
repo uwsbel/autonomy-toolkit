@@ -69,6 +69,9 @@ def _parse_avtoolbox(avtoolbox_yml):
         custom_config["overwrite_lists"] = _check_avtoolbox(avtoolbox_yml, "overwrite_lists", default=False)
         custom_config["custom_cli_arguments"] = _check_avtoolbox(avtoolbox_yml, "custom_cli_arguments", default={})
 
+        custom_config["project"] = eval(f"f'''{custom_config['project']}'''", custom_config)
+        custom_config["username"] = eval(f"f'''{custom_config['username']}'''", custom_config)
+
         # Check these two attributes exist
         # Will exit if they don't
         _check_avtoolbox(avtoolbox_yml, "services")
