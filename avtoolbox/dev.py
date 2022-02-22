@@ -10,7 +10,7 @@ from avtoolbox.utils.files import search_upwards_for_file
 from avtoolbox.utils.docker import get_docker_client_binary_path, run_docker_cmd, compose_is_installed, DockerComposeClient, norm_ports, find_available_port, DockerException
 
 # Other imports
-import yaml, os, argparse
+import yaml, os, argparse, getpass
 
 # Check that the .avtoolbox.conf file is located in this directory or any parent directories
 # This file should be at the root of any avtoolbox compatible stack
@@ -62,7 +62,7 @@ def _parse_avtoolbox(avtoolbox_yml):
         custom_config["root"] = ROOT
         custom_config["project"] = _check_avtoolbox(avtoolbox_yml, "project")
         custom_config["username"] = _check_avtoolbox(avtoolbox_yml, "user", "container_username", default=custom_config["project"])
-        custom_config["host_username"] = _check_avtoolbox(avtoolbox_yml, "user", "host_username", default=os.getlogin())
+        custom_config["host_username"] = _check_avtoolbox(avtoolbox_yml, "user", "host_username", default=getpass.getuser())
         custom_config["uid"] = _check_avtoolbox(avtoolbox_yml, "user", "uid", default=os.getuid() if is_posix() else 1000)
         custom_config["gid"] = _check_avtoolbox(avtoolbox_yml, "user", "gid", default=os.getgid() if is_posix() else 1000)
         custom_config["default_services"] = _check_avtoolbox(avtoolbox_yml, "default_services", default=["dev"])
