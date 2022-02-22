@@ -17,13 +17,14 @@ services:
         APT_DEPENDENCIES: ""
         PIP_REQUIREMENTS: ""
     environment:
-      - "DISPLAY=vnc:0.0"
-      - "USER_UID={uid}"
-      - "USER_GID={gid}"
-      - "NVIDIA_VISIBLE_DEVICES=all"
+      DISPLAY: vnc:0.0
+      USER_UID: "{uid}"
+      USER_GID: "{gid}"
+      NVIDIA_VISIBLE_DEVICES: "all"
+      NVIDIA_DRIVER_CAPABILITIES: "all"
     tty: true
     volumes: 
-      - "{root}:/home/{username}/{project}"
+     - "{root}:/home/{username}/{project}"
   vnc:
     image: "avtoolbox/{project}:vnc"
     hostname: "{project}-vnc"
@@ -35,8 +36,8 @@ services:
       args:
         VNC_PASSWORD: "{project}"
     environment:
-      - RUN_XTERM=no
-      - RUN_FLUXBOX=yes
+      RUN_XTERM: no
+      RUN_FLUXBOX: yes
     ports:
       - "8080:8080"
       - "5900:5900"

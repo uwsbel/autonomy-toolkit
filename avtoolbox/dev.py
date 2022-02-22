@@ -12,6 +12,25 @@ from avtoolbox.utils.docker import get_docker_client_binary_path, run_docker_cmd
 # Other imports
 import yaml, os, argparse
 
+# Check that the .avtoolbox.conf file is located in this directory or any parent directories
+# This file should be at the root of any avtoolbox compatible stack
+AVTOOLBOX_YML_PATH = search_upwards_for_file('.avtoolbox.yml')
+if AVTOOLBOX_YML_PATH is None:
+    LOGGER.fatal("No .avtoolbox.yml file was found in this directory or any parent directories. Make sure you are running this command in an avtoolbox compatible repository.")
+    exit(-1)
+LOGGER.info(f"Found '.avtoolbox.yml' at {AVTOOLBOX_YML_PATH}.")
+
+# Globals
+# PATHS
+ROOT = AVTOOLBOX_YML_PATH.parent
+DOCKER_COMPOSE_PATH = ROOT / ".docker-compose.yml"
+DOCKER_IGNORE_PATH = ROOT / ".dockerignore"
+AVTOOLBOX_USER_COUNT_PATH = ROOT / ".avtoolbox.user_count"
+# CUSTOM ATTRIBUTES ALLOWED IN THE AVTOOLBOX_YML FILE
+CUSTOM_ATTRS = ["project", "user", "default_services", "desired_runtime", "overwrite_lists", "custom_cli_arguments"]
+
+
+
 def _check_avtoolbox(avtoolbox_yml, *args, default=None):
     if not avtoolbox_yml.contains(*args):
         if default is None:
@@ -35,6 +54,107 @@ def _merge_dictionaries(source, destination, overwrite_lists=False):
             destination[key] = value
 
     return destination
+
+def _parse_avtoolbox(avtoolbox_yml):
+    # Read the avtoolbox yml file
+    custom_config = {}
+    try:
+        # Custom config
+        custom_config["root"] = ROOT
+        custom_config["project"] = _check_avtoolbox(avtoolbox_yml, "project")
+        custom_config["username"] = _check_avtoolbox(avtoolbox_yml, "user", "container_username", default=custom_config["project"])
+        custom_config["host_username"] = _check_avtoolbox(avtoolbox_yml, "user", "host_username", default=os.getlogin())
+        custom_config["uid"] = _check_avtoolbox(avtoolbox_yml, "user", "uid", default=os.getuid() if is_posix() else 1000)
+        custom_config["gid"] = _check_avtoolbox(avtoolbox_yml, "user", "gid", default=os.getgid() if is_posix() else 1000)
+        custom_config["default_services"] = _check_avtoolbox(avtoolbox_yml, "default_services", default=["dev"])
+        custom_config["overwrite_lists"] = _check_avtoolbox(avtoolbox_yml, "overwrite_lists", default=False)
+        custom_config["custom_cli_arguments"] = _check_avtoolbox(avtoolbox_yml, "custom_cli_arguments", default={})
+
+        # Check these two attributes exist
+        # Will exit if they don't
+        _check_avtoolbox(avtoolbox_yml, "services")
+        _check_avtoolbox(avtoolbox_yml, "services", "dev")
+    except AttributeError as e:
+        return
+
+    return custom_config
+
+def _read_text(*args):
+    filepath = os.path.realpath(os.path.join(*args))
+    LOGGER.info(f"Reading from '{filepath}'...")
+    with open(filepath, 'r') as f:
+        text = f.read()
+    LOGGER.info(f"Finished reading from '{filepath}'.")
+
+    return text
+
+def _write_text(filepath, text):
+    filepath = str(filepath)
+    LOGGER.info(f"Writing to '{filepath}'...")
+    with open(filepath, 'w') as file:
+        file.write(text)
+    LOGGER.info(f"Done writing to '{filepath}'.")
+
+def _update_user_count(filepath, val):
+    num = 0
+    if os.path.isfile(filepath):
+        num = int(_read_text(str(filepath)))
+    num += val
+    _write_text(filepath, str(num))
+
+    return num
+
+def _unlink_file(filepath):
+    if not os.path.isfile(filepath):
+        LOGGER.warn(f"'{filepath}' was deleted prematurely. This may be a bug.")
+        return 1
+    else:
+        os.unlink(filepath)
+        return 0
+
+def _update_compose(client, custom_config, args, unknown_args):
+    # For each service that we're spinning up, check some arguments
+    # For instance, if two ports match between different containers (common if you 
+    # have different projects which is the avtoolbox framework and export the same ports),
+    # you will run into issues when they're both running
+    config = YAMLParser(text=client.run("config", stdout=-1)[0])
+    for service_name, service in config.get_data()['services'].items():
+        # Check ports
+        if args.up:
+            for ports in service.get('ports', []):
+                port = find_available_port(ports['published'])
+                if port is None:
+                    LOGGER.fatal(f"PORT CONFLICT: Could not find an available port within range of '{ports['published']}' to use for the '{service_name}' service.")
+                    return
+                elif port != ports['published']:
+                    LOGGER.warn(f"PORT CONFLICT: Adjusted port mapping for '{service_name}' service from '{ports['published']}' to '{port}'.")
+                    ports['published'] = port 
+
+        # Add custom cli arguments
+        # TODO: Disable 'argparse' as a service name
+        service_args = {k: v for k,v in custom_config["custom_cli_arguments"].items() if service_name in v}
+        if service_args:
+            # We'll use argparse to parse the unknown flags
+            parser = argparse.ArgumentParser(prog=service_name, add_help=False)
+            for arg_name, arg_dict in service_args.items():
+                if arg_name[:2] != '--':
+                    LOGGER.fatal(f"The argparse argument must begin with '--'. Got '{arg_name}' instead.")
+                    return
+                parser.add_argument(arg_name, **custom_config["custom_cli_arguments"][arg_name].get("argparse", {}))
+            known, unknown = parser.parse_known_args(unknown_args)
+            output = yaml.load(eval(f"f'''{yaml.dump(service_args)}'''", vars(known)), Loader=yaml.Loader)
+            for k,v in output.items():
+                # Only use if the arg is set
+                # Assumed it is set if it passes a boolean conversion
+                if getattr(known, v.get('argparse', {}).get('dest', k[2:])):
+                    service.update(_merge_dictionaries(service, v[service_name]))
+
+            if unknown:
+                LOGGER.warn(f"Found unknown arguments in custom arguents for service '{service_name}': '{', '.join(unknown)}'. Ignoring.")
+
+    # Rewrite with the parsed config
+    with open(DOCKER_COMPOSE_PATH, "w") as yaml_file:
+        yaml.dump(config.get_data(), yaml_file)
 
 def _run_env(args, unknown_args):
     """
@@ -89,41 +209,12 @@ def _run_env(args, unknown_args):
         return
     LOGGER.debug("'docker compose' (V2) is installed.")
 
-    # Check that the .avtoolbox.conf file is located in this directory or any parent directories
-    # This file should be at the root of any avtoolbox compatible stack
-    LOGGER.info("Searching for '.avtoolbox.yml'...")
-    conf = search_upwards_for_file('.avtoolbox.yml')
-    if conf is None:
-        LOGGER.fatal("No .avtoolbox.yml file was found in this directory or any parent directories. Make sure you are running this command in an avtoolbox compatible repository.")
-        return
-    root = conf.parent
-    LOGGER.info(f"Found '.avtoolbox.yml' at {conf}.")
-
     # Parse the .avtoolbox.yml file
-    LOGGER.debug("Parsering '.avtoolbox.yml' file.")
-    avtoolbox_yml = YAMLParser(conf)
+    LOGGER.debug("Parsing '.avtoolbox.yml' file.")
+    avtoolbox_yml = YAMLParser(AVTOOLBOX_YML_PATH)
 
     # Read the avtoolbox yml file
-    custom_config = {}
-    custom_attrs = ["project", "user", "default_services", "desired_runtime", "overwrite_lists", "custom_cli_arguments"]
-    try:
-        # Custom config
-        custom_config["root"] = root
-        custom_config["project"] = _check_avtoolbox(avtoolbox_yml, "project")
-        custom_config["username"] = _check_avtoolbox(avtoolbox_yml, "user", "container_username", default=custom_config["project"])
-        custom_config["host_username"] = _check_avtoolbox(avtoolbox_yml, "user", "host_username", default=os.getlogin())
-        custom_config["uid"] = _check_avtoolbox(avtoolbox_yml, "user", "uid", default=os.getuid() if is_posix() else 1000)
-        custom_config["gid"] = _check_avtoolbox(avtoolbox_yml, "user", "gid", default=os.getgid() if is_posix() else 1000)
-        custom_config["default_services"] = _check_avtoolbox(avtoolbox_yml, "default_services", default=["dev"])
-        custom_config["overwrite_lists"] = _check_avtoolbox(avtoolbox_yml, "overwrite_lists", default=False)
-        custom_config["custom_cli_arguments"] = _check_avtoolbox(avtoolbox_yml, "custom_cli_arguments", default={})
-
-        # Check these two attributes exist
-        # Will exit if they don't
-        _check_avtoolbox(avtoolbox_yml, "services")
-        _check_avtoolbox(avtoolbox_yml, "services", "dev")
-    except AttributeError as e:
-        return
+    custom_config = _parse_avtoolbox(avtoolbox_yml)
 
     # Additional checks
     if any(c.isupper() for c in custom_config["project"]):
@@ -131,33 +222,23 @@ def _run_env(args, unknown_args):
         return
 
     # Load in the default values
-    LOGGER.debug("Reading the default-compose.yml file...")
-    default_compose_yml = os.path.realpath(os.path.join(__file__, "..", "docker", "default-compose.yml"))
-    with open(default_compose_yml, "r") as f:
-        default_configs = YAMLParser(text=f.read()).get_data()
-    LOGGER.debug("Finished parsing the default-compose.yml and updating values.")
+    default_configs = YAMLParser(text=_read_text(__file__, "..", "docker", "default-compose.yml")).get_data()
 
     # Grab the default dockerignore file
-    LOGGER.debug("Reading default dockerignore file...")
-    dockerignore = ""
-    with open(os.path.realpath(os.path.join(__file__, "..", "docker", "dockerignore")), "r") as f:
-        dockerignore = f.read()
-
-    LOGGER.debug("Reading existing dockerignore file...")
+    dockerignore = _read_text(__file__, "..", "docker", "dockerignore")
     if (existing_dockerignore := search_upwards_for_file('.dockerignore')) is not None:
-        with open(existing_dockerignore, "r") as f:
-            dockerignore += f.read()
-    LOGGER.debug("Finished reading dockerignore files.")
+        dockerignore += _read_text(existing_dockerignore)
 
     # The docker containers are generated from a docker-compose.yml file
     # We'll write this ourselves from the .avtoolbox file and the defaults
     temp = dict(**avtoolbox_yml.get_data())
-    temp = { k: v for k,v in temp.items() if k not in custom_attrs }
+    temp = { k: v for k,v in temp.items() if k not in CUSTOM_ATTRS }
     docker_compose = _merge_dictionaries(temp, default_configs, custom_config["overwrite_lists"])
 
     # If no command is passed, start up the container and attach to it
     cmds = [args.build, args.up, args.down, args.attach, args.run] 
     if all(not c for c in cmds):
+        LOGGER.debug("No commands passed. Setting commands to '--up' and '--attach'.")
         args.up = True
         args.attach = True
     
@@ -177,21 +258,21 @@ def _run_env(args, unknown_args):
     if not args.dry_run:
 
         try:
-            LOGGER.info(f"Writing to '{str(root / 'docker-compose.yml')}'...")
             # Write the compose file
-            with open(root / "docker-compose.yml", "w") as yaml_file:
-                docker_compose_str = eval(f"f'''{yaml.dump(docker_compose)}'''", globals(), custom_config)
-                docker_compose = YAMLParser(text=docker_compose_str).get_data()
-                yaml_file.write(docker_compose_str)
-            LOGGER.info(f"Done writing to '{str(root / 'docker-compose.yml')}'.")
+            docker_compose_str = eval(f"f'''{yaml.dump(docker_compose)}'''", globals(), custom_config)
+            docker_compose = YAMLParser(text=docker_compose_str).get_data()
+            _write_text(DOCKER_COMPOSE_PATH, docker_compose_str)
 
             # Write the dockerignore
-            LOGGER.info(f"Writing to '{str(root / '.dockerignore')}'...")
-            with open(root / ".dockerignore", "w") as dockerignore_file:
-                dockerignore_file.write(dockerignore)
-            LOGGER.info(f"Done writing to '{str(root / '.dockerignore')}'.")
+            _write_text(DOCKER_IGNORE_PATH, dockerignore)
 
-            client = DockerComposeClient(project=custom_config["project"], services=args.services, compose_file=yaml_file.name)
+            # Keep track of the number of users so we aren't deleting files when they need to persist
+            _update_user_count(AVTOOLBOX_USER_COUNT_PATH, 1)
+
+            client = DockerComposeClient(project=custom_config["project"], services=args.services, compose_file=DOCKER_COMPOSE_PATH)
+
+            # Make any custom updates at runtime after the compose file has been loaded once
+            _update_compose(client, custom_config, args, unknown_args)
 
             if args.down:
                 LOGGER.info(f"Tearing down...")
@@ -214,51 +295,8 @@ def _run_env(args, unknown_args):
                     if "no such service: " not in e.stderr:
                         raise e
 
-
             if args.up:
                 LOGGER.info(f"Spinning up...")
-
-                # For each service that we're spinning up, check some arguments
-                # For instance, if two ports match between different containers (common if you 
-                # have different projects which is the avtoolbox framework and export the same ports),
-                # you will run into issues when they're both running
-                config = YAMLParser(text=client.run("config", stdout=-1)[0])
-                for service_name, service in config.get_data()['services'].items():
-                    # Check ports
-                    for ports in service.get('ports', []):
-                        port = find_available_port(ports['published'])
-                        if port is None:
-                            LOGGER.fatal(f"PORT CONFLICT: Could not find an available port within range of '{ports['published']}' to use for the '{service_name}' service.")
-                            return
-                        elif port != ports['published']:
-                            LOGGER.warn(f"PORT CONFLICT: Adjusted port mapping for '{service_name}' service from '{ports['published']}' to '{port}'.")
-                            ports['published'] = port 
-
-                    # Add custom cli arguments
-                    # TODO: Disable 'argparse' as a service name
-                    service_args = {k: v for k,v in custom_config["custom_cli_arguments"].items() if service_name in v}
-                    if service_args:
-                        # We'll use argparse to parse the unknown flags
-                        parser = argparse.ArgumentParser(prog=service_name, add_help=False)
-                        for arg_name, arg_dict in service_args.items():
-                            if arg_name[:2] != '--':
-                                LOGGER.fatal(f"The argparse argument must begin with '--'. Got '{arg_name}' instead.")
-                                return
-                            parser.add_argument(arg_name, **custom_config["custom_cli_arguments"][arg_name].get("argparse", {}))
-                        known, unknown = parser.parse_known_args(unknown_args)
-                        output = yaml.load(eval(f"f'''{yaml.dump(service_args)}'''", vars(known)), Loader=yaml.Loader)
-                        for k,v in output.items():
-                            # Only use if the arg is set
-                            # Assumed it is set if it passes a boolean conversion
-                            if getattr(known, v.get('argparse', {}).get('dest', k[2:])):
-                                service.update(_merge_dictionaries(service, v[service_name]))
-
-                        if unknown:
-                            LOGGER.warn(f"Found unknown arguments in custom arguents for service '{service_name}': '{', '.join(unknown)}'. Ignoring.")
-
-                # Rewrite with the parsed config
-                with open(root / "docker-compose.yml", "w") as yaml_file:
-                    yaml.dump(config.get_data(), yaml_file)
 
                 client.run("up", "-d", *args.args)
 
@@ -288,22 +326,25 @@ def _run_env(args, unknown_args):
                     return
                 shellcmd = env.split("USERSHELLPATH=")[1].split('\n')[0]
 
-                client.run("exec", service_name, exec_cmd=shellcmd, *args.args)
+                try:
+                    client.run("exec", service_name, exec_cmd=shellcmd, *args.args)
+                except DockerException as e:
+                    LOGGER.debug(e)
 
             if args.run:
                 LOGGER.info(f"Running...")
 
-                client.run("run", "chrono", *args.args, no_services=True)
+                client.run("run", args.services[0], *args.args)
 
         except DockerException as e:
             LOGGER.fatal(e)
             if e.stderr:
                 LOGGER.fatal(e.stderr)
         finally:
-            if os.path.isfile(dockerignore_file.name):
-                os.unlink(dockerignore_file.name)
-            if not args.keep_yml and os.path.isfile(yaml_file.name):
-                os.unlink(yaml_file.name)
+            if _update_user_count(AVTOOLBOX_USER_COUNT_PATH, -1) == 0 or args.down:
+                _unlink_file(AVTOOLBOX_USER_COUNT_PATH)
+                _unlink_file(DOCKER_IGNORE_PATH)
+                if not args.keep_yml: _unlink_file(DOCKER_COMPOSE_PATH)
 
 def _init(subparser):
     """Initializer method for the `dev` entrypoint

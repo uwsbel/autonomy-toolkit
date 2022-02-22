@@ -4,10 +4,12 @@
 from avtoolbox.utils.logger import LOGGER
 
 # External imports
-import subprocess
-import shutil
+import subprocess, shutil, os
 from pathlib import Path
 from typing import Optional
+
+ENV = os.environ.copy()
+ENV["COMPOSE_IGNORE_ORPHANS"] = "true"
 
 class DockerException(Exception):
     def __init__(self, message, stdout=None, stderr=None):
@@ -82,7 +84,7 @@ def _run(*args, **kwargs):
         return stream
 
     args = [arg for arg in args if arg]
-    completed_process = subprocess.run(args, **kwargs)
+    completed_process = subprocess.run(args, **kwargs, env=ENV)
 
     stdout = post_process_stream(completed_process.stdout)
     stderr = post_process_stream(completed_process.stderr)
