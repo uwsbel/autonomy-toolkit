@@ -15,26 +15,26 @@ There are two forms of contributions: source code or documentation. Editing the 
 Clone the repo as normal:
 
 ```bash
-git clone https://github.com/uwsbel/avtoolbox.git && cd avtoolbox
+git clone https://github.com/uwsbel/autonomy-toolkit.git && cd autonomy-toolkit
 ```
 
 ### Installing a Symbolic Linked Version for Testing
 
 A symbolic link or symlink is a file that references another. The advantages of symlinks is that a folder or file can _essentially_ be placed in two separate locations. In reference to this repository, we want to create a symlinked install because when we edit the code within the cloned repo, we want that change also to be reflected in the installed files.
 
-From within your `av` directory, we can have `setuptools` do this for us with the following command (run from within the `av` root directory):
+From within your `atk` directory, we can have `setuptools` do this for us with the following command (run from within the `atk` root directory):
 
 ```bash
 python setup.py develop
 ```
 
-You should now be able to edit the source and have those changes be reflected in whatever file imports `av`!
+You should now be able to edit the source and have those changes be reflected in whatever file imports `atk`!
 
 ### Deploy your Changes
 
 [GitHub actions](https://github.com/features/actions) are used to automatically build the site and [GitHub pages](https://pages.github.com/) are used to host the static site. To update deployed content, you have to push to the `master` branch. Once the changes are pushed, the site will rebuild. Please ensure there are no errors in your code/documentation before doing so, as you may get an email from github if something bad happens.
 
-Further, to update the package available on [PyPI](https://pypi.org/project/avtoolbox/), you must create a [git tag](https://git-scm.com/book/en/v2/Git-Basics-Tagging). When a tag is created and pushed to GitHub, it will start an Action which will automatically push the new release to PyPI. See [versioning](#versioning) for information on how versioning works with `av`. The Github Action only runs when the tag is pushed to master through a merge request. To create a tag, you may do the following:
+Further, to update the package available on [PyPI](https://pypi.org/project/autonomy-toolkit/), you must create a [git tag](https://git-scm.com/book/en/v2/Git-Basics-Tagging). When a tag is created and pushed to GitHub, it will start an Action which will automatically push the new release to PyPI. See [versioning](#versioning) for information on how versioning works with `atk`. The Github Action only runs when the tag is pushed to master through a merge request. To create a tag, you may do the following:
 
 ```bash
 git tag v3.0.1
@@ -51,26 +51,28 @@ A lot of work has gone into making this package functional and scalable. Please 
 
 ### File Structure
 
-The simulator is structured as follows:
+The repository is structured as follows:
 ```
-av
+autonomy-toolkit
 ├── LICENSE
-├── demos/			# Contains demos for the av package
-├── docs/				# Contains documentation
-├── av/			    # Source code
-└── setup.py		# Package description and installation instructions for pip
+├── demos/										# Contains demos for the autonomy-toolkit package
+├── docs/											# Contains documentation
+├── autonomy_toolkit/			    # Source code
+└── setup.py									# Package description and installation instructions for pip
 ```
 
 ### Editing the Source Code
 
-If you plan on editing the source code, please visit the `av/` folder. The `av/` folder is structured as follows:
+If you plan on editing the source code, please visit the `autonomy_toolkit/` folder. The `autonomy_toolkit/` folder is structured as follows:
 ```
-av/
+autonomy_toolkit/
 ├── utils/			# Utility files for use by the rest of the package
 │   └── ...
 ├── ros/				# ROS related utilities, methods, or classes
 │   └── ...        	
-└── ...					# Core av code
+├── docker/			# Docker related utilities, methods, or classes
+│   └── ...        	
+└── ...					# Core autonomy-toolkit code
 ```
 
 As stated earlier, unless given approval by the managers of the repository, there should be no need to edit the source code. The Object Oriented nature of the package means you can just inherit the base classes and add your own logic _outside_ the repo (no need to edit the source). However, bugs or nice features may be added. See [this section](#installing-a-symbolic-linked-version-for-testing) to install the repo for development purposes.
@@ -82,7 +84,7 @@ Commenting your code is not only _required_ when contributing to this repository
 Please follow [Google's guidelines for Python Styling](https://google.github.io/styleguide/pyguide.html). These comments are also used to automatically generate the documentation. For Visual Studio Code users, the [Python Docstring Generator](https://github.com/NilsJPWerner/autoDocstring) package may be helpful.
 
 ```{note}
-Any docstrings parsed by `autosimple`, such as the functions in [usage.md](./usage/cli.md), are parsed as markdown. Docstrings parsed by autoapi, such as in [av.db](./usage/api/avtoolbox/db/index), are parsed as reStructuredText.
+Any docstrings parsed by `autosimple`, such as the functions in [usage.md](./usage/cli.md), are parsed as markdown. Docstrings parsed by autoapi, such as in [atk.db](./usage/api/autonomy_toolkit/db/index), are parsed as reStructuredText.
 ```
 
 ### Editing the Documentation
@@ -93,7 +95,7 @@ docs/
 ├── _static/						# Static files that persist through the build process
 │   ├── css/custom.css  # Custom css changes that are different from the default furo theme
 │   └── ...        			# Images, favicons, etc.
-├── usage.md						# Usage reference guide for the av 
+├── usage.md						# Usage reference guide for the autonomy-toolkit
 ├── installation.md			# Installation build instructions
 ├── contributing.md			# Contributing tab with instructions on how to contribute to the repo
 ├── conf.py							# Settings related to extensions, themes, etc.
@@ -108,7 +110,7 @@ Markdown files are converted to reStructuredText by `myst_parser` which is used 
 
 There are multiple ways to build sphinx documentation. The easiest is using the `Makefile` or `make.bat` file provided directly in this repository. You will need to install all the necessary dependencies and build the html pages. To do that, run the following commands:
 ```bash
-cd av/docs
+cd autonomy-toolkit/docs
 pip install -r requirements.txt
 make html
 ```

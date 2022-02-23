@@ -9,16 +9,16 @@
 </style>
 ```
 
-## `av`
+## `atk`
 
-```{autosimple} avtoolbox._av_base._init
+```{autosimple} autonomy_toolkit._atk_base._init
 ```
 
 ```{argparse}
 ---
-module: avtoolbox._av_base
+module: autonomy_toolkit._atk_base
 func: _init
-prog: av
+prog: atk
 nosubcommands:
 nodescription:
 ---
@@ -26,18 +26,18 @@ nodescription:
 
 ## Sub-commands
 
-Subcommands immediately succeed the `av` command. They implement additional logic. Having subcommands rather than arguments directly to `av` increases expandability as it will allow for additional features to be implemented without convoluting the help menu of the base `av` command.
+Subcommands immediately succeed the `atk` command. They implement additional logic. Having subcommands rather than arguments directly to `atk` increases expandability as it will allow for additional features to be implemented without convoluting the help menu of the base `atk` command.
 
 ### `dev`
 
-```{autosimple} avtoolbox.dev._init
+```{autosimple} autonomy_toolkit.dev._init
 ```
 
 ```{argparse}
 ---
-module: avtoolbox._av_base
+module: autonomy_toolkit._atk_base
 func: _init
-prog: av
+prog: atk
 path: dev
 nosubcommands:
 nodescription:
@@ -46,14 +46,14 @@ nodescription:
 
 ### `db`
 
-```{autosimple} avtoolbox.db._init
+```{autosimple} autonomy_toolkit.db._init
 ```
 
 ```{argparse}
 ---
-module: avtoolbox._av_base
+module: autonomy_toolkit._atk_base
 func: _init
-prog: av
+prog: atk
 path: db
 nosubcommands:
 nodescription:
@@ -62,14 +62,14 @@ nodescription:
 
 #### `db combine`
 
-```{autosimple} avtoolbox.db._run_combine
+```{autosimple} autonomy_toolkit.db._run_combine
 ```
 
 ```{argparse}
 ---
-module: avtoolbox._av_base
+module: autonomy_toolkit._atk_base
 func: _init
-prog: av
+prog: atk
 path: db combine 
 nosubcommands:
 nodescription:
@@ -78,14 +78,14 @@ nodescription:
 
 #### `db read`
 
-```{autosimple} avtoolbox.db._run_read
+```{autosimple} autonomy_toolkit.db._run_read
 ```
 
 ```{argparse}
 ---
-module: avtoolbox._av_base
+module: autonomy_toolkit._atk_base
 func: _init
-prog: av
+prog: atk
 path: db read 
 nosubcommands:
 nodescription:

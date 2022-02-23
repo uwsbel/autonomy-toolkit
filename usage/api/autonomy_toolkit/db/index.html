@@ -1,0 +1,705 @@
+<!doctype html>
+<html class="no-js">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" /><link rel="next" title="autonomy_toolkit.dev" href="../dev/index.html" /><link rel="prev" title="autonomy_toolkit.utils.yaml_parser" href="../utils/yaml_parser/index.html" />
+
+    <link rel="shortcut icon" href="../../../../_static/cropped-SBEL-32x32.png"/><meta name="generator" content="sphinx-3.4.2, furo 2020.12.30.beta24"/>
+        <title>autonomy_toolkit.db - Autonomous Vehicle Toolbox 0.0.43 documentation</title>
+      <link rel="stylesheet" href="../../../../_static/styles/furo.css?digest=33d2fc4f3f180ec1ffc6524e273e21d7d58cbe49">
+    <link rel="stylesheet" href="../../../../_static/pygments.css">
+    <link media="(prefers-color-scheme: dark)" rel="stylesheet" href="../../../../_static/pygments_dark.css">
+    
+
+
+<style>
+  :root {
+    --color-code-background: #f0f0f0;
+  --color-code-foreground: black;
+  
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+  }
+
+  /* For allowing end-user-specific overrides */
+  .override-light {
+    --color-code-background: #f0f0f0;
+  --color-code-foreground: black;
+  
+  }
+  .override-dark {
+    --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+  }
+</style><link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/css/custom.css" />
+    <link rel="stylesheet" href="../../../../_static/styles/furo-extensions.css?digest=26485485040e7aaf717c13fd0188a5ad2c2deb60">
+    <script id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+    <script defer="defer" src="../../../../_static/jquery.js"></script>
+    <script defer="defer" src="../../../../_static/underscore.js"></script>
+    <script defer="defer" src="../../../../_static/doctools.js"></script>
+    <script defer src="../../../../_static/scripts/main.js?digest=e931d09b2a40c1bb82b542effe772014573baf67"></script></head>
+  <body dir="">
+    
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+      stroke-width="1.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+      <path stroke="none" d="M0 0h24v24H0z"/>
+      <line x1="4" y1="6" x2="20" y2="6" />
+      <line x1="10" y1="12" x2="20" y2="12" />
+      <line x1="6" y1="18" x2="20" y2="18" />
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+      class="feather feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+      class="feather feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<div class="announcement">
+  <aside class="announcement-content">
+     
+        <a style="text-decoration: none; color: white;" 
+           href="https://sbel.wisc.edu">
+           <img src="https://github.com/uwsbel/autonomy-toolkit/blob/master/docs/_static/cropped-SBEL-192x192.png?raw=true" 
+                style="vertical-align: middle; display: inline; padding-right: 7.5px; height: 20px;"/>
+           Checkout our website!
+        </a>
+     
+  </aside>
+</div>
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../../../index.html"><div class="brand">Autonomous Vehicle Toolbox 0.0.43 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../../index.html">
+  
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo only-light" src="../../../../_static/SBEL-light.png" alt="Light Logo"/>
+    <img class="sidebar-logo only-dark" src="../../../../_static/SBEL-dark.png" alt="Dark Logo"/>
+  </div>
+  
+  
+</a><form class="sidebar-search-container" method="get" action="../../../../search.html">
+  <input class="sidebar-search" placeholder=Search name="q">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../index.html">Home</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../background.html">Background</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../setup.html">Setup</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../tutorials/index.html">Tutorials</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label for="toctree-checkbox-1"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../tutorials/using_the_development_environment.html">Using the AV Development Environment</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../../../index.html">API Reference</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label for="toctree-checkbox-2"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../../cli.html">CLI Documentation</a></li>
+<li class="toctree-l2 current has-children"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit</span></code></a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label for="toctree-checkbox-3"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l3 has-children"><a class="reference internal" href="../ros/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.ros</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label for="toctree-checkbox-4"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../ros/messages/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.ros.messages</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label for="toctree-checkbox-5"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../utils/docker/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.docker</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../utils/files/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.files</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../utils/logger/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.logger</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../utils/yaml_parser/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.yaml_parser</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3 current current-page"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.db</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.dev</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contributing.html">Contributing</a></li>
+</ul>
+<p><span class="caption-text">External Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://pypi.org/project/autonomy-toolkit/">PyPI</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/uwsbel/autonomy-toolkit">Github</a></li>
+</ul>
+
+</div>
+</div>
+      </div>
+      
+    </div>
+  </aside>
+  <main class="main">
+    <div class="content">
+      <article role="main">
+        <label class="toc-overlay-icon toc-content-icon" for="__toc">
+          <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+        </label>
+        <section id="module-autonomy_toolkit.db">
+<span id="autonomy-toolkit-db"></span><h1><a class="reference internal" href="#module-autonomy_toolkit.db" title="autonomy_toolkit.db"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.db</span></code></a><a class="headerlink" href="#module-autonomy_toolkit.db" title="Permalink to this headline">¶</a></h1>
+<p>CLI command that handles interacting with the ATK database.</p>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h2>
+<section id="classes">
+<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h3>
+<div class="table-wrapper"><table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%"/>
+<col style="width: 90%"/>
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#autonomy_toolkit.db.ATKDatabase" title="autonomy_toolkit.db.ATKDatabase"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ATKDatabase</span></code></a></p></td>
+<td><p>This class allows you to programatically interact with the ATK database.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#autonomy_toolkit.db.ATKDataFile" title="autonomy_toolkit.db.ATKDataFile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ATKDataFile</span></code></a></p></td>
+<td><p>This class represents a bag file that is stored locally.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#autonomy_toolkit.db.ATKDataFileWriter" title="autonomy_toolkit.db.ATKDataFileWriter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ATKDataFileWriter</span></code></a></p></td>
+<td><p>Simple wrapper class that allows the writing of ROS 1 <em>or</em> ROS 2 bags</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#autonomy_toolkit.db.ATKDataFileReader" title="autonomy_toolkit.db.ATKDataFileReader"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ATKDataFileReader</span></code></a></p></td>
+<td><p>Simple wrapper class that allows the reading of ROS 1 <em>or</em> ROS 2 bags</p></td>
+</tr>
+</tbody>
+</table></div>
+</section>
+<section id="functions">
+<h3>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h3>
+<div class="table-wrapper"><table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%"/>
+<col style="width: 90%"/>
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#autonomy_toolkit.db.register_type" title="autonomy_toolkit.db.register_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">register_type</span></code></a>(msg_file: Union['Path', str], name: str = None)</p></td>
+<td><p>Registers a custom message type so that it can be read by <code class="docutils literal notranslate"><span class="pre">rosbags</span></code></p></td>
+</tr>
+</tbody>
+</table></div>
+<dl class="py function">
+<dt id="autonomy_toolkit.db.register_type">
+<code class="sig-name descname">register_type</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">msg_file</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>Path<span class="p">, </span>str<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">name</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/autonomy_toolkit/db.html#register_type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.db.register_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Registers a custom message type so that it can be read by <code class="docutils literal notranslate"><span class="pre">rosbags</span></code></p>
+<p>In order for custom messages to be read from ROS 2 bags, they must be registered with the <code class="docutils literal notranslate"><span class="pre">rosbags</span></code>
+type system. This is do to an internal issue with ros2 bags that is going to fixed in an upcoming
+release (<a class="reference external" href="https://github.com/ros2/rosbag2/issues/782">see this issue</a>).</p>
+<p>To register a message type, you must provide the file that the message is stored in (either with an
+extension <code class="docutils literal notranslate"><span class="pre">.msg</span></code> or an extension <code class="docutils literal notranslate"><span class="pre">.idl</span></code>), and the name of the the message (i.e. std_msgs/msg/Header).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>msg_file</strong> (<em>Union[Path, str]</em>) – The path the message definition is in. Must have an extension <code class="docutils literal notranslate"><span class="pre">.msg</span></code> or <code class="docutils literal notranslate"><span class="pre">.idl</span></code></p></li>
+<li><p><strong>name</strong> (<em>str, optional</em>) – The name of the custom message. Only optional if an <code class="docutils literal notranslate"><span class="pre">idl</span></code> file is passed.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py class">
+<dt id="autonomy_toolkit.db.ATKDatabase">
+<em class="property">class </em><code class="sig-name descname">ATKDatabase</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">local_path</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>Path<span class="p">, </span>str<span class="p">]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/autonomy_toolkit/db.html#ATKDatabase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.db.ATKDatabase" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class allows you to programatically interact with the ATK database.</p>
+<p>Typically, the ATK CLI will be enough for pushing and pulling to and from the database.
+However, it may be desired to write scripts which pull data from the database. This class can be
+used in these instances.</p>
+<p>The ATK database is contructed in a way that the <a class="reference external" href="https://swri-robotics.github.io/bag-database/">bag-database</a>
+application can be used. Most of the restrictive descisions made for this package (i.e. using ROS 1 and ROS 2 bags)
+comes from requirements based on this package. The <code class="docutils literal notranslate"><span class="pre">bag-database</span></code> reads ros1 bag files from a regular directory
+and displays them, along with some additional features, in a web application. It is very helpful for development.</p>
+<p>The database, therefore, is really just a directory. The directory is filled with ros1 bag files and can either
+be managed locally or remotely with a url.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Currently only local databases are supported with the <a class="reference internal" href="#autonomy_toolkit.db.ATKDatabase.push" title="autonomy_toolkit.db.ATKDatabase.push"><code class="xref py py-meth docutils literal notranslate"><span class="pre">push()</span></code></a> and <a class="reference internal" href="#autonomy_toolkit.db.ATKDatabase.pull" title="autonomy_toolkit.db.ATKDatabase.pull"><code class="xref py py-meth docutils literal notranslate"><span class="pre">pull()</span></code></a> commands.</p>
+</div>
+<dl class="py method">
+<dt id="autonomy_toolkit.db.ATKDatabase.push">
+<code class="sig-name descname">push</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">bag</span><span class="p">:</span> <span class="n">Union<span class="p">[</span><a class="reference internal" href="#autonomy_toolkit.db.ATKDataFile" title="autonomy_toolkit.db.ATKDataFile">ATKDataFile</a><span class="p">, </span>str<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">keep</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/autonomy_toolkit/db.html#ATKDatabase.push"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.db.ATKDatabase.push" title="Permalink to this definition">¶</a></dt>
+<dd><p>Push a database file to the ATK database.</p>
+<p>The database is strictly made up of ros1 bags, so <a class="reference internal" href="#autonomy_toolkit.db.ATKDataFile.to_ros1" title="autonomy_toolkit.db.ATKDataFile.to_ros1"><code class="xref py py-meth docutils literal notranslate"><span class="pre">to_ros1()</span></code></a> will always
+be called. The file will then be copied (i.e. the original file still remains) to the database.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bag</strong> (<em>Union[ATKDataFile, str]</em>) – The bag file to push.</p></li>
+<li><p><strong>keep</strong> (<em>bool, optional</em>) – If False, will delete the file after pushing it.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt id="autonomy_toolkit.db.ATKDatabase.pull">
+<code class="sig-name descname">pull</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">name</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">dest</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">as_rosbag</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> → <a class="reference internal" href="#autonomy_toolkit.db.ATKDataFile" title="autonomy_toolkit.db.ATKDataFile">ATKDataFile</a><a class="reference internal" href="../../../../_modules/autonomy_toolkit/db.html#ATKDatabase.pull"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.db.ATKDatabase.pull" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pulls (downloads) a database file from the ATK database</p>
+<p>Provided a name of the file to download, the file will be copied locally.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – The name of the file to pull. Includes the extension.</p></li>
+<li><p><strong>dest</strong> (<em>str, optional</em>) – The destination of the file to be saved locally. If unset, will save with the same name is in the database.</p></li>
+<li><p><strong>as_rosbag</strong> (<em>bool, optional</em>) – If True, the pulled file will be saved as a ros1 bag.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt id="autonomy_toolkit.db.ATKDatabase.ls">
+<code class="sig-name descname">ls</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">path</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">''</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/autonomy_toolkit/db.html#ATKDatabase.ls"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.db.ATKDatabase.ls" title="Permalink to this definition">¶</a></dt>
+<dd><p>List the contents of the directory at the database root + <code class="docutils literal notranslate"><span class="pre">path</span></code>.</p>
+<p>See <a class="reference external" href="https://man7.org/linux/man-pages/man1/ls.1.html">the man pages</a> for more information on <code class="docutils literal notranslate"><span class="pre">ls</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str, optional</em>) – Additional paths to navigate when running <code class="docutils literal notranslate"><span class="pre">ls</span></code>.</p>
+</dd>
+</dl>
+</dd></dl>
+</dd></dl>
+<dl class="py class">
+<dt id="autonomy_toolkit.db.ATKDataFile">
+<em class="property">class </em><code class="sig-name descname">ATKDataFile</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/autonomy_toolkit/db.html#ATKDataFile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.db.ATKDataFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class represents a bag file that is stored locally.</p>
+<p>The file stored in the ATK Database is a <a class="reference external" href="http://wiki.ros.org/rosbag">rosbag</a>, or a
+data storage method introduced in ROS 1. Although ROS 1 bags are stored in the database
+itself, either ROS 1 or ROS 2 bags can be used to push to the remote database. Conversions
+between the different data types when pushing to and pulling from the database.</p>
+<p>This class was created to abstract away the ROS 1/2 bag types from the database itself. In the future,
+when ROS 2 is more fully adopted, this class could simply use ROS 2 bags.
+It is desired to utilize ROS 2 bags now, but it is currently not possible to describe
+custom message types in a ROS 2 bag, <a class="reference external" href="https://github.com/ros2/rosbag2/issues/782">see this issue</a>.</p>
+<p>When in the ATK database, a data file is idenfiable by it’s name. The name has the following characteristics:
+- Begins with <code class="docutils literal notranslate"><span class="pre">ATK-</span></code>
+- Ends with the date the file was created in the format of <code class="docutils literal notranslate"><span class="pre">mm-dd-YYYY-HH-MM-SS</span></code></p>
+<p>For example, if a file was created on January 13th, 2022, at 9:00:00am, the database file will have the
+following name: <code class="docutils literal notranslate"><span class="pre">ATK-01-13-2022-15-00-00</span></code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">HH-MM-SS</span></code> (i.e. hour-minute-second) is defined in terms of the Universal Coordinate Time (UTC).</p>
+</div>
+<p>ROS 1 bags are files with extension <code class="docutils literal notranslate"><span class="pre">.bag</span></code>, i.e. <code class="docutils literal notranslate"><span class="pre">ATK-01-13-2022-15-00-00.bag</span></code>. ROS 2 bags are
+directories, i.e. <code class="docutils literal notranslate"><span class="pre">ATK-01-13-2022-15-00-00/</span></code>.</p>
+<p>When pulling a file from the database, it <em>will</em> have a name. If you’re working with a file locally and have
+not interacted with the database at all, it will generate a new name using the aforementioned structure.</p>
+<dl class="py method">
+<dt id="autonomy_toolkit.db.ATKDataFile.path">
+<em class="property">property </em><code class="sig-name descname">path</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/autonomy_toolkit/db.html#ATKDataFile.path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.db.ATKDataFile.path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Path property.</p>
+</dd></dl>
+<dl class="py method">
+<dt id="autonomy_toolkit.db.ATKDataFile.name">
+<em class="property">property </em><code class="sig-name descname">name</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/autonomy_toolkit/db.html#ATKDataFile.name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.db.ATKDataFile.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Name property.</p>
+<p>As a reminder, the format of the name is <code class="docutils literal notranslate"><span class="pre">ATK-mm-dd-YYYY-HH-MM-SS</span></code>. It <em>should</em> be unique.</p>
+</dd></dl>
+<dl class="py method">
+<dt id="autonomy_toolkit.db.ATKDataFile.db_name">
+<em class="property">property </em><code class="sig-name descname">db_name</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/autonomy_toolkit/db.html#ATKDataFile.db_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.db.ATKDataFile.db_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Database name property.</p>
+<p>The file name of the bag stored in the database. This differs from <a class="reference internal" href="#autonomy_toolkit.db.ATKDataFile.name" title="autonomy_toolkit.db.ATKDataFile.name"><code class="xref py py-attr docutils literal notranslate"><span class="pre">name</span></code></a> in that it may include
+an extension (i.e. <code class="docutils literal notranslate"><span class="pre">.bag</span></code>)</p>
+</dd></dl>
+<dl class="py method">
+<dt id="autonomy_toolkit.db.ATKDataFile.reader">
+<em class="property">property </em><code class="sig-name descname">reader</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/autonomy_toolkit/db.html#ATKDataFile.reader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.db.ATKDataFile.reader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the reader object for this data file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><em>ATKDataFileReader</em> – The file reader</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>RuntimeError</strong> – The reader hasn’t been initialized yet. See <a class="reference internal" href="#autonomy_toolkit.db.ATKDataFile.__enter__" title="autonomy_toolkit.db.ATKDataFile.__enter__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__enter__()</span></code></a>.</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt id="autonomy_toolkit.db.ATKDataFile.to_ros1">
+<code class="sig-name descname">to_ros1</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/autonomy_toolkit/db.html#ATKDataFile.to_ros1"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.db.ATKDataFile.to_ros1" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts this database file to a ros1 bag.</p>
+<p>If the bag that this object represents is already a ros1 bag, nothing is done (a warning will be made).
+If it represents a ros2 bag, a conversion will be done to ros1.</p>
+</dd></dl>
+<dl class="py method">
+<dt id="autonomy_toolkit.db.ATKDataFile.to_ros2">
+<code class="sig-name descname">to_ros2</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/autonomy_toolkit/db.html#ATKDataFile.to_ros2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.db.ATKDataFile.to_ros2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts this database file to a ros2 bag</p>
+<p>If the bag that this object represents is already a ros2 bag, nothing is done (a warning will be made).
+If it represents a ros1 bag, a conversion will be done to ros2.</p>
+</dd></dl>
+<dl class="py method">
+<dt id="autonomy_toolkit.db.ATKDataFile.combine">
+<em class="property">static </em><code class="sig-name descname">combine</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ros1_bag</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">ros2_bag</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">output_bag</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">ros1_topics</span><span class="p">:</span> <span class="n">List<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">[]</span></em>, <em class="sig-param"><span class="n">ros2_topics</span><span class="p">:</span> <span class="n">List<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">[]</span></em>, <em class="sig-param"><span class="n">ros1_types</span><span class="p">:</span> <span class="n">List<span class="p">[</span>MessageType<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">[]</span></em>, <em class="sig-param"><span class="n">ros2_types</span><span class="p">:</span> <span class="n">List<span class="p">[</span>MessageType<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">[]</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/autonomy_toolkit/db.html#ATKDataFile.combine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.db.ATKDataFile.combine" title="Permalink to this definition">¶</a></dt>
+<dd><p>Combine command.</p>
+<p>Will combine a ros1 and ros2 bag. The output is a ros2 bag with both messages
+in the data with the respective timestamps. Additionally, to allow for easy parsing
+outside of ROS, a new table is created that describes the custom message types within the
+bag. When parsing, this information is used to register types for the rosbags python
+package.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ros1_bag</strong> (<em>str</em>) – The ros1 bag file to use in the combine step. ROS 1 uses files ending in .bag. Required.</p></li>
+<li><p><strong>ros2_bag</strong> (<em>str</em>) – The ros2 bag file to use in the combine step. ROS 2 uses folders with a .db3 and metadata.yaml file. This should be a path to a folder. Required.</p></li>
+<li><p><strong>output_bag</strong> (<em>str</em>) – The output ros2 bag file that contains the combined data. ROS 2 uses folders with a .db3 and metadata.yaml file. This should be a path to a folder. Required.</p></li>
+<li><p><strong>ros1_topics</strong> (<em>List[str], optional</em>) – The topics to copy over from the ros1 bag. If empty, will copy all topics. Default is [] (empty).</p></li>
+<li><p><strong>ros2_topics</strong> (<em>List[str], optional</em>) – The topics to copy over from the ros2 bag. If empty, will copy all topics. Default is [] (empty).</p></li>
+<li><p><strong>ros1_types</strong> (<em>List[autonomy_toolkit.ros.messages.MessageType], optional</em>) – The custom message types to register when reading. Default is [] (will not register any custom message types).</p></li>
+<li><p><strong>ros2_types</strong> (<em>List[autonomy_toolkit.ros.messages.MessageType], optional</em>) – The custom message types to register when reading. Default is [] (will not register any custom message types).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>KeyError</strong> – Raised if an unidentified message type is attempted to be parsed</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt id="autonomy_toolkit.db.ATKDataFile.open">
+<code class="sig-name descname">open</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/autonomy_toolkit/db.html#ATKDataFile.open"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.db.ATKDataFile.open" title="Permalink to this definition">¶</a></dt>
+<dd><p>Open up the data file for reading.</p>
+<p>This is <em>not</em> a recommended method for reading the ATK data file. Instead,
+you should use the contextmanager with <a class="reference internal" href="#autonomy_toolkit.db.ATKDataFile.__enter__" title="autonomy_toolkit.db.ATKDataFile.__enter__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__enter__()</span></code></a>.</p>
+<p>It is not recommended because you must explicitly open <em>and</em> close the file. If unclosed,
+the file may become corrupt or other processes may be unable to open it.</p>
+<p>Usage:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">bagfile</span> <span class="o">=</span> <span class="s2">"SOME_ROSBAG_FILE.bag"</span>
+
+<span class="c1"># Open the bag file</span>
+<span class="nb">file</span> <span class="o">=</span> <span class="n">ATKDataFile</span><span class="p">(</span><span class="n">bagfile</span><span class="p">)</span>
+<span class="nb">file</span><span class="o">.</span><span class="n">open</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">timestamp</span><span class="p">,</span> <span class="n">connection</span><span class="p">,</span> <span class="n">msg</span> <span class="ow">in</span> <span class="nb">file</span><span class="o">.</span><span class="n">reader</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">timestamp</span><span class="p">,</span> <span class="n">msg</span><span class="p">)</span>
+
+<span class="c1"># Don't forget to close it!!</span>
+<span class="nb">file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>AssertionError</strong> – If the reader is already open</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt id="autonomy_toolkit.db.ATKDataFile.close">
+<code class="sig-name descname">close</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/autonomy_toolkit/db.html#ATKDataFile.close"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.db.ATKDataFile.close" title="Permalink to this definition">¶</a></dt>
+<dd><p>Close the opened data file.</p>
+<p>This is required to be called if <a class="reference internal" href="#autonomy_toolkit.db.ATKDataFile.open" title="autonomy_toolkit.db.ATKDataFile.open"><code class="xref py py-meth docutils literal notranslate"><span class="pre">open()</span></code></a> is called explicitly. It is instead recommended to use
+the contextmanager with the <a class="reference internal" href="#autonomy_toolkit.db.ATKDataFile.__enter__" title="autonomy_toolkit.db.ATKDataFile.__enter__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__enter__()</span></code></a> method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>AssertionError</strong> – If the reader has not been opened yet</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt id="autonomy_toolkit.db.ATKDataFile.__enter__">
+<code class="sig-name descname">__enter__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/autonomy_toolkit/db.html#ATKDataFile.__enter__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.db.ATKDataFile.__enter__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read the file when entering contextmanager.</p>
+<p>This is the preferred method of reading a ATK database file.</p>
+<p>Examples:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">bagfile</span> <span class="o">=</span> <span class="s2">"SOME_ROSBAG_FILE.bag"</span>
+
+<span class="k">with</span> <span class="n">ATKDataFile</span><span class="p">(</span><span class="n">bagfile</span><span class="p">)</span> <span class="k">as</span> <span class="nb">file</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">timestamp</span><span class="p">,</span> <span class="n">connection</span><span class="p">,</span> <span class="n">msg</span> <span class="ow">in</span> <span class="nb">file</span><span class="o">.</span><span class="n">reader</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">timestamp</span><span class="p">,</span> <span class="n">msg</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Alternatively, see <a class="reference internal" href="#autonomy_toolkit.db.ATKDataFile.open" title="autonomy_toolkit.db.ATKDataFile.open"><code class="xref py py-meth docutils literal notranslate"><span class="pre">open()</span></code></a> and <a class="reference internal" href="#autonomy_toolkit.db.ATKDataFile.close" title="autonomy_toolkit.db.ATKDataFile.close"><code class="xref py py-meth docutils literal notranslate"><span class="pre">close()</span></code></a>.</p>
+</dd></dl>
+<dl class="py method">
+<dt id="autonomy_toolkit.db.ATKDataFile.__exit__">
+<code class="sig-name descname">__exit__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/autonomy_toolkit/db.html#ATKDataFile.__exit__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.db.ATKDataFile.__exit__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Close the file when entering contextmanager.</p>
+</dd></dl>
+</dd></dl>
+<dl class="py class">
+<dt id="autonomy_toolkit.db.ATKDataFileWriter">
+<em class="property">class </em><code class="sig-name descname">ATKDataFileWriter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>Path<span class="p">, </span>str<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">type</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">0</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/autonomy_toolkit/db.html#ATKDataFileWriter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.db.ATKDataFileWriter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simple wrapper class that allows the writing of ROS 1 <em>or</em> ROS 2 bags</p>
+<p>The writer classes do <em>not</em> append or overwrite existing bags. They will only write new bags.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>Union[Path, str]</em>) – The path to write a file to.</p></li>
+<li><p><strong>type</strong> (<em>int</em>) – The ROS version type of the bag you want to write. Can be 1 or 2. If 0, the type will attempted to be inferred.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="autonomy_toolkit.db.ATKDataFileWriter.open">
+<code class="sig-name descname">open</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> → Union[_ATKROS1DataFileWriter, _ATKROS2DataFileWriter]<a class="reference internal" href="../../../../_modules/autonomy_toolkit/db.html#ATKDataFileWriter.open"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.db.ATKDataFileWriter.open" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method which will return either a <code class="xref py py-class docutils literal notranslate"><span class="pre">_ATKROS1DataFileWriter</span></code> or a
+<code class="xref py py-class docutils literal notranslate"><span class="pre">_ATKROS2DataFileWriter</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><em>Union[_ATKROS1DataFileWriter, _ATKROS2DataFileWriter]</em> – The correct writer for the bag type.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>RuntimeError</strong> – If the bag already exists. The writer will only write new bags.</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt id="autonomy_toolkit.db.ATKDataFileWriter.close">
+<code class="sig-name descname">close</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/autonomy_toolkit/db.html#ATKDataFileWriter.close"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.db.ATKDataFileWriter.close" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to close the writer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>RuntimeError</strong> – If the writer was never opened.</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt id="autonomy_toolkit.db.ATKDataFileWriter.__enter__">
+<code class="sig-name descname">__enter__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/autonomy_toolkit/db.html#ATKDataFileWriter.__enter__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.db.ATKDataFileWriter.__enter__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Open ROS bag when entering contextmanager.</p>
+</dd></dl>
+<dl class="py method">
+<dt id="autonomy_toolkit.db.ATKDataFileWriter.__exit__">
+<code class="sig-name descname">__exit__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/autonomy_toolkit/db.html#ATKDataFileWriter.__exit__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.db.ATKDataFileWriter.__exit__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Close ROS bag when entering contextmanager.</p>
+</dd></dl>
+</dd></dl>
+<dl class="py class">
+<dt id="autonomy_toolkit.db.ATKDataFileReader">
+<em class="property">class </em><code class="sig-name descname">ATKDataFileReader</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>Path<span class="p">, </span>str<span class="p">]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/autonomy_toolkit/db.html#ATKDataFileReader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.db.ATKDataFileReader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simple wrapper class that allows the reading of ROS 1 <em>or</em> ROS 2 bags</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>Union[Path, str]</em>) – The path to write a file to.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="autonomy_toolkit.db.ATKDataFileReader.convert_to_pandas_df">
+<code class="sig-name descname">convert_to_pandas_df</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> → pd.DataFrame<a class="reference internal" href="../../../../_modules/autonomy_toolkit/db.html#ATKDataFileReader.convert_to_pandas_df"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.db.ATKDataFileReader.convert_to_pandas_df" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert the sqlite database to a pandas dataframe.</p>
+<p>Orders the database when reading by ascending order in terms of time.</p>
+<p>Example usage:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">autonomy_toolkit.db</span> <span class="kn">import</span> <span class="n">ATKDataFileReader</span>
+
+<span class="n">bagfile</span> <span class="o">=</span> <span class="s1">'bag'</span> <span class="c1"># ros2 bag folder</span>
+
+<span class="c1"># Or you can use pandas</span>
+<span class="k">with</span> <span class="n">ATKDataFileReader</span><span class="p">(</span><span class="n">bagfile</span><span class="p">)</span> <span class="k">as</span> <span class="n">reader</span><span class="p">:</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">convert_to_pandas_df</span><span class="p">()</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><em>pandas.DataFrame</em> – The ordered dataframe taken from the database.</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt id="autonomy_toolkit.db.ATKDataFileReader.open">
+<code class="sig-name descname">open</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> → Union[_ATKROS1DataFileReader, _ATKROS2DataFileReader]<a class="reference internal" href="../../../../_modules/autonomy_toolkit/db.html#ATKDataFileReader.open"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.db.ATKDataFileReader.open" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method which will return either a <code class="xref py py-class docutils literal notranslate"><span class="pre">_ATKROS1DataFileReader</span></code> or a
+<code class="xref py py-class docutils literal notranslate"><span class="pre">_ATKROS2DataFileReader</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><em>Union[_ATKROS1DataFileReader, _ATKROS2DataFileReader]</em> – The correct reader for the bag type.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>RuntimeError</strong> – If the bag already exists. The writer will only write new bags.</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt id="autonomy_toolkit.db.ATKDataFileReader.close">
+<code class="sig-name descname">close</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/autonomy_toolkit/db.html#ATKDataFileReader.close"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.db.ATKDataFileReader.close" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to close the reader.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>RuntimeError</strong> – If the reader was never opened.</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt id="autonomy_toolkit.db.ATKDataFileReader.__enter__">
+<code class="sig-name descname">__enter__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/autonomy_toolkit/db.html#ATKDataFileReader.__enter__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.db.ATKDataFileReader.__enter__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Open ROS bag when entering contextmanager.</p>
+</dd></dl>
+<dl class="py method">
+<dt id="autonomy_toolkit.db.ATKDataFileReader.__exit__">
+<code class="sig-name descname">__exit__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/autonomy_toolkit/db.html#ATKDataFileReader.__exit__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.db.ATKDataFileReader.__exit__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Close ROS bag when entering contextmanager.</p>
+</dd></dl>
+<dl class="py method">
+<dt id="autonomy_toolkit.db.ATKDataFileReader.__iter__">
+<code class="sig-name descname">__iter__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> → Iterable<span class="p">[</span>Tuple<span class="p">[</span>int<span class="p">, </span>Union<span class="p">[</span>ROS1Connection<span class="p">, </span>ROS2Connection<span class="p">]</span><span class="p">, </span>Any<span class="p">]</span><span class="p">]</span><a class="reference internal" href="../../../../_modules/autonomy_toolkit/db.html#ATKDataFileReader.__iter__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.db.ATKDataFileReader.__iter__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterate method that returns a generator tuple.</p>
+<p>Example usage:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">autonomy_toolkit.db</span> <span class="kn">import</span> <span class="n">ATKDataFileReader</span>
+
+<span class="n">bagfile</span> <span class="o">=</span> <span class="s1">'bag'</span> <span class="c1"># ros2 bag folder</span>
+
+<span class="c1"># You can use a generator</span>
+<span class="k">with</span> <span class="n">ATKDataFileReader</span><span class="p">(</span><span class="n">bagfile</span><span class="p">)</span> <span class="k">as</span> <span class="n">reader</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">timestamp</span><span class="p">,</span> <span class="n">connection</span><span class="p">,</span> <span class="n">msg</span> <span class="ow">in</span> <span class="n">reader</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">timestamp</span><span class="p">,</span> <span class="n">msg</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Yields</dt>
+<dd class="field-odd"><p><em>Tuple[int, Union[ROS1Connection, ROS2Connection], Any]</em> – The timestamp for the message, the connection object for this message, and the deserialized message</p>
+</dd>
+</dl>
+</dd></dl>
+</dd></dl>
+</section>
+</section>
+</section>
+
+      </article>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="../dev/index.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.dev</span></code></div>
+              </div>
+              <svg><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="../utils/yaml_parser/index.html">
+              <svg><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.yaml_parser</span></code></div>
+                
+              </div>
+            </a>
+        </div>
+
+        <div class="related-information">
+              Copyright &#169; 2022, Simulation Based Engineering Laboratory
+            |
+            Built with <a href="https://www.sphinx-doc.org/">Sphinx</a>
+              and
+              <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+              <a href="https://github.com/pradyunsg/furo">Furo theme</a>.
+            |
+            <a class="muted-link" href="../../../../_sources/usage/api/autonomy_toolkit/db/index.rst.txt"
+               rel="nofollow">
+              Show Source
+            </a>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            Contents
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.db</span></code></a><ul>
+<li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
+<li><a class="reference internal" href="#classes">Classes</a></li>
+<li><a class="reference internal" href="#functions">Functions</a><ul>
+<li><a class="reference internal" href="#autonomy_toolkit.db.register_type">register_type</a></li>
+<li><a class="reference internal" href="#autonomy_toolkit.db.ATKDatabase">ATKDatabase</a><ul>
+<li><a class="reference internal" href="#autonomy_toolkit.db.ATKDatabase.push">push</a></li>
+<li><a class="reference internal" href="#autonomy_toolkit.db.ATKDatabase.pull">pull</a></li>
+<li><a class="reference internal" href="#autonomy_toolkit.db.ATKDatabase.ls">ls</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#autonomy_toolkit.db.ATKDataFile">ATKDataFile</a><ul>
+<li><a class="reference internal" href="#autonomy_toolkit.db.ATKDataFile.path">path</a></li>
+<li><a class="reference internal" href="#autonomy_toolkit.db.ATKDataFile.name">name</a></li>
+<li><a class="reference internal" href="#autonomy_toolkit.db.ATKDataFile.db_name">db_name</a></li>
+<li><a class="reference internal" href="#autonomy_toolkit.db.ATKDataFile.reader">reader</a></li>
+<li><a class="reference internal" href="#autonomy_toolkit.db.ATKDataFile.to_ros1">to_ros1</a></li>
+<li><a class="reference internal" href="#autonomy_toolkit.db.ATKDataFile.to_ros2">to_ros2</a></li>
+<li><a class="reference internal" href="#autonomy_toolkit.db.ATKDataFile.combine">combine</a></li>
+<li><a class="reference internal" href="#autonomy_toolkit.db.ATKDataFile.open">open</a></li>
+<li><a class="reference internal" href="#autonomy_toolkit.db.ATKDataFile.close">close</a></li>
+<li><a class="reference internal" href="#autonomy_toolkit.db.ATKDataFile.__enter__">__enter__</a></li>
+<li><a class="reference internal" href="#autonomy_toolkit.db.ATKDataFile.__exit__">__exit__</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#autonomy_toolkit.db.ATKDataFileWriter">ATKDataFileWriter</a><ul>
+<li><a class="reference internal" href="#autonomy_toolkit.db.ATKDataFileWriter.open">open</a></li>
+<li><a class="reference internal" href="#autonomy_toolkit.db.ATKDataFileWriter.close">close</a></li>
+<li><a class="reference internal" href="#autonomy_toolkit.db.ATKDataFileWriter.__enter__">__enter__</a></li>
+<li><a class="reference internal" href="#autonomy_toolkit.db.ATKDataFileWriter.__exit__">__exit__</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#autonomy_toolkit.db.ATKDataFileReader">ATKDataFileReader</a><ul>
+<li><a class="reference internal" href="#autonomy_toolkit.db.ATKDataFileReader.convert_to_pandas_df">convert_to_pandas_df</a></li>
+<li><a class="reference internal" href="#autonomy_toolkit.db.ATKDataFileReader.open">open</a></li>
+<li><a class="reference internal" href="#autonomy_toolkit.db.ATKDataFileReader.close">close</a></li>
+<li><a class="reference internal" href="#autonomy_toolkit.db.ATKDataFileReader.__enter__">__enter__</a></li>
+<li><a class="reference internal" href="#autonomy_toolkit.db.ATKDataFileReader.__exit__">__exit__</a></li>
+<li><a class="reference internal" href="#autonomy_toolkit.db.ATKDataFileReader.__iter__">__iter__</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </main>
+</div>
+  </body>
+</html>

@@ -1,0 +1,112 @@
+:mod:`autonomy_toolkit.utils.files`
+===================================
+
+.. py:module:: autonomy_toolkit.utils.files
+
+.. autoapi-nested-parse::
+
+   Provides helper methods for interacting with the filesystem.
+
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   autonomy_toolkit.utils.files.as_path
+   autonomy_toolkit.utils.files.copy_file
+   autonomy_toolkit.utils.files.file_exists
+   autonomy_toolkit.utils.files.get_file_type
+   autonomy_toolkit.utils.files.get_file_extension
+   autonomy_toolkit.utils.files.get_resolved_path
+   autonomy_toolkit.utils.files.read_text
+   autonomy_toolkit.utils.files.search_upwards_for_file
+
+
+.. function:: as_path(path: str) -> Path
+
+   Simple helper method to get a path as a :class:`pathlib.Path` object
+
+   :Parameters: **path** -- the path to convert
+
+   :returns: *Path* -- The :class:`pathlib.Path` object
+
+
+.. function:: copy_file(path: Union[Path, str], dest: Union[Path, str])
+
+   Copy a file/directory (``path``) to some destination (``dest``).
+
+   :Parameters: * **path** (*Union[Path, str]*) -- The file/directory source to copy.
+                * **dest** (*Union[Path, str]*) -- The file/directory destination to copy to.
+
+
+.. function:: file_exists(filename: str, throw_error: bool = False, can_be_directory: bool = False) -> bool
+
+   Check if the passed filename is an actual file
+
+   :Parameters: * **filename** (*str*) -- The filename to check
+                * **throw_error** (*bool*) -- If True, will throw an error if the file doesn't exist. Defaults to False.
+                * **can_be_directory** (*bool*) -- If True, will check if it is a directory, in addition to a file
+
+   :returns: *bool* -- True if the file exists, false otherwise
+
+   Throws:
+       FileNotFoundError: If filename is not a file and throw_error is set to true
+
+
+.. function:: get_file_type(filename: str, **kwargs) -> str
+
+   Get the file type using the magic library.
+
+   :Parameters: * **filename** (*str*) -- The filename to check
+                * **kwargs** (*dict*) -- Additional keyed parameters to the `from_file` method
+
+   :returns: *str* -- The file type. See libmagic documentation for supported types.
+
+
+.. function:: get_file_extension(filename: str) -> str
+
+   Get the extension for a file
+
+   :Parameters: **filename** (*str*) -- The file to get the extension for
+
+   :returns: *str* -- The file extension
+
+
+.. function:: get_resolved_path(path, atk_relative: bool = False, return_as_str: bool = True) -> Union[str, Path]
+
+   Get the fully resolved path to a specific file. If ``atk_relative`` is set to true,
+   the desired filename is relative to the ``atk`` root subdirectory.
+
+   :Parameters: * **path** (*str*) -- The path to get a fully resolved path from
+                * **atk_relative** (*bool*) -- Whether the filepath is relative to the atk subfolder. Defaults to False.
+                * **return_as_str** (*bool*) -- Returns the path as a string. Otherwise will return as a pathlib.Path object. Defaults to True
+
+   :returns: *Union[str, Path]* -- The fully resolved path as a string or Path object
+
+
+.. function:: read_text(filename: str) -> str
+
+   Read a file and return the text inside that file as a string
+
+   :Parameters: **filename** (*str*) -- The file to read
+
+   :returns: *str* -- The text inside filename
+
+
+.. function:: search_upwards_for_file(filename: str) -> Path
+
+   Search in the current directory and all directories above it
+   for a file of a particular name.
+
+   Arg:
+       filename (str): the filename to look for.
+
+   :returns: *Path* -- the location of the first file found or None, if none was found
+
+

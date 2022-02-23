@@ -1,12 +1,12 @@
 # Setup
 
-The AV Toolkit has two software elements: the command line interface (CLI) and the Python package. The CLI and Python package are installed in the same way. 
+The Autonomy Toolkit has two software elements: the command line interface (CLI) and the Python package. The CLI and Python package are installed in the same way. 
 
 Setup and installation information is provided in this guide.
 
 ## Prerequisites
 
-Before you can install the `avtoolbox` package, you will need to install a few other packages. Please see the linked installation instructions before continuing.
+Before you can install the `autonomy-toolkit` package, you will need to install a few other packages. Please see the linked installation instructions before continuing.
 - Python >= 3.8.2: [Further details below](#python-environments)
 - [Docker](https://docker.com): [Installation instructions](https://docs.docker.com/get-docker/)
 - [docker compose v2](https://docs.docker.com/compose/): [Installation instructions](https://docs.docker.com/compose/cli-command/)
@@ -15,11 +15,11 @@ Before you can install the `avtoolbox` package, you will need to install a few o
 
 - You can run Docker as a non-root user and have activated the Docker daemon ([resource for that](https://docs.docker.com/engine/install/linux-postinstall/))
 
-Once the [prerequisites](#prerequisites) have been installed, you may proceed to installing the `avtoolbox` package.
+Once the [prerequisites](#prerequisites) have been installed, you may proceed to installing the `autonomy-toolkit` package.
 
 ## Python Package 
 
-To install the `avtoolbox` Python package, it is fairly simple. 
+To install the `autonomy-toolkit` Python package, it is fairly simple. 
 
 ### Python Environments
 
@@ -28,9 +28,9 @@ This is merely a recommendation. Virtual and/or Conda environments simply isolat
 </div></div>
 ```
 
-In order to install the `avtoolbox` package, your Python version has to be greater than 3.8.2. This is a requirement of the [`rosbags`](https://pypi.org/project/rosbags/) package used. Different Python versions introduced and deprecated different features, which is why it is common practice to require a certain Python version.
+In order to install the `autonomy-toolkit` package, your Python version has to be greater than 3.8.2. This is a requirement of the [`rosbags`](https://pypi.org/project/rosbags/) package used. Different Python versions introduced and deprecated different features, which is why it is common practice to require a certain Python version.
 
-A common and _recommended_ way of maintaining Python versions, along with their packages, on your system is through [Python Virtual Environments](https://docs.python.org/3/tutorial/venv.html) or [Anaconda](https://anaconda.org). Virtual environments isolate your Python versions and packages from other environments. Imagine you are working on a project that requires Python2.7 and another that requires Python3.8. These versions are completely incompatible with one another, so their packages and code will be, too. The solution to this problem would be to create a Python2.7 virtual environment and a Python3.8 virtual environment. The primary difference between `venv` and Anaconda is that Anaconda is not restricted to only Python packages but allows you to install other packages that use other languages. For the `avtoolbox` package, no such non-Python packages are used, so either can be used (though Anaconda is more common). Further, `venv` requires the Python version you intend to use to be installed on your system already, which Anaconda does not.
+A common and _recommended_ way of maintaining Python versions, along with their packages, on your system is through [Python Virtual Environments](https://docs.python.org/3/tutorial/venv.html) or [Anaconda](https://anaconda.org). Virtual environments isolate your Python versions and packages from other environments. Imagine you are working on a project that requires Python2.7 and another that requires Python3.8. These versions are completely incompatible with one another, so their packages and code will be, too. The solution to this problem would be to create a Python2.7 virtual environment and a Python3.8 virtual environment. The primary difference between `venv` and Anaconda is that Anaconda is not restricted to only Python packages but allows you to install other packages that use other languages. For the `autonomy-toolkit` package, no such non-Python packages are used, so either can be used (though Anaconda is more common). Further, `venv` requires the Python version you intend to use to be installed on your system already, which Anaconda does not.
 
 #### Create a Python Environment with `conda`
 
@@ -42,8 +42,8 @@ You will need to install Anaconda for your system before creating the environmen
 To create a `conda` environment, you can do something like the following:
 
 ```bash
-$ conda create -n av python=3.8.2
-$ conda activate av
+$ conda create -n atk python=3.8.2
+$ conda activate atk
 ```
 
 #### Create a Python Environment with `venv`
@@ -56,7 +56,7 @@ You _must_ have Python >= 3.8.2 installed already for this to work. If you don't
 To create a Python virtual environment using `venv`, you can do something like the following:
 
 ```bash
-$ python -m venv av
+$ python -m venv atk
 ```
 
 You must then source the virtual environment. This depends on your system. See below for information on how to do that.
@@ -74,22 +74,22 @@ You may also want to refer to the [`venv` documentation](https://docs.python.org
 
 ### Using `pip`
 
-The `avtoolbox` package is available on [PyPI](https://pypi.org/project/avtoolbox). To install it, run the following command:
+The `autonomy-toolkit` package is available on [PyPI](https://pypi.org/project/autonomy-toolkit). To install it, run the following command:
 
 ```bash
-pip install avtoolbox
+pip install autonomy-toolkit 
 ```
 
 ### From Sources
 
-Or, you can install the `avtoolbox` package from sources. To do that, clone the `avtoolbox` repo locally:
+Or, you can install the `autonomy-tookit` package from sources. To do that, clone the `autonomy-toolkit` repo locally:
 
 ```bash
-git clone git@github.com:uwsbel/avtoolbox.git
-cd avtoolbox 
+git clone git@github.com:uwsbel/autonomy-toolkit.git
+cd autonomy-toolkit 
 ```
 
-Then, use `setuptools` to install the `avtoolbox` package:
+Then, use `setuptools` to install the `autonomy-toolkit` package:
 
 ```bash
 python setup.py install
@@ -105,4 +105,4 @@ python setup.py develop
 
 You should now be all set up!
 
-You can test the installation by running the demos in [`demos/`](https://github.com/uwsbel/avtoolbox/tree/master/demos). They demonstrate the CLI and the python API.
+You can test the installation by running the demos in [`demos/`](https://github.com/uwsbel/autonomy-toolkit/tree/master/demos). They demonstrate the CLI and the python API.

@@ -1,0 +1,42 @@
+:mod:`autonomy_toolkit.utils`
+=============================
+
+.. py:module:: autonomy_toolkit.utils
+
+.. autoapi-nested-parse::
+
+   Utilities for the autonomy_toolkit package
+
+
+
+Submodules
+----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+
+   docker/index.rst
+   files/index.rst
+   logger/index.rst
+   yaml_parser/index.rst
+
+
+Package Contents
+----------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   autonomy_toolkit.utils.is_posix
+
+
+.. function:: is_posix()
+
+   Determine whether the current OS is a posix (Linux, Mac) system.
+
+   :returns: *bool* -- whether current OS is a posix system
+
+
