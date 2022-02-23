@@ -15,18 +15,18 @@ import yaml, os, argparse, getpass
 # Check that the .autonomy_toolkit.conf file is located in this directory or any parent directories
 # This file should be at the root of any autonomy_toolkit compatible stack
 def _update_globals():
-    AUTONOMY_TOOLKIT_YML_PATH = search_upwards_for_file('.autonomy_toolkit.yml')
+    AUTONOMY_TOOLKIT_YML_PATH = search_upwards_for_file('.atk.yml')
     if AUTONOMY_TOOLKIT_YML_PATH is None:
-        LOGGER.fatal("No .autonomy_toolkit.yml file was found in this directory or any parent directories. Make sure you are running this command in an autonomy_toolkit compatible repository.")
+        LOGGER.fatal("No .atk.yml file was found in this directory or any parent directories. Make sure you are running this command in an autonomy-toolkit compatible repository.")
         exit(-1)
-    LOGGER.info(f"Found '.autonomy_toolkit.yml' at {AUTONOMY_TOOLKIT_YML_PATH}.")
+    LOGGER.info(f"Found '.atk.yml' at {AUTONOMY_TOOLKIT_YML_PATH}.")
 
     # Globals
     # PATHS
     ROOT = AUTONOMY_TOOLKIT_YML_PATH.parent
     DOCKER_COMPOSE_PATH = ROOT / ".docker-compose.yml"
     DOCKER_IGNORE_PATH = ROOT / ".dockerignore"
-    AUTONOMY_TOOLKIT_USER_COUNT_PATH = ROOT / ".autonomy_toolkit.user_count"
+    AUTONOMY_TOOLKIT_USER_COUNT_PATH = ROOT / ".atk.user_count"
     # CUSTOM ATTRIBUTES ALLOWED IN THE AUTONOMY_TOOLKIT_YML FILE
     CUSTOM_ATTRS = ["project", "user", "default_services", "desired_runtime", "overwrite_lists", "custom_cli_arguments"]
 
@@ -35,7 +35,7 @@ def _update_globals():
 def _check_autonomy_toolkit(autonomy_toolkit_yml, *args, default=None):
     if not autonomy_toolkit_yml.contains(*args):
         if default is None:
-            LOGGER.fatal(f"'{'.'.join(*args)}' must be in '.autonomy_toolkit.yml'. '{'.'.join(*args)}'")
+            LOGGER.fatal(f"'{'.'.join(*args)}' must be in '.atk.yml'. '{'.'.join(*args)}'")
             raise AttributeError('')
         else:
             return default
@@ -167,7 +167,7 @@ def _run_env(args, unknown_args):
     The `dev` command essentially wraps `docker compose` to automatically build, spin-up, attach, and
     tear down the ATK development environment. `docker compose` is therefore necessary to install.
 
-    The `dev` command will search for a file called `.autonomy_toolkit.yml`. This is a hidden file, and it defines some custom
+    The `dev` command will search for a file called `.atk.yml`. This is a hidden file, and it defines some custom
     configurations for the development environment. It allows users to quickly start and attach to the ATK development environment
     based on a shared docker-compose file and any Dockerfile build configurations. 
 
@@ -214,8 +214,8 @@ def _run_env(args, unknown_args):
         return
     LOGGER.debug("'docker compose' (V2) is installed.")
 
-    # Parse the .autonomy_toolkit.yml file
-    LOGGER.debug("Parsing '.autonomy_toolkit.yml' file.")
+    # Parse the .atk.yml file
+    LOGGER.debug("Parsing '.atk.yml' file.")
     autonomy_toolkit_yml = YAMLParser(AUTONOMY_TOOLKIT_YML_PATH)
 
     # Read the autonomy_toolkit yml file
@@ -373,7 +373,7 @@ def _init(subparser):
     subparser.add_argument("-d", "--down", action="store_true", help="Tear down the env.", default=False)
     subparser.add_argument("-a", "--attach", action="store_true", help="Attach to the env.", default=False)
     subparser.add_argument("-r", "--run", action="store_true", help="Run a command in the provided service. Only one service may be provided. No other arguments may be called.", default=False)
-    subparser.add_argument("-s", "--services", nargs='+', help="The services to use. Defaults to 'all' or whatever 'default_services' is set to in .autonomy_toolkit.yml. 'dev' or 'all' is required for the 'attach' argument. If 'all' is passed, all the services are used.", default=None)
+    subparser.add_argument("-s", "--services", nargs='+', help="The services to use. Defaults to 'all' or whatever 'default_services' is set to in .atk.yml. 'dev' or 'all' is required for the 'attach' argument. If 'all' is passed, all the services are used.", default=None)
     subparser.add_argument("--keep-yml", action="store_true", help="Don't delete the generated docker-compose file.", default=False)
     subparser.add_argument("--args", nargs=argparse.REMAINDER, help="Additional arguments to pass to the docker compose command. No logic is done on the args, the docker command will error out if there is a problem.", default=[])
     subparser.set_defaults(cmd=_run_env)
