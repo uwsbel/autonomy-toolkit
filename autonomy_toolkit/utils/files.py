@@ -3,7 +3,7 @@ Provides helper methods for interacting with the filesystem.
 """
 
 # Import some utils
-from avtoolbox.utils.logger import LOGGER
+from autonomy_toolkit.utils.logger import LOGGER
 
 # External library imports
 from pathlib import Path
@@ -87,23 +87,23 @@ def get_file_extension(filename: str) -> str:
     """
     return Path(filename).suffix
 
-def get_resolved_path(path, av_relative: bool = False, return_as_str: bool = True) -> Union[str, Path]:
+def get_resolved_path(path, atk_relative: bool = False, return_as_str: bool = True) -> Union[str, Path]:
     """
-    Get the fully resolved path to a specific file. If ``av_relative`` is set to true,
-    the desired filename is relative to the ``av`` root subdirectory.
+    Get the fully resolved path to a specific file. If ``atk_relative`` is set to true,
+    the desired filename is relative to the ``atk`` root subdirectory.
 
     Args:
         path (str): The path to get a fully resolved path from
-        av_relative (bool): Whether the filepath is relative to the av subfolder. Defaults to False.
+        atk_relative (bool): Whether the filepath is relative to the atk subfolder. Defaults to False.
         return_as_str (bool): Returns the path as a string. Otherwise will return as a pathlib.Path object. Defaults to True
 
     Returns:
         Union[str, Path]: The fully resolved path as a string or Path object
     """
     path = Path(path)
-    if av_relative:
-        from av import __file__ as av_file
-        path = Path(av_file).parent / path
+    if atk_relative:
+        from atk import __file__ as atk_file
+        path = Path(atk_file).parent / path
 
     resolved_path = path.resolve()
     if return_as_str:

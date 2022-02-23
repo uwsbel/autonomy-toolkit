@@ -27,7 +27,7 @@ def create_version():
 setup(
     name='avtoolbox',  # Required
     use_scm_version=create_version,
-    description='Autonomous Vehicle Toolbox',  # Optional
+    description='Autonomy Toolkit',  # Optional
     long_description=long_description,  # Optional
     long_description_content_type='text/markdown',  # Optional (see note above)
     author='UW Simulation Based Engineering Lab',  # Optional
@@ -36,10 +36,10 @@ setup(
     include_package_data=True,
     python_requires='>=3.8.2, <4',
     install_requires=parse_requirements(),  # Optional
-    url="https://projects.sbel.org/avtoolbox",
+    url="https://projects.sbel.org/autonomy-toolkit",
     entry_points={  # Optional
         'console_scripts': [
-            'av=avtoolbox._av_base:_main',
+            'atk=autonomy_toolkit._atk_base:_main',
         ],
     },
     classifiers=[
@@ -49,9 +49,9 @@ setup(
         "Programming Language :: Python :: 3",
     ],
     project_urls={  # Optional
-        "Homepage": "https://projects.sbel.org/avtoolbox",
-        "Bug Reports": "https://github.com/uwsbel/avtoolbox/issues",
-        "Source Code": "https://github.com/uwsbel/avtoolbox/",
+        "Homepage": "https://projects.sbel.org/autonomy-toolkit",
+        "Bug Reports": "https://github.com/uwsbel/autonomy-toolkit/issues",
+        "Source Code": "https://github.com/uwsbel/autonomy-toolkit/",
         "Our Lab!": "https://sbel.wisc.edu",
     },
 )

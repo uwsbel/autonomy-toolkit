@@ -1,1 +1,1 @@
-av -vv db push ros1.bag data/ || exit 1
+atk -vv db push ros1.bag data/ || exit 1

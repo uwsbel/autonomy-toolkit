@@ -1,5 +1,5 @@
 """
-CLI command that handles interacting with the AV database.
+CLI command that handles interacting with the ATK database.
 """
 
 # rosbags imports
@@ -12,11 +12,11 @@ from rosbags.serde import deserialize_cdr, ros1_to_cdr
 from rosbags.serde.messages import get_msgdef
 from rosbags.convert import convert, ConverterError
 
-# Imports from avtoolbox
-from avtoolbox.ros.messages import MessageType
-from avtoolbox.utils.files import file_exists, get_file_type, get_file_extension, read_text, get_resolved_path, as_path, copy_file
-from avtoolbox.utils.logger import LOGGER
-from avtoolbox.utils.yaml_parser import YAMLParser
+# Imports from autonomy_toolkit
+from autonomy_toolkit.ros.messages import MessageType
+from autonomy_toolkit.utils.files import file_exists, get_file_type, get_file_extension, read_text, get_resolved_path, as_path, copy_file
+from autonomy_toolkit.utils.logger import LOGGER
+from autonomy_toolkit.utils.yaml_parser import YAMLParser
 
 # General imports
 from typing import NamedTuple, List, Tuple, Iterable, Any, Union
@@ -58,15 +58,15 @@ def register_type(msg_file: Union['Path', str], name: str = None):
 # Database
 # --------
 
-class AVDatabase:
+class ATKDatabase:
     """
-    This class allows you to programatically interact with the AV database.
+    This class allows you to programatically interact with the ATK database.
 
-    Typically, the AV CLI will be enough for pushing and pulling to and from the database.
+    Typically, the ATK CLI will be enough for pushing and pulling to and from the database.
     However, it may be desired to write scripts which pull data from the database. This class can be
     used in these instances.
 
-    The AV database is contructed in a way that the `bag-database <https://swri-robotics.github.io/bag-database/>`_
+    The ATK database is contructed in a way that the `bag-database <https://swri-robotics.github.io/bag-database/>`_
     application can be used. Most of the restrictive descisions made for this package (i.e. using ROS 1 and ROS 2 bags)
     comes from requirements based on this package. The ``bag-database`` reads ros1 bag files from a regular directory
     and displays them, along with some additional features, in a web application. It is very helpful for development.
@@ -88,28 +88,28 @@ class AVDatabase:
         if not self._local_path.exists():
             raise FileNotFoundError(f"Local path '{local_path}' doesn't exist.")
 
-    def push(self, bag: Union['AVDataFile', str], keep: bool = True):
+    def push(self, bag: Union['ATKDataFile', str], keep: bool = True):
         """
-        Push a database file to the AV database.
+        Push a database file to the ATK database.
 
-        The database is strictly made up of ros1 bags, so :meth:`~AVDataFile.to_ros1` will always
+        The database is strictly made up of ros1 bags, so :meth:`~ATKDataFile.to_ros1` will always
         be called. The file will then be copied (i.e. the original file still remains) to the database.
 
         Args:
-            bag (Union[AVDataFile, str]): The bag file to push.
+            bag (Union[ATKDataFile, str]): The bag file to push.
             keep (bool, optional): If False, will delete the file after pushing it.
         """
         if isinstance(bag, str):
-            bag = AVDataFile(bag)
+            bag = ATKDataFile(bag)
 
         copy_file(bag.path, self._local_path / as_path(bag.db_name))
 
         if not keep:
             shutil.rmtree(bag.path)
 
-    def pull(self, name: str, dest: str = None, as_rosbag: bool = False) -> 'AVDataFile':
+    def pull(self, name: str, dest: str = None, as_rosbag: bool = False) -> 'ATKDataFile':
         """
-        Pulls (downloads) a database file from the AV database
+        Pulls (downloads) a database file from the ATK database
 
         Provided a name of the file to download, the file will be copied locally.
         
@@ -123,7 +123,7 @@ class AVDatabase:
             dest = name.name
         copy_file(self._local_path / name, dest)
 
-        data_file = AVDataFile(dest)
+        data_file = ATKDataFile(dest)
         if not as_rosbag:
             data_file.to_ros2()
             os.remove(dest)
@@ -145,11 +145,11 @@ class AVDatabase:
 # Data File
 # ---------
 
-class AVDataFile:
+class ATKDataFile:
     """
     This class represents a bag file that is stored locally.
 
-    The file stored in the AV Database is a `rosbag <http://wiki.ros.org/rosbag>`_, or a 
+    The file stored in the ATK Database is a `rosbag <http://wiki.ros.org/rosbag>`_, or a 
     data storage method introduced in ROS 1. Although ROS 1 bags are stored in the database
     itself, either ROS 1 or ROS 2 bags can be used to push to the remote database. Conversions
     between the different data types when pushing to and pulling from the database.
@@ -159,12 +159,12 @@ class AVDataFile:
     It is desired to utilize ROS 2 bags now, but it is currently not possible to describe 
     custom message types in a ROS 2 bag, `see this issue <https://github.com/ros2/rosbag2/issues/782>`_.
 
-    When in the AV database, a data file is idenfiable by it's name. The name has the following characteristics:
-    - Begins with ``AV-``
+    When in the ATK database, a data file is idenfiable by it's name. The name has the following characteristics:
+    - Begins with ``ATK-``
     - Ends with the date the file was created in the format of ``mm-dd-YYYY-HH-MM-SS``
 
     For example, if a file was created on January 13th, 2022, at 9:00:00am, the database file will have the 
-    following name: ``AV-01-13-2022-15-00-00``.
+    following name: ``ATK-01-13-2022-15-00-00``.
 
     .. note::
 
@@ -174,8 +174,8 @@ class AVDataFile:
 
            </div></div> 
 
-    ROS 1 bags are files with extension ``.bag``, i.e. ``AV-01-13-2022-15-00-00.bag``. ROS 2 bags are 
-    directories, i.e. ``AV-01-13-2022-15-00-00/``.
+    ROS 1 bags are files with extension ``.bag``, i.e. ``ATK-01-13-2022-15-00-00.bag``. ROS 2 bags are 
+    directories, i.e. ``ATK-01-13-2022-15-00-00/``.
 
     When pulling a file from the database, it *will* have a name. If you're working with a file locally and have
     not interacted with the database at all, it will generate a new name using the aforementioned structure.
@@ -194,16 +194,16 @@ class AVDataFile:
         self._reader = None
 
     def _generate_name(self):
-        """Generates the name of the av data file
+        """Generates the name of the ``atk`` data file
 
         *Should* be deterministic. Will grab the start time from the bag file (either ros1 or ros2)
         and use that as the creation data/time.
 
-        As a reminder, the format of the name is ``AV-mm-dd-YYYY-HH-MM-SS``.
+        As a reminder, the format of the name is ``ATK-mm-dd-YYYY-HH-MM-SS``.
         """
         import datetime 
 
-        with AVDataFileReader(self._path) as reader:
+        with ATKDataFileReader(self._path) as reader:
             # reader.start_time returns a time in UTC and includes nanoseconds
             # We don't need nanoseconds
             start_time = reader.start_time // 1e9
@@ -211,8 +211,8 @@ class AVDataFile:
         # Generate the date/time portion of the name
         time_str = datetime.datetime.fromtimestamp(start_time).strftime("%m-%d-%Y-%H-%M-%S")
 
-        # Prepend the time with AV-
-        name = "AV-" + time_str
+        # Prepend the time with ATK-
+        name = "ATK-" + time_str
         LOGGER.info(f"Generated name is {name}")
 
         return name
@@ -227,7 +227,7 @@ class AVDataFile:
     def name(self):
         """Name property.
 
-        As a reminder, the format of the name is ``AV-mm-dd-YYYY-HH-MM-SS``. It *should* be unique.
+        As a reminder, the format of the name is ``ATK-mm-dd-YYYY-HH-MM-SS``. It *should* be unique.
         """
         return self._name
 
@@ -245,7 +245,7 @@ class AVDataFile:
         """Get the reader object for this data file
         
         Returns:
-           AVDataFileReader: The file reader
+           ATKDataFileReader: The file reader
 
         Raises:
             RuntimeError: The reader hasn't been initialized yet. See :meth:`~__enter__`.
@@ -314,8 +314,8 @@ class AVDataFile:
             output_bag      (str): The output ros2 bag file that contains the combined data. ROS 2 uses folders with a .db3 and metadata.yaml file. This should be a path to a folder. Required.
             ros1_topics     (List[str], optional): The topics to copy over from the ros1 bag. If empty, will copy all topics. Default is [] (empty).
             ros2_topics     (List[str], optional): The topics to copy over from the ros2 bag. If empty, will copy all topics. Default is [] (empty).
-            ros1_types      (List[av.ros.messages.MessageType], optional): The custom message types to register when reading. Default is [] (will not register any custom message types).
-            ros2_types      (List[av.ros.messages.MessageType], optional): The custom message types to register when reading. Default is [] (will not register any custom message types).
+            ros1_types      (List[autonomy_toolkit.ros.messages.MessageType], optional): The custom message types to register when reading. Default is [] (will not register any custom message types).
+            ros2_types      (List[autonomy_toolkit.ros.messages.MessageType], optional): The custom message types to register when reading. Default is [] (will not register any custom message types).
 
         Raises:
             KeyError: Raised if an unidentified message type is attempted to be parsed
@@ -323,7 +323,7 @@ class AVDataFile:
         LOGGER.info("Running combine command...")
 
         # Read through both bag files at the same time
-        with AVDataFileReader(ros1_bag) as ros1_reader, AVDataFileReader(ros2_bag) as ros2_reader:
+        with ATKDataFileReader(ros1_bag) as ros1_reader, ATKDataFileReader(ros2_bag) as ros2_reader:
             # Contruct a connection list that is used to filter topics in the bag files
             ros1_conns = [x for x in ros1_reader.connections.values() if x.topic in ros1_topics]  # noqa
             ros2_conns = [x for x in ros2_reader.connections.values() if x.topic in ros2_topics]  # noqa
@@ -333,7 +333,7 @@ class AVDataFile:
             ros2_messages = ros2_reader.messages(connections=ros2_conns)
 
             # Create a writer that will be used to write data to the rosbag file
-            with AVDataFileWriter(output_bag) as writer:
+            with ATKDataFileWriter(output_bag) as writer:
                 # If there any custom types, we will need to register them to read the bags
                 # Also, to read them back easily later, we'll store the message types in the
                 # bag itself
@@ -382,7 +382,7 @@ class AVDataFile:
     def open(self):
         """Open up the data file for reading.
 
-        This is *not* a recommended method for reading the AV data file. Instead,
+        This is *not* a recommended method for reading the ATK data file. Instead,
         you should use the contextmanager with :meth:`~__enter__`.
 
         It is not recommended because you must explicitly open *and* close the file. If unclosed,
@@ -396,7 +396,7 @@ class AVDataFile:
             bagfile = "SOME_ROSBAG_FILE.bag"
 
             # Open the bag file
-            file = AVDataFile(bagfile)
+            file = ATKDataFile(bagfile)
             file.open()
 
             for timestamp, connection, msg in file.reader:
@@ -410,7 +410,7 @@ class AVDataFile:
         """
         assert self._reader is None
 
-        self._reader = AVDataFileReader(self._path)
+        self._reader = ATKDataFileReader(self._path)
         self._reader.open()
 
     def close(self):
@@ -431,7 +431,7 @@ class AVDataFile:
     def __enter__(self):
         """Read the file when entering contextmanager.
 
-        This is the preferred method of reading a AV database file.
+        This is the preferred method of reading a ATK database file.
 
         Examples:
 
@@ -440,7 +440,7 @@ class AVDataFile:
 
             bagfile = "SOME_ROSBAG_FILE.bag"
 
-            with AVDataFile(bagfile) as file:
+            with ATKDataFile(bagfile) as file:
                 for timestamp, connection, msg in file.reader:
                     print(timestamp, msg)
 
@@ -460,7 +460,7 @@ class AVDataFile:
 # Data File Writer
 # ----------------
 
-class _AVROS1DataFileWriter(ROS1Writer):
+class _ATKROS1DataFileWriter(ROS1Writer):
     """
     Helper class to write to a ROS 1 bag.
 
@@ -471,7 +471,7 @@ class _AVROS1DataFileWriter(ROS1Writer):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-class _AVROS2DataFileWriter(ROS2Writer):
+class _ATKROS2DataFileWriter(ROS2Writer):
     """
     Helper class to write to a ROS 2 bag.
 
@@ -510,7 +510,7 @@ class _AVROS2DataFileWriter(ROS2Writer):
         sql = f"INSERT INTO message_types (types) VALUES(?)"
         self.cursor.execute(sql,(sqlite3.Binary(pdata),))
 
-class AVDataFileWriter:
+class ATKDataFileWriter:
     """Simple wrapper class that allows the writing of ROS 1 *or* ROS 2 bags
 
     The writer classes do *not* append or overwrite existing bags. They will only write new bags.
@@ -526,20 +526,20 @@ class AVDataFileWriter:
 
         self._type = _get_bag_version(path)
 
-    def open(self) -> 'Union[_AVROS1DataFileWriter, _AVROS2DataFileWriter]':
+    def open(self) -> 'Union[_ATKROS1DataFileWriter, _ATKROS2DataFileWriter]':
         """
-        Method which will return either a :class:`~_AVROS1DataFileWriter` or a 
-        :class:`~_AVROS2DataFileWriter`.
+        Method which will return either a :class:`~_ATKROS1DataFileWriter` or a 
+        :class:`~_ATKROS2DataFileWriter`.
 
         Returns:
-            Union[_AVROS1DataFileWriter, _AVROS2DataFileWriter]: The correct writer for the bag type.
+            Union[_ATKROS1DataFileWriter, _ATKROS2DataFileWriter]: The correct writer for the bag type.
 
         Raises:
             RuntimeError: If the bag already exists. The writer will only write new bags.
         """
         if self._type == 1:
             try:
-                writer = _AVROS1DataFileWriter(self._path)
+                writer = _ATKROS1DataFileWriter(self._path)
                 writer.open()
                 LOGGER.info(f"Opened '{self._path}' as a ROS 1 bag.")
                 return writer
@@ -547,14 +547,14 @@ class AVDataFileWriter:
                 LOGGER.error(e)
         elif self._type == 2:
             try:
-                writer = _AVROS2DataFileWriter(self._path)
+                writer = _ATKROS2DataFileWriter(self._path)
                 writer.open()
                 LOGGER.info(f"Opened '{self._path}' as a ROS 2 bag.")
                 return writer
             except ROS2WriterError as e:
                 LOGGER.error(e)
 
-        raise RuntimeError(f"'{self._path}' already exists. AVDataFileWriter can only write new ros bags.")
+        raise RuntimeError(f"'{self._path}' already exists. ATKDataFileWriter can only write new ros bags.")
 
     def close(self):
         """
@@ -583,7 +583,7 @@ class AVDataFileWriter:
 # Data File Reader
 # ----------------
 
-class AVDataFileReader:
+class ATKDataFileReader:
     """Simple wrapper class that allows the reading of ROS 1 *or* ROS 2 bags
 
     Args:
@@ -614,12 +614,12 @@ class AVDataFileReader:
         .. highlight:: python
         .. code-block:: python
 
-            from avtoolbox.db import AVDataFileReader
+            from autonomy_toolkit.db import ATKDataFileReader
 
             bagfile = 'bag' # ros2 bag folder
 
             # Or you can use pandas
-            with AVDataFileReader(bagfile) as reader:
+            with ATKDataFileReader(bagfile) as reader:
                 df = reader.convert_to_pandas_df()
                 print(df)
 
@@ -636,20 +636,20 @@ class AVDataFileReader:
 
         return df
 
-    def open(self) -> 'Union[_AVROS1DataFileReader, _AVROS2DataFileReader]':
+    def open(self) -> 'Union[_ATKROS1DataFileReader, _ATKROS2DataFileReader]':
         """
-        Method which will return either a :class:`~_AVROS1DataFileReader` or a 
-        :class:`~_AVROS2DataFileReader`.
+        Method which will return either a :class:`~_ATKROS1DataFileReader` or a 
+        :class:`~_ATKROS2DataFileReader`.
 
         Returns:
-            Union[_AVROS1DataFileReader, _AVROS2DataFileReader]: The correct reader for the bag type.
+            Union[_ATKROS1DataFileReader, _ATKROS2DataFileReader]: The correct reader for the bag type.
 
         Raises:
             RuntimeError: If the bag already exists. The writer will only write new bags.
         """
         if self._type == 1:
             try:
-                reader = _AVROS1DataFileReader(self._path)
+                reader = _ATKROS1DataFileReader(self._path)
                 reader.open()
                 LOGGER.info(f"Opened '{self._path}' as a ROS 1 bag.")
                 self._reader = reader
@@ -657,7 +657,7 @@ class AVDataFileReader:
                 LOGGER.error(e)
         elif self._type == 2:
             try:
-                reader = _AVROS2DataFileReader(self._path)
+                reader = _ATKROS2DataFileReader(self._path)
                 reader.open()
                 LOGGER.info(f"Opened '{self._path}' as a ROS 2 bag.")
                 self._reader = reader
@@ -698,12 +698,12 @@ class AVDataFileReader:
         .. highlight:: python
         .. code-block:: python
 
-            from avtoolbox.db import AVDataFileReader
+            from autonomy_toolkit.db import ATKDataFileReader
 
             bagfile = 'bag' # ros2 bag folder
 
             # You can use a generator
-            with AVDataFileReader(bagfile) as reader:
+            with ATKDataFileReader(bagfile) as reader:
                 for timestamp, connection, msg in reader:
                     print(timestamp, msg)
 
@@ -720,7 +720,7 @@ class AVDataFileReader:
         return getattr(self._reader, attr)
         
 
-class _AVROS1DataFileReader(ROS1Reader, AVDataFileReader):
+class _ATKROS1DataFileReader(ROS1Reader, ATKDataFileReader):
     """
     Helper class to read from a ROS 1 bag.
 
@@ -731,9 +731,9 @@ class _AVROS1DataFileReader(ROS1Reader, AVDataFileReader):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-class _AVROS2DataFileReader(ROS2Reader, AVDataFileReader):
+class _ATKROS2DataFileReader(ROS2Reader, ATKDataFileReader):
     """
-    Helper class to read from a ROS 2 bag that was written by the av package
+    Helper class to read from a ROS 2 bag that was written by the ``atk`` package
 
     It simply wraps the :class:`rosbags.ros2.reader.Reader` class. Adds additional functionality
     to read from a custom meta data table to register message types without needing to know
@@ -744,17 +744,17 @@ class _AVROS2DataFileReader(ROS2Reader, AVDataFileReader):
     .. highlight:: python
     .. code-block:: python
 
-        from avtoolbox.db import AVDataFileReader
+        from autonomy_toolkit.db import ATKDataFileReader
 
         bagfile = 'bag' # ros2 bag folder
 
         # You can use a generator
-        with AVDataFileReader(bagfile) as reader:
+        with ATKDataFileReader(bagfile) as reader:
             for timestamp, connection, msg in reader:
                 print(timestamp, msg)
 
         # Or you can use pandas
-        with AVDataFileReader(bagfile) as reader:
+        with ATKDataFileReader(bagfile) as reader:
             df = reader.convert_to_pandas_df()
             print(df)
     """
@@ -768,12 +768,12 @@ class _AVROS2DataFileReader(ROS2Reader, AVDataFileReader):
         """
         Private method called by the constructor that registers messages.
 
-        Using the :class:`~AVDataFileWriter` class, custom messages may be needed to parse the data types from
+        Using the :class:`~ATKDataFileWriter` class, custom messages may be needed to parse the data types from
         either ROS1 or ROS2. As a result, using that class, we've stored some information regarding those
         message types in a separate sqlite table from the one holding all the ROS info. This method will
         parse that metadata table and register the additional types it finds.
 
-        This method will work for rosbags not written by the :class:`~AVDataFileWriter` class, it
+        This method will work for rosbags not written by the :class:`~ATKDataFileWriter` class, it
         just won't do anything if it can't find the message table. This is the same functionality if the
         writer didn't actually need to register any topics when it was writing.
         """
@@ -834,27 +834,27 @@ def _run_push(args):
     """
     Entrypoint for the `db push` command.
 
-    The push command will copy local data files to the AV database. The AV database
+    The push command will copy local data files to the ATK database. The ATK database
     holds ros1 bags and is maintained as to allow [bag-database](https://swri-robotics.github.io/bag-database/)
     to read it.
 
     The `db push` command requires the local directory (see warning below) that the file will be pushed to.
     This is always the last positional argument. By default, it will push all ros1 or ros2 bags prefixed with 
-    `AV-`. Otherwise, you may override this functionality by providing data files prior to the local directory
+    `ATK-`. Otherwise, you may override this functionality by providing data files prior to the local directory
     path. See below for examples.
 
     ```bash
     # Push all data files in the current directory to /var/ros/data/
-    av db push /var/ros/data/
+    atk db push /var/ros/data/
 
     # Push just ros1.bag to the database
-    av db push ros1.bag /var/ros/data/
+    atk db push ros1.bag /var/ros/data/
 
     # Push just ros1.bag to the database
-    av db push ros1.bag ros2bag/ /var/ros/data/
+    atk db push ros1.bag ros2bag/ /var/ros/data/
 
     # Push all bags in bags/ to the database
-    av db push bags/* /var/ros/data/
+    atk db push bags/* /var/ros/data/
     ```
 
     ```{warning}
@@ -868,19 +868,19 @@ def _run_push(args):
     if len(args.files):
         files.extend(args.files)
     else:
-        # If no files are passed, grab all the files in the current directory that start with "AV-"
+        # If no files are passed, grab all the files in the current directory that start with "ATK-"
         import glob
 
-        av_files = glob.glob("AV-*")
-        if len(av_files) == 0:
-            LOGGER.fatal("No data files were provided and no bag files prefixed with 'AV-' where found in the current directory.")
+        atk_files = glob.glob("ATK-*")
+        if len(atk_files) == 0:
+            LOGGER.fatal("No data files were provided and no bag files prefixed with 'ATK-' where found in the current directory.")
             return
-        files.extend(av_files)
+        files.extend(atk_files)
 
     # Push each file
     if not args.dry_run:
         LOGGER.info(f"Connecting with database at '{args.local_path}'")
-        db = AVDatabase(args.local_path)
+        db = ATKDatabase(args.local_path)
 
         for file in files:
             if not file_exists(file):
@@ -902,7 +902,7 @@ def _run_combine(args):
     Example usage:
 
     ```bash
-    av -vv db combine -c configuration.yml
+    atk -vv db combine -c configuration.yml
     ```
 
     `configuration.yml`:
@@ -950,13 +950,13 @@ def _run_combine(args):
     assert file_exists(ros1bag, throw_error=True)
 
     # Run the combine command
-    AVDataFile.combine(ros1bag, ros2bag, output, ros1_topics=ros1_topics, ros2_topics=ros2_topics, ros1_types=ros1_messages, ros2_types=ros2_messages)
+    ATKDataFile.combine(ros1bag, ros2bag, output, ros1_topics=ros1_topics, ros2_topics=ros2_topics, ros1_types=ros1_messages, ros2_types=ros2_messages)
 
 
 def _run_read(args):
-    """Command to read a AV database file.
+    """Command to read a ATK database file.
 
-    The AV database files are unique in that they allow you to read a ROS 2 bag with custom message types.
+    The ATK database files are unique in that they allow you to read a ROS 2 bag with custom message types.
     With ROS 2 Galatic, [this is not possible](https://github.com/ros2/rosbag2/issues/782), hence the need to
     do this ourselves. To implement this, the `rosbags` package ([documentation](https://ternaris.gitlab.io/rosbags/))
     is utilize to convert between ROS 1 and ROS 2 bags without using either as an actual dependency. By default,
@@ -968,16 +968,16 @@ def _run_read(args):
     bag as if it was recorded normally and unaffected (assuming you have sourced a workspace with the custom msg
     types).
 
-    This command is simply a debug tool for reading a AV database file.
+    This command is simply a debug tool for reading a ATK database file.
 
     Example usage:
 
     ```bash
-    av -vv db read input
+    atk -vv db read input
 
     # OR
 
-    av -vv db read configuration.yaml
+    atk -vv db read configuration.yaml
     ```
 
     `configuration.yml`:
@@ -1007,21 +1007,21 @@ def _run_read(args):
 
     # Read and print out the data
     # TODO: Make this more useful. Metadata (num messages, time, etc.)?
-    with AVDataFileReader(input) as reader:
+    with ATKDataFileReader(input) as reader:
         for i, (timestamp, topic, msg) in enumerate(reader):
             print(timestamp, topic)
 
 def _init(subparser):
     """Initializer method for the `db` entrypoint
 
-    This entrypoint provides easy manipulation of the AV database. The database is simply organized
+    This entrypoint provides easy manipulation of the ATK database. The database is simply organized
     in a directory located either on a remote system or locally. The directory holds ROS 1 bags. At the time of
     creation, it was desired to have a way to parse the database in a rich GUI environment and be able to visually
     inspect topics, bags, and other relevant data. To easily do this, the [bag-database](https://github.com/swri-robotics/bag-database)
     application is used. When written, [ROS 2 bags](https://github.com/ros2/rosbag2/issues/782) lack the ability
     to contain information regarding custom message types (the next release of ROS in May, 2022, should implement this feature).
 
-    This cli tool will therefore then provide a way to easily convert ROS 2 bags to ROS 1 to store in the AV
+    This cli tool will therefore then provide a way to easily convert ROS 2 bags to ROS 1 to store in the ATK
     database. Commands will simplify the "pushing" and "pulling" to and from the database. Furthermore, additional
     tools have been written such as combining ROS 1 and ROS 2 bags into a single ROS 2 bag.
 
@@ -1032,9 +1032,9 @@ def _init(subparser):
     subparsers = subparser.add_subparsers(required=False)
 
     # Push subcommand
-    # Convert local ros2 bag to a rosbag (ROS 1) and then push it to the AV Database
-    push = subparsers.add_parser("push", description="Push a bag file to the AVDatabase.")
-    push.add_argument("files", nargs="*", help="The files to push. If none are provided, all AV- prefixed files are selected.")
+    # Convert local ros2 bag to a rosbag (ROS 1) and then push it to the ATK Database
+    push = subparsers.add_parser("push", description="Push a bag file to the ATKDatabase.")
+    push.add_argument("files", nargs="*", help="The files to push. If none are provided, all ATK- prefixed files are selected.")
     push.add_argument("local_path", help="The local path to the directory of the database.")
     push.set_defaults(cmd=_run_push)
 
@@ -1053,7 +1053,7 @@ def _init(subparser):
 
     # Read subcommand
     # Used to read ros bag files
-    read = subparsers.add_parser("read", description="Read the custom av sqlite database files.")
+    read = subparsers.add_parser("read", description="Read the custom atk sqlite database files.")
     read.add_argument("config", help="YAML file that defines the read process")
     read.add_argument("-i", "--input", help="The database file to read")
     read.set_defaults(cmd=_run_read)

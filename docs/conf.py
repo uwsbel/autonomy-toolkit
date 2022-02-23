@@ -13,7 +13,7 @@
 import os
 os.environ["AVTOOLBOX_DOCS"] = "1"
 
-import avtoolbox
+import autonomy_toolkit 
 from datetime import date
 from pathlib import Path
 import sys
@@ -30,7 +30,7 @@ author = "Simulation Based Engineering Laboratory"
 
 # The full version, including alpha/beta/rc tags
 from importlib.metadata import version as get_version
-release = get_version("avtoolbox")
+release = get_version("autonomy_toolkit")
 
 # -- General configuration ---------------------------------------------------
 
@@ -51,7 +51,7 @@ extensions = [
 
 # autoapi config
 autoapi_type = "python"
-autoapi_dirs = ["../avtoolbox"]
+autoapi_dirs = ["../autonomy_toolkit"]
 autoapi_options = [
     "members",
     "show-inheritance",
@@ -128,7 +128,7 @@ html_theme_options = {
     "announcement": """
         <a style=\"text-decoration: none; color: white;\" 
            href=\"https://sbel.wisc.edu\">
-           <img src=\"https://github.com/uwsbel/avtoolbox/blob/master/docs/_static/cropped-SBEL-192x192.png?raw=true\" 
+           <img src=\"https://github.com/uwsbel/autonomy-toolkit/blob/master/docs/_static/cropped-SBEL-192x192.png?raw=true\" 
                 style=\"vertical-align: middle; display: inline; padding-right: 7.5px; height: 20px;\"/>
            Checkout our website!
         </a>

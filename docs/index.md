@@ -18,7 +18,7 @@ contributing
 ```{toctree}
 :caption: External Links
 :hidden:
-PyPI <https://pypi.org/project/avtoolbox/>
-Github <https://github.com/uwsbel/avtoolbox>
+PyPI <https://pypi.org/project/autonomy-toolkit/>
+Github <https://github.com/uwsbel/autonomy-toolkit>
 ```
 

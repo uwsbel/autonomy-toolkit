@@ -1,7 +1,7 @@
 version: "3.9"
 services:
   dev:
-    image: "avtoolbox/{project}:dev"
+    image: "atk/{project}:dev"
     hostname: "{project}-dev"
     container_name: "{project}-dev"
     build:
@@ -26,7 +26,7 @@ services:
     volumes: 
      - "{root}:/home/{username}/{project}"
   vnc:
-    image: "avtoolbox/{project}:vnc"
+    image: "atk/{project}:vnc"
     hostname: "{project}-vnc"
     container_name: "{project}-vnc"
     build:

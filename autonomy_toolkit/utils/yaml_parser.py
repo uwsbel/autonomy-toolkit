@@ -5,8 +5,8 @@ Yaml files are human readable configuration files: https://yaml.org/
 """
 
 # Import some utilities
-from avtoolbox.utils.logger import LOGGER
-from avtoolbox.utils.files import file_exists, get_file_type
+from autonomy_toolkit.utils.logger import LOGGER
+from autonomy_toolkit.utils.files import file_exists, get_file_type
 
 # External library imports
 import yaml

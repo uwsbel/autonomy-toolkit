@@ -10,7 +10,7 @@ include LICENSE
 include setup.py
 
 # Include any config files
-recursive-include avtoolbox/docker/
+recursive-include autonomy_toolkit/docker/
 
 # Ignore non-package folders
 prune demos

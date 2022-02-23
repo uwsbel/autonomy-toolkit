@@ -1,1 +1,1 @@
-av -vv db combine -c data/cli_demo.yaml || exit 1
+atk -vv db combine -c data/cli_demo.yaml || exit 1

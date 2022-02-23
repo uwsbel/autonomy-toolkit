@@ -1,43 +1,45 @@
 """
-CLI command that handles working with the AV development environment
+CLI command that handles working with the ATK development environment
 """
 
-# Imports from av
-from avtoolbox.utils import is_posix
-from avtoolbox.utils.logger import LOGGER
-from avtoolbox.utils.yaml_parser import YAMLParser
-from avtoolbox.utils.files import search_upwards_for_file
-from avtoolbox.utils.docker import get_docker_client_binary_path, run_docker_cmd, compose_is_installed, DockerComposeClient, norm_ports, find_available_port, DockerException
+# Imports from atk
+from autonomy_toolkit.utils import is_posix
+from autonomy_toolkit.utils.logger import LOGGER
+from autonomy_toolkit.utils.yaml_parser import YAMLParser
+from autonomy_toolkit.utils.files import search_upwards_for_file
+from autonomy_toolkit.utils.docker import get_docker_client_binary_path, run_docker_cmd, compose_is_installed, DockerComposeClient, norm_ports, find_available_port, DockerException
 
 # Other imports
 import yaml, os, argparse, getpass
 
-# Check that the .avtoolbox.conf file is located in this directory or any parent directories
-# This file should be at the root of any avtoolbox compatible stack
-if not os.environ.get("AVTOOLBOX_DOCS", False):
-    AVTOOLBOX_YML_PATH = search_upwards_for_file('.avtoolbox.yml')
-    if AVTOOLBOX_YML_PATH is None:
-        LOGGER.fatal("No .avtoolbox.yml file was found in this directory or any parent directories. Make sure you are running this command in an avtoolbox compatible repository.")
+# Check that the .autonomy_toolkit.conf file is located in this directory or any parent directories
+# This file should be at the root of any autonomy_toolkit compatible stack
+def _update_globals():
+    AUTONOMY_TOOLKIT_YML_PATH = search_upwards_for_file('.autonomy_toolkit.yml')
+    if AUTONOMY_TOOLKIT_YML_PATH is None:
+        LOGGER.fatal("No .autonomy_toolkit.yml file was found in this directory or any parent directories. Make sure you are running this command in an autonomy_toolkit compatible repository.")
         exit(-1)
-    LOGGER.info(f"Found '.avtoolbox.yml' at {AVTOOLBOX_YML_PATH}.")
+    LOGGER.info(f"Found '.autonomy_toolkit.yml' at {AUTONOMY_TOOLKIT_YML_PATH}.")
 
     # Globals
     # PATHS
-    ROOT = AVTOOLBOX_YML_PATH.parent
+    ROOT = AUTONOMY_TOOLKIT_YML_PATH.parent
     DOCKER_COMPOSE_PATH = ROOT / ".docker-compose.yml"
     DOCKER_IGNORE_PATH = ROOT / ".dockerignore"
-    AVTOOLBOX_USER_COUNT_PATH = ROOT / ".avtoolbox.user_count"
-    # CUSTOM ATTRIBUTES ALLOWED IN THE AVTOOLBOX_YML FILE
+    AUTONOMY_TOOLKIT_USER_COUNT_PATH = ROOT / ".autonomy_toolkit.user_count"
+    # CUSTOM ATTRIBUTES ALLOWED IN THE AUTONOMY_TOOLKIT_YML FILE
     CUSTOM_ATTRS = ["project", "user", "default_services", "desired_runtime", "overwrite_lists", "custom_cli_arguments"]
 
-def _check_avtoolbox(avtoolbox_yml, *args, default=None):
-    if not avtoolbox_yml.contains(*args):
+    globals().update(locals())
+
+def _check_autonomy_toolkit(autonomy_toolkit_yml, *args, default=None):
+    if not autonomy_toolkit_yml.contains(*args):
         if default is None:
-            LOGGER.fatal(f"'{'.'.join(*args)}' must be in '.avtoolbox.yml'. '{'.'.join(*args)}'")
+            LOGGER.fatal(f"'{'.'.join(*args)}' must be in '.autonomy_toolkit.yml'. '{'.'.join(*args)}'")
             raise AttributeError('')
         else:
             return default
-    return avtoolbox_yml.get(*args)
+    return autonomy_toolkit_yml.get(*args)
 
 def _merge_dictionaries(source, destination, overwrite_lists=False):
     for key, value in source.items():
@@ -54,28 +56,28 @@ def _merge_dictionaries(source, destination, overwrite_lists=False):
 
     return destination
 
-def _parse_avtoolbox(avtoolbox_yml):
-    # Read the avtoolbox yml file
+def _parse_autonomy_toolkit(autonomy_toolkit_yml):
+    # Read the autonomy_toolkit yml file
     custom_config = {}
     try:
         # Custom config
         custom_config["root"] = ROOT
-        custom_config["project"] = _check_avtoolbox(avtoolbox_yml, "project")
-        custom_config["username"] = _check_avtoolbox(avtoolbox_yml, "user", "container_username", default=custom_config["project"])
-        custom_config["host_username"] = _check_avtoolbox(avtoolbox_yml, "user", "host_username", default=getpass.getuser())
-        custom_config["uid"] = _check_avtoolbox(avtoolbox_yml, "user", "uid", default=os.getuid() if is_posix() else 1000)
-        custom_config["gid"] = _check_avtoolbox(avtoolbox_yml, "user", "gid", default=os.getgid() if is_posix() else 1000)
-        custom_config["default_services"] = _check_avtoolbox(avtoolbox_yml, "default_services", default=["dev"])
-        custom_config["overwrite_lists"] = _check_avtoolbox(avtoolbox_yml, "overwrite_lists", default=False)
-        custom_config["custom_cli_arguments"] = _check_avtoolbox(avtoolbox_yml, "custom_cli_arguments", default={})
+        custom_config["project"] = _check_autonomy_toolkit(autonomy_toolkit_yml, "project")
+        custom_config["username"] = _check_autonomy_toolkit(autonomy_toolkit_yml, "user", "container_username", default=custom_config["project"])
+        custom_config["host_username"] = _check_autonomy_toolkit(autonomy_toolkit_yml, "user", "host_username", default=getpass.getuser())
+        custom_config["uid"] = _check_autonomy_toolkit(autonomy_toolkit_yml, "user", "uid", default=os.getuid() if is_posix() else 1000)
+        custom_config["gid"] = _check_autonomy_toolkit(autonomy_toolkit_yml, "user", "gid", default=os.getgid() if is_posix() else 1000)
+        custom_config["default_services"] = _check_autonomy_toolkit(autonomy_toolkit_yml, "default_services", default=["dev"])
+        custom_config["overwrite_lists"] = _check_autonomy_toolkit(autonomy_toolkit_yml, "overwrite_lists", default=False)
+        custom_config["custom_cli_arguments"] = _check_autonomy_toolkit(autonomy_toolkit_yml, "custom_cli_arguments", default={})
 
         custom_config["project"] = eval(f"f'''{custom_config['project']}'''", custom_config)
         custom_config["username"] = eval(f"f'''{custom_config['username']}'''", custom_config)
 
         # Check these two attributes exist
         # Will exit if they don't
-        _check_avtoolbox(avtoolbox_yml, "services")
-        _check_avtoolbox(avtoolbox_yml, "services", "dev")
+        _check_autonomy_toolkit(autonomy_toolkit_yml, "services")
+        _check_autonomy_toolkit(autonomy_toolkit_yml, "services", "dev")
     except AttributeError as e:
         return
 
@@ -117,7 +119,7 @@ def _unlink_file(filepath):
 def _update_compose(client, custom_config, args, unknown_args):
     # For each service that we're spinning up, check some arguments
     # For instance, if two ports match between different containers (common if you 
-    # have different projects which is the avtoolbox framework and export the same ports),
+    # have different projects which is the autonomy_toolkit framework and export the same ports),
     # you will run into issues when they're both running
     config = YAMLParser(text=client.run("config", stdout=-1)[0])
     for service_name, service in config.get_data()['services'].items():
@@ -163,10 +165,10 @@ def _run_env(args, unknown_args):
     Entrypoint for the `dev` command.
 
     The `dev` command essentially wraps `docker compose` to automatically build, spin-up, attach, and
-    tear down the AV development environment. `docker compose` is therefore necessary to install.
+    tear down the ATK development environment. `docker compose` is therefore necessary to install.
 
-    The `dev` command will search for a file called `.avtoolbox.yml`. This is a hidden file, and it defines some custom
-    configurations for the development environment. It allows users to quickly start and attach to the AV development environment
+    The `dev` command will search for a file called `.autonomy_toolkit.yml`. This is a hidden file, and it defines some custom
+    configurations for the development environment. It allows users to quickly start and attach to the ATK development environment
     based on a shared docker-compose file and any Dockerfile build configurations. 
 
     There are four possible options that can be used using the `dev` subcommand:
@@ -174,23 +176,23 @@ def _run_env(args, unknown_args):
     the following command:
 
     ```bash
-    av dev --build
+    atk dev --build
     ```
 
     If you'd like to build, start the container, then attach to it, run the following command:
 
     ```bash
-    av dev --build --up --attach
+    atk dev --build --up --attach
     # OR
-    av dev -b -u -a
+    atk dev -b -u -a
     # OR
-    av dev -bua
+    atk dev -bua
     ```
 
     If no arguments are passed, this is equivalent to the following command:
 
     ```bash
-    av dev --up --attach
+    atk dev --up --attach
     ```
 
     If desired, pass `--down` to stop the container. Further, if the container exists and changes are
@@ -198,6 +200,7 @@ def _run_env(args, unknown_args):
     `--build` argument.
     """
     LOGGER.info("Running 'dev' entrypoint...")
+    _update_globals()
 
     # Check docker is installed
     if get_docker_client_binary_path() is None:
@@ -207,16 +210,16 @@ def _run_env(args, unknown_args):
     # Check docker compose is installed
     LOGGER.debug("Checking if 'docker compose' (V2) is installed...")
     if not compose_is_installed():
-        LOGGER.fatal("The command 'docker compose' is not installed. See http://projects.sbel.org/avtoolbox/tutorials/using_the_development_environment.html for more information.")
+        LOGGER.fatal("The command 'docker compose' is not installed. See http://projects.sbel.org/autonomy_toolkit/tutorials/using_the_development_environment.html for more information.")
         return
     LOGGER.debug("'docker compose' (V2) is installed.")
 
-    # Parse the .avtoolbox.yml file
-    LOGGER.debug("Parsing '.avtoolbox.yml' file.")
-    avtoolbox_yml = YAMLParser(AVTOOLBOX_YML_PATH)
+    # Parse the .autonomy_toolkit.yml file
+    LOGGER.debug("Parsing '.autonomy_toolkit.yml' file.")
+    autonomy_toolkit_yml = YAMLParser(AUTONOMY_TOOLKIT_YML_PATH)
 
-    # Read the avtoolbox yml file
-    custom_config = _parse_avtoolbox(avtoolbox_yml)
+    # Read the autonomy_toolkit yml file
+    custom_config = _parse_autonomy_toolkit(autonomy_toolkit_yml)
 
     # Additional checks
     if any(c.isupper() for c in custom_config["project"]):
@@ -232,8 +235,8 @@ def _run_env(args, unknown_args):
         dockerignore += _read_text(existing_dockerignore)
 
     # The docker containers are generated from a docker-compose.yml file
-    # We'll write this ourselves from the .avtoolbox file and the defaults
-    temp = dict(**avtoolbox_yml.get_data())
+    # We'll write this ourselves from the .autonomy_toolkit file and the defaults
+    temp = dict(**autonomy_toolkit_yml.get_data())
     temp = { k: v for k,v in temp.items() if k not in CUSTOM_ATTRS }
     docker_compose = _merge_dictionaries(temp, default_configs, custom_config["overwrite_lists"])
 
@@ -269,7 +272,7 @@ def _run_env(args, unknown_args):
             _write_text(DOCKER_IGNORE_PATH, dockerignore)
 
             # Keep track of the number of users so we aren't deleting files when they need to persist
-            _update_user_count(AVTOOLBOX_USER_COUNT_PATH, 1)
+            _update_user_count(AUTONOMY_TOOLKIT_USER_COUNT_PATH, 1)
 
             client = DockerComposeClient(project=custom_config["project"], services=args.services, compose_file=DOCKER_COMPOSE_PATH)
 
@@ -324,7 +327,7 @@ def _run_env(args, unknown_args):
                         return
                     raise e
                 if "USERSHELLPATH" not in env:
-                    LOGGER.fatal(f"To attach to a container using avtoolbox, the environment variable \"USERSHELLPATH\" must be defined within the container. Was not found, please add it to the container.")
+                    LOGGER.fatal(f"To attach to a container using autonomy_toolkit, the environment variable \"USERSHELLPATH\" must be defined within the container. Was not found, please add it to the container.")
                     return
                 shellcmd = env.split("USERSHELLPATH=")[1].split('\n')[0]
 
@@ -343,21 +346,21 @@ def _run_env(args, unknown_args):
             if e.stderr:
                 LOGGER.fatal(e.stderr)
         finally:
-            if _update_user_count(AVTOOLBOX_USER_COUNT_PATH, -1) == 0 or args.down:
-                _unlink_file(AVTOOLBOX_USER_COUNT_PATH)
+            if _update_user_count(AUTONOMY_TOOLKIT_USER_COUNT_PATH, -1) == 0 or args.down:
+                _unlink_file(AUTONOMY_TOOLKIT_USER_COUNT_PATH)
                 _unlink_file(DOCKER_IGNORE_PATH)
                 if not args.keep_yml: _unlink_file(DOCKER_COMPOSE_PATH)
 
 def _init(subparser):
     """Initializer method for the `dev` entrypoint
 
-    This entrypoint provides easy access to the AV development environment. The dev environment
+    This entrypoint provides easy access to the ATK development environment. The dev environment
     leverages [Docker](https://docker.com) to allow interoperability across operating systems. `docker compose`
     is used to build, spin up, attach, and tear down the containers. The `dev` entrypoint will basically wrap
-    the `docker compose` commands to make it easier to customize the workflow to work best for AV.
+    the `docker compose` commands to make it easier to customize the workflow to work best for ATK.
 
     The primary container, titled `dev`, has [ROS 2](https://docs.ros.org/en/galactic/index.html)
-    pre-installed. The software stack for the AV vehicle utilizes ROS 2 and will use
+    pre-installed. The software stack for the ATK vehicle utilizes ROS 2 and will use
     the same container that is used for development. 
 
     Additional containers may be provided to allow for GUI windows or run simulations.
@@ -370,7 +373,7 @@ def _init(subparser):
     subparser.add_argument("-d", "--down", action="store_true", help="Tear down the env.", default=False)
     subparser.add_argument("-a", "--attach", action="store_true", help="Attach to the env.", default=False)
     subparser.add_argument("-r", "--run", action="store_true", help="Run a command in the provided service. Only one service may be provided. No other arguments may be called.", default=False)
-    subparser.add_argument("-s", "--services", nargs='+', help="The services to use. Defaults to 'all' or whatever 'default_services' is set to in .avtoolbox.yml. 'dev' or 'all' is required for the 'attach' argument. If 'all' is passed, all the services are used.", default=None)
+    subparser.add_argument("-s", "--services", nargs='+', help="The services to use. Defaults to 'all' or whatever 'default_services' is set to in .autonomy_toolkit.yml. 'dev' or 'all' is required for the 'attach' argument. If 'all' is passed, all the services are used.", default=None)
     subparser.add_argument("--keep-yml", action="store_true", help="Don't delete the generated docker-compose file.", default=False)
     subparser.add_argument("--args", nargs=argparse.REMAINDER, help="Additional arguments to pass to the docker compose command. No logic is done on the args, the docker command will error out if there is a problem.", default=[])
     subparser.set_defaults(cmd=_run_env)

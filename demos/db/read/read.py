@@ -1,7 +1,7 @@
-# Import some classes from the av module
-from avtoolbox.db import AVDataFileReader, register_type
+# Import some classes from the autonomy_toolkit module
+from autonomy_toolkit.db import ATKDataFileReader, register_type
 
-# The av data directory we'll read
+# The autonomy_toolkit data directory we'll read
 # The sqlite needs to have the custom message types
 filename = 'data/'
 
@@ -13,11 +13,11 @@ register_type("data/VehicleInput.msg", "custom_msgs/msg/VehicleInput")
 # -----------------------------------
 
 # You can use a generator
-with AVDataFileReader(filename) as reader:
+with ATKDataFileReader(filename) as reader:
     for timestamp, connection, msg in reader:
         print(timestamp, msg)
 
 # Or you can use pandas
-with AVDataFileReader(filename) as reader:
+with ATKDataFileReader(filename) as reader:
     df = reader.convert_to_pandas_df()
     print(df)

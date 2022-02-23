@@ -4,10 +4,10 @@ The AV development environment has been created to expedite the process from alg
 
 ## Prerequisites
 
-- You have cloned the [avtoolbox](https://github.com/uwsbel/avtoolbox) repository
+- You have cloned the [autonomy-toolkit](https://github.com/uwsbel/autonomy-toolkit) repository
 - You have installed Docker ([resource for that](https://docs.docker.com/get-docker/))
 - You have installed docker compose v2 ([resource for that](https://docs.docker.com/compose/cli-command/))
-- You have installed `avtoolbox` ([resources for that](https://projects.sbel.org/avtoolbox/setup.html))
+- You have installed `autonomy-toolkit` ([resources for that](https://projects.sbel.org/autonomy-toolkit/setup.html))
 
 ## Design Considerations
 
@@ -27,62 +27,62 @@ There are two `services` (or containers) that will be created: `dev` and `vnc`. 
 
 ## Setup
 
-Beyond installing the packages outlined in [prerequisites](#prerequisites), there is not much setup that is necessary. The `avtoolbox` package provides tools for easily spinning up containers and attaching to the development environment within Docker.
+Beyond installing the packages outlined in [prerequisites](#prerequisites), there is not much setup that is necessary. The `autonomy-toolkit` package provides tools for easily spinning up containers and attaching to the development environment within Docker.
 
 ## Usage
 
-To use the development environment, very convenient commands are provided through the `avtoolbox` CLI. The documentation for the `dev` command can be found [here](http://projects.sbel.org/avtoolbox/usage/cli.html#dev).
+To use the development environment, very convenient commands are provided through the `autonomy-toolkit` CLI. The documentation for the `dev` command can be found [here](http://projects.sbel.org/autonomy-toolkit/usage/cli.html#dev).
 
-As described in the documentation, the `dev` command has four arguments: `build`, `up`, `down`, and `attach`. These may sound familiar if you've used `docker compose` before because the `dev` command essentially wraps `docker compose`. Everything that the `av dev` command does, `docker compose` can also do; the `av dev` cli command is simply made to expedite the process of entering a container and may also provide an easy mechanism to add additional functionality in the future.
+As described in the documentation, the `dev` command has four arguments: `build`, `up`, `down`, and `attach`. These may sound familiar if you've used `docker compose` before because the `dev` command essentially wraps `docker compose`. Everything that the `atk dev` command does, `docker compose` can also do; the `atk dev` cli command is simply made to expedite the process of entering a container and may also provide an easy mechanism to add additional functionality in the future.
 
 ```{note}
-For any commands mentioned herein, it will be assumed they are run from within the `av` repository.
+For any commands mentioned herein, it will be assumed they are run from within the `atk` repository.
 </div></div>
 ```
 
 ### Entering the Development Environment
 
-The first time you attempt to use the MiniAV development environment, the docker container will need to be built (the `av` package will do this for you). This may take upwards of 15 minutes, depending on the number of packages your control stack needs to install. After the initial build, you may never need to build the stack again (unless you need additional packages installed). To build the container the first time around, you can run the following command:
+The first time you attempt to use the MiniAV development environment, the docker container will need to be built (the `atk` package will do this for you). This may take upwards of 15 minutes, depending on the number of packages your control stack needs to install. After the initial build, you may never need to build the stack again (unless you need additional packages installed). To build the container the first time around, you can run the following command:
 
 ```bash
-av dev
+atk dev
 ```
 
 This is equivalent to running the following:
 
 ```bash
-av dev --up --attach
+atk dev --up --attach
 ```
 
-And since the image has never been built, the `--up` argument will also build it. This is only the case if the image cannot be found, i.e. the first time you run `av dev`.
+And since the image has never been built, the `--up` argument will also build it. This is only the case if the image cannot be found, i.e. the first time you run `atk dev`.
 
 If you make changes to the workspace and need additional packages to be installed into the container, you can run the same command with the build flag:
 
 ```bash
-av dev --build
+atk dev --build
 ```
 
 ```{note}
-This is _not_ equivalient to `av dev --up --attach --build`. `--up` and `--attach` are only added if no other arguments are provided
+This is _not_ equivalient to `atk dev --up --attach --build`. `--up` and `--attach` are only added if no other arguments are provided
 </div></div> 
 ```
 
 ```{warning}
-If the container is already running (i.e. `av dev --up` has already been called), the new built image will not be loaded automatically. You need to tear down the container by running `av dev --down` or `av dev -d` and then spin up the container again with `av dev --up`
+If the container is already running (i.e. `atk dev --up` has already been called), the new built image will not be loaded automatically. You need to tear down the container by running `atk dev --down` or `atk dev -d` and then spin up the container again with `atk dev --up`
 </div></div> 
 ```
 
-After you run `av dev`, you should see a shell prompt like the following:
+After you run `atk dev`, you should see a shell prompt like the following:
 
 ```bash
-$ av dev
+$ atk dev
 WARNING  | logger.set_verbosity :: Verbosity has been set to WARNING
-av-dev:~$
+atk-dev:~$
 ```
 
 ### Developing Inside the Container
 
-Once inside the container, if you type `ls`, you should see the `av` folder that is a mapped volumes from the host system. As mentioned before, any code you write should be done here or your changes will persist once the container is destroyed.
+Once inside the container, if you type `ls`, you should see the `atk` folder that is a mapped volumes from the host system. As mentioned before, any code you write should be done here or your changes will persist once the container is destroyed.
 
 ```{todo}
 To write more ...

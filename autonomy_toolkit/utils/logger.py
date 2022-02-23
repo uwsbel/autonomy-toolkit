@@ -6,7 +6,7 @@ Should be used like the following:
 .. highlight:: python
 .. code-block:: python
     
-    from avtoolbox.utils.logger import LOGGER
+    from autonomy_toolkit.utils.logger import LOGGER
 
     LOGGER.fatal("Fatal")
     LOGGER.error("Error")

@@ -1,5 +1,5 @@
 """
-Utilities for the avtoolbox package
+Utilities for the autonomy_toolkit package
 """
 
 def is_posix():

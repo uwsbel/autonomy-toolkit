@@ -1,6 +1,6 @@
-# Import some classes from the av module
-from avtoolbox.db import AVDatabase
-from avtoolbox.utils.logger import LOGGER, set_verbosity
+# Import some classes from the autonomy_toolkit module
+from autonomy_toolkit.db import ATKDatabase
+from autonomy_toolkit.utils.logger import LOGGER, set_verbosity
 
 # Other imports
 import os
@@ -9,7 +9,7 @@ import os
 set_verbosity(2)
 
 # Instantiate the database
-db = AVDatabase("data")
+db = ATKDatabase("data")
 
 # Push a local file to the database
 ls = db.ls()
