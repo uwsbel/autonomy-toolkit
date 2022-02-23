@@ -276,6 +276,17 @@ def _run_env(args, unknown_args):
 
             client = DockerComposeClient(project=custom_config["project"], services=args.services, compose_file=DOCKER_COMPOSE_PATH)
 
+            # First check if the dev container is running.
+            # If it is, don't run args.up
+            if args.up:
+                try:
+                    stdout, stderr = client.run("ps", "--services", *args.services, "--filter", "status=running", stdout=-1, stderr=-1)
+                    LOGGER.warn("The services are already running. If you didn't explicitly call '--up', you can safely ignore this warning.")
+                    args.up = False
+                except DockerException as e:
+                    if "no such service: " not in e.stderr:
+                        raise e
+
             # Make any custom updates at runtime after the compose file has been loaded once
             _update_compose(client, custom_config, args, unknown_args)
 
@@ -288,17 +299,6 @@ def _run_env(args, unknown_args):
                 LOGGER.info(f"Building...")
 
                 client.run("build", *args.args)
-
-            if args.up:
-                # First check if the dev container is running.
-                # If it is, don't run args.up
-                try:
-                    stdout, stderr = client.run("ps", "--services", *args.services, "--filter", "status=running", stdout=-1, stderr=-1)
-                    LOGGER.warn("The services are already running. If you didn't explicitly call '--up', you can safely ignore this warning.")
-                    args.up = False
-                except DockerException as e:
-                    if "no such service: " not in e.stderr:
-                        raise e
 
             if args.up:
                 LOGGER.info(f"Spinning up...")

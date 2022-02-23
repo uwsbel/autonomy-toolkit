@@ -77,7 +77,7 @@ After you run `atk dev`, you should see a shell prompt like the following:
 ```bash
 $ atk dev
 WARNING  | logger.set_verbosity :: Verbosity has been set to WARNING
-atk-dev:~$
+art-dev:~$
 ```
 
 ### Developing Inside the Container
