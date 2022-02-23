@@ -25,7 +25,7 @@ def create_version():
     return {'local_scheme': clean_scheme}
 
 setup(
-    name='avtoolbox',  # Required
+    name='autonomy-toolkit',  # Required
     use_scm_version=create_version,
     description='Autonomy Toolkit',  # Optional
     long_description=long_description,  # Optional
