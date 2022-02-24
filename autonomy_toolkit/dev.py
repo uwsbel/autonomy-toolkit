@@ -278,7 +278,7 @@ def _run_env(args, unknown_args):
 
             # First check if the dev container is running.
             # If it is, don't run args.up
-            if args.up:
+            if args.up and not args.down:
                 try:
                     stdout, stderr = client.run("ps", "--services", *args.services, "--filter", "status=running", stdout=-1, stderr=-1)
                     LOGGER.warn("The services are already running. If you didn't explicitly call '--up', you can safely ignore this warning.")
