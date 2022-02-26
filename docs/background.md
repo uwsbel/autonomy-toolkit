@@ -1,45 +1,25 @@
 # Background
 
+This page provides some helpful background about the Autonomy Toolkit.
+
+## Design Considerations
+
+The _most_ important component we considered when creating the development environment was whether the workflow was usable on multiple platforms, i.e. it would work as is on Windows, MacOS, and Linux systems. This was a nonnegotiable because then the ART platform could be developed anywhere and wouldn't require any special hardware or "hacking" to work on a specific system. Further, the development environment and deployment environment (the system that runs on the actual vehicle) must also be the same or similar in design. This means that any customization to the dependency lists or sensor configurations that was made locally would carry over to the actual vehicle.
+
+Another important element we considered was using simulation to test the control stack. [Chrono](https://projectchrono.org) is the simulator of choice and it needed to interface with the development _and_ deployment environment natively. The control stack itself should not be limiting hardware-wise (unless the implemented algorithms require a certain type of CPU, for example), but the Chrono simulations may require specific hardware, such as a NVIDIA GPU. Therefore, the solution must be able to communicate over the network considering everyone may not have access to a NVIDIA GPU on their computer, but a remote server/workstation may.
+
 ## Development Environment
 
-```{todo}
-To write...
-```
+To begin, Docker is a tool for virtualizing applications from a main operating system. What this means is that you can run full OS containers within a host OS. The primary purpose behind Docker, and similar tools, is to isolate development environments and to consistently deploy applications across computers. Docker is typically used on servers (think AWS or Azure) to isolate users and to deploy websites and web apps. Docker simply provides the ability to run these isolated containers, it is the users job to create the content that goes inside the containers. For more information on Docker, plesae see their [official website](https://www.docker.com/).
 
-## MiniAV Platform
+For robotics, containers can be a valuable tool for creating consistent development environments for users with different operating systems or different use cases. For example, a Docker container can be generated that has the entire simulation platform already installed; then, the user can simply run their simulation script in the container without the need to install any dependencies.
 
-The MiniAV platform is purpose built to be an all-in-one test platform for autonomous algorithm development and simulation validation. Provided is documented hardware, a pre-made control stack, an optimized development-to-deployment workflow, and a database system to easily store and interact with ROS-based data files.
+To help facilitate complicated scenarios, it is common practice to utilize multiple containers. Think, for instance, with multiple containers, you can have multiple independent systems that can be interchanged easily. Then, each isolated container communicates with the others in some capacity. This is what we will do here, where we have one container for the control stack, another for the simulation, and then other optional containers with other desired features: for example, `vnc` for visualizing gui apps.
 
-In this guide, general background of the project is discussed and an overview of design decisions is provided. 
+There are two `services` (or containers) that will be created: `dev` and `vnc`. `dev` is the ROS 2 development environment we'll use to write the ROS 2 code. `vnc` is the container used to visualize gui apps. Various attributes are included in the `.yml` file, such as build context, ROS version types, and environment variables. As seen in the `volumes` section under the `dev` service, the entire development directory will be mounted inside the container. A [volume](https://docs.docker.com/storage/volumes/) is simply a folder that is shared between the host OS and the container. This means any and all code additions should be made _only_ inside of this folder; if you edit any files outside of `~/<project name>`, then the changes will not be saved when the container is exited.
 
-### Purpose
-
-As mentioned before, the MiniAV platform is an all-in-one test platform for autonomous vehicles. Providing this platform aims to leverage the high-fidelity simulation engine [Chrono](https://projectchrono.org) as the test method prior to deploying the code on the real car. Furthermore, the development workflow and data processing pipeline is meant to be generic and scalable to other hardware beyond the MiniAV. Utilizing [ROS 2](https://docs.ros.org/en/galactic/index.html) for the control stack, the sensing support is built on packages from the ROS community and will continue to grow as ROS 2 is further adapted of the first iteration of ROS.
-
-There are also many other existing platforms that provide similar functionality; [DonkeyCar](https://www.donkeycar.com/), [PARV](https://digital.wpi.edu/concern/student_works/st74ct36z?locale=en), [PiCar](https://www.instructables.com/PiCar-an-Autonomous-Car-Platform/), [AutoRally](https://autorally.github.io/), and [MIT RACECAR](https://mit-racecar.github.io/) to name a few. Unlike the aforementioned vehicle platforms, MiniAV is built much larger from a [1:6th scale chassis from Redcat Racing](https://www.redcatracing.com/products/shredder?variant=31050562797658). This allows larger and more sensors to be added to the vehicle chassis. Modular 3D printed part files are provided that can be configured in multiple ways to mount sensor suites for different applications. Voltage rails are also provided to power sensors with varying power usage.
-
-This simulation environment, built on top of Chrono, utilizes multiple modules to create a virtual world for autonomy development. The vehicle module, [Chrono::Vehicle](https://api.projectchrono.org/group__vehicle.html), implements high-fidelity vehicle models, for which a MiniAV model is provided. The Chrono::Vehicle module also has advanced terrain models that can be used to represent hard, concret floors to Soil Contact Model (SCM) based deformable terrain; the latter useful for modeling off-road scenarios. Then [Chrono::Sensor](https://api.projectchrono.org/group__sensor.html) simulates sensors that can be used to replicate the data produced by the physical counterparts.
-
-## Components
-
-### Hardware
+## Database
 
 ```{todo}
-To write...
-```
-
-### Control Stack
-
-```{todo}
-To write...
-```
-
-### Development Environment
-
-The development environment is built on top of [Docker](https://www.docker.com). A tutorial for how to use the development workflow can be found [here](./tutorials/using_the_development_environment.md).
-
-### Database
-
-```{todo}
-To write...
+To document...
 ```

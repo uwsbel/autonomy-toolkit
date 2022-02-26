@@ -1,0 +1,2 @@
+demo-bag-real filter=lfs diff=lfs merge=lfs -text
+demo-bag-sim filter=lfs diff=lfs merge=lfs -text

@@ -161,44 +161,6 @@ def _update_compose(client, custom_config, args, unknown_args):
         yaml.dump(config.get_data(), yaml_file)
 
 def _run_env(args, unknown_args):
-    """
-    Entrypoint for the `dev` command.
-
-    The `dev` command essentially wraps `docker compose` to automatically build, spin-up, attach, and
-    tear down the ATK development environment. `docker compose` is therefore necessary to install.
-
-    The `dev` command will search for a file called `.atk.yml`. This is a hidden file, and it defines some custom
-    configurations for the development environment. It allows users to quickly start and attach to the ATK development environment
-    based on a shared docker-compose file and any Dockerfile build configurations. 
-
-    There are four possible options that can be used using the `dev` subcommand:
-    `build`, `up`, `down`, and `attach`. For example, if you'd like to build the container, you'd run 
-    the following command:
-
-    ```bash
-    atk dev --build
-    ```
-
-    If you'd like to build, start the container, then attach to it, run the following command:
-
-    ```bash
-    atk dev --build --up --attach
-    # OR
-    atk dev -b -u -a
-    # OR
-    atk dev -bua
-    ```
-
-    If no arguments are passed, this is equivalent to the following command:
-
-    ```bash
-    atk dev --up --attach
-    ```
-
-    If desired, pass `--down` to stop the container. Further, if the container exists and changes are
-    made to the repository, the container will _not_ be built automatically. To do that, add the 
-    `--build` argument.
-    """
     LOGGER.info("Running 'dev' entrypoint...")
     _update_globals()
 
@@ -352,18 +314,46 @@ def _run_env(args, unknown_args):
                 if not args.keep_yml: _unlink_file(DOCKER_COMPOSE_PATH)
 
 def _init(subparser):
-    """Initializer method for the `dev` entrypoint
+    """Entrypoint for the `dev` command
 
     This entrypoint provides easy access to the ATK development environment. The dev environment
     leverages [Docker](https://docker.com) to allow interoperability across operating systems. `docker compose`
     is used to build, spin up, attach, and tear down the containers. The `dev` entrypoint will basically wrap
     the `docker compose` commands to make it easier to customize the workflow to work best for ATK.
 
-    The primary container, titled `dev`, has [ROS 2](https://docs.ros.org/en/galactic/index.html)
-    pre-installed. The software stack for the ATK vehicle utilizes ROS 2 and will use
-    the same container that is used for development. 
+    The `dev` command will search for a file called `.atk.yml`. This is a hidden file, and it defines some custom
+    configurations for the development environment. It allows users to quickly start and attach to the ATK development environment
+    based on a shared `docker-compose.yml` file and any Dockerfile build configurations. 
 
-    Additional containers may be provided to allow for GUI windows or run simulations.
+    There are five possible options that can be used using the `dev` subcommand:
+    `build`, `up`, `down`, `attach`, and `run`. For example, if you'd like to build the container, you'd run 
+    the following command:
+
+    ```bash
+    atk dev --build
+    ```
+
+    If you'd like to build, start the container, then attach to it, run the following command:
+
+    ```bash
+    atk dev --build --up --attach
+    # OR
+    atk dev -b -u -a
+    # OR
+    atk dev -bua
+    ```
+
+    If no arguments are passed, this is equivalent to the following command:
+
+    ```bash
+    atk dev
+    # === is equivalent to ===
+    atk dev --up --attach
+    ```
+
+    If desired, pass `--down` to stop the container. Further, if the container exists and changes are
+    made to the repository, the container will _not_ be built automatically. To do that, add the 
+    `--build` argument.
     """
     LOGGER.debug("Initializing 'dev' entrypoint...")
 

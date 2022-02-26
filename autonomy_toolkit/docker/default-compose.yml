@@ -23,7 +23,7 @@ services:
       NVIDIA_VISIBLE_DEVICES: "all"
       NVIDIA_DRIVER_CAPABILITIES: "all"
     tty: true
-    working_dir: "/home/{username}/{project}"
+    working_dir: "/home/{username}/{project}/workspace"
     volumes: 
      - "{root}:/home/{username}/{project}"
   vnc:
