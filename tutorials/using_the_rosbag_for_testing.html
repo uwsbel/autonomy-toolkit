@@ -2,10 +2,10 @@
 <html class="no-js">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Using the ROS bag for Testing" href="using_the_rosbag_for_testing.html" /><link rel="prev" title="Accessing visualization through noVNC" href="how-to-access-visualization-through-novnc.html" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="API Reference" href="../usage/index.html" /><link rel="prev" title="Using the ATK Development Environment" href="using_the_development_environment.html" />
 
     <link rel="shortcut icon" href="../_static/cropped-SBEL-32x32.png"/><meta name="generator" content="sphinx-3.4.2, furo 2020.12.30.beta24"/>
-        <title>Using the ATK Development Environment - Autonomous Vehicle Toolbox 0.0.44 documentation</title>
+        <title>Using the ROS bag for Testing - Autonomous Vehicle Toolbox 0.0.44 documentation</title>
       <link rel="stylesheet" href="../_static/styles/furo.css?digest=33d2fc4f3f180ec1ffc6524e273e21d7d58cbe49">
     <link rel="stylesheet" href="../_static/pygments.css">
     <link media="(prefers-color-scheme: dark)" rel="stylesheet" href="../_static/pygments_dark.css">
@@ -134,8 +134,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../setup.html">Setup</a></li>
 <li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">Tutorials</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label for="toctree-checkbox-1"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="how-to-access-visualization-through-novnc.html">Accessing visualization through noVNC</a></li>
-<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Using the ATK Development Environment</a></li>
-<li class="toctree-l2"><a class="reference internal" href="using_the_rosbag_for_testing.html">Using the ROS bag for Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="using_the_development_environment.html">Using the ATK Development Environment</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Using the ROS bag for Testing</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../usage/index.html">API Reference</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label for="toctree-checkbox-2"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -178,9 +178,9 @@
         <label class="toc-overlay-icon toc-content-icon" for="__toc">
           <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
         </label>
-        <section id="using-the-atk-development-environment">
-<h1>Using the ATK Development Environment<a class="headerlink" href="#using-the-atk-development-environment" title="Permalink to this headline">¶</a></h1>
-<p>The ATK development environment has been created to expedite the process from algorithm implementation to testing in simulation to deploying the control stack on the Autonomy Research Testbed (ART) (or any other compatible platform).</p>
+        <section id="using-the-ros-bag-for-testing">
+<h1>Using the ROS bag for Testing<a class="headerlink" href="#using-the-ros-bag-for-testing" title="Permalink to this headline">¶</a></h1>
+<p>The ROS bag has been made for testing the <strong>Autonomy Stack</strong> using the launch file <code class="docutils literal notranslate"><span class="pre">art_stack.launch.py</span></code> present in the <code class="docutils literal notranslate"><span class="pre">~/autonomy-research-testbed/workspace/src/common/launch/art_launch/launch</span></code> directory.</p>
 <section id="prerequisites">
 <h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
@@ -188,73 +188,51 @@
 <li><p>You have installed Docker (<a class="reference external" href="https://docs.docker.com/get-docker/">resource for that</a>)</p></li>
 <li><p>You have installed docker compose v2 (<a class="reference external" href="https://docs.docker.com/compose/cli-command/">resource for that</a>)</p></li>
 <li><p>You have installed <code class="docutils literal notranslate"><span class="pre">autonomy-toolkit</span></code> (<a class="reference external" href="https://projects.sbel.org/autonomy-toolkit/setup.html">resources for that</a>)</p></li>
+<li><p>You have access to <a class="reference external" href="https://uwmadison.app.box.com/folder/0">MiniAV</a></p></li>
 </ul>
-</section>
-<section id="design-considerations">
-<h2>Design Considerations<a class="headerlink" href="#design-considerations" title="Permalink to this headline">¶</a></h2>
-<p>The <em>most</em> important component we considered when creating the development environment was whether the workflow was usable on multiple platforms, i.e. it would work as is on Windows, MacOS, and Linux systems. This was a nonnegotiable because then the ART platform could be developed anywhere and wouldn’t require any special hardware or “hacking” to work on a specific system. Further, the development environment and deployment environment (the system that runs on the actual vehicle) must also be the same or similar in design. This means that any customization to the dependency lists or sensor configurations that was made locally would carry over to the actual vehicle.</p>
-<p>Another important element we considered was using simulation to test the control stack. <a class="reference external" href="https://projectchrono.org">Chrono</a> is the simulator of choice and it needed to interface with the development <em>and</em> deployment environment natively. The control stack itself should not be limiting hardware-wise (unless the implemented algorithms require a certain type of CPU, for example), but the Chrono simulations may require specific hardware, such as a NVIDIA GPU. Therefore, the solution must be able to communicate over the network considering everyone may not have access to a NVIDIA GPU on their computer, but a remote server/workstation may.</p>
 </section>
 <section id="background">
 <h2>Background<a class="headerlink" href="#background" title="Permalink to this headline">¶</a></h2>
-<p>To begin, Docker is a tool for virtualizing applications from a main operating system. What this means is that you can run full OS containers within a host OS. The primary purpose behind Docker, and similar tools, is to isolate development environments and to consistently deploy applications across computers. Docker is typically used on servers (think AWS or Azure) to isolate users and to deploy websites and web apps. Docker simply provides the ability to run these isolated containers, it is the users job to create the content that goes inside the containers. For more information on Docker, plesae see their <a class="reference external" href="https://www.docker.com/">official website</a>.</p>
-<p>For robotics, containers can be a valuable tool for creating consistent development environments for users with different operating systems or different use cases. For example, a Docker container can be generated that has the entire simulation platform already installed; then, the user can simply run their simulation script in the container without the need to install any dependencies.</p>
-<p>To help facilitate complicated scenarios, it is common practice to utilize multiple containers. Think, for instance, with multiple containers, you can have multiple independent systems that can be interchanged easily. Then, each isolated container communicates with the others in some capacity. This is what we will do here, where we have one container for the control stack, another for the simulation, and then other optional containers with other desired features: for example, <code class="docutils literal notranslate"><span class="pre">vnc</span></code> for visualizing gui apps.</p>
-<p>There are two <code class="docutils literal notranslate"><span class="pre">services</span></code> (or containers) that will be created: <code class="docutils literal notranslate"><span class="pre">dev</span></code> and <code class="docutils literal notranslate"><span class="pre">vnc</span></code>. <code class="docutils literal notranslate"><span class="pre">dev</span></code> is the ROS 2 development environment we’ll use to write the ROS 2 code. <code class="docutils literal notranslate"><span class="pre">vnc</span></code> is the container used to visualize gui apps. Various attributes are included in the <code class="docutils literal notranslate"><span class="pre">.yml</span></code> file, such as build context, ROS version types, and environment variables. As seen in the <code class="docutils literal notranslate"><span class="pre">volumes</span></code> section under the <code class="docutils literal notranslate"><span class="pre">dev</span></code> service, the entire <code class="docutils literal notranslate"><span class="pre">autonomy-research-testbed</span></code> repository will be mounted inside the container. A <a class="reference external" href="https://docs.docker.com/storage/volumes/">volume</a> is simply a folder that is shared between the host OS and the container. This means any and all code additions should be made <em>only</em> inside of this folder; if you edit any files outside of <code class="docutils literal notranslate"><span class="pre">/root/art</span></code>, then the changes will not be saved when the container is exited.</p>
+<p>A <code class="docutils literal notranslate"><span class="pre">bag</span></code> is a file format in ROS for storing message data. Within a <code class="docutils literal notranslate"><span class="pre">bag</span></code>, there are a few tools out of which we will be using the <code class="docutils literal notranslate"><span class="pre">ros2</span> <span class="pre">bag</span></code>. <code class="docutils literal notranslate"><span class="pre">ros2</span> <span class="pre">bag</span></code> is an unified console tool for recording, playback, and other operations.
+To know more about what a <code class="docutils literal notranslate"><span class="pre">bag</span></code> is, this is a <a class="reference external" href="http://wiki.ros.org/Bags">resource</a>.</p>
 </section>
 <section id="setup">
 <h2>Setup<a class="headerlink" href="#setup" title="Permalink to this headline">¶</a></h2>
-<p>Beyond installing the packages outlined in <a class="reference external" href="#prerequisites">prerequisites</a>, there is not much setup that is necessary. The <code class="docutils literal notranslate"><span class="pre">autonomy-toolkit</span></code> package provides tools for easily spinning up containers and attaching to the development environment within Docker.</p>
+<p>After getting access to <a class="reference external" href="https://uwmadison.app.box.com/folder/0">MiniAV</a>, you can download the rosbag within the cloned repository(autonomy-research-testbed). Though the location where you download it shouldn’t matter, it would be recommended to install it within the <code class="docutils literal notranslate"><span class="pre">~/autonomy-research-testbed/workspace/src/common/launch/art_launch</span></code> directory to keep the rosbag and the launch file you want to test within the same directory.</p>
+<p>Apart from the above step, the <a class="reference external" href="#prerequisites">prerequisites</a> listed above will be all that is necessary to run the <code class="docutils literal notranslate"><span class="pre">rosbag</span></code> along with a launch file for testing purposes.</p>
 </section>
 <section id="usage">
 <h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
-<p>To use the development environment, very convenient commands are provided through the <code class="docutils literal notranslate"><span class="pre">autonomy-toolkit</span></code> CLI. The documentation for the <code class="docutils literal notranslate"><span class="pre">dev</span></code> command can be found <a class="reference external" href="http://projects.sbel.org/autonomy-toolkit/usage/cli.html#dev">here</a>.</p>
-<p>As described in the documentation, the <code class="docutils literal notranslate"><span class="pre">dev</span></code> command has four arguments: <code class="docutils literal notranslate"><span class="pre">build</span></code>, <code class="docutils literal notranslate"><span class="pre">up</span></code>, <code class="docutils literal notranslate"><span class="pre">down</span></code>, and <code class="docutils literal notranslate"><span class="pre">attach</span></code>. These may sound familiar if you’ve used <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span></code> before because the <code class="docutils literal notranslate"><span class="pre">dev</span></code> command essentially wraps <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span></code>. Everything that the <code class="docutils literal notranslate"><span class="pre">atk</span> <span class="pre">dev</span></code> command does, <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span></code> can also do; the <code class="docutils literal notranslate"><span class="pre">atk</span> <span class="pre">dev</span></code> cli command is simply made to expedite the process of entering a container and may also provide an easy mechanism to add additional functionality in the future.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>For any commands mentioned herein, it will be assumed they are run from within the <code class="docutils literal notranslate"><span class="pre">atk</span></code> repository.</p>
-</div>
-
-<section id="entering-the-development-environment">
-<h3>Entering the Development Environment<a class="headerlink" href="#entering-the-development-environment" title="Permalink to this headline">¶</a></h3>
-<p>The first time you attempt to use the ART development environment, the docker container will need to be built (the <code class="docutils literal notranslate"><span class="pre">atk</span></code> package will do this for you). This may take upwards of 15 minutes, depending on the number of packages your control stack needs to install. After the initial build, you may never need to build the stack again (unless you need additional packages installed). To build the container the first time around, you can run the following command:</p>
+<p>To start testing the launch file using the <code class="docutils literal notranslate"><span class="pre">ros2</span> <span class="pre">bag</span></code>, you will need to have two windows of a command line system opened. On one of them you will run the <code class="docutils literal notranslate"><span class="pre">ros2</span> <span class="pre">bag</span></code> and on the other one you will run the launch file.</p>
+<p>In both the windows, enter the MiniAV development environment using the following command:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>atk dev
 </pre></div>
 </div>
-<p>This is equivalent to running the following:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>atk dev --up --attach
+<p>After entering the environment, navigate to the <code class="docutils literal notranslate"><span class="pre">art_launch</span></code> directory in one of the windows where you will be running your rosbag using the following command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> workspace/src/common/launch/art_launch/launch
 </pre></div>
 </div>
-<p>And since the image has never been built, the <code class="docutils literal notranslate"><span class="pre">--up</span></code> argument will also build it. This is only the case if the image cannot be found, i.e. the first time you run <code class="docutils literal notranslate"><span class="pre">atk</span> <span class="pre">dev</span></code>.</p>
-<p>If you make changes to the workspace and need additional packages to be installed into the container, you can run the same command with the build flag:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>atk dev --build
+<p>After navigating to the <code class="docutils literal notranslate"><span class="pre">art_launch/launch</span></code> directory in one of the windows you chose above, run the following command to run the <code class="docutils literal notranslate"><span class="pre">ros2</span> <span class="pre">bag</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2 bag play rosbag2_2022_02_25-16_40_30_0.db3 
 </pre></div>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>This is <em>not</em> equivalient to <code class="docutils literal notranslate"><span class="pre">atk</span> <span class="pre">dev</span> <span class="pre">--up</span> <span class="pre">--attach</span> <span class="pre">--build</span></code>. <code class="docutils literal notranslate"><span class="pre">--up</span></code> and <code class="docutils literal notranslate"><span class="pre">--attach</span></code> are only added if no other arguments are provided</p>
+<p>The above command assumes you have your <code class="docutils literal notranslate"><span class="pre">ros2</span> <span class="pre">bag</span></code> stored in <code class="docutils literal notranslate"><span class="pre">~/art/workspace/src/common/launch/art_launch/launch</span></code>.
+You might have to cd into a different directory depending on where your <code class="docutils literal notranslate"><span class="pre">ros2</span> <span class="pre">bag</span></code> is and then run the above command accordingly.</p>
 </div>
 
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>If the container is already running (i.e. <code class="docutils literal notranslate"><span class="pre">atk</span> <span class="pre">dev</span> <span class="pre">--up</span></code> has already been called), the new built image will not be loaded automatically. You need to tear down the container by running <code class="docutils literal notranslate"><span class="pre">atk</span> <span class="pre">dev</span> <span class="pre">--down</span></code> or <code class="docutils literal notranslate"><span class="pre">atk</span> <span class="pre">dev</span> <span class="pre">-d</span></code> and then spin up the container again with <code class="docutils literal notranslate"><span class="pre">atk</span> <span class="pre">dev</span> <span class="pre">--up</span></code></p>
-</div>
-
-<p>After you run <code class="docutils literal notranslate"><span class="pre">atk</span> <span class="pre">dev</span></code>, you should see a shell prompt like the following:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ atk dev
-WARNING  <span class="p">|</span> logger.set_verbosity :: Verbosity has been <span class="nb">set</span> to WARNING
-art-dev:~$
+<p>In the second window, to launch the <code class="docutils literal notranslate"><span class="pre">autonomy</span> <span class="pre">stack</span></code>, run the following command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2 launch art_launch art_stack.launch.py vis:<span class="o">=</span>True
 </pre></div>
 </div>
-</section>
-<section id="developing-inside-the-container">
-<h3>Developing Inside the Container<a class="headerlink" href="#developing-inside-the-container" title="Permalink to this headline">¶</a></h3>
-<p>Once inside the container, if you type <code class="docutils literal notranslate"><span class="pre">ls</span></code>, you should see the <code class="docutils literal notranslate"><span class="pre">atk</span></code> folder that is a mapped volumes from the host system. As mentioned before, any code you write should be done here or your changes will persist once the container is destroyed.</p>
-<div class="admonition-todo admonition" id="id1">
-<p class="admonition-title">Todo</p>
-<p>To write more …</p>
+<p>After running the above command, you have got the <code class="docutils literal notranslate"><span class="pre">autonomy</span> <span class="pre">stack</span></code> running. Navigate to your browser, and enter the  following address:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>http://localhost:8080/
+</pre></div>
 </div>
-</section>
+<p>You can now visualize the <code class="docutils literal notranslate"><span class="pre">autonomy</span> <span class="pre">stack</span></code>!</p>
+<p>Below is a representation of what your <code class="docutils literal notranslate"><span class="pre">autonomy</span> <span class="pre">stack</span></code> should look like -</p>
+<p><img alt="" src="img%20src%20=%20https://raw.githubusercontent.com/uwsbel/autonomy-toolkit/master/docs/_static/rosbagVisual.png?raw=true%22%20alt=%22Autonomy%20Stack%22%20class=%22readme-img%22%20height=%22100px%22"/></p>
 </section>
 <section id="support">
 <h2>Support<a class="headerlink" href="#support" title="Permalink to this headline">¶</a></h2>
@@ -270,23 +248,23 @@ art-dev:~$
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="using_the_rosbag_for_testing.html">
+          <a class="next-page" href="../usage/index.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Using the ROS bag for Testing</div>
+                <div class="title">API Reference</div>
               </div>
               <svg><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="how-to-access-visualization-through-novnc.html">
+          <a class="prev-page" href="using_the_development_environment.html">
               <svg><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Accessing visualization through noVNC</div>
+                <div class="title">Using the ATK Development Environment</div>
                 
               </div>
             </a>
@@ -300,7 +278,7 @@ art-dev:~$
               <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
               <a href="https://github.com/pradyunsg/furo">Furo theme</a>.
             |
-            <a class="muted-link" href="../_sources/tutorials/using_the_development_environment.md.txt"
+            <a class="muted-link" href="../_sources/tutorials/using_the_rosbag_for_testing.md.txt"
                rel="nofollow">
               Show Source
             </a>
@@ -320,16 +298,11 @@ art-dev:~$
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
-<li><a class="reference internal" href="#">Using the ATK Development Environment</a><ul>
+<li><a class="reference internal" href="#">Using the ROS bag for Testing</a><ul>
 <li><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
-<li><a class="reference internal" href="#design-considerations">Design Considerations</a></li>
 <li><a class="reference internal" href="#background">Background</a></li>
 <li><a class="reference internal" href="#setup">Setup</a></li>
-<li><a class="reference internal" href="#usage">Usage</a><ul>
-<li><a class="reference internal" href="#entering-the-development-environment">Entering the Development Environment</a></li>
-<li><a class="reference internal" href="#developing-inside-the-container">Developing Inside the Container</a></li>
-</ul>
-</li>
+<li><a class="reference internal" href="#usage">Usage</a></li>
 <li><a class="reference internal" href="#support">Support</a></li>
 <li><a class="reference internal" href="#see-also">See Also</a></li>
 </ul>
