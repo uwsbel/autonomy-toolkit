@@ -62,7 +62,7 @@ If you make changes to the workspace and need additional packages to be installe
 atk dev --build -s dev
 ```
 
-Once inside ART dev continer, go into the atk/workspace directory.
+Once inside ART dev continer, go into the art/workspace directory.
 
 We will then need to run the following:
 ```bash
