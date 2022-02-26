@@ -132,10 +132,9 @@
 <li class="toctree-l1"><a class="reference internal" href="index.html">Home</a></li>
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Background</a></li>
 <li class="toctree-l1"><a class="reference internal" href="setup.html">Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autonomy-research-testbed.html">Autonomy Research Testbed (ART)</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="tutorials/index.html">Tutorials</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label for="toctree-checkbox-1"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="tutorials/how-to-access-visualization-through-novnc.html">Accessing visualization through noVNC</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorials/using_the_development_environment.html">Using the ATK Development Environment</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorials/using_the_rosbag_for_testing.html">Using the ROS bag for Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/using-the-development-environoment.html">Using the ATK Development Environment</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="usage/index.html">API Reference</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label for="toctree-checkbox-2"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -180,51 +179,25 @@
         </label>
         <section id="background">
 <h1>Background<a class="headerlink" href="#background" title="Permalink to this headline">¶</a></h1>
+<p>This page provides some helpful background about the Autonomy Toolkit.</p>
+<section id="design-considerations">
+<h2>Design Considerations<a class="headerlink" href="#design-considerations" title="Permalink to this headline">¶</a></h2>
+<p>The <em>most</em> important component we considered when creating the development environment was whether the workflow was usable on multiple platforms, i.e. it would work as is on Windows, MacOS, and Linux systems. This was a nonnegotiable because then the ART platform could be developed anywhere and wouldn’t require any special hardware or “hacking” to work on a specific system. Further, the development environment and deployment environment (the system that runs on the actual vehicle) must also be the same or similar in design. This means that any customization to the dependency lists or sensor configurations that was made locally would carry over to the actual vehicle.</p>
+<p>Another important element we considered was using simulation to test the control stack. <a class="reference external" href="https://projectchrono.org">Chrono</a> is the simulator of choice and it needed to interface with the development <em>and</em> deployment environment natively. The control stack itself should not be limiting hardware-wise (unless the implemented algorithms require a certain type of CPU, for example), but the Chrono simulations may require specific hardware, such as a NVIDIA GPU. Therefore, the solution must be able to communicate over the network considering everyone may not have access to a NVIDIA GPU on their computer, but a remote server/workstation may.</p>
+</section>
 <section id="development-environment">
 <h2>Development Environment<a class="headerlink" href="#development-environment" title="Permalink to this headline">¶</a></h2>
-<div class="admonition-todo admonition" id="id1">
-<p class="admonition-title">Todo</p>
-<p>To write…</p>
-</div>
-</section>
-<section id="miniav-platform">
-<h2>MiniAV Platform<a class="headerlink" href="#miniav-platform" title="Permalink to this headline">¶</a></h2>
-<p>The MiniAV platform is purpose built to be an all-in-one test platform for autonomous algorithm development and simulation validation. Provided is documented hardware, a pre-made control stack, an optimized development-to-deployment workflow, and a database system to easily store and interact with ROS-based data files.</p>
-<p>In this guide, general background of the project is discussed and an overview of design decisions is provided.</p>
-<section id="purpose">
-<h3>Purpose<a class="headerlink" href="#purpose" title="Permalink to this headline">¶</a></h3>
-<p>As mentioned before, the MiniAV platform is an all-in-one test platform for autonomous vehicles. Providing this platform aims to leverage the high-fidelity simulation engine <a class="reference external" href="https://projectchrono.org">Chrono</a> as the test method prior to deploying the code on the real car. Furthermore, the development workflow and data processing pipeline is meant to be generic and scalable to other hardware beyond the MiniAV. Utilizing <a class="reference external" href="https://docs.ros.org/en/galactic/index.html">ROS 2</a> for the control stack, the sensing support is built on packages from the ROS community and will continue to grow as ROS 2 is further adapted of the first iteration of ROS.</p>
-<p>There are also many other existing platforms that provide similar functionality; <a class="reference external" href="https://www.donkeycar.com/">DonkeyCar</a>, <a class="reference external" href="https://digital.wpi.edu/concern/student_works/st74ct36z?locale=en">PARV</a>, <a class="reference external" href="https://www.instructables.com/PiCar-an-Autonomous-Car-Platform/">PiCar</a>, <a class="reference external" href="https://autorally.github.io/">AutoRally</a>, and <a class="reference external" href="https://mit-racecar.github.io/">MIT RACECAR</a> to name a few. Unlike the aforementioned vehicle platforms, MiniAV is built much larger from a <a class="reference external" href="https://www.redcatracing.com/products/shredder?variant=31050562797658">1:6th scale chassis from Redcat Racing</a>. This allows larger and more sensors to be added to the vehicle chassis. Modular 3D printed part files are provided that can be configured in multiple ways to mount sensor suites for different applications. Voltage rails are also provided to power sensors with varying power usage.</p>
-<p>This simulation environment, built on top of Chrono, utilizes multiple modules to create a virtual world for autonomy development. The vehicle module, <a class="reference external" href="https://api.projectchrono.org/group__vehicle.html">Chrono::Vehicle</a>, implements high-fidelity vehicle models, for which a MiniAV model is provided. The Chrono::Vehicle module also has advanced terrain models that can be used to represent hard, concret floors to Soil Contact Model (SCM) based deformable terrain; the latter useful for modeling off-road scenarios. Then <a class="reference external" href="https://api.projectchrono.org/group__sensor.html">Chrono::Sensor</a> simulates sensors that can be used to replicate the data produced by the physical counterparts.</p>
-</section>
-</section>
-<section id="components">
-<h2>Components<a class="headerlink" href="#components" title="Permalink to this headline">¶</a></h2>
-<section id="hardware">
-<h3>Hardware<a class="headerlink" href="#hardware" title="Permalink to this headline">¶</a></h3>
-<div class="admonition-todo admonition" id="id2">
-<p class="admonition-title">Todo</p>
-<p>To write…</p>
-</div>
-</section>
-<section id="control-stack">
-<h3>Control Stack<a class="headerlink" href="#control-stack" title="Permalink to this headline">¶</a></h3>
-<div class="admonition-todo admonition" id="id3">
-<p class="admonition-title">Todo</p>
-<p>To write…</p>
-</div>
-</section>
-<section id="id4">
-<h3>Development Environment<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
-<p>The development environment is built on top of <a class="reference external" href="https://www.docker.com">Docker</a>. A tutorial for how to use the development workflow can be found <a class="reference internal" href="tutorials/using_the_development_environment.html"><span class="doc std std-doc">here</span></a>.</p>
+<p>To begin, Docker is a tool for virtualizing applications from a main operating system. What this means is that you can run full OS containers within a host OS. The primary purpose behind Docker, and similar tools, is to isolate development environments and to consistently deploy applications across computers. Docker is typically used on servers (think AWS or Azure) to isolate users and to deploy websites and web apps. Docker simply provides the ability to run these isolated containers, it is the users job to create the content that goes inside the containers. For more information on Docker, plesae see their <a class="reference external" href="https://www.docker.com/">official website</a>.</p>
+<p>For robotics, containers can be a valuable tool for creating consistent development environments for users with different operating systems or different use cases. For example, a Docker container can be generated that has the entire simulation platform already installed; then, the user can simply run their simulation script in the container without the need to install any dependencies.</p>
+<p>To help facilitate complicated scenarios, it is common practice to utilize multiple containers. Think, for instance, with multiple containers, you can have multiple independent systems that can be interchanged easily. Then, each isolated container communicates with the others in some capacity. This is what we will do here, where we have one container for the control stack, another for the simulation, and then other optional containers with other desired features: for example, <code class="docutils literal notranslate"><span class="pre">vnc</span></code> for visualizing gui apps.</p>
+<p>There are two <code class="docutils literal notranslate"><span class="pre">services</span></code> (or containers) that will be created: <code class="docutils literal notranslate"><span class="pre">dev</span></code> and <code class="docutils literal notranslate"><span class="pre">vnc</span></code>. <code class="docutils literal notranslate"><span class="pre">dev</span></code> is the ROS 2 development environment we’ll use to write the ROS 2 code. <code class="docutils literal notranslate"><span class="pre">vnc</span></code> is the container used to visualize gui apps. Various attributes are included in the <code class="docutils literal notranslate"><span class="pre">.yml</span></code> file, such as build context, ROS version types, and environment variables. As seen in the <code class="docutils literal notranslate"><span class="pre">volumes</span></code> section under the <code class="docutils literal notranslate"><span class="pre">dev</span></code> service, the entire development directory will be mounted inside the container. A <a class="reference external" href="https://docs.docker.com/storage/volumes/">volume</a> is simply a folder that is shared between the host OS and the container. This means any and all code additions should be made <em>only</em> inside of this folder; if you edit any files outside of <code class="docutils literal notranslate"><span class="pre">~/&lt;project</span> <span class="pre">name&gt;</span></code>, then the changes will not be saved when the container is exited.</p>
 </section>
 <section id="database">
-<h3>Database<a class="headerlink" href="#database" title="Permalink to this headline">¶</a></h3>
-<div class="admonition-todo admonition" id="id5">
+<h2>Database<a class="headerlink" href="#database" title="Permalink to this headline">¶</a></h2>
+<div class="admonition-todo admonition" id="id1">
 <p class="admonition-title">Todo</p>
-<p>To write…</p>
+<p>To document…</p>
 </div>
-</section>
 </section>
 </section>
 
@@ -283,18 +256,9 @@
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">Background</a><ul>
+<li><a class="reference internal" href="#design-considerations">Design Considerations</a></li>
 <li><a class="reference internal" href="#development-environment">Development Environment</a></li>
-<li><a class="reference internal" href="#miniav-platform">MiniAV Platform</a><ul>
-<li><a class="reference internal" href="#purpose">Purpose</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#components">Components</a><ul>
-<li><a class="reference internal" href="#hardware">Hardware</a></li>
-<li><a class="reference internal" href="#control-stack">Control Stack</a></li>
-<li><a class="reference internal" href="#id4">Development Environment</a></li>
 <li><a class="reference internal" href="#database">Database</a></li>
-</ul>
-</li>
 </ul>
 </li>
 </ul>

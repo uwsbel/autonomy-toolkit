@@ -1,9 +1,12 @@
 <!doctype html>
 <html class="no-js">
   <head><meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width,initial-scale=1"/><link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="#" />
+    <meta name="viewport" content="width=device-width,initial-scale=1"/><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Tutorials" href="tutorials/index.html" /><link rel="prev" title="Setup" href="setup.html" />
 
-    <link rel="shortcut icon" href="_static/cropped-SBEL-32x32.png"/><meta name="generator" content="sphinx-3.4.2, furo 2020.12.30.beta24"/><title>Search - Autonomous Vehicle Toolbox 0.0.44 documentation</title><link rel="stylesheet" href="_static/styles/furo.css?digest=33d2fc4f3f180ec1ffc6524e273e21d7d58cbe49">
+    <link rel="shortcut icon" href="_static/cropped-SBEL-32x32.png"/><meta name="generator" content="sphinx-3.4.2, furo 2020.12.30.beta24"/>
+        <title>Autonomy Research Testbed (ART) - Autonomous Vehicle Toolbox 0.0.44 documentation</title>
+      <link rel="stylesheet" href="_static/styles/furo.css?digest=33d2fc4f3f180ec1ffc6524e273e21d7d58cbe49">
     <link rel="stylesheet" href="_static/pygments.css">
     <link media="(prefers-color-scheme: dark)" rel="stylesheet" href="_static/pygments_dark.css">
     
@@ -41,9 +44,7 @@
     <script defer="defer" src="_static/jquery.js"></script>
     <script defer="defer" src="_static/underscore.js"></script>
     <script defer="defer" src="_static/doctools.js"></script>
-    
-<script defer src="_static/searchtools.js"></script>
-<script defer src="_static/language_data.js"></script><script defer src="_static/scripts/main.js?digest=e931d09b2a40c1bb82b542effe772014573baf67"></script></head>
+    <script defer src="_static/scripts/main.js?digest=e931d09b2a40c1bb82b542effe772014573baf67"></script></head>
   <body dir="">
     
 <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
@@ -106,7 +107,7 @@
       <a href="index.html"><div class="brand">Autonomous Vehicle Toolbox 0.0.44 documentation</div></a>
     </div>
     <div class="header-right">
-      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
         <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
       </label>
     </div>
@@ -122,16 +123,16 @@
   </div>
   
   
-</a><form class="sidebar-search-container" method="get" action="#">
+</a><form class="sidebar-search-container" method="get" action="search.html">
   <input class="sidebar-search" placeholder=Search name="q">
   <input type="hidden" name="check_keywords" value="yes">
   <input type="hidden" name="area" value="default">
 </form><div class="sidebar-scroll"><div class="sidebar-tree">
-  <ul>
+  <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="index.html">Home</a></li>
 <li class="toctree-l1"><a class="reference internal" href="background.html">Background</a></li>
 <li class="toctree-l1"><a class="reference internal" href="setup.html">Setup</a></li>
-<li class="toctree-l1"><a class="reference internal" href="autonomy-research-testbed.html">Autonomy Research Testbed (ART)</a></li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Autonomy Research Testbed (ART)</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="tutorials/index.html">Tutorials</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label for="toctree-checkbox-1"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="tutorials/using-the-development-environoment.html">Using the ATK Development Environment</a></li>
 </ul>
@@ -173,26 +174,59 @@
   <main class="main">
     <div class="content">
       <article role="main">
-        <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+        <label class="toc-overlay-icon toc-content-icon" for="__toc">
           <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
         </label>
-        
-<div id="fallback" class="admonition error">
-  <p class="admonition-title">Error</p>
-  <p>
-    Please activate JavaScript to enable the search functionality.
-  </p>
+        <section id="autonomy-research-testbed-art">
+<h1>Autonomy Research Testbed (ART)<a class="headerlink" href="#autonomy-research-testbed-art" title="Permalink to this headline">¶</a></h1>
+<p>The ART platform is purpose built to be an all-in-one test platform for autonomous algorithm development and simulation validation. Provided is documented hardware, a pre-made control stack, an optimized development-to-deployment workflow, and a database system to easily store and interact with ROS-based data files.</p>
+<p>In this section, general background of the project is discussed and an overview of design decisions is provided.</p>
+<section id="purpose">
+<h2>Purpose<a class="headerlink" href="#purpose" title="Permalink to this headline">¶</a></h2>
+<p>As mentioned before, the ART platform is an all-in-one test platform for autonomous vehicles. Providing this platform aims to leverage the high-fidelity simulation engine <a class="reference external" href="https://projectchrono.org">Chrono</a> as the test method prior to deploying the code on the real car. Furthermore, the development workflow and data processing pipeline is meant to be generic and scalable to other hardware beyond the ART. Utilizing <a class="reference external" href="https://docs.ros.org/en/galactic/index.html">ROS 2</a> for the control stack, the sensing support is built on packages from the ROS community and will continue to grow as ROS 2 is further adapted of the first iteration of ROS.</p>
+<p>There are also many other existing platforms that provide similar functionality; <a class="reference external" href="https://www.donkeycar.com/">DonkeyCar</a>, <a class="reference external" href="https://digital.wpi.edu/concern/student_works/st74ct36z?locale=en">PARV</a>, <a class="reference external" href="https://www.instructables.com/PiCar-an-Autonomous-Car-Platform/">PiCar</a>, <a class="reference external" href="https://autorally.github.io/">AutoRally</a>, and <a class="reference external" href="https://mit-racecar.github.io/">MIT RACECAR</a> to name a few. Unlike the aforementioned vehicle platforms, ART is built much larger from a <a class="reference external" href="https://www.redcatracing.com/products/shredder?variant=31050562797658">1:6th scale chassis from Redcat Racing</a>. This allows larger and more sensors to be added to the vehicle chassis. Modular 3D printed part files are provided that can be configured in multiple ways to mount sensor suites for different applications. Voltage rails are also provided to power sensors with varying power usage.</p>
+<p>This simulation environment, built on top of Chrono, utilizes multiple modules to create a virtual world for autonomy development. The vehicle module, <a class="reference external" href="https://api.projectchrono.org/group__vehicle.html">Chrono::Vehicle</a>, implements high-fidelity vehicle models, for which a ART model is provided. The Chrono::Vehicle module also has advanced terrain models that can be used to represent hard, concret floors to Soil Contact Model (SCM) based deformable terrain; the latter useful for modeling off-road scenarios. Then <a class="reference external" href="https://api.projectchrono.org/group__sensor.html">Chrono::Sensor</a> simulates sensors that can be used to replicate the data produced by the physical counterparts.</p>
+</section>
+<section id="hardware">
+<h2>Hardware<a class="headerlink" href="#hardware" title="Permalink to this headline">¶</a></h2>
+<div class="admonition-todo admonition" id="id1">
+<p class="admonition-title">Todo</p>
+<p>To write…</p>
 </div>
-<script>document.getElementById('fallback').hidden = true;</script>
-
-<div id="search-results"></div>
+</section>
+<section id="autonomy-stack">
+<h2>Autonomy Stack<a class="headerlink" href="#autonomy-stack" title="Permalink to this headline">¶</a></h2>
+<div class="admonition-todo admonition" id="id2">
+<p class="admonition-title">Todo</p>
+<p>To write…</p>
+</div>
+</section>
+</section>
 
       </article>
       <footer>
         
         <div class="related-pages">
-          
-          
+          <a class="next-page" href="tutorials/index.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Tutorials</div>
+              </div>
+              <svg><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="setup.html">
+              <svg><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Setup</div>
+                
+              </div>
+            </a>
         </div>
 
         <div class="related-information">
@@ -202,17 +236,42 @@
               and
               <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
               <a href="https://github.com/pradyunsg/furo">Furo theme</a>.
+            |
+            <a class="muted-link" href="_sources/autonomy-research-testbed.md.txt"
+               rel="nofollow">
+              Show Source
+            </a>
         </div>
         
       </footer>
     </div>
-    <aside class="toc-drawer no-toc">
+    <aside class="toc-drawer">
       
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            Contents
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Autonomy Research Testbed (ART)</a><ul>
+<li><a class="reference internal" href="#purpose">Purpose</a></li>
+<li><a class="reference internal" href="#hardware">Hardware</a></li>
+<li><a class="reference internal" href="#autonomy-stack">Autonomy Stack</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
       
       
     </aside>
   </main>
 </div>
-<script defer src="searchindex.js"></script>
   </body>
 </html>

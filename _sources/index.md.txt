@@ -9,6 +9,7 @@
 Home <self>
 background
 setup
+autonomy-research-testbed
 tutorials/index
 usage/index
 contributing
