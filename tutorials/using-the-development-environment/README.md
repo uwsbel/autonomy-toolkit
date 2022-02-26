@@ -117,12 +117,12 @@ You first need to pull the bag file. To do this, you may run the following comma
 git lfs pull
 ```
 
-The folder will be located at `autonomy-research-testbed/tutorials/using-the-development-environment/demo-bag-<real or sim>/`. ROS 2 bags are contained in folders and the `ros2 bag` command will be used to replay the file. After the file is pulled, enter the development environment and start replaying the bag file. We'll have it loop so the stack can be visualized easier.
+The folder will be located at `autonomy-research-testbed/demos/bags/demo-bag-<real or sim>/`. ROS 2 bags are contained in folders and the `ros2 bag` command will be used to replay the file. After the file is pulled, enter the development environment and start replaying the bag file. We'll have it loop so the stack can be visualized easier.
 
 ```bash
 $ atk dev --gpus # NOTE: only use --gpus if you have a nvidia gpu
 WARNING  | logger.set_verbosity :: Verbosity has been set to WARNING
-art-dev:~/art/workspace$ ros2 bag play ../tutorials/using-the-development-environment/demo-bag-real -l # or demo-bag-sim
+art-dev:~/art/workspace$ ros2 bag play ../demos/bags/demo-bag-real -l # or demo-bag-sim
 ```
 
 With the bag being played, open another terminal and start up the stack.
