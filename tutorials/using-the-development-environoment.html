@@ -271,10 +271,10 @@ art-dev:~/art/workspace$ ros2 launch art_simulation_launch art_simulation.launch
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git lfs pull
 </pre></div>
 </div>
-<p>The folder will be located at <code class="docutils literal notranslate"><span class="pre">autonomy-research-testbed/tutorials/using-the-development-environment/demo-bag-&lt;real</span> <span class="pre">or</span> <span class="pre">sim&gt;/</span></code>. ROS 2 bags are contained in folders and the <code class="docutils literal notranslate"><span class="pre">ros2</span> <span class="pre">bag</span></code> command will be used to replay the file. After the file is pulled, enter the development environment and start replaying the bag file. We’ll have it loop so the stack can be visualized easier.</p>
+<p>The folder will be located at <code class="docutils literal notranslate"><span class="pre">autonomy-research-testbed/demos/bags/demo-bag-&lt;real</span> <span class="pre">or</span> <span class="pre">sim&gt;/</span></code>. ROS 2 bags are contained in folders and the <code class="docutils literal notranslate"><span class="pre">ros2</span> <span class="pre">bag</span></code> command will be used to replay the file. After the file is pulled, enter the development environment and start replaying the bag file. We’ll have it loop so the stack can be visualized easier.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ atk dev --gpus <span class="c1"># NOTE: only use --gpus if you have a nvidia gpu</span>
 WARNING  <span class="p">|</span> logger.set_verbosity :: Verbosity has been <span class="nb">set</span> to WARNING
-art-dev:~/art/workspace$ ros2 bag play ../tutorials/using-the-development-environment/demo-bag-real -l <span class="c1"># or demo-bag-sim</span>
+art-dev:~/art/workspace$ ros2 bag play ../demos/bags/demo-bag-real -l <span class="c1"># or demo-bag-sim</span>
 </pre></div>
 </div>
 <p>With the bag being played, open another terminal and start up the stack.</p>
