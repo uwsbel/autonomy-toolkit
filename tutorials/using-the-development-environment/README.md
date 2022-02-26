@@ -1,6 +1,6 @@
-# Using the AV Development Environment
+# Using the ATK Development Environment
 
-The AV development environment has been created to expedite the process from algorithm implementation to testing in simulation to deploying the control stack on the MiniAV (or any other compatible platform). 
+The ATK development environment has been created to expedite the process from algorithm implementation to testing in simulation to deploying the control stack on the Autonomy Research Testbed (ART) (or any other compatible platform). 
 
 ## Prerequisites
 
@@ -11,7 +11,7 @@ The AV development environment has been created to expedite the process from alg
 
 ## Design Considerations
 
-The _most_ important component we considered when creating the development environment was whether the workflow was usable on multiple platforms, i.e. it would work as is on Windows, MacOS, and Linux systems. This was a nonnegotiable because then the MiniAV platform could be developed anywhere and wouldn't require any special hardware or "hacking" to work on a specific system. Further, the development environment and deployment environment (the system that runs on the actual vehicle) must also be the same or similar in design. This means that any customization to the dependency lists or sensor configurations that was made locally would carry over to the actual vehicle.
+The _most_ important component we considered when creating the development environment was whether the workflow was usable on multiple platforms, i.e. it would work as is on Windows, MacOS, and Linux systems. This was a nonnegotiable because then the ART platform could be developed anywhere and wouldn't require any special hardware or "hacking" to work on a specific system. Further, the development environment and deployment environment (the system that runs on the actual vehicle) must also be the same or similar in design. This means that any customization to the dependency lists or sensor configurations that was made locally would carry over to the actual vehicle.
 
 Another important element we considered was using simulation to test the control stack. [Chrono](https://projectchrono.org) is the simulator of choice and it needed to interface with the development _and_ deployment environment natively. The control stack itself should not be limiting hardware-wise (unless the implemented algorithms require a certain type of CPU, for example), but the Chrono simulations may require specific hardware, such as a NVIDIA GPU. Therefore, the solution must be able to communicate over the network considering everyone may not have access to a NVIDIA GPU on their computer, but a remote server/workstation may.
 
@@ -23,7 +23,7 @@ For robotics, containers can be a valuable tool for creating consistent developm
 
 To help facilitate complicated scenarios, it is common practice to utilize multiple containers. Think, for instance, with multiple containers, you can have multiple independent systems that can be interchanged easily. Then, each isolated container communicates with the others in some capacity. This is what we will do here, where we have one container for the control stack, another for the simulation, and then other optional containers with other desired features: for example, `vnc` for visualizing gui apps.
 
-There are two `services` (or containers) that will be created: `dev` and `vnc`. `dev` is the ROS 2 development environment we'll use to write the ROS 2 code. `vnc` is the container used to visualize gui apps. Various attributes are included in the `.yml` file, such as build context, ROS version types, and environment variables. As seen in the `volumes` section under the `dev` service, the entire `miniav` repository will be mounted inside the container. A [volume](https://docs.docker.com/storage/volumes/) is simply a folder that is shared between the host OS and the container. This means any and all code additions should be made _only_ inside of this folder; if you edit any files outside of `/root/miniav`, then the changes will not be saved when the container is exited.
+There are two `services` (or containers) that will be created: `dev` and `vnc`. `dev` is the ROS 2 development environment we'll use to write the ROS 2 code. `vnc` is the container used to visualize gui apps. Various attributes are included in the `.yml` file, such as build context, ROS version types, and environment variables. As seen in the `volumes` section under the `dev` service, the entire `autonomy-research-testbed` repository will be mounted inside the container. A [volume](https://docs.docker.com/storage/volumes/) is simply a folder that is shared between the host OS and the container. This means any and all code additions should be made _only_ inside of this folder; if you edit any files outside of `/root/art`, then the changes will not be saved when the container is exited.
 
 ## Setup
 
@@ -42,7 +42,7 @@ For any commands mentioned herein, it will be assumed they are run from within t
 
 ### Entering the Development Environment
 
-The first time you attempt to use the MiniAV development environment, the docker container will need to be built (the `atk` package will do this for you). This may take upwards of 15 minutes, depending on the number of packages your control stack needs to install. After the initial build, you may never need to build the stack again (unless you need additional packages installed). To build the container the first time around, you can run the following command:
+The first time you attempt to use the ART development environment, the docker container will need to be built (the `atk` package will do this for you). This may take upwards of 15 minutes, depending on the number of packages your control stack needs to install. After the initial build, you may never need to build the stack again (unless you need additional packages installed). To build the container the first time around, you can run the following command:
 
 ```bash
 atk dev
