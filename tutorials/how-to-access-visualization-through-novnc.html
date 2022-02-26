@@ -2,10 +2,10 @@
 <html class="no-js">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="API Reference" href="../usage/index.html" /><link rel="prev" title="Accessing visualization through noVNC" href="how-to-access-visualization-through-novnc.html" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Using the AV Development Environment" href="using_the_development_environment.html" /><link rel="prev" title="Tutorials" href="index.html" />
 
     <link rel="shortcut icon" href="../_static/cropped-SBEL-32x32.png"/><meta name="generator" content="sphinx-3.4.2, furo 2020.12.30.beta24"/>
-        <title>Using the AV Development Environment - Autonomous Vehicle Toolbox 0.0.44 documentation</title>
+        <title>Accessing visualization through noVNC - Autonomous Vehicle Toolbox 0.0.44 documentation</title>
       <link rel="stylesheet" href="../_static/styles/furo.css?digest=33d2fc4f3f180ec1ffc6524e273e21d7d58cbe49">
     <link rel="stylesheet" href="../_static/pygments.css">
     <link media="(prefers-color-scheme: dark)" rel="stylesheet" href="../_static/pygments_dark.css">
@@ -133,8 +133,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../background.html">Background</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../setup.html">Setup</a></li>
 <li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">Tutorials</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label for="toctree-checkbox-1"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="how-to-access-visualization-through-novnc.html">Accessing visualization through noVNC</a></li>
-<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Using the AV Development Environment</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Accessing visualization through noVNC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="using_the_development_environment.html">Using the AV Development Environment</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../usage/index.html">API Reference</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label for="toctree-checkbox-2"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -177,9 +177,9 @@
         <label class="toc-overlay-icon toc-content-icon" for="__toc">
           <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
         </label>
-        <section id="using-the-av-development-environment">
-<h1>Using the AV Development Environment<a class="headerlink" href="#using-the-av-development-environment" title="Permalink to this headline">¶</a></h1>
-<p>The AV development environment has been created to expedite the process from algorithm implementation to testing in simulation to deploying the control stack on the MiniAV (or any other compatible platform).</p>
+        <section id="accessing-visualization-through-novnc">
+<h1>Accessing visualization through noVNC<a class="headerlink" href="#accessing-visualization-through-novnc" title="Permalink to this headline">¶</a></h1>
+<p>This tutorial will use autonomy-toolkit (ATK) with the Autonomy Research Testbed (ART) to visualize the simulation using noVNC</p>
 <section id="prerequisites">
 <h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
@@ -187,72 +187,92 @@
 <li><p>You have installed Docker (<a class="reference external" href="https://docs.docker.com/get-docker/">resource for that</a>)</p></li>
 <li><p>You have installed docker compose v2 (<a class="reference external" href="https://docs.docker.com/compose/cli-command/">resource for that</a>)</p></li>
 <li><p>You have installed <code class="docutils literal notranslate"><span class="pre">autonomy-toolkit</span></code> (<a class="reference external" href="https://projects.sbel.org/autonomy-toolkit/setup.html">resources for that</a>)</p></li>
+<li><p>You have gone through the Using the ATK Developement Environment tutorial</p></li>
 </ul>
-</section>
-<section id="design-considerations">
-<h2>Design Considerations<a class="headerlink" href="#design-considerations" title="Permalink to this headline">¶</a></h2>
-<p>The <em>most</em> important component we considered when creating the development environment was whether the workflow was usable on multiple platforms, i.e. it would work as is on Windows, MacOS, and Linux systems. This was a nonnegotiable because then the MiniAV platform could be developed anywhere and wouldn’t require any special hardware or “hacking” to work on a specific system. Further, the development environment and deployment environment (the system that runs on the actual vehicle) must also be the same or similar in design. This means that any customization to the dependency lists or sensor configurations that was made locally would carry over to the actual vehicle.</p>
-<p>Another important element we considered was using simulation to test the control stack. <a class="reference external" href="https://projectchrono.org">Chrono</a> is the simulator of choice and it needed to interface with the development <em>and</em> deployment environment natively. The control stack itself should not be limiting hardware-wise (unless the implemented algorithms require a certain type of CPU, for example), but the Chrono simulations may require specific hardware, such as a NVIDIA GPU. Therefore, the solution must be able to communicate over the network considering everyone may not have access to a NVIDIA GPU on their computer, but a remote server/workstation may.</p>
 </section>
 <section id="background">
 <h2>Background<a class="headerlink" href="#background" title="Permalink to this headline">¶</a></h2>
-<p>To begin, Docker is a tool for virtualizing applications from a main operating system. What this means is that you can run full OS containers within a host OS. The primary purpose behind Docker, and similar tools, is to isolate development environments and to consistently deploy applications across computers. Docker is typically used on servers (think AWS or Azure) to isolate users and to deploy websites and web apps. Docker simply provides the ability to run these isolated containers, it is the users job to create the content that goes inside the containers. For more information on Docker, plesae see their <a class="reference external" href="https://www.docker.com/">official website</a>.</p>
-<p>For robotics, containers can be a valuable tool for creating consistent development environments for users with different operating systems or different use cases. For example, a Docker container can be generated that has the entire simulation platform already installed; then, the user can simply run their simulation script in the container without the need to install any dependencies.</p>
-<p>To help facilitate complicated scenarios, it is common practice to utilize multiple containers. Think, for instance, with multiple containers, you can have multiple independent systems that can be interchanged easily. Then, each isolated container communicates with the others in some capacity. This is what we will do here, where we have one container for the control stack, another for the simulation, and then other optional containers with other desired features: for example, <code class="docutils literal notranslate"><span class="pre">vnc</span></code> for visualizing gui apps.</p>
-<p>There are two <code class="docutils literal notranslate"><span class="pre">services</span></code> (or containers) that will be created: <code class="docutils literal notranslate"><span class="pre">dev</span></code> and <code class="docutils literal notranslate"><span class="pre">vnc</span></code>. <code class="docutils literal notranslate"><span class="pre">dev</span></code> is the ROS 2 development environment we’ll use to write the ROS 2 code. <code class="docutils literal notranslate"><span class="pre">vnc</span></code> is the container used to visualize gui apps. Various attributes are included in the <code class="docutils literal notranslate"><span class="pre">.yml</span></code> file, such as build context, ROS version types, and environment variables. As seen in the <code class="docutils literal notranslate"><span class="pre">volumes</span></code> section under the <code class="docutils literal notranslate"><span class="pre">dev</span></code> service, the entire <code class="docutils literal notranslate"><span class="pre">miniav</span></code> repository will be mounted inside the container. A <a class="reference external" href="https://docs.docker.com/storage/volumes/">volume</a> is simply a folder that is shared between the host OS and the container. This means any and all code additions should be made <em>only</em> inside of this folder; if you edit any files outside of <code class="docutils literal notranslate"><span class="pre">/root/miniav</span></code>, then the changes will not be saved when the container is exited.</p>
+<p><code class="docutils literal notranslate"><span class="pre">vnc</span></code> is the container used to visualize gui apps. We will use noVNC which is a browser based VNC client implemented using HTML5 Canvas and WebSockets. This container is used alog with <code class="docutils literal notranslate"><span class="pre">dev</span></code> and <code class="docutils literal notranslate"><span class="pre">chrono</span></code> containers to visualize the simulations.</p>
 </section>
 <section id="setup">
 <h2>Setup<a class="headerlink" href="#setup" title="Permalink to this headline">¶</a></h2>
-<p>Beyond installing the packages outlined in <a class="reference external" href="#prerequisites">prerequisites</a>, there is not much setup that is necessary. The <code class="docutils literal notranslate"><span class="pre">autonomy-toolkit</span></code> package provides tools for easily spinning up containers and attaching to the development environment within Docker.</p>
-</section>
-<section id="usage">
-<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
-<p>To use the development environment, very convenient commands are provided through the <code class="docutils literal notranslate"><span class="pre">autonomy-toolkit</span></code> CLI. The documentation for the <code class="docutils literal notranslate"><span class="pre">dev</span></code> command can be found <a class="reference external" href="http://projects.sbel.org/autonomy-toolkit/usage/cli.html#dev">here</a>.</p>
-<p>As described in the documentation, the <code class="docutils literal notranslate"><span class="pre">dev</span></code> command has four arguments: <code class="docutils literal notranslate"><span class="pre">build</span></code>, <code class="docutils literal notranslate"><span class="pre">up</span></code>, <code class="docutils literal notranslate"><span class="pre">down</span></code>, and <code class="docutils literal notranslate"><span class="pre">attach</span></code>. These may sound familiar if you’ve used <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span></code> before because the <code class="docutils literal notranslate"><span class="pre">dev</span></code> command essentially wraps <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span></code>. Everything that the <code class="docutils literal notranslate"><span class="pre">atk</span> <span class="pre">dev</span></code> command does, <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span></code> can also do; the <code class="docutils literal notranslate"><span class="pre">atk</span> <span class="pre">dev</span></code> cli command is simply made to expedite the process of entering a container and may also provide an easy mechanism to add additional functionality in the future.</p>
+<p>Beyond installing the packages outlined in <a class="reference external" href="#prerequisites">prerequisites</a>, there is not much setup that is necessary. The <code class="docutils literal notranslate"><span class="pre">autonomy-toolkit</span></code> package provides tools for easily spinning up containers and attaching to the development environment within Docker. Going through the Using the <code class="docutils literal notranslate"><span class="pre">atk</span></code> Developement Environment tutorial will provide some background knowledge to understand this tutorial.</p>
+<section id="entering-the-development-environment">
+<h3>Entering the Development Environment<a class="headerlink" href="#entering-the-development-environment" title="Permalink to this headline">¶</a></h3>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>For any commands mentioned herein, it will be assumed they are run from within the <code class="docutils literal notranslate"><span class="pre">atk</span></code> repository.</p>
 </div>
-
-<section id="entering-the-development-environment">
-<h3>Entering the Development Environment<a class="headerlink" href="#entering-the-development-environment" title="Permalink to this headline">¶</a></h3>
-<p>The first time you attempt to use the MiniAV development environment, the docker container will need to be built (the <code class="docutils literal notranslate"><span class="pre">atk</span></code> package will do this for you). This may take upwards of 15 minutes, depending on the number of packages your control stack needs to install. After the initial build, you may never need to build the stack again (unless you need additional packages installed). To build the container the first time around, you can run the following command:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>atk dev
+<p>There are two different ART developement environments you will need to enter. This can be done by first opening two terminal windows.</p>
+<section id="chrono-developement-window">
+<h4>Chrono Developement Window<a class="headerlink" href="#chrono-developement-window" title="Permalink to this headline">¶</a></h4>
+<p>In the first terminal window we will be running the chrono docker container. The build the container the first time around, you can run the following command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>atk dev -ua -s chrono --gpus
 </pre></div>
 </div>
-<p>This is equivalent to running the following:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>atk dev --up --attach
-</pre></div>
-</div>
-<p>And since the image has never been built, the <code class="docutils literal notranslate"><span class="pre">--up</span></code> argument will also build it. This is only the case if the image cannot be found, i.e. the first time you run <code class="docutils literal notranslate"><span class="pre">atk</span> <span class="pre">dev</span></code>.</p>
+<p>And since the image has never been built, the <code class="docutils literal notranslate"><span class="pre">--up</span></code> argument will also build it. This is only the case if the image cannot be found, i.e. the first time you run <code class="docutils literal notranslate"><span class="pre">atk</span> <span class="pre">dev</span> <span class="pre">-ua</span> <span class="pre">-s</span> <span class="pre">chrono</span> <span class="pre">--gpus</span></code>.</p>
 <p>If you make changes to the workspace and need additional packages to be installed into the container, you can run the same command with the build flag:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>atk dev --build
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>atk dev --build -s chrono
+</pre></div>
+</div>
+<p>Once inside ART chrono continer, go into the atk/sim directory and run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python demo_ARCLAB_cone.py
+</pre></div>
+</div>
+<p>This will start the simulation in the chrono container. Next, we need to setup the dev container</p>
+</section>
+<section id="dev-developement-window">
+<h4>Dev Developement Window<a class="headerlink" href="#dev-developement-window" title="Permalink to this headline">¶</a></h4>
+<p>In the second terminal window we will be running the dev docker container. The build the container the first time around, you can run the following command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>atk dev -ua -s dev --gpus
+</pre></div>
+</div>
+<p>And since the image has never been built, the <code class="docutils literal notranslate"><span class="pre">--up</span></code> argument will also build it. This is only the case if the image cannot be found, i.e. the first time you run <code class="docutils literal notranslate"><span class="pre">atk</span> <span class="pre">dev</span> <span class="pre">-ua</span> <span class="pre">-s</span> <span class="pre">dev</span> <span class="pre">--gpus</span></code>.</p>
+<p>If you make changes to the workspace and need additional packages to be installed into the container, you can run the same command with the build flag:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>atk dev --build -s dev
+</pre></div>
+</div>
+<p>Once inside ART dev continer, go into the atk/workspace directory.</p>
+<p>We will then need to run the following:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>colcon build
+</pre></div>
+</div>
+<p>Refer to <a class="reference external" href="https://docs.ros.org/en/foxy/Tutorials/Colcon-Tutorial.html">Colcon-Tutorial</a> for information on <code class="docutils literal notranslate"><span class="pre">colcon</span></code></p>
+<p>Next run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">source</span> instal/setup.bash
+</pre></div>
+</div>
+<p>Refer to <a class="reference external" href="https://docs.ros.org/en/foxy/Tutorials/Colcon-Tutorial.html">Colcon-Tutorial</a> for information on <code class="docutils literal notranslate"><span class="pre">colcon</span></code> and how <code class="docutils literal notranslate"><span class="pre">source</span></code> works</p>
+<p>The container is now ready to run the simlution using one of the launch files. The launch files can be found in: <code class="docutils literal notranslate"><span class="pre">workspace/src/common/launch/art_simulation_launch/launch</span></code></p>
+<p>The command to run the launch files follows this format:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2 launch &lt;package&gt; &lt;launch_file&gt;
+</pre></div>
+</div>
+<p>For example to launch the art simluation, you would run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2 launch art_simulation_launch art_simulation.launch.py hostname:<span class="o">=</span>art-chrono vis:<span class="o">=</span><span class="nb">true</span>
 </pre></div>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>This is <em>not</em> equivalient to <code class="docutils literal notranslate"><span class="pre">atk</span> <span class="pre">dev</span> <span class="pre">--up</span> <span class="pre">--attach</span> <span class="pre">--build</span></code>. <code class="docutils literal notranslate"><span class="pre">--up</span></code> and <code class="docutils literal notranslate"><span class="pre">--attach</span></code> are only added if no other arguments are provided</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">vis</span></code> flag is used to tell some of the nodes to visulizes what they are trying to do for debugging purposes. vis is a ROS parameter.</p>
 </div>
-
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>If the container is already running (i.e. <code class="docutils literal notranslate"><span class="pre">atk</span> <span class="pre">dev</span> <span class="pre">--up</span></code> has already been called), the new built image will not be loaded automatically. You need to tear down the container by running <code class="docutils literal notranslate"><span class="pre">atk</span> <span class="pre">dev</span> <span class="pre">--down</span></code> or <code class="docutils literal notranslate"><span class="pre">atk</span> <span class="pre">dev</span> <span class="pre">-d</span></code> and then spin up the container again with <code class="docutils literal notranslate"><span class="pre">atk</span> <span class="pre">dev</span> <span class="pre">--up</span></code></p>
-</div>
-
-<p>After you run <code class="docutils literal notranslate"><span class="pre">atk</span> <span class="pre">dev</span></code>, you should see a shell prompt like the following:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ atk dev
-WARNING  <span class="p">|</span> logger.set_verbosity :: Verbosity has been <span class="nb">set</span> to WARNING
-art-dev:~$
-</pre></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">--gpus</span></code> argument sets the runtime correctly for the docker container</p>
 </div>
 </section>
-<section id="developing-inside-the-container">
-<h3>Developing Inside the Container<a class="headerlink" href="#developing-inside-the-container" title="Permalink to this headline">¶</a></h3>
-<p>Once inside the container, if you type <code class="docutils literal notranslate"><span class="pre">ls</span></code>, you should see the <code class="docutils literal notranslate"><span class="pre">atk</span></code> folder that is a mapped volumes from the host system. As mentioned before, any code you write should be done here or your changes will persist once the container is destroyed.</p>
-<div class="admonition-todo admonition" id="id1">
-<p class="admonition-title">Todo</p>
-<p>To write more …</p>
+<section id="rviz">
+<h4>rviz<a class="headerlink" href="#rviz" title="Permalink to this headline">¶</a></h4>
+<p>You may also use rviz for visualization and debugging purposes when testing changes. Once inside the rviz console the user can select what nodes they want to visualize. To open rviz run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros run rviz2 rviz2
+</pre></div>
 </div>
+<p>For more information on rviz refer to <a class="reference external" href="http://wiki.ros.org/rviz/UserGuide">rviz-User-Guide</a></p>
+</section>
+</section>
+<section id="viewing-the-novnc-visualization-of-the-simulation">
+<h3>Viewing the noVNC visualization of the simulation<a class="headerlink" href="#viewing-the-novnc-visualization-of-the-simulation" title="Permalink to this headline">¶</a></h3>
+<p>Once the commands are run in both command windows, open <code class="docutils literal notranslate"><span class="pre">localhost:8080</span></code> in your browser to view the noVNC window that visualizes the simulation that is running.</p>
 </section>
 </section>
 <section id="support">
@@ -262,6 +282,7 @@ art-dev:~$
 <section id="see-also">
 <h2>See Also<a class="headerlink" href="#see-also" title="Permalink to this headline">¶</a></h2>
 <p>Visit our website at <a class="reference external" href="https://sbel.wisc.edu">sbel.wisc.edu</a>!</p>
+<!-- --gpus set the runtime correctly for the docker container -- .atk.yml in atk -->
 </section>
 </section>
 
@@ -269,23 +290,23 @@ art-dev:~$
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="../usage/index.html">
+          <a class="next-page" href="using_the_development_environment.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">API Reference</div>
+                <div class="title">Using the AV Development Environment</div>
               </div>
               <svg><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="how-to-access-visualization-through-novnc.html">
+          <a class="prev-page" href="index.html">
               <svg><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Accessing visualization through noVNC</div>
+                <div class="title">Tutorials</div>
                 
               </div>
             </a>
@@ -299,7 +320,7 @@ art-dev:~$
               <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
               <a href="https://github.com/pradyunsg/furo">Furo theme</a>.
             |
-            <a class="muted-link" href="../_sources/tutorials/using_the_development_environment.md.txt"
+            <a class="muted-link" href="../_sources/tutorials/how-to-access-visualization-through-novnc.md.txt"
                rel="nofollow">
               Show Source
             </a>
@@ -319,14 +340,17 @@ art-dev:~$
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
-<li><a class="reference internal" href="#">Using the AV Development Environment</a><ul>
+<li><a class="reference internal" href="#">Accessing visualization through noVNC</a><ul>
 <li><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
-<li><a class="reference internal" href="#design-considerations">Design Considerations</a></li>
 <li><a class="reference internal" href="#background">Background</a></li>
-<li><a class="reference internal" href="#setup">Setup</a></li>
-<li><a class="reference internal" href="#usage">Usage</a><ul>
-<li><a class="reference internal" href="#entering-the-development-environment">Entering the Development Environment</a></li>
-<li><a class="reference internal" href="#developing-inside-the-container">Developing Inside the Container</a></li>
+<li><a class="reference internal" href="#setup">Setup</a><ul>
+<li><a class="reference internal" href="#entering-the-development-environment">Entering the Development Environment</a><ul>
+<li><a class="reference internal" href="#chrono-developement-window">Chrono Developement Window</a></li>
+<li><a class="reference internal" href="#dev-developement-window">Dev Developement Window</a></li>
+<li><a class="reference internal" href="#rviz">rviz</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#viewing-the-novnc-visualization-of-the-simulation">Viewing the noVNC visualization of the simulation</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#support">Support</a></li>
