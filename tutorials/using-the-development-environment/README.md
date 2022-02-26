@@ -145,7 +145,17 @@ By default, when you run `atk dev`, both the `dev` and `vnc` containers will be 
 atk dev --up --services vnc
 ```
 
-You can then navigate to [localhost:8080](http://localhost:8080) to see the visualization windows. It should look something like the picture below.
+You can then navigate to [localhost:8080](http://localhost:8080) to see the visualization windows. It should look something like the pictures below.
+
+```{image}https://raw.githubusercontent.com/uwsbel/autonomy-toolkit/master/tutorials/using-the-development-environment/images/sim-novnc-screenshot?raw)
+:width: 45%
+:align: center
+```
+
+```{image}https://raw.githubusercontent.com/uwsbel/autonomy-toolkit/master/tutorials/using-the-development-environment/images/real-novnc-screenshot?raw)
+:width: 45%
+:align: center
+```
 
 ## Support
 
