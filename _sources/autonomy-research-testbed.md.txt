@@ -1,8 +1,8 @@
-# Autonomy Research Testbed (ART)
+# Autonomy Research Testbed
 
-The ART platform is purpose built to be an all-in-one test platform for autonomous algorithm development and simulation validation. Provided is documented hardware, a pre-made control stack, an optimized development-to-deployment workflow, and a database system to easily store and interact with ROS-based data files.
+The [`autonomy-research-testbed`](https://github.com/uwsbel/autonomy-research-testbed) (ART) platform is purpose built to be an all-in-one test platform for autonomous algorithm development and simulation validation. Provided is documented hardware, a pre-made control stack, an optimized development-to-deployment workflow, and a database system to easily store and interact with ROS-based data files.
 
-In this section, general background of the project is discussed and an overview of design decisions is provided. 
+On this page, general background of the project is discussed and an overview of design decisions is provided. 
 
 ## Purpose
 
