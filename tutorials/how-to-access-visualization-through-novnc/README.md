@@ -72,7 +72,7 @@ Refer to [Colcon-Tutorial](https://docs.ros.org/en/foxy/Tutorials/Colcon-Tutoria
 
 Next run:
 ```bash
-source instal/setup.bash
+source install/setup.bash
 ```
 
 Refer to [Colcon-Tutorial](https://docs.ros.org/en/foxy/Tutorials/Colcon-Tutorial.html) for information on `colcon` and how `source` works
