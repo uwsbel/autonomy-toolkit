@@ -5,7 +5,7 @@
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="API Reference" href="../usage/index.html" /><link rel="prev" title="Accessing visualization through noVNC" href="how-to-access-visualization-through-novnc.html" />
 
     <link rel="shortcut icon" href="../_static/cropped-SBEL-32x32.png"/><meta name="generator" content="sphinx-3.4.2, furo 2020.12.30.beta24"/>
-        <title>Using the AV Development Environment - Autonomous Vehicle Toolbox 0.0.44 documentation</title>
+        <title>Using the ATK Development Environment - Autonomous Vehicle Toolbox 0.0.44 documentation</title>
       <link rel="stylesheet" href="../_static/styles/furo.css?digest=33d2fc4f3f180ec1ffc6524e273e21d7d58cbe49">
     <link rel="stylesheet" href="../_static/pygments.css">
     <link media="(prefers-color-scheme: dark)" rel="stylesheet" href="../_static/pygments_dark.css">
@@ -134,7 +134,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../setup.html">Setup</a></li>
 <li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">Tutorials</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label for="toctree-checkbox-1"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="how-to-access-visualization-through-novnc.html">Accessing visualization through noVNC</a></li>
-<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Using the AV Development Environment</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Using the ATK Development Environment</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../usage/index.html">API Reference</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label for="toctree-checkbox-2"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -177,9 +177,9 @@
         <label class="toc-overlay-icon toc-content-icon" for="__toc">
           <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
         </label>
-        <section id="using-the-av-development-environment">
-<h1>Using the AV Development Environment<a class="headerlink" href="#using-the-av-development-environment" title="Permalink to this headline">¶</a></h1>
-<p>The AV development environment has been created to expedite the process from algorithm implementation to testing in simulation to deploying the control stack on the MiniAV (or any other compatible platform).</p>
+        <section id="using-the-atk-development-environment">
+<h1>Using the ATK Development Environment<a class="headerlink" href="#using-the-atk-development-environment" title="Permalink to this headline">¶</a></h1>
+<p>The ATK development environment has been created to expedite the process from algorithm implementation to testing in simulation to deploying the control stack on the Autonomy Research Testbed (ART) (or any other compatible platform).</p>
 <section id="prerequisites">
 <h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
@@ -191,7 +191,7 @@
 </section>
 <section id="design-considerations">
 <h2>Design Considerations<a class="headerlink" href="#design-considerations" title="Permalink to this headline">¶</a></h2>
-<p>The <em>most</em> important component we considered when creating the development environment was whether the workflow was usable on multiple platforms, i.e. it would work as is on Windows, MacOS, and Linux systems. This was a nonnegotiable because then the MiniAV platform could be developed anywhere and wouldn’t require any special hardware or “hacking” to work on a specific system. Further, the development environment and deployment environment (the system that runs on the actual vehicle) must also be the same or similar in design. This means that any customization to the dependency lists or sensor configurations that was made locally would carry over to the actual vehicle.</p>
+<p>The <em>most</em> important component we considered when creating the development environment was whether the workflow was usable on multiple platforms, i.e. it would work as is on Windows, MacOS, and Linux systems. This was a nonnegotiable because then the ART platform could be developed anywhere and wouldn’t require any special hardware or “hacking” to work on a specific system. Further, the development environment and deployment environment (the system that runs on the actual vehicle) must also be the same or similar in design. This means that any customization to the dependency lists or sensor configurations that was made locally would carry over to the actual vehicle.</p>
 <p>Another important element we considered was using simulation to test the control stack. <a class="reference external" href="https://projectchrono.org">Chrono</a> is the simulator of choice and it needed to interface with the development <em>and</em> deployment environment natively. The control stack itself should not be limiting hardware-wise (unless the implemented algorithms require a certain type of CPU, for example), but the Chrono simulations may require specific hardware, such as a NVIDIA GPU. Therefore, the solution must be able to communicate over the network considering everyone may not have access to a NVIDIA GPU on their computer, but a remote server/workstation may.</p>
 </section>
 <section id="background">
@@ -199,7 +199,7 @@
 <p>To begin, Docker is a tool for virtualizing applications from a main operating system. What this means is that you can run full OS containers within a host OS. The primary purpose behind Docker, and similar tools, is to isolate development environments and to consistently deploy applications across computers. Docker is typically used on servers (think AWS or Azure) to isolate users and to deploy websites and web apps. Docker simply provides the ability to run these isolated containers, it is the users job to create the content that goes inside the containers. For more information on Docker, plesae see their <a class="reference external" href="https://www.docker.com/">official website</a>.</p>
 <p>For robotics, containers can be a valuable tool for creating consistent development environments for users with different operating systems or different use cases. For example, a Docker container can be generated that has the entire simulation platform already installed; then, the user can simply run their simulation script in the container without the need to install any dependencies.</p>
 <p>To help facilitate complicated scenarios, it is common practice to utilize multiple containers. Think, for instance, with multiple containers, you can have multiple independent systems that can be interchanged easily. Then, each isolated container communicates with the others in some capacity. This is what we will do here, where we have one container for the control stack, another for the simulation, and then other optional containers with other desired features: for example, <code class="docutils literal notranslate"><span class="pre">vnc</span></code> for visualizing gui apps.</p>
-<p>There are two <code class="docutils literal notranslate"><span class="pre">services</span></code> (or containers) that will be created: <code class="docutils literal notranslate"><span class="pre">dev</span></code> and <code class="docutils literal notranslate"><span class="pre">vnc</span></code>. <code class="docutils literal notranslate"><span class="pre">dev</span></code> is the ROS 2 development environment we’ll use to write the ROS 2 code. <code class="docutils literal notranslate"><span class="pre">vnc</span></code> is the container used to visualize gui apps. Various attributes are included in the <code class="docutils literal notranslate"><span class="pre">.yml</span></code> file, such as build context, ROS version types, and environment variables. As seen in the <code class="docutils literal notranslate"><span class="pre">volumes</span></code> section under the <code class="docutils literal notranslate"><span class="pre">dev</span></code> service, the entire <code class="docutils literal notranslate"><span class="pre">miniav</span></code> repository will be mounted inside the container. A <a class="reference external" href="https://docs.docker.com/storage/volumes/">volume</a> is simply a folder that is shared between the host OS and the container. This means any and all code additions should be made <em>only</em> inside of this folder; if you edit any files outside of <code class="docutils literal notranslate"><span class="pre">/root/miniav</span></code>, then the changes will not be saved when the container is exited.</p>
+<p>There are two <code class="docutils literal notranslate"><span class="pre">services</span></code> (or containers) that will be created: <code class="docutils literal notranslate"><span class="pre">dev</span></code> and <code class="docutils literal notranslate"><span class="pre">vnc</span></code>. <code class="docutils literal notranslate"><span class="pre">dev</span></code> is the ROS 2 development environment we’ll use to write the ROS 2 code. <code class="docutils literal notranslate"><span class="pre">vnc</span></code> is the container used to visualize gui apps. Various attributes are included in the <code class="docutils literal notranslate"><span class="pre">.yml</span></code> file, such as build context, ROS version types, and environment variables. As seen in the <code class="docutils literal notranslate"><span class="pre">volumes</span></code> section under the <code class="docutils literal notranslate"><span class="pre">dev</span></code> service, the entire <code class="docutils literal notranslate"><span class="pre">autonomy-research-testbed</span></code> repository will be mounted inside the container. A <a class="reference external" href="https://docs.docker.com/storage/volumes/">volume</a> is simply a folder that is shared between the host OS and the container. This means any and all code additions should be made <em>only</em> inside of this folder; if you edit any files outside of <code class="docutils literal notranslate"><span class="pre">/root/art</span></code>, then the changes will not be saved when the container is exited.</p>
 </section>
 <section id="setup">
 <h2>Setup<a class="headerlink" href="#setup" title="Permalink to this headline">¶</a></h2>
@@ -216,7 +216,7 @@
 
 <section id="entering-the-development-environment">
 <h3>Entering the Development Environment<a class="headerlink" href="#entering-the-development-environment" title="Permalink to this headline">¶</a></h3>
-<p>The first time you attempt to use the MiniAV development environment, the docker container will need to be built (the <code class="docutils literal notranslate"><span class="pre">atk</span></code> package will do this for you). This may take upwards of 15 minutes, depending on the number of packages your control stack needs to install. After the initial build, you may never need to build the stack again (unless you need additional packages installed). To build the container the first time around, you can run the following command:</p>
+<p>The first time you attempt to use the ART development environment, the docker container will need to be built (the <code class="docutils literal notranslate"><span class="pre">atk</span></code> package will do this for you). This may take upwards of 15 minutes, depending on the number of packages your control stack needs to install. After the initial build, you may never need to build the stack again (unless you need additional packages installed). To build the container the first time around, you can run the following command:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>atk dev
 </pre></div>
 </div>
@@ -319,7 +319,7 @@ art-dev:~$
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
-<li><a class="reference internal" href="#">Using the AV Development Environment</a><ul>
+<li><a class="reference internal" href="#">Using the ATK Development Environment</a><ul>
 <li><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
 <li><a class="reference internal" href="#design-considerations">Design Considerations</a></li>
 <li><a class="reference internal" href="#background">Background</a></li>
