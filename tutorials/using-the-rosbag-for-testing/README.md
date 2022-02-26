@@ -64,7 +64,7 @@ You can now visualize the `autonomy stack`!
 
 Below is a representation of what your `autonomy stack` should look like -
 
-![](<img src = https://raw.githubusercontent.com/uwsbel/autonomy-toolkit/master/docs/_static/rosbagVisual.png?raw=true" alt="Autonomy Stack" class="readme-img" height="100px"> )
+![](https://raw.githubusercontent.com/uwsbel/autonomy-toolkit/master/docs/_static/rosbagVisual.png?)
 
 ## Support
 
