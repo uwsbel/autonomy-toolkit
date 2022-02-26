@@ -112,7 +112,7 @@ There are multiple ways to build sphinx documentation. The easiest is using the 
 ```bash
 cd autonomy-toolkit/docs
 pip install -r requirements.txt
-make html
+make clean html
 ```
 
 To view the build, go to your browser, and open the `index.html` file located inside `docs/build/html/`.
