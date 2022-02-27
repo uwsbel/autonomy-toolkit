@@ -14,12 +14,104 @@ This simulation environment, built on top of Chrono, utilizes multiple modules t
 
 ## Hardware
 
-```{todo}
-To write...
-```
+### Bill of Materials
+
+| Component                 | Qty   | Unit Price | Link                                                                      |
+| -----------               | ----- | -----     | ------                                                                    | 
+| Shredder RC Car Base      | 1     | $399.99   | [https://tinyurl.com/4mnectre](https://tinyurl.com/4mnectre)              |
+| inline fuse (optional)    | 1     | $9.99     | [https://tinyurl.com/dr5ycz9w](https://tinyurl.com/dr5ycz9w)                              |
+| Power Wiring              | 1     | $11.99    | [https://tinyurl.com/5erssk6k](https://tinyurl.com/5erssk6k)                              |
+| Chassis Wiring            | 1     | $15.99    | [https://tinyurl.com/2wwtfctpw](https://tinyurl.com/2wwtfctp)                              |
+| Electronics battery (4S)  | 2     | $45.99    | [https://tinyurl.com/2cu64w2c](https://tinyurl.com/2cu64w2c)                              |
+| Buck converter            | 1     | $16.89    | [https://tinyurl.com/2p87mkr3](https://tinyurl.com/2p87mkr3)                              |
+| Power distribution blocks | 1     | $13.89    | [https://tinyurl.com/4fdv7emb](https://tinyurl.com/4fdv7emb)                              |
+| T plugs                   | 1     | $8.98     | [https://tinyurl.com/396b3h54](https://tinyurl.com/396b3h54)                              |
+| Wire shrink wrap          | 1     | $6.99     | [https://tinyurl.com/kfxnmb68](https://tinyurl.com/kfxnmb68)                              |
+| Green SPST rocker switch  | 1     | $3.99     | [https://tinyurl.com/yfz2jzh6](https://tinyurl.com/yfz2jzh6)                              |
+| Red SPST rocker switch    | 1     | $3.99     | [https://tinyurl.com/24c9rkhe](https://tinyurl.com/24c9rkhe)                              |
+| Arduino Nano              | 1     | $19.99    | [https://tinyurl.com/4chrwfsy](https://tinyurl.com/4chrwfsy)                              |
+| USB A to B cable (short)  | 1     | $5.89     | [https://tinyurl.com/ycks36zv](https://tinyurl.com/ycks36zv)                              |
+| Blade connectors          | 1     | $9.95     | [https://tinyurl.com/4428ksbt](https://tinyurl.com/4428ksbt)                              |
+| Tracking markers (optional)   | 1 | $56.00    | [https://tinyurl.com/3kchrv79](https://tinyurl.com/3kchrv79)                              |
+| M4 x 12mm screw           | 12    | --        | --                              |
+| M4 x 14mm screw           | 10    | --        | --                              |
+| M4 x 20mm screw           | 1     | --        | --                              |
+| M4 x 30mm screw           | 1     | --        | --                              |
+| M4 nuts                   | 24    | --        | --                              |
+| M3 x 6mm screw            | 4     | --        | --                              |
+| M3 nuts                   | 4     | --        | --                              |
+| M3 x 6mm spacer           | 4     | --        | --                              |
+| Jetson Xavier NX Developer Kit (optional) | 1 | | |
+| ELP USB Camera (optional) |       |           | [https://tinyurl.com/yck4cvyc](https://tinyurl.com/yck4cvyc)|
+| VLP-16 Lidar (optional)   |       |           |                   |
+
+
+### 3D Printed Mountings
+
+#### Component Board
+Designed the component board for reconfigurability for different electronic components.
+
+<iframe src="https://uwmadison.app.box.com/embed/s/dphz9r2ofjb5yuf2jp8x45esp5qwga99?sortColumn=date&view=list" width="500" height="400" frameborder="0" allowfullscreen webkitallowfullscreen msallowfullscreen></iframe>
+
+CAD file in STEP format [here](https://uwmadison.box.com/s/hel8mfam6ht7kngnl7753yuezija1zyu)
+
+#### Supports
+The supports are spaced to be mounted to the metal base plate of the car and have easy mounting to the board.
+
+Rear support
+
+<iframe src="https://uwmadison.app.box.com/embed/s/n4py1zb5ppavj1j5yerqaclwdypephhi?sortColumn=date&view=list" width="500" height="400" frameborder="0" allowfullscreen webkitallowfullscreen msallowfullscreen></iframe>
+
+CAD file in STEP format [here](https://uwmadison.box.com/s/b9hxrck0ncn5mco3l15uiayv169c3zj6)
+
+Middle support
+
+CAD file in STEP format [here](https://uwmadison.box.com/s/5hj03zxceodsxcsgkzlyu64d07z2myyr)
+
+Front support
+
+CAD file in STEP format [here](https://uwmadison.box.com/s/jhgholq8yvcldbwbxmavu86xjmu8tios)
+
+
+#### Bumper
+The bumper has the option for multiple sensors. Three holes for potential front and side facing sensors.
+
+<iframe src="https://uwmadison.app.box.com/embed/s/pvi6qq0chh5vq6shxqstrhunbonajgem?sortColumn=date&view=list" width="500" height="400" frameborder="0" allowfullscreen webkitallowfullscreen msallowfullscreen></iframe>
+
+
+CAD file in STEP format  [here](https://uwmadison.box.com/s/e3dq6nslp7yc17sogk5kbllmkcijvp7n)
+
+#### Lidar Mount
+The Lidar was to be mounted above the other components so as to have an unobstructed view.
+
+<iframe src="https://uwmadison.app.box.com/embed/s/a1dy7zv4allukmd70448c5ysa7yo0lfg?sortColumn=date&view=list" width="500" height="400" frameborder="0" allowfullscreen webkitallowfullscreen msallowfullscreen></iframe>
+
+CAD file in STEP format  [here](https://uwmadison.box.com/s/rggqguu6zlnf4g1keemyyojtcw8uf9ws)
+
+#### Camera Mounts
+These mounts give the ability to change the angle of the cameras vertically and horizontally. The connection point is to a GoPro style connector mount.
+
+<iframe src="https://uwmadison.app.box.com/embed/s/1he47ypzlscdje8cdqirjemwr5qt5pc4?sortColumn=date&view=list" width="500" height="400" frameborder="0" allowfullscreen webkitallowfullscreen msallowfullscreen></iframe>
+<iframe src="https://uwmadison.app.box.com/embed/s/nshu4dgfmqex0q05c5mxyqcnw9e2w5h2?sortColumn=date&view=list" width="500" height="400" frameborder="0" allowfullscreen webkitallowfullscreen msallowfullscreen></iframe>
+
+The CAD file for the camera mount can be found [here](https://uwmadison.box.com/s/u6sltxptlcu1y3t8186ccsfsgdck8757)
+
+The frame to hold the camera itself can be found on Thingiverse [here](https://www.thingiverse.com/thing:4755911)
+
 
 ## Autonomy Stack
 
 ```{todo}
 To write...
 ```
+
+
+### Perception
+
+
+### Planning
+
+
+### Control
+
+
