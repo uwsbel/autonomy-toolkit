@@ -376,18 +376,21 @@
 </section>
 <section id="autonomy-stack">
 <h2>Autonomy Stack<a class="headerlink" href="#autonomy-stack" title="Permalink to this headline">¶</a></h2>
-<div class="admonition-todo admonition" id="id1">
-<p class="admonition-title">Todo</p>
-<p>To write…</p>
-</div>
 <section id="perception">
 <h3>Perception<a class="headerlink" href="#perception" title="Permalink to this headline">¶</a></h3>
+<p>A cone detection algorithm is included as the current perception method. The uses the front facing USB camera which is mounted to the vehicle’s bumper. It uses a Faster-RCNN network implemented in PyTorch from <a class="reference external" href="https://arxiv.org/abs/1506.01497">here</a> based on <a class="reference external" href="https://arxiv.org/abs/1506.01497">this paper</a>. The specific model is built on a <a class="reference external" href="https://arxiv.org/abs/1905.02244">MobileNet</a> backbone to increase inference speed on the Jetson. The network was trained for 2 non-background classes (green and red cones) using a mix of simulated and real data.</p>
+<p>From the 2D bounding boxes and a priori information of the cone height, the 3D cone location is estimated using the geometry of the camera and the mounting position and orientation of the camera on the vehicle. With additional sensors and additional algorithm implementation, the robustness of the 3D cone location estimation can be greatly improved. Below is an example of what is seen from the front facing camera overlaid with perceived object bounding boxes, confidence level, and estimated 3D location in the vehicle’s local coordinate frame.</p>
+<iframe allowfullscreen="" frameborder="0" height="400" msallowfullscreen="" src="https://uwmadison.app.box.com/embed/s/cfjhohhzitx05g1eupdaeoc65vpqr0si?sortColumn=date&amp;view=list" webkitallowfullscreen="" width="500"></iframe>
 </section>
 <section id="planning">
 <h3>Planning<a class="headerlink" href="#planning" title="Permalink to this headline">¶</a></h3>
+<p>The perceived 3D cone locations (green and red) are used to estimate a left and right boundary (red on right, green on left). The boundary is estimated using a spline of order 2 less than the number of cones to mitigate issues associate with cone location error. In addition, a phantom cone on left and right are used as a priori path info for the portion of the path that is not within the camera’s field of view. When no cone of a color is visible or detected, another phantom cone is placed at the edge of the camera’s field of view, representing the closest a cone could be and not be visible.</p>
+<p>Once the left and right boundaries are estimated, a center position at distance L in front of the vehicle is found at the midpoint between the left and right paths. This point becomes the target point and is the output of the planning stage. The lookahead distance L can be configured to optimize the algorithm for the vehicle steering and perception abilities. The following shows a visualized example of the planning stage based on the perception example above.</p>
+<iframe allowfullscreen="" frameborder="0" height="400" msallowfullscreen="" src="https://uwmadison.app.box.com/embed/s/vzh4fpi0sxf20htz8xrflz7huqw98xxf?sortColumn=date&amp;view=list" webkitallowfullscreen="" width="500"></iframe>
 </section>
 <section id="control">
 <h3>Control<a class="headerlink" href="#control" title="Permalink to this headline">¶</a></h3>
+<p>The control nodes takes the target position and calculates an error between the current heading of the vehicle, and the target position. It then uses a proportional gain to calculate the input steering and produces a vehicle input message with desired throttle [0,1], steering [-1,1], and braking [0,1].</p>
 </section>
 </section>
 </section>
