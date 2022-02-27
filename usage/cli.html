@@ -5,7 +5,7 @@
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="autonomy_toolkit" href="api/autonomy_toolkit/index.html" /><link rel="prev" title="API Reference" href="index.html" />
 
     <link rel="shortcut icon" href="../_static/cropped-SBEL-32x32.png"/><meta name="generator" content="sphinx-3.4.2, furo 2020.12.30.beta24"/>
-        <title>CLI Documentation - Autonomous Vehicle Toolbox 0.0.44 documentation</title>
+        <title>CLI Documentation - Autonomous Vehicle Toolbox 0.0.45 documentation</title>
       <link rel="stylesheet" href="../_static/styles/furo.css?digest=33d2fc4f3f180ec1ffc6524e273e21d7d58cbe49">
     <link rel="stylesheet" href="../_static/pygments.css">
     <link media="(prefers-color-scheme: dark)" rel="stylesheet" href="../_static/pygments_dark.css">
@@ -104,7 +104,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">Autonomous Vehicle Toolbox 0.0.44 documentation</div></a>
+      <a href="../index.html"><div class="brand">Autonomous Vehicle Toolbox 0.0.45 documentation</div></a>
     </div>
     <div class="header-right">
       <label class="toc-overlay-icon toc-header-icon" for="__toc">
@@ -206,15 +206,37 @@
 <p>Subcommands immediately succeed the <code class="docutils literal notranslate"><span class="pre">atk</span></code> command. They implement additional logic. Having subcommands rather than arguments directly to <code class="docutils literal notranslate"><span class="pre">atk</span></code> increases expandability as it will allow for additional features to be implemented without convoluting the help menu of the base <code class="docutils literal notranslate"><span class="pre">atk</span></code> command.</p>
 <section id="dev">
 <h3><code class="docutils literal notranslate"><span class="pre">dev</span></code><a class="headerlink" href="#dev" title="Permalink to this headline">¶</a></h3>
-<p>Initializer method for the <code class="docutils literal notranslate"><span class="pre">dev</span></code> entrypoint</p>
+<p>Entrypoint for the <code class="docutils literal notranslate"><span class="pre">dev</span></code> command</p>
 <p>This entrypoint provides easy access to the ATK development environment. The dev environment
 leverages <a class="reference external" href="https://docker.com">Docker</a> to allow interoperability across operating systems. <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span></code>
 is used to build, spin up, attach, and tear down the containers. The <code class="docutils literal notranslate"><span class="pre">dev</span></code> entrypoint will basically wrap
 the <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span></code> commands to make it easier to customize the workflow to work best for ATK.</p>
-<p>The primary container, titled <code class="docutils literal notranslate"><span class="pre">dev</span></code>, has <a class="reference external" href="https://docs.ros.org/en/galactic/index.html">ROS 2</a>
-pre-installed. The software stack for the ATK vehicle utilizes ROS 2 and will use
-the same container that is used for development.</p>
-<p>Additional containers may be provided to allow for GUI windows or run simulations.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">dev</span></code> command will search for a file called <code class="docutils literal notranslate"><span class="pre">.atk.yml</span></code>. This is a hidden file, and it defines some custom
+configurations for the development environment. It allows users to quickly start and attach to the ATK development environment
+based on a shared <code class="docutils literal notranslate"><span class="pre">docker-compose.yml</span></code> file and any Dockerfile build configurations.</p>
+<p>There are five possible options that can be used using the <code class="docutils literal notranslate"><span class="pre">dev</span></code> subcommand:
+<code class="docutils literal notranslate"><span class="pre">build</span></code>, <code class="docutils literal notranslate"><span class="pre">up</span></code>, <code class="docutils literal notranslate"><span class="pre">down</span></code>, <code class="docutils literal notranslate"><span class="pre">attach</span></code>, and <code class="docutils literal notranslate"><span class="pre">run</span></code>. For example, if you’d like to build the container, you’d run
+the following command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>atk dev --build
+</pre></div>
+</div>
+<p>If you’d like to build, start the container, then attach to it, run the following command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>atk dev --build --up --attach
+<span class="c1"># OR</span>
+atk dev -b -u -a
+<span class="c1"># OR</span>
+atk dev -bua
+</pre></div>
+</div>
+<p>If no arguments are passed, this is equivalent to the following command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>atk dev
+<span class="c1"># === is equivalent to ===</span>
+atk dev --up --attach
+</pre></div>
+</div>
+<p>If desired, pass <code class="docutils literal notranslate"><span class="pre">--down</span></code> to stop the container. Further, if the container exists and changes are
+made to the repository, the container will <em>not</em> be built automatically. To do that, add the
+<code class="docutils literal notranslate"><span class="pre">--build</span></code> argument.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">usage</span><span class="p">:</span> <span class="n">atk</span> <span class="n">dev</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">b</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">u</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">d</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">a</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">r</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">s</span> <span class="n">SERVICES</span> <span class="p">[</span><span class="n">SERVICES</span> <span class="o">...</span><span class="p">]]</span>
                <span class="p">[</span><span class="o">--</span><span class="n">keep</span><span class="o">-</span><span class="n">yml</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">args</span> <span class="o">...</span><span class="p">]</span>
 </pre></div>

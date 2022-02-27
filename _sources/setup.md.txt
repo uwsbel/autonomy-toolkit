@@ -92,13 +92,13 @@ cd autonomy-toolkit
 Then, use `setuptools` to install the `autonomy-toolkit` package:
 
 ```bash
-python setup.py install
+pip install . 
 ```
 
 _**Note: If you're planning on developing the package, you may wish to install it as symlinks:**_
 
 ```bash
-python setup.py develop
+pip install -e .
 ```
 
 ### Test the demos
