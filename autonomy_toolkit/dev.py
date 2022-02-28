@@ -28,7 +28,7 @@ def _update_globals():
     DOCKER_IGNORE_PATH = ROOT / ".dockerignore"
     AUTONOMY_TOOLKIT_USER_COUNT_PATH = ROOT / ".atk.user_count"
     # CUSTOM ATTRIBUTES ALLOWED IN THE AUTONOMY_TOOLKIT_YML FILE
-    CUSTOM_ATTRS = ["project", "user", "default_services", "desired_runtime", "overwrite_lists", "custom_cli_arguments"]
+    CUSTOM_ATTRS = ["project", "user", "default_services", "overwrite_lists", "custom_cli_arguments"]
 
     globals().update(locals())
 

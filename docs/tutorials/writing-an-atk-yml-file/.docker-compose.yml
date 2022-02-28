@@ -1,0 +1,56 @@
+networks:
+  default:
+    name: 'art'
+services:
+  chrono:
+    build:
+      args:
+        APT_DEPENDENCIES: libirrlicht-dev libnvidia-gl-495
+        CONDA_CHANNELS: aryoung5 anaconda conda-forge
+        CONDA_DEPENDENCIES: python=3.8.12 pip pychrono cudatoolkit anaconda-client
+          conda-build
+        PIP_DEPENDENCIES: ''
+        USERNAME: 'art'
+      context: ./docker/chrono
+      dockerfile: ./chrono.dockerfile
+      network: host
+    container_name: 'art-chrono'
+    environment:
+      NVIDIA_DRIVER_CAPABILITIES: all
+      NVIDIA_VISIBLE_DEVICES: all
+    hostname: 'art-chrono'
+    image: atk/art:chrono
+    ports:
+    - 50000:50000
+    tty: true
+    volumes:
+    - '/Users/aaronyoung/Pseudos/SBEL/autonomy/autonomy-toolkit/docs/tutorials/writing-an-atk-yml-file:/home/art/art'
+    working_dir: /home/art/art/sim
+  dev:
+    build:
+      args:
+        APT_DEPENDENCIES: bash zsh vim git git-lfs python3-pip python3-tk python3-opencv
+        PIP_REQUIREMENTS: torch matplotlib numpy>=1.20 opencv-python
+        PROJECT: 'art'
+        ROS_DISTRO: galactic
+        ROS_WORKSPACE: workspace
+        SCRIPTS_DIR: docker/dev/scripts
+        USERNAME: 'art'
+      context: '/Users/aaronyoung/Pseudos/SBEL/autonomy/autonomy-toolkit/docs/tutorials/writing-an-atk-yml-file'
+      dockerfile: '/Users/aaronyoung/Pseudos/SBEL/autonomy/autonomy-toolkit/autonomy_toolkit/docker/dev/dev.dockerfile'
+      network: host
+    container_name: 'art-dev'
+    environment:
+      DISPLAY: vnc:0.0
+      NVIDIA_DRIVER_CAPABILITIES: all
+      NVIDIA_VISIBLE_DEVICES: all
+      USER_GID: '20'
+      USER_UID: '501'
+    hostname: 'art-dev'
+    image: atk/art:dev
+    tty: true
+    volumes:
+    - '/Users/aaronyoung/Pseudos/SBEL/autonomy/autonomy-toolkit/docs/tutorials/writing-an-atk-yml-file:/home/art/art'
+    working_dir: /home/art/art/workspace
+  vnc: null
+version: '3.9'

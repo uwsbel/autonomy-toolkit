@@ -4,8 +4,6 @@ The ATK development environment has been created to expedite the process from al
 
 ## Prerequisites
 
-- You have installed Docker ([resource for that](https://docs.docker.com/get-docker/))
-- You have installed docker compose v2 ([resource for that](https://docs.docker.com/compose/cli-command/))
 - You have installed `autonomy-toolkit` ([resources for that](https://projects.sbel.org/autonomy-toolkit/setup.html))
 - You have cloned the [autonomy-research-testbed](https://github.com/uwsbel/autonomy-research-testbed) repository
 
