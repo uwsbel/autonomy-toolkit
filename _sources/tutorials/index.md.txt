@@ -4,9 +4,9 @@ Please refer to some select tutorials to help understand how to use the AV Toolk
 
 ```{toctree}
 :maxdepth: 1
-:glob:
 
-*
+using-the-development-environment/README.md
+writing-an-atk-yml-file/README.md
 
 ```
 
