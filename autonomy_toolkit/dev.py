@@ -3,140 +3,58 @@ CLI command that handles working with the ATK development environment
 """
 
 # Imports from atk
-from autonomy_toolkit.utils import is_posix
+from autonomy_toolkit.utils import getuser, getuid, getgid
+from autonomy_toolkit.utils.atk_config import ATKConfig
 from autonomy_toolkit.utils.logger import LOGGER
 from autonomy_toolkit.utils.yaml_parser import YAMLParser
 from autonomy_toolkit.utils.files import search_upwards_for_file
-from autonomy_toolkit.utils.docker import get_docker_client_binary_path, run_docker_cmd, compose_is_installed, DockerComposeClient, norm_ports, find_available_port, DockerException
+from autonomy_toolkit.utils.docker import get_docker_client_binary_path, run_docker_cmd, compose_is_installed, DockerComposeClient, is_port_available, DockerException
 
 # Other imports
 import yaml, os, argparse, getpass
 
-# Check that the .autonomy_toolkit.conf file is located in this directory or any parent directories
-# This file should be at the root of any autonomy_toolkit compatible stack
-def _update_globals():
-    AUTONOMY_TOOLKIT_YML_PATH = search_upwards_for_file('.atk.yml')
-    if AUTONOMY_TOOLKIT_YML_PATH is None:
-        LOGGER.fatal("No .atk.yml file was found in this directory or any parent directories. Make sure you are running this command in an autonomy-toolkit compatible repository.")
-        exit(-1)
-    LOGGER.info(f"Found '.atk.yml' at {AUTONOMY_TOOLKIT_YML_PATH}.")
+def _parse_ports(client, config, args, unknown_args):
+    # Loop through each port mapping
+    mappings = {}
+    for mapping in args.port_mappings:
+        if mapping.count(':') != 1:
+            LOGGER.fatal(f"'{mapping}' is an incorrect format. Must contain one ':'.")
+            return False
 
-    # Globals
-    # PATHS
-    ROOT = AUTONOMY_TOOLKIT_YML_PATH.parent
-    DOCKER_COMPOSE_PATH = ROOT / ".docker-compose.yml"
-    DOCKER_IGNORE_PATH = ROOT / ".dockerignore"
-    AUTONOMY_TOOLKIT_USER_COUNT_PATH = ROOT / ".atk.user_count"
-    # CUSTOM ATTRIBUTES ALLOWED IN THE AUTONOMY_TOOLKIT_YML FILE
-    CUSTOM_ATTRS = ["project", "user", "default_services", "overwrite_lists", "custom_cli_arguments"]
+        old, new = mapping.split(":")
 
-    globals().update(locals())
+        if any(not x.isdigit() for x in old) or len(old) > 0 or any(not x.isdigit() for x in new) or len(new) == 0:
+            LOGGER.fatal(f"'{mapping}' is an incorrect format. Must be mapping of '<int>:<int>'.")
+            return False
 
-def _check_autonomy_toolkit(autonomy_toolkit_yml, *args, default=None):
-    if not autonomy_toolkit_yml.contains(*args):
-        if default is None:
-            LOGGER.fatal(f"'{'.'.join(*args)}' must be in '.atk.yml'. '{'.'.join(*args)}'")
-            raise AttributeError('')
-        else:
-            return default
-    return autonomy_toolkit_yml.get(*args)
+        old = int(old)
+        new = int(new)
+        mappings[old] = new
 
-def _merge_dictionaries(source, destination, overwrite_lists=False):
-    for key, value in source.items():
-        if isinstance(value, dict):
-            node = destination.setdefault(key, {})
-            _merge_dictionaries(value, node, overwrite_lists)
-        elif not overwrite_lists and key in destination and isinstance(destination[key], list):
-            if isinstance(value, list):
-                destination[key].extend(value)
-            else:
-                destination[key].append(value)
-        else:
-            destination[key] = value
-
-    return destination
-
-def _parse_autonomy_toolkit(autonomy_toolkit_yml):
-    # Read the autonomy_toolkit yml file
-    custom_config = {}
-    try:
-        # Custom config
-        custom_config["root"] = ROOT
-        custom_config["project"] = _check_autonomy_toolkit(autonomy_toolkit_yml, "project")
-        custom_config["username"] = _check_autonomy_toolkit(autonomy_toolkit_yml, "user", "container_username", default=custom_config["project"])
-        custom_config["host_username"] = _check_autonomy_toolkit(autonomy_toolkit_yml, "user", "host_username", default=getpass.getuser())
-        custom_config["uid"] = _check_autonomy_toolkit(autonomy_toolkit_yml, "user", "uid", default=os.getuid() if is_posix() else 1000)
-        custom_config["gid"] = _check_autonomy_toolkit(autonomy_toolkit_yml, "user", "gid", default=os.getgid() if is_posix() else 1000)
-        custom_config["default_services"] = _check_autonomy_toolkit(autonomy_toolkit_yml, "default_services", default=["dev"])
-        custom_config["overwrite_lists"] = _check_autonomy_toolkit(autonomy_toolkit_yml, "overwrite_lists", default=False)
-        custom_config["custom_cli_arguments"] = _check_autonomy_toolkit(autonomy_toolkit_yml, "custom_cli_arguments", default={})
-
-        custom_config["project"] = eval(f"f'''{custom_config['project']}'''", custom_config)
-        custom_config["username"] = eval(f"f'''{custom_config['username']}'''", custom_config)
-
-        # Check these two attributes exist
-        # Will exit if they don't
-        _check_autonomy_toolkit(autonomy_toolkit_yml, "services")
-        _check_autonomy_toolkit(autonomy_toolkit_yml, "services", "dev")
-    except AttributeError as e:
-        return
-
-    return custom_config
-
-def _read_text(*args):
-    filepath = os.path.realpath(os.path.join(*args))
-    LOGGER.info(f"Reading from '{filepath}'...")
-    with open(filepath, 'r') as f:
-        text = f.read()
-    LOGGER.info(f"Finished reading from '{filepath}'.")
-
-    return text
-
-def _write_text(filepath, text):
-    filepath = str(filepath)
-    LOGGER.info(f"Writing to '{filepath}'...")
-    with open(filepath, 'w') as file:
-        file.write(text)
-    LOGGER.info(f"Done writing to '{filepath}'.")
-
-def _update_user_count(filepath, val):
-    num = 0
-    if os.path.isfile(filepath):
-        num = int(_read_text(str(filepath)))
-    num += val
-    _write_text(filepath, str(num))
-
-    return num
-
-def _unlink_file(filepath):
-    if not os.path.isfile(filepath):
-        LOGGER.warn(f"'{filepath}' was deleted prematurely. This may be a bug.")
-        return 1
-    else:
-        os.unlink(filepath)
-        return 0
-
-def _update_compose(client, custom_config, args, unknown_args):
-    # For each service that we're spinning up, check some arguments
-    # For instance, if two ports match between different containers (common if you 
-    # have different projects which is the autonomy_toolkit framework and export the same ports),
-    # you will run into issues when they're both running
-    config = YAMLParser(text=client.run("config", stdout=-1)[0])
-    for service_name, service in config.get_data()['services'].items():
+    # For each service that we're spinning up, check the port mappings to ensure the host
+    # port is available.
+    compose = YAMLParser(text=client.run("config", stdout=-1)[0])
+    for service_name, service in compose.get_data()['services'].items():
         # Check ports
-        if args.up:
+        if args.up or args.run:
             for ports in service.get('ports', []):
-                port = find_available_port(ports['published'])
-                if port is None:
-                    LOGGER.fatal(f"PORT CONFLICT: Could not find an available port within range of '{ports['published']}' to use for the '{service_name}' service.")
-                    return
-                elif port != ports['published']:
-                    LOGGER.warn(f"PORT CONFLICT: Adjusted port mapping for '{service_name}' service from '{ports['published']}' to '{port}'.")
-                    ports['published'] = port 
+                if ports['published'] in mappings:
+                    ports['published'] = mappings[ports['published']]
 
+                if not is_port_available(ports['published']):
+                    LOGGER.fatal(f"Host port '{ports['published']}' is requested for the '{service_name}' service, but it is already in use. Consider using '--port-mappings'.")
+                    return False
+
+    return True
+
+
+def _parse_custom_cli_arguments(client, config, args, unknown_args):
+    # For each service that we're spinning up, check for the custom cli arguments
+    compose = YAMLParser(text=client.run("config", stdout=-1)[0])
+    for service_name, service in compose.get_data()['services'].items():
         # Add custom cli arguments
         # TODO: Disable 'argparse' as a service name
-        service_args = {k: v for k,v in custom_config["custom_cli_arguments"].items() if service_name in v}
+        service_args = {k: v for k,v in config.custom_cli_arguments.items() if service_name in v}
         if service_args:
             # We'll use argparse to parse the unknown flags
             parser = argparse.ArgumentParser(prog=service_name, add_help=False)
@@ -144,25 +62,23 @@ def _update_compose(client, custom_config, args, unknown_args):
                 if arg_name[:2] != '--':
                     LOGGER.fatal(f"The argparse argument must begin with '--'. Got '{arg_name}' instead.")
                     return
-                parser.add_argument(arg_name, **custom_config["custom_cli_arguments"][arg_name].get("argparse", {}))
+                parser.add_argument(arg_name, **config.custom_cli_arguments[arg_name].get("argparse", {}))
             known, unknown = parser.parse_known_args(unknown_args)
             output = yaml.load(eval(f"f'''{yaml.dump(service_args)}'''", vars(known)), Loader=yaml.Loader)
             for k,v in output.items():
                 # Only use if the arg is set
                 # Assumed it is set if it passes a boolean conversion
                 if getattr(known, v.get('argparse', {}).get('dest', k[2:])):
-                    service.update(_merge_dictionaries(service, v[service_name]))
+                    service.update(ATKConfig._merge_dictionaries(service, v[service_name]))
 
             if unknown:
                 LOGGER.warn(f"Found unknown arguments in custom arguents for service '{service_name}': '{', '.join(unknown)}'. Ignoring.")
 
     # Rewrite with the parsed config
-    with open(DOCKER_COMPOSE_PATH, "w") as yaml_file:
-        yaml.dump(config.get_data(), yaml_file)
+    config.overwrite_compose(compose.get_data())
 
 def _run_env(args, unknown_args):
     LOGGER.info("Running 'dev' entrypoint...")
-    _update_globals()
 
     # Check docker is installed
     if get_docker_client_binary_path() is None:
@@ -176,31 +92,36 @@ def _run_env(args, unknown_args):
         return
     LOGGER.debug("'docker compose' (V2) is installed.")
 
-    # Parse the .atk.yml file
-    LOGGER.debug("Parsing '.atk.yml' file.")
-    autonomy_toolkit_yml = YAMLParser(AUTONOMY_TOOLKIT_YML_PATH)
+    # Grab the ATK config file
+    LOGGER.debug(f"Loading '{args.filename}' file.")
+    config = ATKConfig(args.filename)
+    
+    # Add some required attributes
+    config.add_required_attribute("services")
+    config.add_required_attribute("services", "dev")
 
-    # Read the autonomy_toolkit yml file
-    custom_config = _parse_autonomy_toolkit(autonomy_toolkit_yml)
+    # Add some default custom attributes
+    config.add_custom_attribute("project", str)
+    config.add_custom_attribute("project_root", str, default=str(config.root))
+    config.add_custom_attribute("atk_root", str, default=str(config.atk_root))
+    config.add_custom_attribute("user", dict, default={})
+    config.add_custom_attribute("user", "host_username", str, default=getuser())
+    config.add_custom_attribute("user", "container_username", str, default="{project}")
+    config.add_custom_attribute("user", "uid", int, default=getuid())
+    config.add_custom_attribute("user", "gid", int, default=getgid())
+    config.add_custom_attribute("default_services", list, default=['dev'])
+    config.add_custom_attribute("overwrite_lists", bool, default=False)
+    config.add_custom_attribute("custom_cli_arguments", dict, default={})
+    # config.add_custom_attribute("build_depends", dict, default={}) TODO
 
-    # Additional checks
-    if any(c.isupper() for c in custom_config["project"]):
-        LOGGER.fatal(f"'project' is set to '{project}' which is not allowed since it has capital letters. Please choose a name with only lowercase.")
+    # Parse the ATK config file
+    if not config.parse():
         return
 
-    # Load in the default values
-    default_configs = YAMLParser(text=_read_text(__file__, "..", "docker", "default-compose.yml")).get_data()
-
-    # Grab the default dockerignore file
-    dockerignore = _read_text(__file__, "..", "docker", "dockerignore")
-    if (existing_dockerignore := search_upwards_for_file('.dockerignore')) is not None:
-        dockerignore += _read_text(existing_dockerignore)
-
-    # The docker containers are generated from a docker-compose.yml file
-    # We'll write this ourselves from the .autonomy_toolkit file and the defaults
-    temp = dict(**autonomy_toolkit_yml.get_data())
-    temp = { k: v for k,v in temp.items() if k not in CUSTOM_ATTRS }
-    docker_compose = _merge_dictionaries(temp, default_configs, custom_config["overwrite_lists"])
+    # Additional checks
+    if any(c.isupper() for c in config.project):
+        LOGGER.fatal(f"'project' is set to '{config.project}' which is not allowed since it has capital letters. Please choose a name with only lowercase.")
+        return
 
     # If no command is passed, start up the container and attach to it
     cmds = [args.build, args.up, args.down, args.attach, args.run] 
@@ -218,7 +139,7 @@ def _run_env(args, unknown_args):
 
     # Get the services we'll use
     if args.services is None: 
-        args.services = custom_config["default_services"]
+        args.services = config.default_services
     args.services = args.services if 'all' not in args.services else []
 
     # Complete the arguments
@@ -226,17 +147,16 @@ def _run_env(args, unknown_args):
 
         try:
             # Write the compose file
-            docker_compose_str = eval(f"f'''{yaml.dump(docker_compose)}'''", globals(), custom_config)
-            docker_compose = YAMLParser(text=docker_compose_str).get_data()
-            _write_text(DOCKER_COMPOSE_PATH, docker_compose_str)
+            config.generate_compose(config.overwrite_lists)
 
             # Write the dockerignore
-            _write_text(DOCKER_IGNORE_PATH, dockerignore)
+            config.generate_ignore()
 
             # Keep track of the number of users so we aren't deleting files when they need to persist
-            _update_user_count(AUTONOMY_TOOLKIT_USER_COUNT_PATH, 1)
+            config.update_user_count(1)
 
-            client = DockerComposeClient(project=custom_config["project"], services=args.services, compose_file=DOCKER_COMPOSE_PATH)
+            # Create the abstracted client we'll use for interacting with docker compose
+            client = DockerComposeClient(project=config.project, services=args.services, compose_file=config.docker_compose_path)
 
             # First check if the dev container is running.
             # If it is, don't run args.up
@@ -250,7 +170,9 @@ def _run_env(args, unknown_args):
                         raise e
 
             # Make any custom updates at runtime after the compose file has been loaded once
-            _update_compose(client, custom_config, args, unknown_args)
+            if not _parse_ports(client, config, args, unknown_args): return
+            return
+            _parse_custom_cli_arguments(client, config, args, unknown_args)
 
             if args.down:
                 LOGGER.info(f"Tearing down...")
@@ -280,7 +202,7 @@ def _run_env(args, unknown_args):
                 service_name = 'dev' if 'dev' in args.services or len(args.services) == 0 else args.services[0]
 
                 # Get the shell we'll use
-                container_name = docker_compose["services"][service_name]["container_name"]
+                container_name = config.compose["services"][service_name]["container_name"]
                 try:
                     env, err = run_docker_cmd("exec", container_name, "env", stdout=-1, stderr=-1)
                 except DockerException as e:
@@ -308,10 +230,8 @@ def _run_env(args, unknown_args):
             if e.stderr:
                 LOGGER.fatal(e.stderr)
         finally:
-            if _update_user_count(AUTONOMY_TOOLKIT_USER_COUNT_PATH, -1) == 0 or args.down:
-                _unlink_file(AUTONOMY_TOOLKIT_USER_COUNT_PATH)
-                _unlink_file(DOCKER_IGNORE_PATH)
-                if not args.keep_yml: _unlink_file(DOCKER_COMPOSE_PATH)
+            if config.update_user_count(-1) == 0 or args.down:
+                config.cleanup(args.keep_yml)
 
 def _init(subparser):
     """Entrypoint for the `dev` command
@@ -364,7 +284,9 @@ def _init(subparser):
     subparser.add_argument("-a", "--attach", action="store_true", help="Attach to the env.", default=False)
     subparser.add_argument("-r", "--run", action="store_true", help="Run a command in the provided service. Only one service may be provided. No other arguments may be called.", default=False)
     subparser.add_argument("-s", "--services", nargs='+', help="The services to use. Defaults to 'all' or whatever 'default_services' is set to in .atk.yml. 'dev' or 'all' is required for the 'attach' argument. If 'all' is passed, all the services are used.", default=None)
+    subparser.add_argument("-f", "--filename", help="The ATK config file. Defaults to '.atk.yml'", default='.atk.yml')
     subparser.add_argument("--keep-yml", action="store_true", help="Don't delete the generated docker-compose file.", default=False)
+    subparser.add_argument("--port-mappings", nargs='+', help="Mappings to replace conflicting host ports at runtime.", default=[])
     subparser.add_argument("--args", nargs=argparse.REMAINDER, help="Additional arguments to pass to the docker compose command. No logic is done on the args, the docker command will error out if there is a problem.", default=[])
     subparser.set_defaults(cmd=_run_env)
 

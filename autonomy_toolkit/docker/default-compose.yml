@@ -5,12 +5,12 @@ services:
     hostname: "{project}-dev"
     container_name: "{project}-dev"
     build:
-      context: "{str(root)}"
-      dockerfile: "{os.path.realpath(os.path.join(__file__, \"..\", \"docker\", \"dev\", \"dev.dockerfile\"))}"
+      context: "{project_root}"
+      dockerfile: "{atk_root}/docker/dev/dev.dockerfile"
       network: "host"
       args:
         PROJECT: "{project}"
-        USERNAME: "{username}"
+        USERNAME: "{container_username}"
         SCRIPTS_DIR: "docker/dev/scripts"
         ROS_DISTRO: "galactic"
         ROS_WORKSPACE: "workspace"
@@ -23,16 +23,16 @@ services:
       NVIDIA_VISIBLE_DEVICES: "all"
       NVIDIA_DRIVER_CAPABILITIES: "all"
     tty: true
-    working_dir: "/home/{username}/{project}/workspace"
+    working_dir: "/home/{container_username}/{project}/workspace"
     volumes: 
-     - "{root}:/home/{username}/{project}"
+     - "{project_root}:/home/{container_username}/{project}"
   vnc:
     image: "atk/{project}:vnc"
     hostname: "{project}-vnc"
     container_name: "{project}-vnc"
     build:
-      context: "{os.path.realpath(os.path.join(__file__, \"..\", \"docker\", \"vnc\"))}"
-      dockerfile: "{os.path.realpath(os.path.join(__file__, \"..\", \"docker\", \"vnc\", \"vnc.dockerfile\"))}"
+      context: "{atk_root}/docker/vnc"
+      dockerfile: "{atk_root}/docker/vnc/vnc.dockerfile"
       network: "host"
       args:
         VNC_PASSWORD: "{project}"

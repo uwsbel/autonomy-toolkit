@@ -62,7 +62,7 @@ autoapi_keep_files = False
 autoapi_generate_api_docs = True
 autoapi_add_toctree_entry = False
 autoapi_root = "usage/api/"
-# autoapi_keep_files = True
+autoapi_keep_files = True
 # autoapi_template_dir = "_templates"
 # autoapi_member_order = "groupwise"
 

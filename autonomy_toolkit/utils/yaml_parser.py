@@ -6,7 +6,7 @@ Yaml files are human readable configuration files: https://yaml.org/
 
 # Import some utilities
 from autonomy_toolkit.utils.logger import LOGGER
-from autonomy_toolkit.utils.files import file_exists, get_file_type
+from autonomy_toolkit.utils.files import file_exists
 
 # External library imports
 import yaml
@@ -127,3 +127,7 @@ class YAMLParser:
 
     def __str__(self):
         return str(self._data)
+
+    def __delitem__(self, key):
+        if key in self._data:
+            del self._data[key]

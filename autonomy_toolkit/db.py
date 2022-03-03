@@ -14,7 +14,7 @@ from rosbags.convert import convert, ConverterError
 
 # Imports from autonomy_toolkit
 from autonomy_toolkit.ros.messages import MessageType
-from autonomy_toolkit.utils.files import file_exists, get_file_type, get_file_extension, read_text, get_resolved_path, as_path, copy_file
+from autonomy_toolkit.utils.files import file_exists
 from autonomy_toolkit.utils.logger import LOGGER
 from autonomy_toolkit.utils.yaml_parser import YAMLParser
 
@@ -23,7 +23,9 @@ from typing import NamedTuple, List, Tuple, Iterable, Any, Union
 import sqlite3
 import pickle
 import pandas as pd
-import shutil, os
+import shutil
+import os
+from pathlib import Path
 
 # -------------
 # Message Types
@@ -43,10 +45,10 @@ def register_type(msg_file: Union['Path', str], name: str = None):
         msg_file (Union[Path, str]): The path the message definition is in. Must have an extension ``.msg`` or ``.idl``
         name (str, optional): The name of the custom message. Only optional if an ``idl`` file is passed.
     """
-    ext = get_file_extension(msg_file)
+    ext = Path(msg_file).suffix
     assert ext == '.msg' or ext == '.idl'
 
-    text = as_path(msg_file).read_text()
+    text = Path(msg_file).read_text()
 
     if ext == '.msg':
         assert name is not None
@@ -83,7 +85,7 @@ class ATKDatabase:
            </div></div> 
     """
     def __init__(self, local_path: Union['Path', str]):
-        self._local_path = as_path(local_path)
+        self._local_path = Path(local_path)
 
         if not self._local_path.exists():
             raise FileNotFoundError(f"Local path '{local_path}' doesn't exist.")
@@ -102,7 +104,7 @@ class ATKDatabase:
         if isinstance(bag, str):
             bag = ATKDataFile(bag)
 
-        copy_file(bag.path, self._local_path / as_path(bag.db_name))
+        shutil.copy(bag.path, self._local_path / Path(bag.db_name))
 
         if not keep:
             shutil.rmtree(bag.path)
@@ -118,10 +120,10 @@ class ATKDatabase:
             dest (str, optional): The destination of the file to be saved locally. If unset, will save with the same name is in the database.
             as_rosbag (bool, optional): If True, the pulled file will be saved as a ros1 bag.
         """
-        name = as_path(name)
+        name = Path(name)
         if dest is None:
             dest = name.name
-        copy_file(self._local_path / name, dest)
+        shutil.copy(self._local_path / name, dest)
 
         data_file = ATKDataFile(dest)
         if not as_rosbag:
@@ -139,7 +141,7 @@ class ATKDatabase:
             path(str, optional): Additional paths to navigate when running ``ls``.
         """
         import os
-        return os.listdir(self._local_path / as_path(path))
+        return os.listdir(self._local_path / Path(path))
 
 # ---------
 # Data File
@@ -265,8 +267,8 @@ class ATKDataFile:
         if _get_bag_version(self._path) == 1:
             LOGGER.warn(f"'{self._path}' is already a ros1 bag. Doing nothing.")
         else:
-            path = as_path(self._path)
-            name = as_path(self._name + ".bag")
+            path = Path(self._path)
+            name = Path(self._name + ".bag")
             if name.exists():
                 LOGGER.error(f"'{name}' already exists. Doing nothing.")
                 return
@@ -283,8 +285,8 @@ class ATKDataFile:
         if _get_bag_version(self._path) == 2:
             LOGGER.warn(f"'{self._path}' is already a ros2 bag. Doing nothing.")
         else:
-            path = as_path(self._path)
-            name = as_path(self._name)
+            path = Path(self._path)
+            name = Path(self._name)
             if name.exists():
                 LOGGER.error(f"'{name}' already exists. Doing nothing.")
                 return
@@ -342,7 +344,7 @@ class ATKDataFile:
                     # Register the types
                     add_types = {}
                     for message in types:
-                        msg_def = read_text(message.file)
+                        msg_def = Path(message.file).read_text()
                         add_types.update(get_types_from_msg(msg_def, message.name))
                     register_types(add_types)
 
@@ -815,7 +817,7 @@ def _get_bag_version(path: str) -> int:
     Returns:
         int: 1 if the path is a rosbag (ROS 1), 2 if it is a ROS 2 bag
     """
-    path = as_path(path)
+    path = Path(path)
 
     if path.is_file():
         type = 1

@@ -1,0 +1,16 @@
+:orphan:
+
+:mod:`autonomy_toolkit._atk_base`
+=================================
+
+.. py:module:: autonomy_toolkit._atk_base
+
+.. autoapi-nested-parse::
+
+   The entrypoint for the Autonomy Toolkit CLI is `atk`
+   The main parser will have a few commands, such as verbosity or a help menu.
+   For the most part, the entrypoint will be used to access subparsers,
+   such as `db` to interact with the ATK database.
+
+
+

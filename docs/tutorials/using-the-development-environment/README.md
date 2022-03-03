@@ -108,12 +108,15 @@ The `hostname:=art-chrono` tells the `chrono-ros-bridge` to connect to the serve
 To facilitate the recording and replaying of data in a ROS 2 stack, bags can be created. The entrypoint `ros2 bag ...` allows users to easily record/replay topics. For information on this command, please visit the [official ros documentation](https://docs.ros.org/en/galactic/Tutorials/Ros2bag/Recording-And-Playing-Back-Data.html). Using a ros2 bag to test a control stack is a viable option and is helpful to understand if code is working as expected.
 
 The `autonomy-research-testbed` is shipped with a ros2 bag for testing purposes. To see the file, you'll need [`git-lfs`](https://git-lfs.github.com/). `git-lfs` is used because the file is rather large. 
+Multiple ROS 2 bag files were recorded using ART for testing purposes. To get this file, you'll need to download it from the Box folder. This can be done using the [`wget`](https://pypi.org/project/wget/) Python package and a custom entrypoint in `atk` called `db`. `db`, which stands for database, is an evolving tool and has not been fully implemented. Further documentation will be written in the near future.
 
-You first need to pull the bag file. To do this, you may run the following command:
+You first need to pull the bag files. To do this, you may run the following command:
 
 ```bash
-git lfs pull
+atk db pull
 ```
+
+Under the hood, this is also reading the `.atk.yml` file to find the files that need to be pulled.
 
 The folder will be located at `autonomy-research-testbed/demos/bags/demo-bag-<real or sim>/`. ROS 2 bags are contained in folders and the `ros2 bag` command will be used to replay the file. After the file is pulled, enter the development environment and start replaying the bag file. We'll have it loop so the stack can be visualized easier.
 
