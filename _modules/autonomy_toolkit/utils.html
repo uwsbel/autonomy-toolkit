@@ -145,6 +145,7 @@
 </ul>
 </li>
 <li class="toctree-l3 has-children"><a class="reference internal" href="../../usage/api/autonomy_toolkit/utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label for="toctree-checkbox-5"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../usage/api/autonomy_toolkit/utils/atk_config/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.atk_config</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../usage/api/autonomy_toolkit/utils/docker/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.docker</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../usage/api/autonomy_toolkit/utils/files/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.files</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../usage/api/autonomy_toolkit/utils/logger/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.logger</span></code></a></li>
@@ -182,15 +183,47 @@
 <span class="sd">Utilities for the autonomy_toolkit package</span>
 <span class="sd">"""</span>
 
-<div class="viewcode-block" id="is_posix"><a class="viewcode-back" href="../../usage/api/autonomy_toolkit/utils/index.html#autonomy_toolkit.utils.is_posix">[docs]</a><span class="k">def</span> <span class="nf">is_posix</span><span class="p">():</span>
+<div class="viewcode-block" id="getuser"><a class="viewcode-back" href="../../usage/api/autonomy_toolkit/utils/index.html#autonomy_toolkit.utils.getuser">[docs]</a><span class="k">def</span> <span class="nf">getuser</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">"""</span>
-<span class="sd">    Determine whether the current OS is a posix (Linux, Mac) system.</span>
+<span class="sd">    Get the username of the current user.</span>
+
+<span class="sd">    Will leverage the ``getpass`` package.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        bool: whether current OS is a posix system</span>
+<span class="sd">        str: The username of the current user</span>
+<span class="sd">    """</span>
+    <span class="kn">import</span> <span class="nn">getpass</span>
+    <span class="k">return</span> <span class="n">getpass</span><span class="o">.</span><span class="n">getuser</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="getuid"><a class="viewcode-back" href="../../usage/api/autonomy_toolkit/utils/index.html#autonomy_toolkit.utils.getuid">[docs]</a><span class="k">def</span> <span class="nf">getuid</span><span class="p">(</span><span class="n">default</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="sd">"""</span>
+<span class="sd">    Get the uid (user id) for the current user.</span>
+
+<span class="sd">    If a Posix system (Linux, Mac) is detected, ``os.getuid`` is used. Otherwise, ``default`` is returned.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        default (int): The default value if a posix system is not detected. Defaults to 1000. </span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        int: The uid, either grabbed from the current user or the default if not a posix system.</span>
 <span class="sd">    """</span>
     <span class="kn">import</span> <span class="nn">os</span>
-    <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">"posix"</span></div>
+    <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">getuid</span><span class="p">()</span> <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">"posix"</span> <span class="k">else</span> <span class="n">default</span></div>
+
+<div class="viewcode-block" id="getgid"><a class="viewcode-back" href="../../usage/api/autonomy_toolkit/utils/index.html#autonomy_toolkit.utils.getgid">[docs]</a><span class="k">def</span> <span class="nf">getgid</span><span class="p">(</span><span class="n">default</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="sd">"""</span>
+<span class="sd">    Get the gid (group id) for the current user.</span>
+
+<span class="sd">    If a Posix system (Linux, Mac) is detected, ``os.getgid`` is used. Otherwise, ``default`` is returned.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        default (int): The default value if a posix system is not detected. Defaults to 1000. </span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        int: The gid, either grabbed from the current user or the default if not a posix system.</span>
+<span class="sd">    """</span>
+    <span class="kn">import</span> <span class="nn">os</span>
+    <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">getgid</span><span class="p">()</span> <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">"posix"</span> <span class="k">else</span> <span class="n">default</span></div>
 </pre></div>
       </article>
       <footer>

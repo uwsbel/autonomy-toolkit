@@ -145,6 +145,7 @@
 </ul>
 </li>
 <li class="toctree-l3 has-children"><a class="reference internal" href="../../usage/api/autonomy_toolkit/utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label for="toctree-checkbox-5"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../usage/api/autonomy_toolkit/utils/atk_config/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.atk_config</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../usage/api/autonomy_toolkit/utils/docker/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.docker</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../usage/api/autonomy_toolkit/utils/files/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.files</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../usage/api/autonomy_toolkit/utils/logger/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.logger</span></code></a></li>
@@ -194,7 +195,7 @@
 
 <span class="c1"># Imports from autonomy_toolkit</span>
 <span class="kn">from</span> <span class="nn">autonomy_toolkit.ros.messages</span> <span class="k">import</span> <span class="n">MessageType</span>
-<span class="kn">from</span> <span class="nn">autonomy_toolkit.utils.files</span> <span class="k">import</span> <span class="n">file_exists</span><span class="p">,</span> <span class="n">get_file_type</span><span class="p">,</span> <span class="n">get_file_extension</span><span class="p">,</span> <span class="n">read_text</span><span class="p">,</span> <span class="n">get_resolved_path</span><span class="p">,</span> <span class="n">as_path</span><span class="p">,</span> <span class="n">copy_file</span>
+<span class="kn">from</span> <span class="nn">autonomy_toolkit.utils.files</span> <span class="k">import</span> <span class="n">file_exists</span>
 <span class="kn">from</span> <span class="nn">autonomy_toolkit.utils.logger</span> <span class="k">import</span> <span class="n">LOGGER</span>
 <span class="kn">from</span> <span class="nn">autonomy_toolkit.utils.yaml_parser</span> <span class="k">import</span> <span class="n">YAMLParser</span>
 
@@ -203,7 +204,9 @@
 <span class="kn">import</span> <span class="nn">sqlite3</span>
 <span class="kn">import</span> <span class="nn">pickle</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">shutil</span><span class="o">,</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">shutil</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="k">import</span> <span class="n">Path</span>
 
 <span class="c1"># -------------</span>
 <span class="c1"># Message Types</span>
@@ -223,10 +226,10 @@
 <span class="sd">        msg_file (Union[Path, str]): The path the message definition is in. Must have an extension ``.msg`` or ``.idl``</span>
 <span class="sd">        name (str, optional): The name of the custom message. Only optional if an ``idl`` file is passed.</span>
 <span class="sd">    """</span>
-    <span class="n">ext</span> <span class="o">=</span> <span class="n">get_file_extension</span><span class="p">(</span><span class="n">msg_file</span><span class="p">)</span>
+    <span class="n">ext</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">msg_file</span><span class="p">)</span><span class="o">.</span><span class="n">suffix</span>
     <span class="k">assert</span> <span class="n">ext</span> <span class="o">==</span> <span class="s1">'.msg'</span> <span class="ow">or</span> <span class="n">ext</span> <span class="o">==</span> <span class="s1">'.idl'</span>
 
-    <span class="n">text</span> <span class="o">=</span> <span class="n">as_path</span><span class="p">(</span><span class="n">msg_file</span><span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">()</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">msg_file</span><span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">()</span>
 
     <span class="k">if</span> <span class="n">ext</span> <span class="o">==</span> <span class="s1">'.msg'</span><span class="p">:</span>
         <span class="k">assert</span> <span class="n">name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
@@ -263,7 +266,7 @@
 <span class="sd">           &lt;/div&gt;&lt;/div&gt; </span>
 <span class="sd">    """</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">local_path</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="s1">'Path'</span><span class="p">,</span> <span class="nb">str</span><span class="p">]):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_local_path</span> <span class="o">=</span> <span class="n">as_path</span><span class="p">(</span><span class="n">local_path</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_local_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">local_path</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_local_path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
             <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="n">f</span><span class="s2">"Local path '</span><span class="si">{local_path}</span><span class="s2">' doesn't exist."</span><span class="p">)</span>
@@ -282,7 +285,7 @@
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bag</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="n">bag</span> <span class="o">=</span> <span class="n">ATKDataFile</span><span class="p">(</span><span class="n">bag</span><span class="p">)</span>
 
-        <span class="n">copy_file</span><span class="p">(</span><span class="n">bag</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_local_path</span> <span class="o">/</span> <span class="n">as_path</span><span class="p">(</span><span class="n">bag</span><span class="o">.</span><span class="n">db_name</span><span class="p">))</span>
+        <span class="n">shutil</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">bag</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_local_path</span> <span class="o">/</span> <span class="n">Path</span><span class="p">(</span><span class="n">bag</span><span class="o">.</span><span class="n">db_name</span><span class="p">))</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">keep</span><span class="p">:</span>
             <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">bag</span><span class="o">.</span><span class="n">path</span><span class="p">)</span></div>
@@ -298,10 +301,10 @@
 <span class="sd">            dest (str, optional): The destination of the file to be saved locally. If unset, will save with the same name is in the database.</span>
 <span class="sd">            as_rosbag (bool, optional): If True, the pulled file will be saved as a ros1 bag.</span>
 <span class="sd">        """</span>
-        <span class="n">name</span> <span class="o">=</span> <span class="n">as_path</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">dest</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">dest</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">name</span>
-        <span class="n">copy_file</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_local_path</span> <span class="o">/</span> <span class="n">name</span><span class="p">,</span> <span class="n">dest</span><span class="p">)</span>
+        <span class="n">shutil</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_local_path</span> <span class="o">/</span> <span class="n">name</span><span class="p">,</span> <span class="n">dest</span><span class="p">)</span>
 
         <span class="n">data_file</span> <span class="o">=</span> <span class="n">ATKDataFile</span><span class="p">(</span><span class="n">dest</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">as_rosbag</span><span class="p">:</span>
@@ -319,7 +322,7 @@
 <span class="sd">            path(str, optional): Additional paths to navigate when running ``ls``.</span>
 <span class="sd">        """</span>
         <span class="kn">import</span> <span class="nn">os</span>
-        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_local_path</span> <span class="o">/</span> <span class="n">as_path</span><span class="p">(</span><span class="n">path</span><span class="p">))</span></div></div>
+        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_local_path</span> <span class="o">/</span> <span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">))</span></div></div>
 
 <span class="c1"># ---------</span>
 <span class="c1"># Data File</span>
@@ -445,8 +448,8 @@
         <span class="k">if</span> <span class="n">_get_bag_version</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_path</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="n">LOGGER</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">f</span><span class="s2">"'</span><span class="si">{self._path}</span><span class="s2">' is already a ros1 bag. Doing nothing."</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">path</span> <span class="o">=</span> <span class="n">as_path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_path</span><span class="p">)</span>
-            <span class="n">name</span> <span class="o">=</span> <span class="n">as_path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">+</span> <span class="s2">".bag"</span><span class="p">)</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_path</span><span class="p">)</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">+</span> <span class="s2">".bag"</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">name</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
                 <span class="n">LOGGER</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">f</span><span class="s2">"'</span><span class="si">{name}</span><span class="s2">' already exists. Doing nothing."</span><span class="p">)</span>
                 <span class="k">return</span>
@@ -463,8 +466,8 @@
         <span class="k">if</span> <span class="n">_get_bag_version</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_path</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
             <span class="n">LOGGER</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">f</span><span class="s2">"'</span><span class="si">{self._path}</span><span class="s2">' is already a ros2 bag. Doing nothing."</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">path</span> <span class="o">=</span> <span class="n">as_path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_path</span><span class="p">)</span>
-            <span class="n">name</span> <span class="o">=</span> <span class="n">as_path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">)</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_path</span><span class="p">)</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">name</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
                 <span class="n">LOGGER</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">f</span><span class="s2">"'</span><span class="si">{name}</span><span class="s2">' already exists. Doing nothing."</span><span class="p">)</span>
                 <span class="k">return</span>
@@ -522,7 +525,7 @@
                     <span class="c1"># Register the types</span>
                     <span class="n">add_types</span> <span class="o">=</span> <span class="p">{}</span>
                     <span class="k">for</span> <span class="n">message</span> <span class="ow">in</span> <span class="n">types</span><span class="p">:</span>
-                        <span class="n">msg_def</span> <span class="o">=</span> <span class="n">read_text</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">file</span><span class="p">)</span>
+                        <span class="n">msg_def</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">file</span><span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">()</span>
                         <span class="n">add_types</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">get_types_from_msg</span><span class="p">(</span><span class="n">msg_def</span><span class="p">,</span> <span class="n">message</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
                     <span class="n">register_types</span><span class="p">(</span><span class="n">add_types</span><span class="p">)</span>
 
@@ -995,7 +998,7 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        int: 1 if the path is a rosbag (ROS 1), 2 if it is a ROS 2 bag</span>
 <span class="sd">    """</span>
-    <span class="n">path</span> <span class="o">=</span> <span class="n">as_path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
         <span class="nb">type</span> <span class="o">=</span> <span class="mi">1</span>

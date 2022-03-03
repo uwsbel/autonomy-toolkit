@@ -146,6 +146,7 @@
 </ul>
 </li>
 <li class="toctree-l3 current has-children"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils</span></code></a><input checked="" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label for="toctree-checkbox-5"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../atk_config/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.atk_config</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../docker/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.docker</span></code></a></li>
 <li class="toctree-l4 current current-page"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.files</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../logger/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.logger</span></code></a></li>
@@ -191,58 +192,17 @@
 <col style="width: 90%"/>
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#autonomy_toolkit.utils.files.as_path" title="autonomy_toolkit.utils.files.as_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">as_path</span></code></a>(path: str) → Path</p></td>
-<td><p>Simple helper method to get a path as a <code class="xref py py-class docutils literal notranslate"><span class="pre">pathlib.Path</span></code> object</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#autonomy_toolkit.utils.files.copy_file" title="autonomy_toolkit.utils.files.copy_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy_file</span></code></a>(path: Union[Path, str], dest: Union[Path, str])</p></td>
-<td><p>Copy a file/directory (<code class="docutils literal notranslate"><span class="pre">path</span></code>) to some destination (<code class="docutils literal notranslate"><span class="pre">dest</span></code>).</p></td>
-</tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#autonomy_toolkit.utils.files.file_exists" title="autonomy_toolkit.utils.files.file_exists"><code class="xref py py-obj docutils literal notranslate"><span class="pre">file_exists</span></code></a>(filename: str, throw_error: bool = False, can_be_directory: bool = False) → bool</p></td>
 <td><p>Check if the passed filename is an actual file</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#autonomy_toolkit.utils.files.get_file_type" title="autonomy_toolkit.utils.files.get_file_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_file_type</span></code></a>(filename: str, **kwargs) → str</p></td>
-<td><p>Get the file type using the magic library.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#autonomy_toolkit.utils.files.get_file_extension" title="autonomy_toolkit.utils.files.get_file_extension"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_file_extension</span></code></a>(filename: str) → str</p></td>
-<td><p>Get the extension for a file</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#autonomy_toolkit.utils.files.get_resolved_path" title="autonomy_toolkit.utils.files.get_resolved_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_resolved_path</span></code></a>(path, atk_relative: bool = False, return_as_str: bool = True) → Union[str, Path]</p></td>
-<td><p>Get the fully resolved path to a specific file. If <code class="docutils literal notranslate"><span class="pre">atk_relative</span></code> is set to true,</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#autonomy_toolkit.utils.files.read_text" title="autonomy_toolkit.utils.files.read_text"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_text</span></code></a>(filename: str) → str</p></td>
-<td><p>Read a file and return the text inside that file as a string</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#autonomy_toolkit.utils.files.search_upwards_for_file" title="autonomy_toolkit.utils.files.search_upwards_for_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">search_upwards_for_file</span></code></a>(filename: str) → Path</p></td>
 <td><p>Search in the current directory and all directories above it</p></td>
 </tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#autonomy_toolkit.utils.files.unlink_file" title="autonomy_toolkit.utils.files.unlink_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unlink_file</span></code></a>(filename: str)</p></td>
+<td><p>Unlink (remove) a file</p></td>
+</tr>
 </tbody>
 </table></div>
-<dl class="py function">
-<dt id="autonomy_toolkit.utils.files.as_path">
-<code class="sig-name descname">as_path</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> → Path<a class="reference internal" href="../../../../../_modules/autonomy_toolkit/utils/files.html#as_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.utils.files.as_path" title="Permalink to this definition">¶</a></dt>
-<dd><p>Simple helper method to get a path as a <code class="xref py py-class docutils literal notranslate"><span class="pre">pathlib.Path</span></code> object</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>path</strong> – the path to convert</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>Path</em> – The <code class="xref py py-class docutils literal notranslate"><span class="pre">pathlib.Path</span></code> object</p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py function">
-<dt id="autonomy_toolkit.utils.files.copy_file">
-<code class="sig-name descname">copy_file</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>Path<span class="p">, </span>str<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">dest</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>Path<span class="p">, </span>str<span class="p">]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/autonomy_toolkit/utils/files.html#copy_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.utils.files.copy_file" title="Permalink to this definition">¶</a></dt>
-<dd><p>Copy a file/directory (<code class="docutils literal notranslate"><span class="pre">path</span></code>) to some destination (<code class="docutils literal notranslate"><span class="pre">dest</span></code>).</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>path</strong> (<em>Union[Path, str]</em>) – The file/directory source to copy.</p></li>
-<li><p><strong>dest</strong> (<em>Union[Path, str]</em>) – The file/directory destination to copy to.</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
 <dl class="py function">
 <dt id="autonomy_toolkit.utils.files.file_exists">
 <code class="sig-name descname">file_exists</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">throw_error</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">can_be_directory</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> → bool<a class="reference internal" href="../../../../../_modules/autonomy_toolkit/utils/files.html#file_exists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.utils.files.file_exists" title="Permalink to this definition">¶</a></dt>
@@ -265,66 +225,6 @@
 </dl>
 </dd></dl>
 <dl class="py function">
-<dt id="autonomy_toolkit.utils.files.get_file_type">
-<code class="sig-name descname">get_file_type</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span> → str<a class="reference internal" href="../../../../../_modules/autonomy_toolkit/utils/files.html#get_file_type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.utils.files.get_file_type" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the file type using the magic library.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>filename</strong> (<em>str</em>) – The filename to check</p></li>
-<li><p><strong>kwargs</strong> (<em>dict</em>) – Additional keyed parameters to the <cite>from_file</cite> method</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>str</em> – The file type. See libmagic documentation for supported types.</p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py function">
-<dt id="autonomy_toolkit.utils.files.get_file_extension">
-<code class="sig-name descname">get_file_extension</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> → str<a class="reference internal" href="../../../../../_modules/autonomy_toolkit/utils/files.html#get_file_extension"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.utils.files.get_file_extension" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the extension for a file</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>filename</strong> (<em>str</em>) – The file to get the extension for</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>str</em> – The file extension</p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py function">
-<dt id="autonomy_toolkit.utils.files.get_resolved_path">
-<code class="sig-name descname">get_resolved_path</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span></em>, <em class="sig-param"><span class="n">atk_relative</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">return_as_str</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em><span class="sig-paren">)</span> → Union<span class="p">[</span>str<span class="p">, </span>Path<span class="p">]</span><a class="reference internal" href="../../../../../_modules/autonomy_toolkit/utils/files.html#get_resolved_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.utils.files.get_resolved_path" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the fully resolved path to a specific file. If <code class="docutils literal notranslate"><span class="pre">atk_relative</span></code> is set to true,
-the desired filename is relative to the <code class="docutils literal notranslate"><span class="pre">atk</span></code> root subdirectory.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>path</strong> (<em>str</em>) – The path to get a fully resolved path from</p></li>
-<li><p><strong>atk_relative</strong> (<em>bool</em>) – Whether the filepath is relative to the atk subfolder. Defaults to False.</p></li>
-<li><p><strong>return_as_str</strong> (<em>bool</em>) – Returns the path as a string. Otherwise will return as a pathlib.Path object. Defaults to True</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>Union[str, Path]</em> – The fully resolved path as a string or Path object</p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py function">
-<dt id="autonomy_toolkit.utils.files.read_text">
-<code class="sig-name descname">read_text</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> → str<a class="reference internal" href="../../../../../_modules/autonomy_toolkit/utils/files.html#read_text"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.utils.files.read_text" title="Permalink to this definition">¶</a></dt>
-<dd><p>Read a file and return the text inside that file as a string</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>filename</strong> (<em>str</em>) – The file to read</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>str</em> – The text inside filename</p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py function">
 <dt id="autonomy_toolkit.utils.files.search_upwards_for_file">
 <code class="sig-name descname">search_upwards_for_file</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> → Path<a class="reference internal" href="../../../../../_modules/autonomy_toolkit/utils/files.html#search_upwards_for_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.utils.files.search_upwards_for_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Search in the current directory and all directories above it
@@ -336,6 +236,16 @@ for a file of a particular name.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p><em>Path</em> – the location of the first file found or None, if none was found</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py function">
+<dt id="autonomy_toolkit.utils.files.unlink_file">
+<code class="sig-name descname">unlink_file</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/autonomy_toolkit/utils/files.html#unlink_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.utils.files.unlink_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Unlink (remove) a file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>filename</strong> (<em>str</em>) – The file to remove</p>
 </dd>
 </dl>
 </dd></dl>
@@ -400,14 +310,9 @@ for a file of a particular name.</p>
 <li><a class="reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.files</span></code></a><ul>
 <li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
 <li><a class="reference internal" href="#functions">Functions</a><ul>
-<li><a class="reference internal" href="#autonomy_toolkit.utils.files.as_path">as_path</a></li>
-<li><a class="reference internal" href="#autonomy_toolkit.utils.files.copy_file">copy_file</a></li>
 <li><a class="reference internal" href="#autonomy_toolkit.utils.files.file_exists">file_exists</a></li>
-<li><a class="reference internal" href="#autonomy_toolkit.utils.files.get_file_type">get_file_type</a></li>
-<li><a class="reference internal" href="#autonomy_toolkit.utils.files.get_file_extension">get_file_extension</a></li>
-<li><a class="reference internal" href="#autonomy_toolkit.utils.files.get_resolved_path">get_resolved_path</a></li>
-<li><a class="reference internal" href="#autonomy_toolkit.utils.files.read_text">read_text</a></li>
 <li><a class="reference internal" href="#autonomy_toolkit.utils.files.search_upwards_for_file">search_upwards_for_file</a></li>
+<li><a class="reference internal" href="#autonomy_toolkit.utils.files.unlink_file">unlink_file</a></li>
 </ul>
 </li>
 </ul>

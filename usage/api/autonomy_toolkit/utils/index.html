@@ -2,7 +2,7 @@
 <html class="no-js">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-<link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" /><link rel="next" title="autonomy_toolkit.utils.docker" href="docker/index.html" /><link rel="prev" title="autonomy_toolkit.ros.messages" href="../ros/messages/index.html" />
+<link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" /><link rel="next" title="autonomy_toolkit.utils.atk_config" href="atk_config/index.html" /><link rel="prev" title="autonomy_toolkit.ros.messages" href="../ros/messages/index.html" />
 
     <link rel="shortcut icon" href="../../../../_static/cropped-SBEL-32x32.png"/><meta name="generator" content="sphinx-3.4.2, furo 2020.12.30.beta24"/>
         <title>autonomy_toolkit.utils - Autonomous Vehicle Toolbox 0.0.45 documentation</title>
@@ -146,6 +146,7 @@
 </ul>
 </li>
 <li class="toctree-l3 current has-children current-page"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils</span></code></a><input checked="" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label for="toctree-checkbox-5"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="atk_config/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.atk_config</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="docker/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.docker</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="files/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.files</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="logger/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.logger</span></code></a></li>
@@ -185,6 +186,7 @@
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="atk_config/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.atk_config</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="docker/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.docker</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="files/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.files</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="logger/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.logger</span></code></a></li>
@@ -202,18 +204,53 @@
 <col style="width: 90%"/>
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#autonomy_toolkit.utils.is_posix" title="autonomy_toolkit.utils.is_posix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_posix</span></code></a>()</p></td>
-<td><p>Determine whether the current OS is a posix (Linux, Mac) system.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#autonomy_toolkit.utils.getuser" title="autonomy_toolkit.utils.getuser"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getuser</span></code></a>() → str</p></td>
+<td><p>Get the username of the current user.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#autonomy_toolkit.utils.getuid" title="autonomy_toolkit.utils.getuid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getuid</span></code></a>(default: int = 1000) → int</p></td>
+<td><p>Get the uid (user id) for the current user.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#autonomy_toolkit.utils.getgid" title="autonomy_toolkit.utils.getgid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getgid</span></code></a>(default: int = 1000) → int</p></td>
+<td><p>Get the gid (group id) for the current user.</p></td>
 </tr>
 </tbody>
 </table></div>
 <dl class="py function">
-<dt id="autonomy_toolkit.utils.is_posix">
-<code class="sig-name descname">is_posix</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/autonomy_toolkit/utils.html#is_posix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.utils.is_posix" title="Permalink to this definition">¶</a></dt>
-<dd><p>Determine whether the current OS is a posix (Linux, Mac) system.</p>
+<dt id="autonomy_toolkit.utils.getuser">
+<code class="sig-name descname">getuser</code><span class="sig-paren">(</span><span class="sig-paren">)</span> → str<a class="reference internal" href="../../../../_modules/autonomy_toolkit/utils.html#getuser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.utils.getuser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the username of the current user.</p>
+<p>Will leverage the <code class="docutils literal notranslate"><span class="pre">getpass</span></code> package.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p><em>bool</em> – whether current OS is a posix system</p>
+<dd class="field-odd"><p><em>str</em> – The username of the current user</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py function">
+<dt id="autonomy_toolkit.utils.getuid">
+<code class="sig-name descname">getuid</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">default</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">1000</span></em><span class="sig-paren">)</span> → int<a class="reference internal" href="../../../../_modules/autonomy_toolkit/utils.html#getuid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.utils.getuid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the uid (user id) for the current user.</p>
+<p>If a Posix system (Linux, Mac) is detected, <code class="docutils literal notranslate"><span class="pre">os.getuid</span></code> is used. Otherwise, <code class="docutils literal notranslate"><span class="pre">default</span></code> is returned.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>default</strong> (<em>int</em>) – The default value if a posix system is not detected. Defaults to 1000.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>int</em> – The uid, either grabbed from the current user or the default if not a posix system.</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py function">
+<dt id="autonomy_toolkit.utils.getgid">
+<code class="sig-name descname">getgid</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">default</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">1000</span></em><span class="sig-paren">)</span> → int<a class="reference internal" href="../../../../_modules/autonomy_toolkit/utils.html#getgid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.utils.getgid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the gid (group id) for the current user.</p>
+<p>If a Posix system (Linux, Mac) is detected, <code class="docutils literal notranslate"><span class="pre">os.getgid</span></code> is used. Otherwise, <code class="docutils literal notranslate"><span class="pre">default</span></code> is returned.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>default</strong> (<em>int</em>) – The default value if a posix system is not detected. Defaults to 1000.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>int</em> – The gid, either grabbed from the current user or the default if not a posix system.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -225,12 +262,12 @@
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="docker/index.html">
+          <a class="next-page" href="atk_config/index.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.docker</span></code></div>
+                <div class="title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.atk_config</span></code></div>
               </div>
               <svg><use href="#svg-arrow-right"></use></svg>
             </a>
@@ -279,7 +316,9 @@
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
 <li><a class="reference internal" href="#package-contents">Package Contents</a><ul>
 <li><a class="reference internal" href="#functions">Functions</a><ul>
-<li><a class="reference internal" href="#autonomy_toolkit.utils.is_posix">is_posix</a></li>
+<li><a class="reference internal" href="#autonomy_toolkit.utils.getuser">getuser</a></li>
+<li><a class="reference internal" href="#autonomy_toolkit.utils.getuid">getuid</a></li>
+<li><a class="reference internal" href="#autonomy_toolkit.utils.getgid">getgid</a></li>
 </ul>
 </li>
 </ul>

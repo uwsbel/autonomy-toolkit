@@ -1,0 +1,410 @@
+<!doctype html>
+<html class="no-js">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<link rel="index" title="Index" href="../../../../../genindex.html" /><link rel="search" title="Search" href="../../../../../search.html" /><link rel="next" title="autonomy_toolkit.utils.docker" href="../docker/index.html" /><link rel="prev" title="autonomy_toolkit.utils" href="../index.html" />
+
+    <link rel="shortcut icon" href="../../../../../_static/cropped-SBEL-32x32.png"/><meta name="generator" content="sphinx-3.4.2, furo 2020.12.30.beta24"/>
+        <title>autonomy_toolkit.utils.atk_config - Autonomous Vehicle Toolbox 0.0.45 documentation</title>
+      <link rel="stylesheet" href="../../../../../_static/styles/furo.css?digest=33d2fc4f3f180ec1ffc6524e273e21d7d58cbe49">
+    <link rel="stylesheet" href="../../../../../_static/pygments.css">
+    <link media="(prefers-color-scheme: dark)" rel="stylesheet" href="../../../../../_static/pygments_dark.css">
+    
+
+
+<style>
+  :root {
+    --color-code-background: #f0f0f0;
+  --color-code-foreground: black;
+  
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+  }
+
+  /* For allowing end-user-specific overrides */
+  .override-light {
+    --color-code-background: #f0f0f0;
+  --color-code-foreground: black;
+  
+  }
+  .override-dark {
+    --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+  }
+</style><link rel="stylesheet" type="text/css" href="../../../../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/css/custom.css" />
+    <link rel="stylesheet" href="../../../../../_static/styles/furo-extensions.css?digest=26485485040e7aaf717c13fd0188a5ad2c2deb60">
+    <script id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
+    <script defer="defer" src="../../../../../_static/jquery.js"></script>
+    <script defer="defer" src="../../../../../_static/underscore.js"></script>
+    <script defer="defer" src="../../../../../_static/doctools.js"></script>
+    <script defer src="../../../../../_static/scripts/main.js?digest=e931d09b2a40c1bb82b542effe772014573baf67"></script></head>
+  <body dir="">
+    
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+      stroke-width="1.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+      <path stroke="none" d="M0 0h24v24H0z"/>
+      <line x1="4" y1="6" x2="20" y2="6" />
+      <line x1="10" y1="12" x2="20" y2="12" />
+      <line x1="6" y1="18" x2="20" y2="18" />
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+      class="feather feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+      class="feather feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<div class="announcement">
+  <aside class="announcement-content">
+     
+        <a style="text-decoration: none; color: white;" 
+           href="https://sbel.wisc.edu">
+           <img src="https://github.com/uwsbel/autonomy-toolkit/blob/master/docs/_static/cropped-SBEL-192x192.png?raw=true" 
+                style="vertical-align: middle; display: inline; padding-right: 7.5px; height: 20px;"/>
+           Checkout our website!
+        </a>
+     
+  </aside>
+</div>
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../../../../index.html"><div class="brand">Autonomous Vehicle Toolbox 0.0.45 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../../../index.html">
+  
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo only-light" src="../../../../../_static/SBEL-light.png" alt="Light Logo"/>
+    <img class="sidebar-logo only-dark" src="../../../../../_static/SBEL-dark.png" alt="Dark Logo"/>
+  </div>
+  
+  
+</a><form class="sidebar-search-container" method="get" action="../../../../../search.html">
+  <input class="sidebar-search" placeholder=Search name="q">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../../index.html">Home</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../background.html">Background</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../setup.html">Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../autonomy-research-testbed.html">Autonomy Research Testbed</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../../tutorials/index.html">Tutorials</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label for="toctree-checkbox-1"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../tutorials/using-the-development-environment/README.html">Using the ATK Development Environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../tutorials/writing-an-atk-yml-file/README.html">Writing an <code class="docutils literal notranslate"><span class="pre">.atk.yml</span></code> File</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../../../../index.html">API Reference</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label for="toctree-checkbox-2"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../../../cli.html">CLI Documentation</a></li>
+<li class="toctree-l2 current has-children"><a class="reference internal" href="../../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit</span></code></a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label for="toctree-checkbox-3"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../ros/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.ros</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label for="toctree-checkbox-4"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../ros/messages/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.ros.messages</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3 current has-children"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils</span></code></a><input checked="" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label for="toctree-checkbox-5"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l4 current current-page"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.atk_config</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../docker/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.docker</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../files/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.files</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../logger/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.logger</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../yaml_parser/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.yaml_parser</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../db/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.db</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../dev/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.dev</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../contributing.html">Contributing</a></li>
+</ul>
+<p><span class="caption-text">External Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://pypi.org/project/autonomy-toolkit/">PyPI</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/uwsbel/autonomy-toolkit">Github</a></li>
+</ul>
+
+</div>
+</div>
+      </div>
+      
+    </div>
+  </aside>
+  <main class="main">
+    <div class="content">
+      <article role="main">
+        <label class="toc-overlay-icon toc-content-icon" for="__toc">
+          <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+        </label>
+        <section id="module-autonomy_toolkit.utils.atk_config">
+<span id="autonomy-toolkit-utils-atk-config"></span><h1><a class="reference internal" href="#module-autonomy_toolkit.utils.atk_config" title="autonomy_toolkit.utils.atk_config"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.atk_config</span></code></a><a class="headerlink" href="#module-autonomy_toolkit.utils.atk_config" title="Permalink to this headline">¶</a></h1>
+<p>Abstracted helper class <a class="reference internal" href="#autonomy_toolkit.utils.atk_config.ATKConfig" title="autonomy_toolkit.utils.atk_config.ATKConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">ATKConfig</span></code></a> used for reading/writing configuration files for <code class="docutils literal notranslate"><span class="pre">autonomy-toolkit</span></code>.</p>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h2>
+<section id="classes">
+<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h3>
+<div class="table-wrapper"><table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%"/>
+<col style="width: 90%"/>
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#autonomy_toolkit.utils.atk_config.ATKConfig" title="autonomy_toolkit.utils.atk_config.ATKConfig"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ATKConfig</span></code></a></p></td>
+<td><p>Helper class that abstracts reading the <code class="docutils literal notranslate"><span class="pre">.atk.yml</span></code> file that defines configurations</p></td>
+</tr>
+</tbody>
+</table></div>
+<dl class="py class">
+<dt id="autonomy_toolkit.utils.atk_config.ATKConfig">
+<em class="property">class </em><code class="sig-name descname">ATKConfig</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>Path<span class="p">, </span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">'.atk.yml'</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/autonomy_toolkit/utils/atk_config.html#ATKConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.utils.atk_config.ATKConfig" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper class that abstracts reading the <code class="docutils literal notranslate"><span class="pre">.atk.yml</span></code> file that defines configurations</p>
+<dl class="py method">
+<dt id="autonomy_toolkit.utils.atk_config.ATKConfig.add_required_attribute">
+<code class="sig-name descname">add_required_attribute</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/autonomy_toolkit/utils/atk_config.html#ATKConfig.add_required_attribute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.utils.atk_config.ATKConfig.add_required_attribute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a required attribute that must be present in the <code class="docutils literal notranslate"><span class="pre">autonomy-toolkit</span></code> YAML specification.</p>
+<p>Will be checked for existence when <a class="reference internal" href="#autonomy_toolkit.utils.atk_config.ATKConfig.parse" title="autonomy_toolkit.utils.atk_config.ATKConfig.parse"><code class="xref py py-meth docutils literal notranslate"><span class="pre">parse()</span></code></a> is called.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>*args</strong> – The nested path of the required attribute, i.e. <code class="docutils literal notranslate"><span class="pre">add_required_attribute("first_level",</span> <span class="pre">"second_level")</span></code> corresponds to <code class="docutils literal notranslate"><span class="pre">first_level:</span> <span class="pre">second_level:</span> <span class="pre">...</span></code>.</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt id="autonomy_toolkit.utils.atk_config.ATKConfig.add_custom_attribute">
+<code class="sig-name descname">add_custom_attribute</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="n">default</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">dest</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/autonomy_toolkit/utils/atk_config.html#ATKConfig.add_custom_attribute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.utils.atk_config.ATKConfig.add_custom_attribute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a custom attribute to the <code class="docutils literal notranslate"><span class="pre">autonomy-toolkit</span></code> YAML specification.</p>
+<p>A custom attribute is any root-level attribute that’s outside of the regular <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span></code>
+YAML specification. After being read, it will be deleted from the written <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span></code> generated
+config file.</p>
+<p>The args list should begin with a list of <code class="docutils literal notranslate"><span class="pre">len(*args)-1</span></code> of nested keys. For instance, if a custom attribute
+should be structured like the following example, then <code class="docutils literal notranslate"><span class="pre">add_custom_attribute("project",</span> <span class="pre">...)</span></code>
+and <code class="docutils literal notranslate"><span class="pre">add_custom_attribute("user",</span> <span class="pre">"name",</span> <span class="pre">...)</span></code> should be called.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">project</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">example</span>
+<span class="nt">user</span><span class="p">:</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">example</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">args[-1]</span></code> should then be a type that describes the expected type of the variable. This is a required type.
+If the parsed type is not the same as this, an error will be thrown.</p>
+<p><code class="docutils literal notranslate"><span class="pre">default</span></code> is the final argument. If it is unset (i.e. remains <code class="docutils literal notranslate"><span class="pre">None</span></code>), the attribute will be assumed to be required.
+If set, when parsing, the value will be updated to be <code class="docutils literal notranslate"><span class="pre">default</span></code> if it is not set in the ATK config file.</p>
+<p><code class="docutils literal notranslate"><span class="pre">dest</span></code> is the destination name for the variable that’s generated from the custom attribute. By default,
+if <code class="docutils literal notranslate"><span class="pre">dest</span></code> is <code class="docutils literal notranslate"><span class="pre">None</span></code>, the last path element in <code class="docutils literal notranslate"><span class="pre">args</span></code> will be used. For instance,
+provided the yaml config above, if <code class="docutils literal notranslate"><span class="pre">dest</span></code> isn’t provided for the <code class="docutils literal notranslate"><span class="pre">user:</span> <span class="pre">name</span></code> attribute, it will be
+set to <code class="docutils literal notranslate"><span class="pre">'name'</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>*args</strong> – The list of arguments where the first <code class="docutils literal notranslate"><span class="pre">len(args)-1</span></code> represent a nested argument list (see docs) and <code class="docutils literal notranslate"><span class="pre">args[-1]</span></code> represents the type of the attribute.</p></li>
+<li><p><strong>default</strong> (<em>Any</em>) – The default value to set to the attribute when parsing.</p></li>
+<li><p><strong>dest</strong> (<em>str</em>) – The destination name for the variable that’s generated.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt id="autonomy_toolkit.utils.atk_config.ATKConfig.parse">
+<code class="sig-name descname">parse</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> → bool<a class="reference internal" href="../../../../../_modules/autonomy_toolkit/utils/atk_config.html#ATKConfig.parse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.utils.atk_config.ATKConfig.parse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse the ATK config file.</p>
+<p>Will read in the ATK config file as a yaml file. Utilizes the <code class="xref py py-class docutils literal notranslate"><span class="pre">YAMLParser</span></code> class as the parser.</p>
+<p>The parser will walk through each custom attribute defined prior to <code class="xref py py-meth docutils literal notranslate"><span class="pre">func()</span></code> being called and
+evaluate the attribute. Checks will be made to verify the types are correct, and if required attributes
+are defined. If a required attribute is not defined, an error will be thrown and parsing will stop. If an
+attribute has a wrong type, an error will be thrown and parsing will stop.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><em>bool</em> – whether the file was successfully parsed</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt id="autonomy_toolkit.utils.atk_config.ATKConfig.generate_compose">
+<code class="sig-name descname">generate_compose</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">overwrite_lists</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/autonomy_toolkit/utils/atk_config.html#ATKConfig.generate_compose"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.utils.atk_config.ATKConfig.generate_compose" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a <code class="docutils literal notranslate"><span class="pre">docker-compose.yml</span></code> specification file that’s used by <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span></code></p>
+<p>This method will grab the defaults that are shipped with <code class="docutils literal notranslate"><span class="pre">autonomy-toolkit</span></code> and merge them with
+the custom configurations provided through the custom yaml config file.</p>
+<p>The file will then be written to <code class="xref py py-attr docutils literal notranslate"><span class="pre">self.docker_compose.path</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>overwrite_lists</strong> (<em>bool</em>) – If true, all lists in the default that conflict with lists in the custom config will be overwritten. If false, the lists will be extended.</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt id="autonomy_toolkit.utils.atk_config.ATKConfig.overwrite_compose">
+<code class="sig-name descname">overwrite_compose</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">compose</span><span class="p">:</span> <span class="n">dict</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/autonomy_toolkit/utils/atk_config.html#ATKConfig.overwrite_compose"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.utils.atk_config.ATKConfig.overwrite_compose" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overwrites the <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span></code> config file with a custom dictionary which is parsed as yaml</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>compose</strong> (<em>dict</em>) – The dictionary to parse as yaml to be used to overwrite the compose file.</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt id="autonomy_toolkit.utils.atk_config.ATKConfig.generate_ignore">
+<code class="sig-name descname">generate_ignore</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/autonomy_toolkit/utils/atk_config.html#ATKConfig.generate_ignore"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.utils.atk_config.ATKConfig.generate_ignore" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a <code class="docutils literal notranslate"><span class="pre">.dockerignore</span></code> file that’s used by <code class="docutils literal notranslate"><span class="pre">docker</span></code></p>
+</dd></dl>
+<dl class="py method">
+<dt id="autonomy_toolkit.utils.atk_config.ATKConfig.update_user_count">
+<code class="sig-name descname">update_user_count</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">val</span><span class="p">:</span> <span class="n">int</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/autonomy_toolkit/utils/atk_config.html#ATKConfig.update_user_count"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.utils.atk_config.ATKConfig.update_user_count" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update the user count file to keep track of how many instances of the ATK container system has been initialized.</p>
+<p>An early issue with the <code class="docutils literal notranslate"><span class="pre">autonomy-toolkit</span></code> package was that if there were two instances of a container running,
+when one would exit, the clean-up process would take place (i.e. docker compose file would be deleted, etc.),
+but this wasn’t desired. The user count was introduced to alleviate this issue, where the number of containers
+are kept track of. Only when there are zero current “users” will cleanup take place.</p>
+<p>This is implemented through a file that’s constantly updated as new users are added/removed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>val</strong> (<em>int</em>) – Either 1 or -1 for an added and removed user, respectively.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>int</em> – The number of current members (including the changes introduced by this method call)</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt id="autonomy_toolkit.utils.atk_config.ATKConfig.cleanup">
+<code class="sig-name descname">cleanup</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">keep_compose</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/autonomy_toolkit/utils/atk_config.html#ATKConfig.cleanup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.utils.atk_config.ATKConfig.cleanup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Cleanup the system.</p>
+<p>Cleanup consists of deleting the <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span></code> config and ignore files, as well as the <code class="docutils literal notranslate"><span class="pre">autonomy-toolkit</span></code> user count file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>keep_compose</strong> (<em>bool</em>) – If true, will <cite>not</cite> delete the <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span></code> config file. Otherwise, it will be deleted.</p>
+</dd>
+</dl>
+</dd></dl>
+</dd></dl>
+</section>
+</section>
+</section>
+
+      </article>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="../docker/index.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.docker</span></code></div>
+              </div>
+              <svg><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="../index.html">
+              <svg><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils</span></code></div>
+                
+              </div>
+            </a>
+        </div>
+
+        <div class="related-information">
+              Copyright &#169; 2022, Simulation Based Engineering Laboratory
+            |
+            Built with <a href="https://www.sphinx-doc.org/">Sphinx</a>
+              and
+              <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+              <a href="https://github.com/pradyunsg/furo">Furo theme</a>.
+            |
+            <a class="muted-link" href="../../../../../_sources/usage/api/autonomy_toolkit/utils/atk_config/index.rst.txt"
+               rel="nofollow">
+              Show Source
+            </a>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            Contents
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.atk_config</span></code></a><ul>
+<li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
+<li><a class="reference internal" href="#classes">Classes</a><ul>
+<li><a class="reference internal" href="#autonomy_toolkit.utils.atk_config.ATKConfig">ATKConfig</a><ul>
+<li><a class="reference internal" href="#autonomy_toolkit.utils.atk_config.ATKConfig.add_required_attribute">add_required_attribute</a></li>
+<li><a class="reference internal" href="#autonomy_toolkit.utils.atk_config.ATKConfig.add_custom_attribute">add_custom_attribute</a></li>
+<li><a class="reference internal" href="#autonomy_toolkit.utils.atk_config.ATKConfig.parse">parse</a></li>
+<li><a class="reference internal" href="#autonomy_toolkit.utils.atk_config.ATKConfig.generate_compose">generate_compose</a></li>
+<li><a class="reference internal" href="#autonomy_toolkit.utils.atk_config.ATKConfig.overwrite_compose">overwrite_compose</a></li>
+<li><a class="reference internal" href="#autonomy_toolkit.utils.atk_config.ATKConfig.generate_ignore">generate_ignore</a></li>
+<li><a class="reference internal" href="#autonomy_toolkit.utils.atk_config.ATKConfig.update_user_count">update_user_count</a></li>
+<li><a class="reference internal" href="#autonomy_toolkit.utils.atk_config.ATKConfig.cleanup">cleanup</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </main>
+</div>
+  </body>
+</html>

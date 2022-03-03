@@ -59,7 +59,6 @@ As an example, to generate a custom image/container that is not `vnc` or `dev` (
 
 ```yaml
 services:
-	...
   chrono:
     image: "atk/{project}:chrono"
     hostname: "{project}-chrono"

@@ -2,7 +2,7 @@
 <html class="no-js">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-<link rel="index" title="Index" href="../../../../../genindex.html" /><link rel="search" title="Search" href="../../../../../search.html" /><link rel="next" title="autonomy_toolkit.utils.files" href="../files/index.html" /><link rel="prev" title="autonomy_toolkit.utils" href="../index.html" />
+<link rel="index" title="Index" href="../../../../../genindex.html" /><link rel="search" title="Search" href="../../../../../search.html" /><link rel="next" title="autonomy_toolkit.utils.files" href="../files/index.html" /><link rel="prev" title="autonomy_toolkit.utils.atk_config" href="../atk_config/index.html" />
 
     <link rel="shortcut icon" href="../../../../../_static/cropped-SBEL-32x32.png"/><meta name="generator" content="sphinx-3.4.2, furo 2020.12.30.beta24"/>
         <title>autonomy_toolkit.utils.docker - Autonomous Vehicle Toolbox 0.0.45 documentation</title>
@@ -146,6 +146,7 @@
 </ul>
 </li>
 <li class="toctree-l3 current has-children"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils</span></code></a><input checked="" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label for="toctree-checkbox-5"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../atk_config/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.atk_config</span></code></a></li>
 <li class="toctree-l4 current current-page"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.docker</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../files/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.files</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../logger/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.logger</span></code></a></li>
@@ -183,6 +184,20 @@
 <p>Helpful utilities for interacting with docker. Many of these helpers came from the [python_on_whales](<a class="reference external" href="https://gabrieldemarmiesse.github.io/python-on-whales/">https://gabrieldemarmiesse.github.io/python-on-whales/</a>) package.</p>
 <section id="module-contents">
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h2>
+<section id="classes">
+<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h3>
+<div class="table-wrapper"><table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%"/>
+<col style="width: 90%"/>
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#autonomy_toolkit.utils.docker.DockerComposeClient" title="autonomy_toolkit.utils.docker.DockerComposeClient"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DockerComposeClient</span></code></a></p></td>
+<td><p>Helper class that provides the <code class="xref py py-meth docutils literal notranslate"><span class="pre">run()</span></code> method to execute a command using the <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span></code></p></td>
+</tr>
+</tbody>
+</table></div>
+</section>
 <section id="functions">
 <h3>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h3>
 <div class="table-wrapper"><table class="longtable docutils align-default">
@@ -197,24 +212,67 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#autonomy_toolkit.utils.docker.compose_is_installed" title="autonomy_toolkit.utils.docker.compose_is_installed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compose_is_installed</span></code></a>() → bool</p></td>
 <td><p>Returns <cite>True</cite> if docker compose (the one written in Go)</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#autonomy_toolkit.utils.docker.run_docker_cmd" title="autonomy_toolkit.utils.docker.run_docker_cmd"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_docker_cmd</span></code></a>(*args, **kwargs)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#autonomy_toolkit.utils.docker.run_compose_cmd" title="autonomy_toolkit.utils.docker.run_compose_cmd"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_compose_cmd</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Run a docker compose command.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#autonomy_toolkit.utils.docker.run_docker_cmd" title="autonomy_toolkit.utils.docker.run_docker_cmd"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_docker_cmd</span></code></a>(*args, **kwargs)</p></td>
 <td><p>Run a docker command.</p></td>
 </tr>
 </tbody>
 </table></div>
 <dl class="py exception">
 <dt id="autonomy_toolkit.utils.docker.DockerException">
-<em class="property">exception </em><code class="sig-name descname">DockerException</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">message</span></em>, <em class="sig-param"><span class="n">stdout</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">stderr</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/autonomy_toolkit/utils/docker.html#DockerException"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.utils.docker.DockerException" title="Permalink to this definition">¶</a></dt>
+<em class="property">exception </em><code class="sig-name descname">DockerException</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">message</span><span class="p">:</span> <span class="n">Any</span></em>, <em class="sig-param"><span class="n">stdout</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">stderr</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/autonomy_toolkit/utils/docker.html#DockerException"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.utils.docker.DockerException" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
-<p>Common base class for all non-exit exceptions.</p>
+<p>Exception class that is used by the <a class="reference internal" href="#autonomy_toolkit.utils.docker.DockerComposeClient" title="autonomy_toolkit.utils.docker.DockerComposeClient"><code class="xref py py-class docutils literal notranslate"><span class="pre">DockerComposeClient</span></code></a> when an error occurs</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>message</strong> (<em>Any</em>) – The message to be stored in the base class Exception</p></li>
+<li><p><strong>stdout</strong> (<em>str</em>) – The stdout from the command</p></li>
+<li><p><strong>stderr</strong> (<em>str</em>) – The stderr from the command</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py class">
+<dt id="autonomy_toolkit.utils.docker.DockerComposeClient">
+<em class="property">class </em><code class="sig-name descname">DockerComposeClient</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">project</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">services</span><span class="o">=</span><span class="default_value">[]</span></em>, <em class="sig-param"><span class="n">compose_file</span><span class="o">=</span><span class="default_value">'.docker-compose.yml'</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/autonomy_toolkit/utils/docker.html#DockerComposeClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.utils.docker.DockerComposeClient" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper class that provides the <a class="reference internal" href="#autonomy_toolkit.utils.docker.DockerComposeClient.run" title="autonomy_toolkit.utils.docker.DockerComposeClient.run"><code class="xref py py-meth docutils literal notranslate"><span class="pre">run()</span></code></a> method to execute a command using the <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span></code>
+entrypoint.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>project</strong> (<em>str</em>) – The name of the project to use. Analagous with <code class="docutils literal notranslate"><span class="pre">--project-name</span></code> in <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span></code>.</p></li>
+<li><p><strong>services</strong> (<em>List[str]</em>) – List of services to use when running the <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span></code> command.</p></li>
+<li><p><strong>compose_file</strong> (<em>str</em>) – The name of the compose file to use. Defaults to <code class="docutils literal notranslate"><span class="pre">.docker-compose.yml</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="autonomy_toolkit.utils.docker.DockerComposeClient.run">
+<code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">cmd</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/autonomy_toolkit/utils/docker.html#DockerComposeClient.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.utils.docker.DockerComposeClient.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run a command using the system wide <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span></code> command</p>
+<p>If cmd is equal to <code class="docutils literal notranslate"><span class="pre">exec</span></code>, <code class="docutils literal notranslate"><span class="pre">exec_cmd</span></code> will expect to be passed as a named argument. If not, a <a class="reference internal" href="#autonomy_toolkit.utils.docker.DockerException" title="autonomy_toolkit.utils.docker.DockerException"><code class="xref py py-class docutils literal notranslate"><span class="pre">DockerException</span></code></a> will be thrown.</p>
+<p>Additional positional args (<a href="#id1"><span class="problematic" id="id2">*</span></a>args) will be passed as command arguments when running the command. Named arguments
+will be passed to <code class="xref py py-meth docutils literal notranslate"><span class="pre">subprocess.run()</span></code> (<a class="reference external" href="https://docs.python.org/3/library/subprocess.html#subprocess.run">see their docs</a>).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>cmd</strong> (<em>str</em>) – The command to run.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>Tuple[str, str]</em> – The stdout and stderr resulting from the command as a tuple.</p>
+</dd>
+</dl>
+</dd></dl>
 </dd></dl>
 <dl class="py function">
 <dt id="autonomy_toolkit.utils.docker.get_docker_client_binary_path">
 <code class="sig-name descname">get_docker_client_binary_path</code><span class="sig-paren">(</span><span class="sig-paren">)</span> → Optional<span class="p">[</span>Path<span class="p">]</span><a class="reference internal" href="../../../../../_modules/autonomy_toolkit/utils/docker.html#get_docker_client_binary_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.utils.docker.get_docker_client_binary_path" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the path of the docker client binary file.</p>
-<p>If <cite>None</cite> is returned, the docker client binary is not available and must be downloaded.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">None</span></code> is returned, the docker client binary is not available and must be downloaded.</p>
 <dl class="simple">
-<dt>Returns</dt><dd><p><cite>Optional[Path]</cite>: The path of the docker client binary file.</p>
+<dt>Returns</dt><dd><p>Optional[Path]: The path of the docker client binary file.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -228,6 +286,11 @@ is installed and working.</p>
 <dd class="field-odd"><p><em>bool</em> – whether docker compose (v2) is installed.</p>
 </dd>
 </dl>
+</dd></dl>
+<dl class="py function">
+<dt id="autonomy_toolkit.utils.docker.run_compose_cmd">
+<code class="sig-name descname">run_compose_cmd</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/autonomy_toolkit/utils/docker.html#run_compose_cmd"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.utils.docker.run_compose_cmd" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run a docker compose command.</p>
 </dd></dl>
 <dl class="py function">
 <dt id="autonomy_toolkit.utils.docker.run_docker_cmd">
@@ -251,14 +314,14 @@ is installed and working.</p>
               </div>
               <svg><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="../index.html">
+          <a class="prev-page" href="../atk_config/index.html">
               <svg><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils</span></code></div>
+                <div class="title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.atk_config</span></code></div>
                 
               </div>
             </a>
@@ -294,10 +357,16 @@ is installed and working.</p>
             <ul>
 <li><a class="reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.docker</span></code></a><ul>
 <li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
+<li><a class="reference internal" href="#classes">Classes</a></li>
 <li><a class="reference internal" href="#functions">Functions</a><ul>
 <li><a class="reference internal" href="#autonomy_toolkit.utils.docker.DockerException">DockerException</a></li>
+<li><a class="reference internal" href="#autonomy_toolkit.utils.docker.DockerComposeClient">DockerComposeClient</a><ul>
+<li><a class="reference internal" href="#autonomy_toolkit.utils.docker.DockerComposeClient.run">run</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#autonomy_toolkit.utils.docker.get_docker_client_binary_path">get_docker_client_binary_path</a></li>
 <li><a class="reference internal" href="#autonomy_toolkit.utils.docker.compose_is_installed">compose_is_installed</a></li>
+<li><a class="reference internal" href="#autonomy_toolkit.utils.docker.run_compose_cmd">run_compose_cmd</a></li>
 <li><a class="reference internal" href="#autonomy_toolkit.utils.docker.run_docker_cmd">run_docker_cmd</a></li>
 </ul>
 </li>

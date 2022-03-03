@@ -145,6 +145,7 @@
 </ul>
 </li>
 <li class="toctree-l3 has-children"><a class="reference internal" href="../../../usage/api/autonomy_toolkit/utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label for="toctree-checkbox-5"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../usage/api/autonomy_toolkit/utils/atk_config/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.atk_config</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../usage/api/autonomy_toolkit/utils/docker/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.docker</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../usage/api/autonomy_toolkit/utils/files/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.files</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../usage/api/autonomy_toolkit/utils/logger/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.logger</span></code></a></li>
@@ -187,30 +188,7 @@
 
 <span class="c1"># External library imports</span>
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="k">import</span> <span class="n">Path</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Tuple</span>
-<span class="kn">import</span> <span class="nn">shutil</span>
-
-<div class="viewcode-block" id="as_path"><a class="viewcode-back" href="../../../usage/api/autonomy_toolkit/utils/files/index.html#autonomy_toolkit.utils.files.as_path">[docs]</a><span class="k">def</span> <span class="nf">as_path</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
-    <span class="sd">"""</span>
-<span class="sd">    Simple helper method to get a path as a :class:`pathlib.Path` object</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        path: the path to convert</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        Path: The :class:`pathlib.Path` object</span>
-<span class="sd">    """</span>
-    <span class="k">return</span> <span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="copy_file"><a class="viewcode-back" href="../../../usage/api/autonomy_toolkit/utils/files/index.html#autonomy_toolkit.utils.files.copy_file">[docs]</a><span class="k">def</span> <span class="nf">copy_file</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Path</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="n">dest</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Path</span><span class="p">,</span> <span class="nb">str</span><span class="p">]):</span>
-    <span class="sd">"""</span>
-<span class="sd">    Copy a file/directory (``path``) to some destination (``dest``).</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        path (Union[Path, str]): The file/directory source to copy.</span>
-<span class="sd">        dest (Union[Path, str]): The file/directory destination to copy to.</span>
-<span class="sd">    """</span>
-    <span class="n">shutil</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">dest</span><span class="p">)</span></div>
+<span class="kn">import</span> <span class="nn">os</span>
 
 <div class="viewcode-block" id="file_exists"><a class="viewcode-back" href="../../../usage/api/autonomy_toolkit/utils/files/index.html#autonomy_toolkit.utils.files.file_exists">[docs]</a><span class="k">def</span> <span class="nf">file_exists</span><span class="p">(</span><span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">throw_error</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">can_be_directory</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
     <span class="sd">"""</span>
@@ -236,74 +214,6 @@
     <span class="k">return</span> <span class="n">is_file</span></div>
 
 
-<div class="viewcode-block" id="get_file_type"><a class="viewcode-back" href="../../../usage/api/autonomy_toolkit/utils/files/index.html#autonomy_toolkit.utils.files.get_file_type">[docs]</a><span class="k">def</span> <span class="nf">get_file_type</span><span class="p">(</span><span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="sd">"""</span>
-<span class="sd">    Get the file type using the magic library.</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        filename (str): The filename to check</span>
-<span class="sd">        kwargs (dict): Additional keyed parameters to the `from_file` method</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        str: The file type. See libmagic documentation for supported types.</span>
-<span class="sd">    """</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="kn">import</span> <span class="nn">magic</span>
-    <span class="k">except</span> <span class="ne">ImportError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="n">LOGGER</span><span class="o">.</span><span class="n">fatal</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
-        <span class="n">exit</span><span class="p">()</span>
-    <span class="k">return</span> <span class="n">magic</span><span class="o">.</span><span class="n">from_file</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
-
-
-<div class="viewcode-block" id="get_file_extension"><a class="viewcode-back" href="../../../usage/api/autonomy_toolkit/utils/files/index.html#autonomy_toolkit.utils.files.get_file_extension">[docs]</a><span class="k">def</span> <span class="nf">get_file_extension</span><span class="p">(</span><span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="sd">"""</span>
-<span class="sd">    Get the extension for a file</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        filename (str): The file to get the extension for</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        str: The file extension</span>
-<span class="sd">    """</span>
-    <span class="k">return</span> <span class="n">Path</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">suffix</span></div>
-
-<div class="viewcode-block" id="get_resolved_path"><a class="viewcode-back" href="../../../usage/api/autonomy_toolkit/utils/files/index.html#autonomy_toolkit.utils.files.get_resolved_path">[docs]</a><span class="k">def</span> <span class="nf">get_resolved_path</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">atk_relative</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">return_as_str</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">]:</span>
-    <span class="sd">"""</span>
-<span class="sd">    Get the fully resolved path to a specific file. If ``atk_relative`` is set to true,</span>
-<span class="sd">    the desired filename is relative to the ``atk`` root subdirectory.</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        path (str): The path to get a fully resolved path from</span>
-<span class="sd">        atk_relative (bool): Whether the filepath is relative to the atk subfolder. Defaults to False.</span>
-<span class="sd">        return_as_str (bool): Returns the path as a string. Otherwise will return as a pathlib.Path object. Defaults to True</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        Union[str, Path]: The fully resolved path as a string or Path object</span>
-<span class="sd">    """</span>
-    <span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">atk_relative</span><span class="p">:</span>
-        <span class="kn">from</span> <span class="nn">atk</span> <span class="k">import</span> <span class="vm">__file__</span> <span class="k">as</span> <span class="n">atk_file</span>
-        <span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">atk_file</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="n">path</span>
-
-    <span class="n">resolved_path</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
-    <span class="k">if</span> <span class="n">return_as_str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">resolved_path</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">resolved_path</span></div>
-
-
-<div class="viewcode-block" id="read_text"><a class="viewcode-back" href="../../../usage/api/autonomy_toolkit/utils/files/index.html#autonomy_toolkit.utils.files.read_text">[docs]</a><span class="k">def</span> <span class="nf">read_text</span><span class="p">(</span><span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="sd">"""</span>
-<span class="sd">    Read a file and return the text inside that file as a string</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        filename (str): The file to read</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        str: The text inside filename</span>
-<span class="sd">    """</span>
-    <span class="k">return</span> <span class="n">Path</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">()</span></div>
-
 <div class="viewcode-block" id="search_upwards_for_file"><a class="viewcode-back" href="../../../usage/api/autonomy_toolkit/utils/files/index.html#autonomy_toolkit.utils.files.search_upwards_for_file">[docs]</a><span class="k">def</span> <span class="nf">search_upwards_for_file</span><span class="p">(</span><span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
     <span class="sd">"""Search in the current directory and all directories above it </span>
 <span class="sd">    for a file of a particular name.</span>
@@ -326,6 +236,19 @@
         <span class="n">d</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">parent</span>
 
     <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="unlink_file"><a class="viewcode-back" href="../../../usage/api/autonomy_toolkit/utils/files/index.html#autonomy_toolkit.utils.files.unlink_file">[docs]</a><span class="k">def</span> <span class="nf">unlink_file</span><span class="p">(</span><span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="sd">"""Unlink (remove) a file</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        filename (str): The file to remove</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">Path</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+        <span class="n">LOGGER</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">f</span><span class="s2">"'</span><span class="si">{filename}</span><span class="s2">' was deleted prematurely. This may be a bug."</span><span class="p">)</span>
+        <span class="k">return</span> <span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">unlink</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="k">return</span> <span class="mi">0</span></div>
 </pre></div>
       </article>
       <footer>

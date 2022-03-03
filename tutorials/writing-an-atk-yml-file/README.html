@@ -146,6 +146,7 @@
 </ul>
 </li>
 <li class="toctree-l3 has-children"><a class="reference internal" href="../../usage/api/autonomy_toolkit/utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label for="toctree-checkbox-5"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../usage/api/autonomy_toolkit/utils/atk_config/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.atk_config</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../usage/api/autonomy_toolkit/utils/docker/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.docker</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../usage/api/autonomy_toolkit/utils/files/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.files</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../usage/api/autonomy_toolkit/utils/logger/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.logger</span></code></a></li>
@@ -385,31 +386,30 @@
 <h3>Docker Compose Attributes<a class="headerlink" href="#docker-compose-attributes" title="Permalink to this headline">¶</a></h3>
 <p>The other attributes available to be used are defined by the Docker Compose specification. Information about it can be found in their <a class="reference external" href="https://docs.docker.com/compose/compose-file/compose-file-v3/">official documentation</a>.</p>
 <p>As an example, to generate a custom image/container that is not <code class="docutils literal notranslate"><span class="pre">vnc</span></code> or <code class="docutils literal notranslate"><span class="pre">dev</span></code> (which are the default containers), you can do something like the following:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span>services:
-	...
-  chrono:
-    image: "atk/{project}:chrono"
-    hostname: "{project}-chrono"
-    container_name: "{project}-chrono"
-    build:
-      context: ./docker/chrono
-      dockerfile: ./chrono.dockerfile
-      network: "host"
-      args:
-        USERNAME: "{project}"
-        APT_DEPENDENCIES: "libirrlicht-dev"
-        CONDA_CHANNELS: "anaconda conda-forge"
-        CONDA_DEPENDENCIES: "python=3.8.12 pip pychrono cudatoolkit anaconda-client conda-build"
-        PIP_DEPENDENCIES: ""
-    environment:
-      NVIDIA_VISIBLE_DEVICES: "all"
-      NVIDIA_DRIVER_CAPABILITIES: "all"
-    ports:
-      - "50000:50000"
-    working_dir: "/home/{username}/{project}/sim"
-    volumes: 
-      - "{root}:/home/{username}/{project}"
-    tty: true
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">services</span><span class="p">:</span>
+  <span class="nt">chrono</span><span class="p">:</span>
+    <span class="nt">image</span><span class="p">:</span> <span class="s">"atk/{project}:chrono"</span>
+    <span class="nt">hostname</span><span class="p">:</span> <span class="s">"{project}-chrono"</span>
+    <span class="nt">container_name</span><span class="p">:</span> <span class="s">"{project}-chrono"</span>
+    <span class="nt">build</span><span class="p">:</span>
+      <span class="nt">context</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">./docker/chrono</span>
+      <span class="nt">dockerfile</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">./chrono.dockerfile</span>
+      <span class="nt">network</span><span class="p">:</span> <span class="s">"host"</span>
+      <span class="nt">args</span><span class="p">:</span>
+        <span class="nt">USERNAME</span><span class="p">:</span> <span class="s">"{project}"</span>
+        <span class="nt">APT_DEPENDENCIES</span><span class="p">:</span> <span class="s">"libirrlicht-dev"</span>
+        <span class="nt">CONDA_CHANNELS</span><span class="p">:</span> <span class="s">"anaconda</span><span class="nv"> </span><span class="s">conda-forge"</span>
+        <span class="nt">CONDA_DEPENDENCIES</span><span class="p">:</span> <span class="s">"python=3.8.12</span><span class="nv"> </span><span class="s">pip</span><span class="nv"> </span><span class="s">pychrono</span><span class="nv"> </span><span class="s">cudatoolkit</span><span class="nv"> </span><span class="s">anaconda-client</span><span class="nv"> </span><span class="s">conda-build"</span>
+        <span class="nt">PIP_DEPENDENCIES</span><span class="p">:</span> <span class="s">""</span>
+    <span class="nt">environment</span><span class="p">:</span>
+      <span class="nt">NVIDIA_VISIBLE_DEVICES</span><span class="p">:</span> <span class="s">"all"</span>
+      <span class="nt">NVIDIA_DRIVER_CAPABILITIES</span><span class="p">:</span> <span class="s">"all"</span>
+    <span class="nt">ports</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="s">"50000:50000"</span>
+    <span class="nt">working_dir</span><span class="p">:</span> <span class="s">"/home/{username}/{project}/sim"</span>
+    <span class="nt">volumes</span><span class="p">:</span> 
+      <span class="p p-Indicator">-</span> <span class="s">"{root}:/home/{username}/{project}"</span>
+    <span class="nt">tty</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
 </pre></div>
 </div>
 <p>As it can be seen in the snippet above, an image named <code class="docutils literal notranslate"><span class="pre">atk/{project}:chrono</span></code> (where <code class="docutils literal notranslate"><span class="pre">{project}</span></code> is replaced with the contents of the variable <code class="docutils literal notranslate"><span class="pre">project</span></code>) is created using the custom dockerfile located at <code class="docutils literal notranslate"><span class="pre">./docker/chrono/chrono.dockerfile</span></code>. This is exactly <code class="docutils literal notranslate"><span class="pre">docker-compose.yml</span></code> syntax, so please refer to their documentation if this doesn’t make sense.</p>
