@@ -44,6 +44,22 @@ nodescription:
 ---
 ```
 
+### `run`
+
+```{autosimple} autonomy_toolkit.run._init
+```
+
+```{argparse}
+---
+module: autonomy_toolkit._atk_base
+func: _init
+prog: atk
+path: run
+nosubcommands:
+nodescription:
+---
+```
+
 ### `db`
 
 ```{autosimple} autonomy_toolkit.db._init

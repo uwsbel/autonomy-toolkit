@@ -34,7 +34,7 @@ Classes
       :Parameters: **\*args** -- The nested path of the required attribute, i.e. ``add_required_attribute("first_level", "second_level")`` corresponds to ``first_level: second_level: ...``.
 
 
-   .. method:: add_custom_attribute(self, *args, default: Any = None, dest: str = None)
+   .. method:: add_custom_attribute(self, *args, default: Any = None, dest: str = None, delete: bool = True)
 
       Add a custom attribute to the ``autonomy-toolkit`` YAML specification.
 
@@ -66,6 +66,7 @@ Classes
       :Parameters: * **\*args** -- The list of arguments where the first ``len(args)-1`` represent a nested argument list (see docs) and ``args[-1]`` represents the type of the attribute.
                    * **default** (*Any*) -- The default value to set to the attribute when parsing.
                    * **dest** (*str*) -- The destination name for the variable that's generated.
+                   * **delete** (*bool*) -- If False, the attribute will `not` be removed from the config file after parsing. Defaults to True.
 
 
    .. method:: parse(self) -> bool
@@ -82,16 +83,17 @@ Classes
       :returns: *bool* -- whether the file was successfully parsed
 
 
-   .. method:: generate_compose(self, overwrite_lists: bool = False)
+   .. method:: generate_compose(self, overwrite_lists: bool = False, use_default_compose: bool = True)
 
       Generates a ``docker-compose.yml`` specification file that's used by ``docker compose``
 
       This method will grab the defaults that are shipped with ``autonomy-toolkit`` and merge them with
       the custom configurations provided through the custom yaml config file.
 
-      The file will then be written to :attr:`self.docker_compose.path`
+      The file will then be written to :attr:`self.docker_compose.path`.
 
-      :Parameters: **overwrite_lists** (*bool*) -- If true, all lists in the default that conflict with lists in the custom config will be overwritten. If false, the lists will be extended.
+      :Parameters: * **overwrite_lists** (*bool*) -- If true, all lists in the default that conflict with lists in the custom config will be overwritten. If false, the lists will be extended.
+                   * **use_default_compose** (*bool*) -- If false, will not combine the ATK config with the defaults. Defaults to True.
 
 
    .. method:: overwrite_compose(self, compose: dict)
@@ -116,6 +118,10 @@ Classes
       are kept track of. Only when there are zero current "users" will cleanup take place.
 
       This is implemented through a file that's constantly updated as new users are added/removed.
+
+      .. warning::
+
+          This doesnt' work.
 
       :Parameters: **val** (*int*) -- Either 1 or -1 for an added and removed user, respectively.
 
