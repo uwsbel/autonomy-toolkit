@@ -400,7 +400,7 @@
             <span class="n">ignore_text</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
 
         <span class="c1"># Then concatenate with the existing dockerignore file, if there is one</span>
-        <span class="k">if</span> <span class="n">existing_ignore</span> <span class="p">:</span><span class="o">=</span> <span class="n">search_upwards_for_file</span><span class="p">(</span><span class="s1">'.dockerignore'</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">existing_ignore</span> <span class="p">:</span><span class="o">=</span> <span class="n">search_upwards_for_file</span><span class="p">(</span><span class="s1">'.dockerignore'</span><span class="p">))</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">existing_ignore</span><span class="p">,</span> <span class="s1">'r'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
                 <span class="n">ignore_text</span> <span class="o">+=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
 
