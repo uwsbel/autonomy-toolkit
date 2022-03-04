@@ -131,8 +131,8 @@ def _run_env(args, unknown_args):
     if args.run and any([args.build, args.up, args.down, args.attach]):
         LOGGER.fatal("The '--run' command can be the only command.")
         return
-    elif args.run and len(args.services) != 1:
-        LOGGER.fatal("The '--run' command requires only one service.")
+    elif args.run and (args.services is None or len(args.services) != 1):
+        LOGGER.fatal("The '--run' command requires one service.")
         return
 
     # Get the services we'll use

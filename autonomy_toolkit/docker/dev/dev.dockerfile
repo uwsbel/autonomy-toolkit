@@ -18,10 +18,11 @@ ARG USERSHELLPROFILE="$USERHOME/.${USERSHELL}rc"
 # Add user and grant sudo permission.
 ARG USER_UID
 ARG USER_GID
-RUN adduser --shell $USERSHELLPATH --disabled-password --gecos "" \
-						--uid $USER_UID --gid $USER_GID $USERNAME && \
+RUN adduser --shell $USERSHELLPATH --disabled-password --gecos "" $USERNAME && \
     echo "$USERNAME ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/$USERNAME && \
     chmod 0440 /etc/sudoers.d/$USERNAME
+RUN groupmod -o -g $USER_GID $USERNAME
+RUN usermod -u $USER_UID -g $USER_GID $USERNAME
 
 # Check for updates
 RUN apt-get update && apt-get upgrade -y
