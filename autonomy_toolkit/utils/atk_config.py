@@ -219,7 +219,7 @@ class ATKConfig:
             ignore_text = f.read()
 
         # Then concatenate with the existing dockerignore file, if there is one
-        if existing_ignore := search_upwards_for_file('.dockerignore') is not None:
+        if (existing_ignore := search_upwards_for_file('.dockerignore')) is not None:
             with open(existing_ignore, 'r') as f:
                 ignore_text += f.read()
 

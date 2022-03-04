@@ -70,6 +70,8 @@ class DockerComposeClient:
                 raise DockerException(msg)
             exec_cmd = kwargs.pop("exec_cmd")
             return run_compose_cmd(*self._pre, cmd, *args, exec_cmd, *self._post, **kwargs)
+        elif cmd == "run":
+            return run_compose_cmd(*self._pre, cmd, *args, *self._post, **kwargs)
         else:
             return run_compose_cmd(*self._pre, cmd, *args, *self._services, *self._post, **kwargs)
 

@@ -16,13 +16,12 @@ ARG USERSHELLPATH="/bin/${USERSHELL}"
 ARG USERSHELLPROFILE="$USERHOME/.${USERSHELL}rc"
 
 # Add user and grant sudo permission.
-RUN adduser --shell $USERSHELLPATH --disabled-password --gecos "" $USERNAME && \
+ARG USER_UID
+ARG USER_GID
+RUN adduser --shell $USERSHELLPATH --disabled-password --gecos "" \
+						--uid $USER_UID --gid $USER_GID $USERNAME && \
     echo "$USERNAME ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/$USERNAME && \
     chmod 0440 /etc/sudoers.d/$USERNAME
-
-#device permissions on jetson
-RUN usermod -aG video $USERNAME
-RUN usermod -aG dialout $USERNAME
 
 # Check for updates
 RUN apt-get update && apt-get upgrade -y
@@ -62,15 +61,6 @@ RUN if [ "$USERSHELL" = "bash" ]; then \
 			echo 'export TERM=xterm-256color' >> $USERSHELLPROFILE; \ 
 			echo 'export PS1="\[\033[38;5;40m\]\h\[$(tput sgr0)\]:\[$(tput sgr0)\]\[\033[38;5;39m\]\w\[$(tput sgr0)\]\\$ \[$(tput sgr0)\]"' >> $USERSHELLPROFILE; \
 		fi
-
-# Add commands to the entrypoint to dynamically set the uid/gid at runtime
-# Will be run on each "run"
-# https://stackoverflow.com/a/46057716
-RUN sed -i '$ d' /ros_entrypoint.sh && echo " \
-set -x \n\
-sudo groupmod -o -g \$USER_GID $USERNAME \n\
-sudo usermod -u \$USER_UID -g \$USER_GID $USERNAME \n\
-exec "\$@" " >> /ros_entrypoint.sh
 
 # Set user and work directory
 USER $USERNAME

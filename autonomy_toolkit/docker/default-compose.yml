@@ -16,10 +16,10 @@ services:
         ROS_WORKSPACE: "workspace"
         APT_DEPENDENCIES: ""
         PIP_REQUIREMENTS: ""
+        USER_UID: "{uid}"
+        USER_GID: "{gid}"
     environment:
       DISPLAY: vnc:0.0
-      USER_UID: "{uid}"
-      USER_GID: "{gid}"
       NVIDIA_VISIBLE_DEVICES: "all"
       NVIDIA_DRIVER_CAPABILITIES: "all"
     tty: true
