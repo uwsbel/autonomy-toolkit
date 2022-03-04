@@ -113,17 +113,17 @@ Multiple ROS 2 bag files were recorded using ART for testing purposes. To get th
 You first need to pull the bag files. To do this, you may run the following command:
 
 ```bash
-atk db pull
+atk db pull --use-atk-config
 ```
 
 Under the hood, this is also reading the `.atk.yml` file to find the files that need to be pulled.
 
-The folder will be located at `autonomy-research-testbed/demos/bags/demo-bag-<real or sim>/`. ROS 2 bags are contained in folders and the `ros2 bag` command will be used to replay the file. After the file is pulled, enter the development environment and start replaying the bag file. We'll have it loop so the stack can be visualized easier.
+The folder will be located at `autonomy-research-testbed/demos/bags/ATK-<ID>/`. ROS 2 bags are contained in folders and the `ros2 bag` command will be used to replay the file. After the file is pulled, enter the development environment and start replaying the bag file. We'll have it loop so the stack can be visualized easier.
 
 ```bash
 $ atk dev --gpus # NOTE: only use --gpus if you have a nvidia gpu
 WARNING  | logger.set_verbosity :: Verbosity has been set to WARNING
-art-dev:~/art/workspace$ ros2 bag play ../demos/bags/demo-bag-real -l # or demo-bag-sim
+art-dev:~/art/workspace$ ros2 bag play ../demos/bags/ATK-02-25-2022-03-19-00 -l # or ATK-02-25-2022-04-30-30
 ```
 
 With the bag being played, open another terminal and start up the stack.
@@ -148,13 +148,37 @@ atk dev --up --services vnc
 
 You can then navigate to [localhost:8080](http://localhost:8080) to see the visualization windows. It should look something like the pictures below.
 
-```{image} https://raw.githubusercontent.com/uwsbel/autonomy-toolkit/master/tutorials/using-the-development-environment/images/sim-novnc-screenshot.png?raw
+```{image} https://raw.githubusercontent.com/uwsbel/autonomy-toolkit/master/docs/tutorials/using-the-development-environment/images/sim-novnc-screenshot.png?raw
 :width: 49%
 ```
 
-```{image} https://raw.githubusercontent.com/uwsbel/autonomy-toolkit/master/tutorials/using-the-development-environment/images/real-novnc-screenshot.png?raw
+```{image} https://raw.githubusercontent.com/uwsbel/autonomy-toolkit/master/docs/tutorials/using-the-development-environment/images/real-novnc-screenshot.png?raw
 :width: 49%
 ```
+
+```{note}
+If a port conflict occurs ([as described later](#port-conflicts)), you will need to replace `8080` in [localhost:8080](http://localhost:8080) with whatever you remap the new port to.
+```
+
+## Possible Problems
+
+This sections outlines some possible pitfuls or frequently run into errors.
+
+### Port Conflicts
+
+If a docker container attempts to map to a host port that is currently in use or otherwise unavailable, it will throw an error and exit. The `autonomy-toolkit` error for this looks similar to the following:
+
+```bash
+CRITICAL | dev._parse_ports :: Host port '<port>' is requested for the '<service>' service, but it is already in use.
+```
+
+In this instance, `<port>` is requested to be mapped to the host for the service `<service>`, but it can't happen because it's already in use. The solution here is to use the `--port-mappings` flag. See below for usage:
+
+```bash
+$ atk dev -s <service> --port-mappings <old-port1>:<new-port1> <old-port2>:<new-port2> --up
+```
+
+The syntax is as it appears above, where the `--port-mappings` argument takes any number of mappings such that it goes `<old host port>:<new host port>`.
 
 ## Support
 

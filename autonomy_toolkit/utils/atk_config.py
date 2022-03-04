@@ -51,6 +51,9 @@ class ATKConfig:
 
         # Add some default custom attributes
         self._custom_attributes = {} 
+        self.add_custom_attribute("project", str)
+        self.add_custom_attribute("project_root", str, default=str(self.root))
+        self.add_custom_attribute("external", dict, default={})
 
         self._config : 'YAMLParser' = None
 
@@ -163,7 +166,7 @@ class ATKConfig:
                 if k in custom_attributes:
                     setattr(self, k, custom_attributes[k])
                 else:
-                    setattr(self, k, v)
+                    setattr(self, k, v.value)
 
         self._custom_attributes = custom_attributes
 

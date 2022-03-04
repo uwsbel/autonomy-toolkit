@@ -101,8 +101,6 @@ def _run_env(args, unknown_args):
     config.add_required_attribute("services", "dev")
 
     # Add some default custom attributes
-    config.add_custom_attribute("project", str)
-    config.add_custom_attribute("project_root", str, default=str(config.root))
     config.add_custom_attribute("atk_root", str, default=str(config.atk_root))
     config.add_custom_attribute("user", dict, default={})
     config.add_custom_attribute("user", "host_username", str, default=getuser())
@@ -171,7 +169,6 @@ def _run_env(args, unknown_args):
 
             # Make any custom updates at runtime after the compose file has been loaded once
             if not _parse_ports(client, config, args, unknown_args): return
-            return
             _parse_custom_cli_arguments(client, config, args, unknown_args)
 
             if args.down:

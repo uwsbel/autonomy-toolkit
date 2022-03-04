@@ -14,6 +14,7 @@ from rosbags.convert import convert, ConverterError
 
 # Imports from autonomy_toolkit
 from autonomy_toolkit.ros.messages import MessageType
+from autonomy_toolkit.utils.atk_config import ATKConfig
 from autonomy_toolkit.utils.files import file_exists
 from autonomy_toolkit.utils.logger import LOGGER
 from autonomy_toolkit.utils.yaml_parser import YAMLParser
@@ -892,6 +893,66 @@ def _run_push(args):
             LOGGER.info(f"Pushing '{file}'")
             db.push(file)
 
+def _run_pull(args):
+    """
+    Entrypoint for the `db pull` command.
+
+    ```{yaml}
+    db:
+        - url: <url>
+          output: <destination>
+    ```
+    """
+    LOGGER.debug("Running 'db pull' entrypoint...")
+
+    if args.use_atk_config is not None:
+        # Grab the ATK config file
+        filename = args.use_atk_config
+        LOGGER.debug(f"Loading '{filename}' file.")
+        config = ATKConfig(filename)
+
+        # Parse the ATK config file
+        if not config.parse():
+            return
+
+        if 'bags' in config.external.get("db", {}):
+            import gdown, zipfile
+
+            bags = config.external["db"]["bags"]
+            for bag in bags:
+                if 'id' in bag and 'output' in bag :
+                    # Grab the variables
+                    id = bag['id']
+                    output = bag['output']
+                    zipoutput = f"{output}.zip"
+
+                    if args.dry_run:
+                        continue
+
+                    # Check to see if the file already exists
+                    if Path(output).exists():
+                        LOGGER.warn(f"'{output}' is alredy a file. Continuing...")
+                        continue
+
+                    # Make the directory, if it doesn't exist
+                    os.makedirs(Path(output).parent, exist_ok=True)
+
+                    # Install the file with wget
+                    if not Path(zipoutput).exists():
+                        gdown.download(id=id, output=zipoutput)
+                    else:
+                        LOGGER.warn(f"'{zipoutput}' is already a file. Won't download, but will extract.")
+                    with zipfile.ZipFile(zipoutput, 'r') as zip_ref:
+                        zip_ref.extractall(Path(output).parent)
+                        os.unlink(zipoutput)
+                else:
+                    LOGGER.fatal(f"Unsupported bag file format.")
+                    return
+
+    else:
+        LOGGER.fatal("'--use-atk-config' must be passed. Other logic is currently unimplemented.")
+        return
+
 
 def _run_combine(args):
     """Command to combine a ROS 1 bag file and a ROS 2 bag into a single ROS 2 bag.
@@ -1039,6 +1100,11 @@ def _init(subparser):
     push.add_argument("files", nargs="*", help="The files to push. If none are provided, all ATK- prefixed files are selected.")
     push.add_argument("local_path", help="The local path to the directory of the database.")
     push.set_defaults(cmd=_run_push)
+
+    # Pull subcommand
+    pull = subparsers.add_parser("pull", description="Pull a bag file from the ATKDatabase.")
+    pull.add_argument("--use-atk-config", nargs="?", const=".atk.yml", help="If true, an ATK config file is searched for and used to pull data base files. Defaults to look for a file in parent directories called '.atk.yml', but this can be overriden by passing in a variable.", default=None)
+    pull.set_defaults(cmd=_run_pull)
 
     # Combine subcommand
     # Used to combine ros bag files
