@@ -23,7 +23,7 @@ def _parse_ports(client, config, args, unknown_args):
 
         old, new = mapping.split(":")
 
-        if any(not x.isdigit() for x in old) or len(old) > 0 or any(not x.isdigit() for x in new) or len(new) == 0:
+        if any(not x.isdigit() for x in old) or len(old) == 0 or any(not x.isdigit() for x in new) or len(new) == 0:
             LOGGER.fatal(f"'{mapping}' is an incorrect format. Must be mapping of '<int>:<int>'.")
             return False
 
@@ -44,6 +44,9 @@ def _parse_ports(client, config, args, unknown_args):
                 if not is_port_available(ports['published']):
                     LOGGER.fatal(f"Host port '{ports['published']}' is requested for the '{service_name}' service, but it is already in use. Consider using '--port-mappings'.")
                     return False
+
+    # Rewrite with the parsed config
+    config.overwrite_compose(compose.get_data())
 
     return True
 
@@ -167,14 +170,15 @@ def _run_env(args, unknown_args):
                     if "no such service: " not in e.stderr:
                         raise e
 
-            # Make any custom updates at runtime after the compose file has been loaded once
-            if not _parse_ports(client, config, args, unknown_args): return
-            _parse_custom_cli_arguments(client, config, args, unknown_args)
-
             if args.down:
                 LOGGER.info(f"Tearing down...")
 
                 client.run("down", *args.args)
+
+            # Make any custom updates at runtime after the compose file has been loaded once
+            if not _parse_ports(client, config, args, unknown_args): return
+            _parse_custom_cli_arguments(client, config, args, unknown_args)
+
 
             if args.build:
                 LOGGER.info(f"Building...")
