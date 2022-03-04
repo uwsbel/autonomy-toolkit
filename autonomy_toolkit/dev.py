@@ -80,7 +80,7 @@ def _parse_custom_cli_arguments(client, config, args, unknown_args):
     # Rewrite with the parsed config
     config.overwrite_compose(compose.get_data())
 
-def _run_env(args, unknown_args):
+def _run_dev(args, unknown_args):
     LOGGER.info("Running 'dev' entrypoint...")
 
     # Check docker is installed
@@ -278,7 +278,7 @@ def _init(subparser):
     """
     LOGGER.debug("Initializing 'dev' entrypoint...")
 
-    # Add a base 
+    # Add arguments
     subparser.add_argument("-b", "--build", action="store_true", help="Build the env.", default=False)
     subparser.add_argument("-u", "--up", action="store_true", help="Spin up the env.", default=False)
     subparser.add_argument("-d", "--down", action="store_true", help="Tear down the env.", default=False)
@@ -289,5 +289,5 @@ def _init(subparser):
     subparser.add_argument("--keep-yml", action="store_true", help="Don't delete the generated docker-compose file.", default=False)
     subparser.add_argument("--port-mappings", nargs='+', help="Mappings to replace conflicting host ports at runtime.", default=[])
     subparser.add_argument("--args", nargs=argparse.REMAINDER, help="Additional arguments to pass to the docker compose command. No logic is done on the args, the docker command will error out if there is a problem.", default=[])
-    subparser.set_defaults(cmd=_run_env)
+    subparser.set_defaults(cmd=_run_dev)
 

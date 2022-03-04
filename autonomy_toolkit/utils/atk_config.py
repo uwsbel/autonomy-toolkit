@@ -21,12 +21,13 @@ class ATKConfig:
         """Helper class to store an attribute
         """
 
-        def __init__(self, name: 'List[str]', type: 'type', default: 'Any' = None):
+        def __init__(self, name: 'List[str]', type: 'type', default: 'Any' = None, delete: bool = True):
             self.name = name
             self.path = '.'.join(name)
             self.type = type
             self.value = default
             self.required = default is None
+            self.delete = delete
 
         def __str__(self):
             return str(self.value)
@@ -68,7 +69,7 @@ class ATKConfig:
         """
         self._required_attributes.append(args)
 
-    def add_custom_attribute(self, *args, default: 'Any' = None, dest: 'str' = None):
+    def add_custom_attribute(self, *args, default: 'Any' = None, dest: 'str' = None, delete: bool = True):
         """
         Add a custom attribute to the ``autonomy-toolkit`` YAML specification.
 
@@ -101,12 +102,13 @@ class ATKConfig:
             *args: The list of arguments where the first ``len(args)-1`` represent a nested argument list (see docs) and ``args[-1]`` represents the type of the attribute.
             default (Any): The default value to set to the attribute when parsing.
             dest (str): The destination name for the variable that's generated.
+            delete (bool): If False, the attribute will `not` be removed from the config file after parsing. Defaults to True.
         """
         path = args[:-1]
         type = args[-1]
 
         # Create the attribute and add it
-        attr = self._Attr(path, type, default=default)
+        attr = self._Attr(path, type, default=default, delete=delete)
         self._custom_attributes[path[-1] if dest is None else dest] = attr
 
     def parse(self) -> bool:
@@ -146,7 +148,8 @@ class ATKConfig:
 
             # Delete the attribute from the config
             # If it isn't present, this statement does nothing
-            del self._config[attr.name[0]]
+            if attr.delete:
+                del self._config[attr.name[0]]
 
         # Need to eval custom_attributes twice since they might be nested
         # TODO: Fix this logic
@@ -172,23 +175,29 @@ class ATKConfig:
 
         return True
 
-    def generate_compose(self, overwrite_lists: bool = False):
+    def generate_compose(self, overwrite_lists: bool = False, use_default_compose: bool = True):
         """Generates a ``docker-compose.yml`` specification file that's used by ``docker compose``
 
         This method will grab the defaults that are shipped with ``autonomy-toolkit`` and merge them with
         the custom configurations provided through the custom yaml config file.
 
-        The file will then be written to :attr:`self.docker_compose.path`
+        The file will then be written to :attr:`self.docker_compose.path`.
 
         Args:
             overwrite_lists (bool): If true, all lists in the default that conflict with lists in the custom config will be overwritten. If false, the lists will be extended.
+            use_default_compose (bool): If false, will not combine the ATK config with the defaults. Defaults to True.
         """
 
-        # Load in the default docker-compose.yml file
-        default_configs = YAMLParser(self.atk_root / "docker" / "default-compose.yml")
+        if use_default_compose:
 
-        # Merge the defaults with the atk config
-        compose_config = ATKConfig._merge_dictionaries(self._config.get_data(), default_configs.get_data(), overwrite_lists)
+            # Load in the default docker-compose.yml file
+            default_configs = YAMLParser(self.atk_root / "docker" / "default-compose.yml")
+
+            # Merge the defaults with the atk config
+            compose_config = ATKConfig._merge_dictionaries(self._config.get_data(), default_configs.get_data(), overwrite_lists)
+
+        else:
+            compose_config = self._config.get_data()
 
         # Run an f-string eval on the entire file
         compose_config = eval(f"f'''{yaml.dump(compose_config)}'''", self._custom_attributes)
@@ -236,6 +245,10 @@ class ATKConfig:
         are kept track of. Only when there are zero current "users" will cleanup take place.
 
         This is implemented through a file that's constantly updated as new users are added/removed.
+
+        .. warning::
+
+            This doesnt' work.
 
         Args:
             val (int): Either 1 or -1 for an added and removed user, respectively.

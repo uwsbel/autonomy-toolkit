@@ -24,6 +24,7 @@ Submodules
 
    db/index.rst
    dev/index.rst
+   run/index.rst
 
 
 Package Contents

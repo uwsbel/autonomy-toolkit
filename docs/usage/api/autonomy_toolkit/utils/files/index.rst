@@ -20,6 +20,7 @@ Functions
 
    autonomy_toolkit.utils.files.file_exists
    autonomy_toolkit.utils.files.search_upwards_for_file
+   autonomy_toolkit.utils.files.unlink_file
 
 
 .. function:: file_exists(filename: str, throw_error: bool = False, can_be_directory: bool = False) -> bool
@@ -45,5 +46,12 @@ Functions
        filename (str): the filename to look for.
 
    :returns: *Path* -- the location of the first file found or None, if none was found
+
+
+.. function:: unlink_file(filename: str)
+
+   Unlink (remove) a file
+
+   :Parameters: **filename** (*str*) -- The file to remove
 
 
