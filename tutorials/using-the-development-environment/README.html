@@ -5,7 +5,7 @@
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="Writing an .atk.yml File" href="../writing-an-atk-yml-file/README.html" /><link rel="prev" title="Tutorials" href="../index.html" />
 
     <link rel="shortcut icon" href="../../_static/cropped-SBEL-32x32.png"/><meta name="generator" content="sphinx-3.4.2, furo 2020.12.30.beta24"/>
-        <title>Using the ATK Development Environment - Autonomous Vehicle Toolbox 0.0.45 documentation</title>
+        <title>Using the ATK Development Environment - Autonomous Vehicle Toolbox 0.0.47 documentation</title>
       <link rel="stylesheet" href="../../_static/styles/furo.css?digest=33d2fc4f3f180ec1ffc6524e273e21d7d58cbe49">
     <link rel="stylesheet" href="../../_static/pygments.css">
     <link media="(prefers-color-scheme: dark)" rel="stylesheet" href="../../_static/pygments_dark.css">
@@ -104,7 +104,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">Autonomous Vehicle Toolbox 0.0.45 documentation</div></a>
+      <a href="../../index.html"><div class="brand">Autonomous Vehicle Toolbox 0.0.47 documentation</div></a>
     </div>
     <div class="header-right">
       <label class="toc-overlay-icon toc-header-icon" for="__toc">
@@ -269,14 +269,14 @@ art-dev:~/art/workspace$ ros2 launch art_simulation_launch art_simulation.launch
 <p>The <code class="docutils literal notranslate"><span class="pre">autonomy-research-testbed</span></code> is shipped with a ros2 bag for testing purposes. To see the file, you’ll need <a class="reference external" href="https://git-lfs.github.com/"><code class="docutils literal notranslate"><span class="pre">git-lfs</span></code></a>. <code class="docutils literal notranslate"><span class="pre">git-lfs</span></code> is used because the file is rather large.
 Multiple ROS 2 bag files were recorded using ART for testing purposes. To get this file, you’ll need to download it from the Box folder. This can be done using the <a class="reference external" href="https://pypi.org/project/wget/"><code class="docutils literal notranslate"><span class="pre">wget</span></code></a> Python package and a custom entrypoint in <code class="docutils literal notranslate"><span class="pre">atk</span></code> called <code class="docutils literal notranslate"><span class="pre">db</span></code>. <code class="docutils literal notranslate"><span class="pre">db</span></code>, which stands for database, is an evolving tool and has not been fully implemented. Further documentation will be written in the near future.</p>
 <p>You first need to pull the bag files. To do this, you may run the following command:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>atk db pull
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>atk db pull --use-atk-config
 </pre></div>
 </div>
 <p>Under the hood, this is also reading the <code class="docutils literal notranslate"><span class="pre">.atk.yml</span></code> file to find the files that need to be pulled.</p>
-<p>The folder will be located at <code class="docutils literal notranslate"><span class="pre">autonomy-research-testbed/demos/bags/demo-bag-&lt;real</span> <span class="pre">or</span> <span class="pre">sim&gt;/</span></code>. ROS 2 bags are contained in folders and the <code class="docutils literal notranslate"><span class="pre">ros2</span> <span class="pre">bag</span></code> command will be used to replay the file. After the file is pulled, enter the development environment and start replaying the bag file. We’ll have it loop so the stack can be visualized easier.</p>
+<p>The folder will be located at <code class="docutils literal notranslate"><span class="pre">autonomy-research-testbed/demos/bags/ATK-&lt;ID&gt;/</span></code>. ROS 2 bags are contained in folders and the <code class="docutils literal notranslate"><span class="pre">ros2</span> <span class="pre">bag</span></code> command will be used to replay the file. After the file is pulled, enter the development environment and start replaying the bag file. We’ll have it loop so the stack can be visualized easier.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ atk dev --gpus <span class="c1"># NOTE: only use --gpus if you have a nvidia gpu</span>
 WARNING  <span class="p">|</span> logger.set_verbosity :: Verbosity has been <span class="nb">set</span> to WARNING
-art-dev:~/art/workspace$ ros2 bag play ../demos/bags/demo-bag-real -l <span class="c1"># or demo-bag-sim</span>
+art-dev:~/art/workspace$ ros2 bag play ../demos/bags/ATK-02-25-2022-03-19-00 -l <span class="c1"># or ATK-02-25-2022-04-30-30</span>
 </pre></div>
 </div>
 <p>With the bag being played, open another terminal and start up the stack.</p>
@@ -296,8 +296,28 @@ art-dev:~/art/workspace$ ros2 launch art_launch art_stack.launch.py vis:<span cl
 </pre></div>
 </div>
 <p>You can then navigate to <a class="reference external" href="http://localhost:8080">localhost:8080</a> to see the visualization windows. It should look something like the pictures below.</p>
-<a class="reference internal image-reference" href="https://raw.githubusercontent.com/uwsbel/autonomy-toolkit/master/tutorials/using-the-development-environment/images/sim-novnc-screenshot.png?raw"><img alt="https://raw.githubusercontent.com/uwsbel/autonomy-toolkit/master/tutorials/using-the-development-environment/images/sim-novnc-screenshot.png?raw" src="https://raw.githubusercontent.com/uwsbel/autonomy-toolkit/master/tutorials/using-the-development-environment/images/sim-novnc-screenshot.png?raw" style="width: 49%;"/></a>
-<a class="reference internal image-reference" href="https://raw.githubusercontent.com/uwsbel/autonomy-toolkit/master/tutorials/using-the-development-environment/images/real-novnc-screenshot.png?raw"><img alt="https://raw.githubusercontent.com/uwsbel/autonomy-toolkit/master/tutorials/using-the-development-environment/images/real-novnc-screenshot.png?raw" src="https://raw.githubusercontent.com/uwsbel/autonomy-toolkit/master/tutorials/using-the-development-environment/images/real-novnc-screenshot.png?raw" style="width: 49%;"/></a>
+<a class="reference internal image-reference" href="https://raw.githubusercontent.com/uwsbel/autonomy-toolkit/master/docs/tutorials/using-the-development-environment/images/sim-novnc-screenshot.png?raw"><img alt="https://raw.githubusercontent.com/uwsbel/autonomy-toolkit/master/docs/tutorials/using-the-development-environment/images/sim-novnc-screenshot.png?raw" src="https://raw.githubusercontent.com/uwsbel/autonomy-toolkit/master/docs/tutorials/using-the-development-environment/images/sim-novnc-screenshot.png?raw" style="width: 49%;"/></a>
+<a class="reference internal image-reference" href="https://raw.githubusercontent.com/uwsbel/autonomy-toolkit/master/docs/tutorials/using-the-development-environment/images/real-novnc-screenshot.png?raw"><img alt="https://raw.githubusercontent.com/uwsbel/autonomy-toolkit/master/docs/tutorials/using-the-development-environment/images/real-novnc-screenshot.png?raw" src="https://raw.githubusercontent.com/uwsbel/autonomy-toolkit/master/docs/tutorials/using-the-development-environment/images/real-novnc-screenshot.png?raw" style="width: 49%;"/></a>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If a port conflict occurs (<a class="reference external" href="#port-conflicts">as described later</a>), you will need to replace <code class="docutils literal notranslate"><span class="pre">8080</span></code> in <a class="reference external" href="http://localhost:8080">localhost:8080</a> with whatever you remap the new port to.</p>
+</div>
+</section>
+</section>
+<section id="possible-problems">
+<h2>Possible Problems<a class="headerlink" href="#possible-problems" title="Permalink to this headline">¶</a></h2>
+<p>This sections outlines some possible pitfuls or frequently run into errors.</p>
+<section id="port-conflicts">
+<h3>Port Conflicts<a class="headerlink" href="#port-conflicts" title="Permalink to this headline">¶</a></h3>
+<p>If a docker container attempts to map to a host port that is currently in use or otherwise unavailable, it will throw an error and exit. The <code class="docutils literal notranslate"><span class="pre">autonomy-toolkit</span></code> error for this looks similar to the following:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>CRITICAL <span class="p">|</span> dev._parse_ports :: Host port <span class="s1">'&lt;port&gt;'</span> is requested <span class="k">for</span> the <span class="s1">'&lt;service&gt;'</span> service, but it is already in use.
+</pre></div>
+</div>
+<p>In this instance, <code class="docutils literal notranslate"><span class="pre">&lt;port&gt;</span></code> is requested to be mapped to the host for the service <code class="docutils literal notranslate"><span class="pre">&lt;service&gt;</span></code>, but it can’t happen because it’s already in use. The solution here is to use the <code class="docutils literal notranslate"><span class="pre">--port-mappings</span></code> flag. See below for usage:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ atk dev -s &lt;service&gt; --port-mappings &lt;old-port1&gt;:&lt;new-port1&gt; &lt;old-port2&gt;:&lt;new-port2&gt; --up
+</pre></div>
+</div>
+<p>The syntax is as it appears above, where the <code class="docutils literal notranslate"><span class="pre">--port-mappings</span></code> argument takes any number of mappings such that it goes <code class="docutils literal notranslate"><span class="pre">&lt;old</span> <span class="pre">host</span> <span class="pre">port&gt;:&lt;new</span> <span class="pre">host</span> <span class="pre">port&gt;</span></code>.</p>
 </section>
 </section>
 <section id="support">
@@ -375,6 +395,10 @@ art-dev:~/art/workspace$ ros2 launch art_launch art_stack.launch.py vis:<span cl
 </ul>
 </li>
 <li><a class="reference internal" href="#visualizing-gui-windows-with-vnc">Visualizing GUI Windows with VNC</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#possible-problems">Possible Problems</a><ul>
+<li><a class="reference internal" href="#port-conflicts">Port Conflicts</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#support">Support</a></li>

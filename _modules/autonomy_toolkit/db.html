@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/><link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" />
 
     <link rel="shortcut icon" href="../../_static/cropped-SBEL-32x32.png"/><meta name="generator" content="sphinx-3.4.2, furo 2020.12.30.beta24"/>
-        <title>autonomy_toolkit.db - Autonomous Vehicle Toolbox 0.0.45 documentation</title>
+        <title>autonomy_toolkit.db - Autonomous Vehicle Toolbox 0.0.47 documentation</title>
       <link rel="stylesheet" href="../../_static/styles/furo.css?digest=33d2fc4f3f180ec1ffc6524e273e21d7d58cbe49">
     <link rel="stylesheet" href="../../_static/pygments.css">
     <link media="(prefers-color-scheme: dark)" rel="stylesheet" href="../../_static/pygments_dark.css">
@@ -103,7 +103,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">Autonomous Vehicle Toolbox 0.0.45 documentation</div></a>
+      <a href="../../index.html"><div class="brand">Autonomous Vehicle Toolbox 0.0.47 documentation</div></a>
     </div>
     <div class="header-right">
       <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
@@ -195,6 +195,7 @@
 
 <span class="c1"># Imports from autonomy_toolkit</span>
 <span class="kn">from</span> <span class="nn">autonomy_toolkit.ros.messages</span> <span class="k">import</span> <span class="n">MessageType</span>
+<span class="kn">from</span> <span class="nn">autonomy_toolkit.utils.atk_config</span> <span class="k">import</span> <span class="n">ATKConfig</span>
 <span class="kn">from</span> <span class="nn">autonomy_toolkit.utils.files</span> <span class="k">import</span> <span class="n">file_exists</span>
 <span class="kn">from</span> <span class="nn">autonomy_toolkit.utils.logger</span> <span class="k">import</span> <span class="n">LOGGER</span>
 <span class="kn">from</span> <span class="nn">autonomy_toolkit.utils.yaml_parser</span> <span class="k">import</span> <span class="n">YAMLParser</span>
@@ -1073,6 +1074,66 @@
             <span class="n">LOGGER</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">f</span><span class="s2">"Pushing '</span><span class="si">{file}</span><span class="s2">'"</span><span class="p">)</span>
             <span class="n">db</span><span class="o">.</span><span class="n">push</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
 
+<span class="k">def</span> <span class="nf">_run_pull</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
+    <span class="sd">"""</span>
+<span class="sd">    Entrypoint for the `db pull` command.</span>
+
+<span class="sd">    ```{yaml}</span>
+<span class="sd">    db:</span>
+<span class="sd">        - url: &lt;url&gt;</span>
+<span class="sd">          output: &lt;destination&gt;</span>
+<span class="sd">    ```</span>
+<span class="sd">    """</span>
+    <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"Running 'db pull' entrypoint..."</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">use_atk_config</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># Grab the ATK config file</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">use_atk_config</span>
+        <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">f</span><span class="s2">"Loading '</span><span class="si">{filename}</span><span class="s2">' file."</span><span class="p">)</span>
+        <span class="n">config</span> <span class="o">=</span> <span class="n">ATKConfig</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+
+        <span class="c1"># Parse the ATK config file</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">config</span><span class="o">.</span><span class="n">parse</span><span class="p">():</span>
+            <span class="k">return</span>
+
+        <span class="k">if</span> <span class="s1">'bags'</span> <span class="ow">in</span> <span class="n">config</span><span class="o">.</span><span class="n">external</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"db"</span><span class="p">,</span> <span class="p">{}):</span>
+            <span class="kn">import</span> <span class="nn">gdown</span><span class="o">,</span> <span class="nn">zipfile</span>
+
+            <span class="n">bags</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">external</span><span class="p">[</span><span class="s2">"db"</span><span class="p">][</span><span class="s2">"bags"</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">bag</span> <span class="ow">in</span> <span class="n">bags</span><span class="p">:</span>
+                <span class="k">if</span> <span class="s1">'id'</span> <span class="ow">in</span> <span class="n">bag</span> <span class="ow">and</span> <span class="s1">'output'</span> <span class="ow">in</span> <span class="n">bag</span> <span class="p">:</span>
+                    <span class="c1"># Grab the variables</span>
+                    <span class="nb">id</span> <span class="o">=</span> <span class="n">bag</span><span class="p">[</span><span class="s1">'id'</span><span class="p">]</span>
+                    <span class="n">output</span> <span class="o">=</span> <span class="n">bag</span><span class="p">[</span><span class="s1">'output'</span><span class="p">]</span>
+                    <span class="n">zipoutput</span> <span class="o">=</span> <span class="n">f</span><span class="s2">"</span><span class="si">{output}</span><span class="s2">.zip"</span>
+
+                    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">dry_run</span><span class="p">:</span>
+                        <span class="k">continue</span>
+
+                    <span class="c1"># Check to see if the file already exists</span>
+                    <span class="k">if</span> <span class="n">Path</span><span class="p">(</span><span class="n">output</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+                        <span class="n">LOGGER</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">f</span><span class="s2">"'</span><span class="si">{output}</span><span class="s2">' is alredy a file. Continuing..."</span><span class="p">)</span>
+                        <span class="k">continue</span>
+
+                    <span class="c1"># Make the directory, if it doesn't exist</span>
+                    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">output</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+                    <span class="c1"># Install the file with wget</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">Path</span><span class="p">(</span><span class="n">zipoutput</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+                        <span class="n">gdown</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="nb">id</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="n">zipoutput</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">LOGGER</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">f</span><span class="s2">"'</span><span class="si">{zipoutput}</span><span class="s2">' is already a file. Won't download, but will extract."</span><span class="p">)</span>
+                    <span class="k">with</span> <span class="n">zipfile</span><span class="o">.</span><span class="n">ZipFile</span><span class="p">(</span><span class="n">zipoutput</span><span class="p">,</span> <span class="s1">'r'</span><span class="p">)</span> <span class="k">as</span> <span class="n">zip_ref</span><span class="p">:</span>
+                        <span class="n">zip_ref</span><span class="o">.</span><span class="n">extractall</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">output</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="p">)</span>
+                        <span class="n">os</span><span class="o">.</span><span class="n">unlink</span><span class="p">(</span><span class="n">zipoutput</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">LOGGER</span><span class="o">.</span><span class="n">fatal</span><span class="p">(</span><span class="n">f</span><span class="s2">"Unsupported bag file format."</span><span class="p">)</span>
+                    <span class="k">return</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">LOGGER</span><span class="o">.</span><span class="n">fatal</span><span class="p">(</span><span class="s2">"'--use-atk-config' must be passed. Other logic is currently unimplemented."</span><span class="p">)</span>
+        <span class="k">return</span>
+
 
 <span class="k">def</span> <span class="nf">_run_combine</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
     <span class="sd">"""Command to combine a ROS 1 bag file and a ROS 2 bag into a single ROS 2 bag.</span>
@@ -1220,6 +1281,11 @@
     <span class="n">push</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">"files"</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s2">"*"</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">"The files to push. If none are provided, all ATK- prefixed files are selected."</span><span class="p">)</span>
     <span class="n">push</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">"local_path"</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">"The local path to the directory of the database."</span><span class="p">)</span>
     <span class="n">push</span><span class="o">.</span><span class="n">set_defaults</span><span class="p">(</span><span class="n">cmd</span><span class="o">=</span><span class="n">_run_push</span><span class="p">)</span>
+
+    <span class="c1"># Pull subcommand</span>
+    <span class="n">pull</span> <span class="o">=</span> <span class="n">subparsers</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span><span class="s2">"pull"</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">"Pull a bag file from the ATKDatabase."</span><span class="p">)</span>
+    <span class="n">pull</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">"--use-atk-config"</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s2">"?"</span><span class="p">,</span> <span class="n">const</span><span class="o">=</span><span class="s2">".atk.yml"</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">"If true, an ATK config file is searched for and used to pull data base files. Defaults to look for a file in parent directories called '.atk.yml', but this can be overriden by passing in a variable."</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">pull</span><span class="o">.</span><span class="n">set_defaults</span><span class="p">(</span><span class="n">cmd</span><span class="o">=</span><span class="n">_run_pull</span><span class="p">)</span>
 
     <span class="c1"># Combine subcommand</span>
     <span class="c1"># Used to combine ros bag files</span>
