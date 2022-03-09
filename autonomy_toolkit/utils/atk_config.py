@@ -159,7 +159,6 @@ class ATKConfig:
             def __missing__(self, key):
                 return key
         custom_attributes = {k: v.value for k,v in self._custom_attributes.items() if v.value != {}}
-        print(yaml.dump(custom_attributes))
         custom_attributes = yaml.safe_load(eval(f"f'''{yaml.dump(custom_attributes).encode('unicode-escape').decode()}'''", _CustomAttrs(custom_attributes)))
         custom_attributes = yaml.safe_load(eval(f"f'''{yaml.dump(custom_attributes).encode('unicode-escape').decode()}'''", custom_attributes))
 
