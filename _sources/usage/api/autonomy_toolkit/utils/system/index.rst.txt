@@ -1,0 +1,31 @@
+:orphan:
+
+:mod:`autonomy_toolkit.utils.system`
+====================================
+
+.. py:module:: autonomy_toolkit.utils.system
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   autonomy_toolkit.utils.system.is_port_available
+
+
+.. function:: is_port_available(port: int) -> bool
+
+   Checks whether a specified port is available to be attached to.
+
+   From `podman_compose <https://github.com/containers/podman-compose/blob/devel/podman_compose.py>`_.
+
+   :Parameters: **port** (*int*) -- The port to check.
+
+   :returns: *bool* -- True if available, False otherwise.
+
+

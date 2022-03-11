@@ -146,10 +146,9 @@
 </li>
 <li class="toctree-l3 has-children"><a class="reference internal" href="../../../usage/api/autonomy_toolkit/utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label for="toctree-checkbox-5"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../../usage/api/autonomy_toolkit/utils/atk_config/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.atk_config</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../usage/api/autonomy_toolkit/utils/docker/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.docker</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../usage/api/autonomy_toolkit/utils/files/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.files</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../usage/api/autonomy_toolkit/utils/logger/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.logger</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../usage/api/autonomy_toolkit/utils/yaml_parser/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.yaml_parser</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../usage/api/autonomy_toolkit/utils/parsing/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.parsing</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../../usage/api/autonomy_toolkit/db/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.db</span></code></a></li>
@@ -188,7 +187,7 @@
 <span class="kn">import</span> <span class="nn">autonomy_toolkit</span>
 <span class="kn">from</span> <span class="nn">autonomy_toolkit.utils.logger</span> <span class="k">import</span> <span class="n">LOGGER</span>
 <span class="kn">from</span> <span class="nn">autonomy_toolkit.utils.files</span> <span class="k">import</span> <span class="n">search_upwards_for_file</span><span class="p">,</span> <span class="n">unlink_file</span>
-<span class="kn">from</span> <span class="nn">autonomy_toolkit.utils.yaml_parser</span> <span class="k">import</span> <span class="n">YAMLParser</span>
+<span class="kn">from</span> <span class="nn">autonomy_toolkit.utils.parsing</span> <span class="k">import</span> <span class="n">ATKYamlFile</span><span class="p">,</span> <span class="n">ATKTextFile</span><span class="p">,</span> <span class="n">replace_vars</span>
 
 <span class="c1"># Other imports</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Union</span>
@@ -214,7 +213,7 @@
         <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
             <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Path</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'.atk.yml'</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Path</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'.atk.yml'</span><span class="p">,</span> <span class="n">container_runtime</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"docker"</span><span class="p">):</span>
         <span class="c1"># First, grab the atk file</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">atk_yml_path</span> <span class="o">=</span> <span class="n">search_upwards_for_file</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">filename</span><span class="p">))</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">atk_yml_path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -222,23 +221,31 @@
                 <span class="n">f</span><span class="s2">"No '</span><span class="si">{filename}</span><span class="s2">' file was found in this directory or any parent directories. Make sure you are running this command in an autonomy-toolkit compatible repository."</span><span class="p">)</span>
             <span class="n">exit</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
 
+        <span class="bp">self</span><span class="o">.</span><span class="n">container_runtime</span> <span class="o">=</span> <span class="n">container_runtime</span>
+
         <span class="c1"># Fill out file paths we'll create later on</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">root</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">atk_yml_path</span><span class="o">.</span><span class="n">parent</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">docker_compose_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root</span> <span class="o">/</span> <span class="s2">".docker-compose.yml"</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">docker_ignore_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root</span> <span class="o">/</span> <span class="s2">".dockerignore"</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">compose_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root</span> <span class="o">/</span> <span class="s2">".atk-compose.yml"</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">atk_user_count_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root</span> <span class="o">/</span> <span class="s2">".atk.user_count"</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">atk_root</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">autonomy_toolkit</span><span class="o">.</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span>
+
+        <span class="c1"># Docker specifics</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">docker_ignore_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root</span> <span class="o">/</span> <span class="s2">".dockerignore"</span>
 
         <span class="c1"># Add some required attributes</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_required_attributes</span> <span class="o">=</span> <span class="p">[]</span>
 
         <span class="c1"># Add some default custom attributes</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_custom_attributes</span> <span class="o">=</span> <span class="p">{}</span> 
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_custom_attribute</span><span class="p">(</span><span class="s2">"project"</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_custom_attribute</span><span class="p">(</span><span class="s2">"project_root"</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_custom_attribute</span><span class="p">(</span><span class="s2">"external"</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="p">{})</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_custom_attribute</span><span class="p">(</span><span class="s2">"project"</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_custom_attribute</span><span class="p">(</span><span class="s2">"project_root"</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_custom_attribute</span><span class="p">(</span><span class="s2">"external"</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">dict</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="p">{})</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_config</span> <span class="p">:</span> <span class="s1">'YAMLParser'</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># Translate rules are meant to aid in making the atk useable by different container runtimes</span>
+        <span class="c1"># As an example, singularity-compose uses instances whereas docker composes services</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_attribute_translation_rules</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_config</span> <span class="p">:</span> <span class="s1">'ATKYamlFile'</span> <span class="o">=</span> <span class="kc">None</span>
 
 <div class="viewcode-block" id="ATKConfig.add_required_attribute"><a class="viewcode-back" href="../../../usage/api/autonomy_toolkit/utils/atk_config/index.html#autonomy_toolkit.utils.atk_config.ATKConfig.add_required_attribute">[docs]</a>    <span class="k">def</span> <span class="nf">add_required_attribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
         <span class="sd">"""</span>
@@ -251,7 +258,7 @@
 <span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_required_attributes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">args</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="ATKConfig.add_custom_attribute"><a class="viewcode-back" href="../../../usage/api/autonomy_toolkit/utils/atk_config/index.html#autonomy_toolkit.utils.atk_config.ATKConfig.add_custom_attribute">[docs]</a>    <span class="k">def</span> <span class="nf">add_custom_attribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">default</span><span class="p">:</span> <span class="s1">'Any'</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">dest</span><span class="p">:</span> <span class="s1">'str'</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">delete</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="ATKConfig.add_custom_attribute"><a class="viewcode-back" href="../../../usage/api/autonomy_toolkit/utils/atk_config/index.html#autonomy_toolkit.utils.atk_config.ATKConfig.add_custom_attribute">[docs]</a>    <span class="k">def</span> <span class="nf">add_custom_attribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">path</span><span class="p">:</span> <span class="s1">'List[str]'</span><span class="p">,</span> <span class="nb">type</span><span class="p">:</span> <span class="s1">'type'</span><span class="p">,</span> <span class="n">default</span><span class="p">:</span> <span class="s1">'Any'</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">dest</span><span class="p">:</span> <span class="s1">'str'</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">delete</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
         <span class="sd">"""</span>
 <span class="sd">        Add a custom attribute to the ``autonomy-toolkit`` YAML specification.</span>
 
@@ -259,7 +266,7 @@
 <span class="sd">        YAML specification. After being read, it will be deleted from the written ``docker compose`` generated</span>
 <span class="sd">        config file.</span>
 
-<span class="sd">        The args list should begin with a list of ``len(*args)-1`` of nested keys. For instance, if a custom attribute</span>
+<span class="sd">        The first argument should be a list of nested keys. For instance, if a custom attribute</span>
 <span class="sd">        should be structured like the following example, then ``add_custom_attribute("project", ...)`` </span>
 <span class="sd">        and ``add_custom_attribute("user", "name", ...)`` should be called.</span>
 
@@ -269,7 +276,7 @@
 <span class="sd">            user:</span>
 <span class="sd">                name: example</span>
 
-<span class="sd">        ``args[-1]`` should then be a type that describes the expected type of the variable. This is a required type.</span>
+<span class="sd">        :attr:`type` should then be a type that describes the expected type of the variable. This is a required type.</span>
 <span class="sd">        If the parsed type is not the same as this, an error will be thrown.</span>
 
 <span class="sd">        ``default`` is the final argument. If it is unset (i.e. remains ``None``), the attribute will be assumed to be required.</span>
@@ -281,22 +288,54 @@
 <span class="sd">        set to ``'name'``.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            *args: The list of arguments where the first ``len(args)-1`` represent a nested argument list (see docs) and ``args[-1]`` represents the type of the attribute.</span>
+<span class="sd">            path (List[str]): The nested argument list (see docs).</span>
+<span class="sd">            type (type): Represents the type of the attribute.</span>
 <span class="sd">            default (Any): The default value to set to the attribute when parsing.</span>
 <span class="sd">            dest (str): The destination name for the variable that's generated.</span>
 <span class="sd">            delete (bool): If False, the attribute will `not` be removed from the config file after parsing. Defaults to True.</span>
 <span class="sd">        """</span>
-        <span class="n">path</span> <span class="o">=</span> <span class="n">args</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-        <span class="nb">type</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-
         <span class="c1"># Create the attribute and add it</span>
         <span class="n">attr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Attr</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">default</span><span class="p">,</span> <span class="n">delete</span><span class="o">=</span><span class="n">delete</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_custom_attributes</span><span class="p">[</span><span class="n">path</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">dest</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">dest</span><span class="p">]</span> <span class="o">=</span> <span class="n">attr</span></div>
 
+<div class="viewcode-block" id="ATKConfig.add_attribute_translation_rule"><a class="viewcode-back" href="../../../usage/api/autonomy_toolkit/utils/atk_config/index.html#autonomy_toolkit.utils.atk_config.ATKConfig.add_attribute_translation_rule">[docs]</a>    <span class="k">def</span> <span class="nf">add_attribute_translation_rule</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">path</span><span class="p">:</span> <span class="s1">'List[str]'</span><span class="p">,</span> <span class="n">rule</span><span class="p">:</span> <span class="s1">'Tuple[str, str]'</span><span class="p">):</span>
+        <span class="sd">"""</span>
+<span class="sd">        Add a translation rule to the ``autonomy-toolkit`` YAML specification.</span>
+
+<span class="sd">        Translate rules are meant to aid in making the atk useable by different container runtimes.</span>
+<span class="sd">        As an example, singularity-compose uses "instances" whereas docker composes "services". In this instance</span>
+<span class="sd">        a translation such as the following would be added.</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            config = ATKConfig()</span>
+<span class="sd">            config.add_attribute_translation_rule(rule=("services", "instances"))</span>
+
+<span class="sd">        The above rule will then find "services" at the root of the yaml config and replace it</span>
+<span class="sd">        with "instances".</span>
+
+<span class="sd">        .. code-block: python</span>
+<span class="sd">            </span>
+<span class="sd">            config = ATKConfig()</span>
+<span class="sd">            config.add_attribute_translation_rule("services", "dev", rule=("before", "after"))</span>
+
+<span class="sd">        This example will walk up to "services-&gt;dev" and replace "before" with "after".</span>
+
+<span class="sd">        .. note::</span>
+
+<span class="sd">            The translation rules are used only when the ATK config file is written. </span>
+<span class="sd">            Otherwise, analagous compose terms should be refered to as they are in the ``docker compose`` docs.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            path (List[str]): The nested argument list (see docs).</span>
+<span class="sd">            rule (Tuple[str, str]): translation rule (from, to) such that all "from"'s are translated to "to"'s.</span>
+<span class="sd">        """</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_attribute_translation_rules</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">path</span><span class="p">,</span> <span class="n">rule</span><span class="p">))</span></div>
+
 <div class="viewcode-block" id="ATKConfig.parse"><a class="viewcode-back" href="../../../usage/api/autonomy_toolkit/utils/atk_config/index.html#autonomy_toolkit.utils.atk_config.ATKConfig.parse">[docs]</a>    <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="sd">"""Parse the ATK config file.</span>
 
-<span class="sd">        Will read in the ATK config file as a yaml file. Utilizes the :class:`YAMLParser` class as the parser.</span>
+<span class="sd">        Will read in the ATK config file as a yaml file. Utilizes the :class:`ATKYamlFile` class as the parser.</span>
 
 <span class="sd">        The parser will walk through each custom attribute defined prior to :meth:`func` being called and </span>
 <span class="sd">        evaluate the attribute. Checks will be made to verify the types are correct, and if required attributes</span>
@@ -308,7 +347,7 @@
 <span class="sd">        """</span>
 
         <span class="c1"># First read in the config file</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_config</span> <span class="o">=</span> <span class="n">YAMLParser</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">atk_yml_path</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_config</span> <span class="o">=</span> <span class="n">ATKYamlFile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">atk_yml_path</span><span class="p">)</span>
 
         <span class="c1"># For each required attribute, check that it exists</span>
         <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_required_attributes</span><span class="p">:</span>
@@ -333,97 +372,99 @@
             <span class="k">if</span> <span class="n">attr</span><span class="o">.</span><span class="n">delete</span><span class="p">:</span>
                 <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="p">[</span><span class="n">attr</span><span class="o">.</span><span class="n">name</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
 
-        <span class="c1"># Need to eval custom_attributes twice since they might be nested</span>
-        <span class="c1"># TODO: Fix this logic</span>
-        <span class="k">class</span> <span class="nc">_CustomAttrs</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
-            <span class="sd">"""Helper class that won't through a KeyError when a key isn't found when using ``eval``</span>
-<span class="sd">            """</span>
-            <span class="k">def</span> <span class="nf">__missing__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
-                <span class="k">return</span> <span class="n">key</span>
-        <span class="n">custom_attributes</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span><span class="o">.</span><span class="n">value</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_custom_attributes</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">v</span><span class="o">.</span><span class="n">value</span> <span class="o">!=</span> <span class="p">{}}</span>
-        <span class="n">custom_attributes</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="nb">eval</span><span class="p">(</span><span class="n">f</span><span class="s2">"f'''{yaml.dump(custom_attributes).encode('unicode-escape').decode()}'''"</span><span class="p">,</span> <span class="n">_CustomAttrs</span><span class="p">(</span><span class="n">custom_attributes</span><span class="p">)))</span>
-        <span class="n">custom_attributes</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="nb">eval</span><span class="p">(</span><span class="n">f</span><span class="s2">"f'''{yaml.dump(custom_attributes).encode('unicode-escape').decode()}'''"</span><span class="p">,</span> <span class="n">custom_attributes</span><span class="p">))</span>
+        <span class="c1"># Users may use mappings in custom attributes, so replace vars here</span>
+        <span class="n">temp</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span><span class="o">.</span><span class="n">value</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_custom_attributes</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span> <span class="c1"># map only to the values</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_custom_attributes</span> <span class="o">=</span> <span class="n">replace_vars</span><span class="p">(</span><span class="n">temp</span><span class="p">,</span> <span class="n">temp</span><span class="p">)</span>
 
         <span class="c1"># For each custom attribute, make it a class member for easy grabbing</span>
         <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_custom_attributes</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="c1"># Add the custom attribute as a class member for easy grabbing</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
-                <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">custom_attributes</span><span class="p">:</span>
-                    <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">custom_attributes</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">_custom_attributes</span> <span class="o">=</span> <span class="n">custom_attributes</span>
+                <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="kc">True</span></div>
 
-<div class="viewcode-block" id="ATKConfig.generate_compose"><a class="viewcode-back" href="../../../usage/api/autonomy_toolkit/utils/atk_config/index.html#autonomy_toolkit.utils.atk_config.ATKConfig.generate_compose">[docs]</a>    <span class="k">def</span> <span class="nf">generate_compose</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">overwrite_lists</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">use_default_compose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
-        <span class="sd">"""Generates a ``docker-compose.yml`` specification file that's used by ``docker compose``</span>
+<div class="viewcode-block" id="ATKConfig.generate_compose"><a class="viewcode-back" href="../../../usage/api/autonomy_toolkit/utils/atk_config/index.html#autonomy_toolkit.utils.atk_config.ATKConfig.generate_compose">[docs]</a>    <span class="k">def</span> <span class="nf">generate_compose</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">services</span><span class="p">:</span> <span class="s1">'List[str]'</span> <span class="o">=</span> <span class="p">[],</span> <span class="n">overwrite_lists</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">use_default_compose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+        <span class="sd">"""Generates a ``atk-compose.yml`` specification file that's used by ``docker compose``</span>
 
 <span class="sd">        This method will grab the defaults that are shipped with ``autonomy-toolkit`` and merge them with</span>
 <span class="sd">        the custom configurations provided through the custom yaml config file.</span>
 
-<span class="sd">        The file will then be written to :attr:`self.docker_compose.path`.</span>
+<span class="sd">        The file will `not` be written. See :meth:`write_compose`.</span>
 
 <span class="sd">        Args:</span>
+<span class="sd">            services (List[str]): List of services to maintain in the compose file. If none are passed, all are kept.</span>
 <span class="sd">            overwrite_lists (bool): If true, all lists in the default that conflict with lists in the custom config will be overwritten. If false, the lists will be extended.</span>
 <span class="sd">            use_default_compose (bool): If false, will not combine the ATK config with the defaults. Defaults to True.</span>
 <span class="sd">        """</span>
 
         <span class="k">if</span> <span class="n">use_default_compose</span><span class="p">:</span>
 
-            <span class="c1"># Load in the default docker-compose.yml file</span>
-            <span class="n">default_configs</span> <span class="o">=</span> <span class="n">YAMLParser</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">atk_root</span> <span class="o">/</span> <span class="s2">"docker"</span> <span class="o">/</span> <span class="s2">"default-compose.yml"</span><span class="p">)</span>
+            <span class="c1"># Load in the default atk-compose.yml file</span>
+            <span class="n">default_configs</span> <span class="o">=</span> <span class="n">ATKYamlFile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">atk_root</span> <span class="o">/</span> <span class="s2">"containers"</span> <span class="o">/</span> <span class="s2">"config"</span> <span class="o">/</span> <span class="s2">"default-compose.yml"</span><span class="p">)</span>
 
             <span class="c1"># Merge the defaults with the atk config</span>
-            <span class="n">compose_config</span> <span class="o">=</span> <span class="n">ATKConfig</span><span class="o">.</span><span class="n">_merge_dictionaries</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="o">.</span><span class="n">get_data</span><span class="p">(),</span> <span class="n">default_configs</span><span class="o">.</span><span class="n">get_data</span><span class="p">(),</span> <span class="n">overwrite_lists</span><span class="p">)</span>
+            <span class="n">merged_data</span> <span class="o">=</span> <span class="n">ATKConfig</span><span class="o">.</span><span class="n">_merge_dictionaries</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">default_configs</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">overwrite_lists</span><span class="p">)</span>
+            <span class="n">compose_config</span> <span class="o">=</span> <span class="n">ATKYamlFile</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">merged_data</span><span class="p">))</span>
 
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">compose_config</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="o">.</span><span class="n">get_data</span><span class="p">()</span>
+            <span class="n">compose_config</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_config</span>
 
-        <span class="c1"># Run an f-string eval on the entire file</span>
-        <span class="n">compose_config</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="n">f</span><span class="s2">"f'''{yaml.dump(compose_config)}'''"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_custom_attributes</span><span class="p">)</span>
-        
-        <span class="c1"># Write the docker compose file</span>
-        <span class="n">docker_compose_path</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">docker_compose_path</span><span class="p">)</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">docker_compose_path</span><span class="p">,</span> <span class="s1">'w'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">compose_config</span><span class="p">)</span>
+        <span class="c1"># Update the compose config to only include services that are in the services argument</span>
+        <span class="k">if</span> <span class="n">compose_config</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s2">"services"</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">services</span><span class="p">):</span>
+            <span class="n">compose_config</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">"services"</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">compose_config</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"services"</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">services</span><span class="p">})</span>
+            
+        <span class="c1"># Walk through translations and update any, if desired</span>
+        <span class="k">for</span> <span class="n">path</span><span class="p">,</span> <span class="p">(</span><span class="n">rfrom</span><span class="p">,</span> <span class="n">rto</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_attribute_translation_rules</span><span class="p">:</span>
+            <span class="n">compose_config</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="o">*</span><span class="n">path</span><span class="p">,</span> <span class="n">rfrom</span><span class="p">],</span> <span class="n">value</span><span class="o">=</span><span class="n">rto</span><span class="p">,</span> <span class="n">update_key</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">compose</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">compose_config</span><span class="p">)</span></div>
+        <span class="c1"># Do final variable replacement</span>
+        <span class="n">compose_config</span><span class="o">.</span><span class="n">replace_vars</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_custom_attributes</span><span class="p">)</span>
 
-<div class="viewcode-block" id="ATKConfig.overwrite_compose"><a class="viewcode-back" href="../../../usage/api/autonomy_toolkit/utils/atk_config/index.html#autonomy_toolkit.utils.atk_config.ATKConfig.overwrite_compose">[docs]</a>    <span class="k">def</span> <span class="nf">overwrite_compose</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">compose</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
-        <span class="sd">"""Overwrites the ``docker compose`` config file with a custom dictionary which is parsed as yaml</span>
+        <span class="c1"># Save vars</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">compose_config</span> <span class="o">=</span> <span class="n">compose_config</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">compose</span> <span class="o">=</span> <span class="n">compose_config</span><span class="o">.</span><span class="n">data</span></div>
+
+<div class="viewcode-block" id="ATKConfig.write_compose"><a class="viewcode-back" href="../../../usage/api/autonomy_toolkit/utils/atk_config/index.html#autonomy_toolkit.utils.atk_config.ATKConfig.write_compose">[docs]</a>    <span class="k">def</span> <span class="nf">write_compose</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">compose</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="sd">"""Writes the ``docker compose`` config file. </span>
+
+<span class="sd">        If ``compose`` is not None, the ``docker compose`` config file will be overwritten </span>
+<span class="sd">        with a custom dictionary which is parsed as yaml.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            compose (dict): The dictionary to parse as yaml to be used to overwrite the compose file.</span>
+<span class="sd">            compose (dict): The dictionary to parse as yaml to be used to overwrite the compose file. Defaults to None (unused).</span>
 <span class="sd">        """</span>
-        <span class="c1"># Write the docker compose file</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">docker_compose_path</span><span class="p">,</span> <span class="s1">'w'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">compose</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="ATKConfig.generate_ignore"><a class="viewcode-back" href="../../../usage/api/autonomy_toolkit/utils/atk_config/index.html#autonomy_toolkit.utils.atk_config.ATKConfig.generate_ignore">[docs]</a>    <span class="k">def</span> <span class="nf">generate_ignore</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">compose</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># Update vars</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">compose_config</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">compose</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">compose</span> <span class="o">=</span> <span class="n">compose</span>
+
+        <span class="c1"># Write the compose file</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">compose_config</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">compose_path</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ATKConfig.generate_dockerignore"><a class="viewcode-back" href="../../../usage/api/autonomy_toolkit/utils/atk_config/index.html#autonomy_toolkit.utils.atk_config.ATKConfig.generate_dockerignore">[docs]</a>    <span class="k">def</span> <span class="nf">generate_dockerignore</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">"""Generates a ``.dockerignore`` file that's used by ``docker``</span>
 <span class="sd">        """</span>
 
         <span class="c1"># First grab the defaults</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">atk_root</span> <span class="o">/</span> <span class="s2">"docker"</span> <span class="o">/</span> <span class="s2">"dockerignore"</span><span class="p">,</span> <span class="s1">'r'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-            <span class="n">ignore_text</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+        <span class="n">ignore_text</span> <span class="o">=</span> <span class="n">ATKTextFile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">atk_root</span> <span class="o">/</span> <span class="s2">"containers"</span> <span class="o">/</span> <span class="s2">"config"</span> <span class="o">/</span> <span class="s2">"dockerignore"</span><span class="p">)</span>
 
         <span class="c1"># Then concatenate with the existing dockerignore file, if there is one</span>
         <span class="k">if</span> <span class="p">(</span><span class="n">existing_ignore</span> <span class="p">:</span><span class="o">=</span> <span class="n">search_upwards_for_file</span><span class="p">(</span><span class="s1">'.dockerignore'</span><span class="p">))</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">existing_ignore</span><span class="p">,</span> <span class="s1">'r'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-                <span class="n">ignore_text</span> <span class="o">+=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+            <span class="n">ignore_text</span> <span class="o">+=</span> <span class="n">ATKTextFile</span><span class="p">(</span><span class="n">existing_ignore</span><span class="p">)</span>
 
         <span class="c1"># And finally, write the file back to the dockerignore path</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">docker_ignore_path</span><span class="p">,</span> <span class="s2">"w"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">ignore_text</span><span class="p">)</span></div>
+        <span class="n">ignore_text</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">docker_ignore_path</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="ATKConfig.update_user_count"><a class="viewcode-back" href="../../../usage/api/autonomy_toolkit/utils/atk_config/index.html#autonomy_toolkit.utils.atk_config.ATKConfig.update_user_count">[docs]</a>    <span class="k">def</span> <span class="nf">update_user_count</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
-        <span class="sd">"""Update the user count file to keep track of how many instances of the ATK container system has been initialized.</span>
+        <span class="sd">"""Update the user count file to keep track of how many instances of the ATK </span>
+<span class="sd">        container system has been initialized.</span>
 
-<span class="sd">        An early issue with the ``autonomy-toolkit`` package was that if there were two instances of a container running,</span>
-<span class="sd">        when one would exit, the clean-up process would take place (i.e. docker compose file would be deleted, etc.),</span>
-<span class="sd">        but this wasn't desired. The user count was introduced to alleviate this issue, where the number of containers</span>
+<span class="sd">        An early issue with the ``autonomy-toolkit`` package was that if there were </span>
+<span class="sd">        two instances of a container running, when one would exit, the clean-up process </span>
+<span class="sd">        would take place (i.e. docker compose file would be deleted, etc.), but this wasn't </span>
+<span class="sd">        desired. The user count was introduced to alleviate this issue, where the number of containers</span>
 <span class="sd">        are kept track of. Only when there are zero current "users" will cleanup take place.</span>
 
 <span class="sd">        This is implemented through a file that's constantly updated as new users are added/removed.</span>
@@ -438,30 +479,33 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            int: The number of current members (including the changes introduced by this method call)</span>
 <span class="sd">        """</span>
-        <span class="n">num</span> <span class="o">=</span> <span class="mi">0</span>
 
         <span class="c1"># First, read the existing file</span>
-        <span class="k">if</span> <span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">atk_user_count_path</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
-            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">atk_user_count_path</span><span class="p">,</span> <span class="s1">'r'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-                <span class="n">num</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">atk_user_count_path</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="n">atk_user_count_file</span> <span class="o">=</span> <span class="n">ATKTextFile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">atk_user_count_path</span><span class="p">,</span> <span class="n">create</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-        <span class="n">num</span> <span class="o">+=</span> <span class="n">val</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">atk_user_count_path</span><span class="p">,</span> <span class="s1">'w'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">num</span><span class="p">))</span>
+            <span class="c1"># Start out with it being zero</span>
+            <span class="n">atk_user_count_file</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="s2">"0"</span>
+            <span class="n">atk_user_count_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">atk_user_count_path</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">atk_user_count_file</span> <span class="o">=</span> <span class="n">ATKTextFile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">atk_user_count_path</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">num</span></div>
+        <span class="n">atk_user_count_file</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">atk_user_count_file</span><span class="o">.</span><span class="n">data</span><span class="p">)</span> <span class="o">+</span> <span class="n">val</span><span class="p">)</span>
+        <span class="n">atk_user_count_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">atk_user_count_path</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">atk_user_count_file</span><span class="o">.</span><span class="n">data</span></div>
 
 <div class="viewcode-block" id="ATKConfig.cleanup"><a class="viewcode-back" href="../../../usage/api/autonomy_toolkit/utils/atk_config/index.html#autonomy_toolkit.utils.atk_config.ATKConfig.cleanup">[docs]</a>    <span class="k">def</span> <span class="nf">cleanup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">keep_compose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
         <span class="sd">"""Cleanup the system.</span>
 
-<span class="sd">        Cleanup consists of deleting the ``docker compose`` config and ignore files, as well as the ``autonomy-toolkit`` user count file</span>
+<span class="sd">        Cleanup consists of deleting the ``docker compose`` config and ignore files, as well as </span>
+<span class="sd">        the ``autonomy-toolkit`` user count file</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            keep_compose (bool): If true, will `not` delete the ``docker compose`` config file. Otherwise, it will be deleted.</span>
 <span class="sd">        """</span>
         <span class="n">unlink_file</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">atk_user_count_path</span><span class="p">)</span>
-        <span class="n">unlink_file</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">docker_ignore_path</span><span class="p">)</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">keep_compose</span><span class="p">:</span> <span class="n">unlink_file</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">docker_compose_path</span><span class="p">)</span></div>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">keep_compose</span><span class="p">:</span> <span class="n">unlink_file</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">compose_path</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">_merge_dictionaries</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">destination</span><span class="p">,</span> <span class="n">overwrite_lists</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">source</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>

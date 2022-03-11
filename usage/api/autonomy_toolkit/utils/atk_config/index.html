@@ -2,7 +2,7 @@
 <html class="no-js">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-<link rel="index" title="Index" href="../../../../../genindex.html" /><link rel="search" title="Search" href="../../../../../search.html" /><link rel="next" title="autonomy_toolkit.utils.docker" href="../docker/index.html" /><link rel="prev" title="autonomy_toolkit.utils" href="../index.html" />
+<link rel="index" title="Index" href="../../../../../genindex.html" /><link rel="search" title="Search" href="../../../../../search.html" /><link rel="next" title="autonomy_toolkit.utils.files" href="../files/index.html" /><link rel="prev" title="autonomy_toolkit.utils" href="../index.html" />
 
     <link rel="shortcut icon" href="../../../../../_static/cropped-SBEL-32x32.png"/><meta name="generator" content="sphinx-3.4.2, furo 2020.12.30.beta24"/>
         <title>autonomy_toolkit.utils.atk_config - Autonomous Vehicle Toolbox 0.0.52 documentation</title>
@@ -147,10 +147,9 @@
 </li>
 <li class="toctree-l3 current has-children"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils</span></code></a><input checked="" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label for="toctree-checkbox-5"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
 <li class="toctree-l4 current current-page"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.atk_config</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../docker/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.docker</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../files/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.files</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../logger/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.logger</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../yaml_parser/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.yaml_parser</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../parsing/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.parsing</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../db/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.db</span></code></a></li>
@@ -200,7 +199,7 @@
 </table></div>
 <dl class="py class">
 <dt id="autonomy_toolkit.utils.atk_config.ATKConfig">
-<em class="property">class </em><code class="sig-name descname">ATKConfig</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>Path<span class="p">, </span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">'.atk.yml'</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/autonomy_toolkit/utils/atk_config.html#ATKConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.utils.atk_config.ATKConfig" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-name descname">ATKConfig</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>Path<span class="p">, </span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">'.atk.yml'</span></em>, <em class="sig-param"><span class="n">container_runtime</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'docker'</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/autonomy_toolkit/utils/atk_config.html#ATKConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.utils.atk_config.ATKConfig" title="Permalink to this definition">¶</a></dt>
 <dd><p>Helper class that abstracts reading the <code class="docutils literal notranslate"><span class="pre">.atk.yml</span></code> file that defines configurations</p>
 <dl class="py method">
 <dt id="autonomy_toolkit.utils.atk_config.ATKConfig.add_required_attribute">
@@ -215,12 +214,12 @@
 </dd></dl>
 <dl class="py method">
 <dt id="autonomy_toolkit.utils.atk_config.ATKConfig.add_custom_attribute">
-<code class="sig-name descname">add_custom_attribute</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="n">default</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">dest</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">delete</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/autonomy_toolkit/utils/atk_config.html#ATKConfig.add_custom_attribute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.utils.atk_config.ATKConfig.add_custom_attribute" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">add_custom_attribute</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">path</span><span class="p">:</span> <span class="n">List[str]</span></em>, <em class="sig-param"><span class="n">type</span><span class="p">:</span> <span class="n">type</span></em>, <em class="sig-param"><span class="n">default</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">dest</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">delete</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/autonomy_toolkit/utils/atk_config.html#ATKConfig.add_custom_attribute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.utils.atk_config.ATKConfig.add_custom_attribute" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add a custom attribute to the <code class="docutils literal notranslate"><span class="pre">autonomy-toolkit</span></code> YAML specification.</p>
 <p>A custom attribute is any root-level attribute that’s outside of the regular <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span></code>
 YAML specification. After being read, it will be deleted from the written <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span></code> generated
 config file.</p>
-<p>The args list should begin with a list of <code class="docutils literal notranslate"><span class="pre">len(*args)-1</span></code> of nested keys. For instance, if a custom attribute
+<p>The first argument should be a list of nested keys. For instance, if a custom attribute
 should be structured like the following example, then <code class="docutils literal notranslate"><span class="pre">add_custom_attribute("project",</span> <span class="pre">...)</span></code>
 and <code class="docutils literal notranslate"><span class="pre">add_custom_attribute("user",</span> <span class="pre">"name",</span> <span class="pre">...)</span></code> should be called.</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">project</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">example</span>
@@ -228,7 +227,7 @@ and <code class="docutils literal notranslate"><span class="pre">add_custom_attr
     <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">example</span>
 </pre></div>
 </div>
-<p><code class="docutils literal notranslate"><span class="pre">args[-1]</span></code> should then be a type that describes the expected type of the variable. This is a required type.
+<p><code class="xref py py-attr docutils literal notranslate"><span class="pre">type</span></code> should then be a type that describes the expected type of the variable. This is a required type.
 If the parsed type is not the same as this, an error will be thrown.</p>
 <p><code class="docutils literal notranslate"><span class="pre">default</span></code> is the final argument. If it is unset (i.e. remains <code class="docutils literal notranslate"><span class="pre">None</span></code>), the attribute will be assumed to be required.
 If set, when parsing, the value will be updated to be <code class="docutils literal notranslate"><span class="pre">default</span></code> if it is not set in the ATK config file.</p>
@@ -239,7 +238,8 @@ set to <code class="docutils literal notranslate"><span class="pre">'name'</span
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>*args</strong> – The list of arguments where the first <code class="docutils literal notranslate"><span class="pre">len(args)-1</span></code> represent a nested argument list (see docs) and <code class="docutils literal notranslate"><span class="pre">args[-1]</span></code> represents the type of the attribute.</p></li>
+<li><p><strong>path</strong> (<em>List[str]</em>) – The nested argument list (see docs).</p></li>
+<li><p><strong>type</strong> (<em>type</em>) – Represents the type of the attribute.</p></li>
 <li><p><strong>default</strong> (<em>Any</em>) – The default value to set to the attribute when parsing.</p></li>
 <li><p><strong>dest</strong> (<em>str</em>) – The destination name for the variable that’s generated.</p></li>
 <li><p><strong>delete</strong> (<em>bool</em>) – If False, the attribute will <cite>not</cite> be removed from the config file after parsing. Defaults to True.</p></li>
@@ -248,10 +248,38 @@ set to <code class="docutils literal notranslate"><span class="pre">'name'</span
 </dl>
 </dd></dl>
 <dl class="py method">
+<dt id="autonomy_toolkit.utils.atk_config.ATKConfig.add_attribute_translation_rule">
+<code class="sig-name descname">add_attribute_translation_rule</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">path</span><span class="p">:</span> <span class="n">List[str]</span></em>, <em class="sig-param"><span class="n">rule</span><span class="p">:</span> <span class="n">Tuple<span class="p">[</span>str<span class="p">, </span>str<span class="p">]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/autonomy_toolkit/utils/atk_config.html#ATKConfig.add_attribute_translation_rule"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.utils.atk_config.ATKConfig.add_attribute_translation_rule" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a translation rule to the <code class="docutils literal notranslate"><span class="pre">autonomy-toolkit</span></code> YAML specification.</p>
+<p>Translate rules are meant to aid in making the atk useable by different container runtimes.
+As an example, singularity-compose uses “instances” whereas docker composes “services”. In this instance
+a translation such as the following would be added.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">config</span> <span class="o">=</span> <span class="n">ATKConfig</span><span class="p">()</span>
+<span class="n">config</span><span class="o">.</span><span class="n">add_attribute_translation_rule</span><span class="p">(</span><span class="n">rule</span><span class="o">=</span><span class="p">(</span><span class="s2">"services"</span><span class="p">,</span> <span class="s2">"instances"</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>The above rule will then find “services” at the root of the yaml config and replace it
+with “instances”.</p>
+<p>This example will walk up to “services-&gt;dev” and replace “before” with “after”.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The translation rules are used only when the ATK config file is written.
+Otherwise, analagous compose terms should be refered to as they are in the <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span></code> docs.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>List[str]</em>) – The nested argument list (see docs).</p></li>
+<li><p><strong>rule</strong> (<em>Tuple[str, str]</em>) – translation rule (from, to) such that all “from“‘s are translated to “to“‘s.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
 <dt id="autonomy_toolkit.utils.atk_config.ATKConfig.parse">
 <code class="sig-name descname">parse</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> → bool<a class="reference internal" href="../../../../../_modules/autonomy_toolkit/utils/atk_config.html#ATKConfig.parse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.utils.atk_config.ATKConfig.parse" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parse the ATK config file.</p>
-<p>Will read in the ATK config file as a yaml file. Utilizes the <code class="xref py py-class docutils literal notranslate"><span class="pre">YAMLParser</span></code> class as the parser.</p>
+<p>Will read in the ATK config file as a yaml file. Utilizes the <code class="xref py py-class docutils literal notranslate"><span class="pre">ATKYamlFile</span></code> class as the parser.</p>
 <p>The parser will walk through each custom attribute defined prior to <code class="xref py py-meth docutils literal notranslate"><span class="pre">func()</span></code> being called and
 evaluate the attribute. Checks will be made to verify the types are correct, and if required attributes
 are defined. If a required attribute is not defined, an error will be thrown and parsing will stop. If an
@@ -264,14 +292,15 @@ attribute has a wrong type, an error will be thrown and parsing will stop.</p>
 </dd></dl>
 <dl class="py method">
 <dt id="autonomy_toolkit.utils.atk_config.ATKConfig.generate_compose">
-<code class="sig-name descname">generate_compose</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">overwrite_lists</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">use_default_compose</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/autonomy_toolkit/utils/atk_config.html#ATKConfig.generate_compose"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.utils.atk_config.ATKConfig.generate_compose" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generates a <code class="docutils literal notranslate"><span class="pre">docker-compose.yml</span></code> specification file that’s used by <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span></code></p>
+<code class="sig-name descname">generate_compose</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">services</span><span class="p">:</span> <span class="n">List<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">[]</span></em>, <em class="sig-param"><span class="n">overwrite_lists</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">use_default_compose</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/autonomy_toolkit/utils/atk_config.html#ATKConfig.generate_compose"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.utils.atk_config.ATKConfig.generate_compose" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a <code class="docutils literal notranslate"><span class="pre">atk-compose.yml</span></code> specification file that’s used by <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span></code></p>
 <p>This method will grab the defaults that are shipped with <code class="docutils literal notranslate"><span class="pre">autonomy-toolkit</span></code> and merge them with
 the custom configurations provided through the custom yaml config file.</p>
-<p>The file will then be written to <code class="xref py py-attr docutils literal notranslate"><span class="pre">self.docker_compose.path</span></code>.</p>
+<p>The file will <cite>not</cite> be written. See <a class="reference internal" href="#autonomy_toolkit.utils.atk_config.ATKConfig.write_compose" title="autonomy_toolkit.utils.atk_config.ATKConfig.write_compose"><code class="xref py py-meth docutils literal notranslate"><span class="pre">write_compose()</span></code></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
+<li><p><strong>services</strong> (<em>List[str]</em>) – List of services to maintain in the compose file. If none are passed, all are kept.</p></li>
 <li><p><strong>overwrite_lists</strong> (<em>bool</em>) – If true, all lists in the default that conflict with lists in the custom config will be overwritten. If false, the lists will be extended.</p></li>
 <li><p><strong>use_default_compose</strong> (<em>bool</em>) – If false, will not combine the ATK config with the defaults. Defaults to True.</p></li>
 </ul>
@@ -279,27 +308,31 @@ the custom configurations provided through the custom yaml config file.</p>
 </dl>
 </dd></dl>
 <dl class="py method">
-<dt id="autonomy_toolkit.utils.atk_config.ATKConfig.overwrite_compose">
-<code class="sig-name descname">overwrite_compose</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">compose</span><span class="p">:</span> <span class="n">dict</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/autonomy_toolkit/utils/atk_config.html#ATKConfig.overwrite_compose"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.utils.atk_config.ATKConfig.overwrite_compose" title="Permalink to this definition">¶</a></dt>
-<dd><p>Overwrites the <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span></code> config file with a custom dictionary which is parsed as yaml</p>
+<dt id="autonomy_toolkit.utils.atk_config.ATKConfig.write_compose">
+<code class="sig-name descname">write_compose</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">compose</span><span class="p">:</span> <span class="n">dict</span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/autonomy_toolkit/utils/atk_config.html#ATKConfig.write_compose"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.utils.atk_config.ATKConfig.write_compose" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes the <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span></code> config file.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">compose</span></code> is not None, the <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span></code> config file will be overwritten
+with a custom dictionary which is parsed as yaml.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>compose</strong> (<em>dict</em>) – The dictionary to parse as yaml to be used to overwrite the compose file.</p>
+<dd class="field-odd"><p><strong>compose</strong> (<em>dict</em>) – The dictionary to parse as yaml to be used to overwrite the compose file. Defaults to None (unused).</p>
 </dd>
 </dl>
 </dd></dl>
 <dl class="py method">
-<dt id="autonomy_toolkit.utils.atk_config.ATKConfig.generate_ignore">
-<code class="sig-name descname">generate_ignore</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/autonomy_toolkit/utils/atk_config.html#ATKConfig.generate_ignore"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.utils.atk_config.ATKConfig.generate_ignore" title="Permalink to this definition">¶</a></dt>
+<dt id="autonomy_toolkit.utils.atk_config.ATKConfig.generate_dockerignore">
+<code class="sig-name descname">generate_dockerignore</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/autonomy_toolkit/utils/atk_config.html#ATKConfig.generate_dockerignore"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.utils.atk_config.ATKConfig.generate_dockerignore" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generates a <code class="docutils literal notranslate"><span class="pre">.dockerignore</span></code> file that’s used by <code class="docutils literal notranslate"><span class="pre">docker</span></code></p>
 </dd></dl>
 <dl class="py method">
 <dt id="autonomy_toolkit.utils.atk_config.ATKConfig.update_user_count">
 <code class="sig-name descname">update_user_count</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">val</span><span class="p">:</span> <span class="n">int</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/autonomy_toolkit/utils/atk_config.html#ATKConfig.update_user_count"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.utils.atk_config.ATKConfig.update_user_count" title="Permalink to this definition">¶</a></dt>
-<dd><p>Update the user count file to keep track of how many instances of the ATK container system has been initialized.</p>
-<p>An early issue with the <code class="docutils literal notranslate"><span class="pre">autonomy-toolkit</span></code> package was that if there were two instances of a container running,
-when one would exit, the clean-up process would take place (i.e. docker compose file would be deleted, etc.),
-but this wasn’t desired. The user count was introduced to alleviate this issue, where the number of containers
+<dd><p>Update the user count file to keep track of how many instances of the ATK
+container system has been initialized.</p>
+<p>An early issue with the <code class="docutils literal notranslate"><span class="pre">autonomy-toolkit</span></code> package was that if there were
+two instances of a container running, when one would exit, the clean-up process
+would take place (i.e. docker compose file would be deleted, etc.), but this wasn’t
+desired. The user count was introduced to alleviate this issue, where the number of containers
 are kept track of. Only when there are zero current “users” will cleanup take place.</p>
 <p>This is implemented through a file that’s constantly updated as new users are added/removed.</p>
 <div class="admonition warning">
@@ -319,7 +352,8 @@ are kept track of. Only when there are zero current “users” will cleanup tak
 <dt id="autonomy_toolkit.utils.atk_config.ATKConfig.cleanup">
 <code class="sig-name descname">cleanup</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">keep_compose</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/autonomy_toolkit/utils/atk_config.html#ATKConfig.cleanup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.utils.atk_config.ATKConfig.cleanup" title="Permalink to this definition">¶</a></dt>
 <dd><p>Cleanup the system.</p>
-<p>Cleanup consists of deleting the <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span></code> config and ignore files, as well as the <code class="docutils literal notranslate"><span class="pre">autonomy-toolkit</span></code> user count file</p>
+<p>Cleanup consists of deleting the <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span></code> config and ignore files, as well as
+the <code class="docutils literal notranslate"><span class="pre">autonomy-toolkit</span></code> user count file</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>keep_compose</strong> (<em>bool</em>) – If true, will <cite>not</cite> delete the <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span></code> config file. Otherwise, it will be deleted.</p>
@@ -335,12 +369,12 @@ are kept track of. Only when there are zero current “users” will cleanup tak
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="../docker/index.html">
+          <a class="next-page" href="../files/index.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.docker</span></code></div>
+                <div class="title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.files</span></code></div>
               </div>
               <svg><use href="#svg-arrow-right"></use></svg>
             </a>
@@ -391,10 +425,11 @@ are kept track of. Only when there are zero current “users” will cleanup tak
 <li><a class="reference internal" href="#autonomy_toolkit.utils.atk_config.ATKConfig">ATKConfig</a><ul>
 <li><a class="reference internal" href="#autonomy_toolkit.utils.atk_config.ATKConfig.add_required_attribute">add_required_attribute</a></li>
 <li><a class="reference internal" href="#autonomy_toolkit.utils.atk_config.ATKConfig.add_custom_attribute">add_custom_attribute</a></li>
+<li><a class="reference internal" href="#autonomy_toolkit.utils.atk_config.ATKConfig.add_attribute_translation_rule">add_attribute_translation_rule</a></li>
 <li><a class="reference internal" href="#autonomy_toolkit.utils.atk_config.ATKConfig.parse">parse</a></li>
 <li><a class="reference internal" href="#autonomy_toolkit.utils.atk_config.ATKConfig.generate_compose">generate_compose</a></li>
-<li><a class="reference internal" href="#autonomy_toolkit.utils.atk_config.ATKConfig.overwrite_compose">overwrite_compose</a></li>
-<li><a class="reference internal" href="#autonomy_toolkit.utils.atk_config.ATKConfig.generate_ignore">generate_ignore</a></li>
+<li><a class="reference internal" href="#autonomy_toolkit.utils.atk_config.ATKConfig.write_compose">write_compose</a></li>
+<li><a class="reference internal" href="#autonomy_toolkit.utils.atk_config.ATKConfig.generate_dockerignore">generate_dockerignore</a></li>
 <li><a class="reference internal" href="#autonomy_toolkit.utils.atk_config.ATKConfig.update_user_count">update_user_count</a></li>
 <li><a class="reference internal" href="#autonomy_toolkit.utils.atk_config.ATKConfig.cleanup">cleanup</a></li>
 </ul>

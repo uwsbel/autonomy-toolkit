@@ -1,0 +1,52 @@
+:mod:`autonomy_toolkit.containers.docker_client`
+================================================
+
+.. py:module:: autonomy_toolkit.containers.docker_client
+
+.. autoapi-nested-parse::
+
+   Helpful utilities for interacting with docker. Many of these helpers came from the [python_on_whales](https://gabrieldemarmiesse.github.io/python-on-whales/) package.
+
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   autonomy_toolkit.containers.docker_client.DockerClient
+
+
+
+.. py:class:: DockerClient(config: ATKConfig, project: str = None, compose_file: str = '.atk-compose.yml', services=[], **kwargs)
+
+   Bases: :class:`autonomy_toolkit.containers.container_client.ContainerClient`
+
+   Helper class that provides the :meth:`run` method to execute a command using the ``docker compose``
+   entrypoint.
+
+   :Parameters: * **config** (*ATKConfig*) -- The config definition
+                * **project** (*str*) -- The name of the project to use. Analagous with ``--project-name`` in ``docker compose``.
+                * **services** (*List[str]*) -- List of services to use when running the ``docker compose`` command.
+                * **compose_file** (*str*) -- The name of the compose file to use. Defaults to ``.atk-compose.yml``.
+
+   .. method:: is_installed() -> bool
+
+      Checks whether the docker client binary file is present and whether docker compose v2 is installed.
+
+      :returns: *bool* -- True if everything checks out, False if not.
+
+
+   .. method:: shell(self, service: str, *args) -> bool
+
+      Enter the shell for a specific container.
+
+      Will check for the USERSHELLPATH environment variable in the container.
+
+      :Parameters: **service** (*str*) -- The service to run the shell for
+
+
+

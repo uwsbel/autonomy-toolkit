@@ -1,0 +1,81 @@
+:mod:`autonomy_toolkit.containers.singularity_client`
+=====================================================
+
+.. py:module:: autonomy_toolkit.containers.singularity_client
+
+.. autoapi-nested-parse::
+
+   Helpful utilities for interacting with singularity.
+
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   autonomy_toolkit.containers.singularity_client.SingularityClient
+
+
+
+.. py:class:: SingularityClient(config: ATKConfig, project: str = None, compose_file: str = '.atk-compose.yml', services=[], **kwargs)
+
+   Bases: :class:`autonomy_toolkit.containers.container_client.ContainerClient`
+
+   Helper class that provides the :meth:`run` method to execute a command using the ``singularity compose``
+   entrypoint.
+
+   :Parameters: * **project** (*str*) -- The name of the project to use. Analagous with ``--project-name`` in ``singularity compose``.
+                * **services** (*List[str]*) -- List of services to use when running the ``singularity compose`` command.
+                * **compose_file** (*str*) -- The name of the compose file to use. Defaults to ``.atk-compose.yml``.
+
+   .. method:: is_installed() -> bool
+
+      Checks whether the docker client binary file is present and whether docker compose v2 is installed.
+
+      :returns: *bool* -- True if everything checks out, False if not.
+
+
+   .. method:: up(self, *args) -> bool
+
+      Bring up the containers.
+
+      :returns: *bool* -- Whether the command succeeded.
+
+
+   .. method:: run(self, service, *exec_cmd) -> bool
+
+      Run a command in a container.
+
+      :returns: *bool* -- Whether the command succeeded.
+
+
+   .. method:: shell(self, service: str, *args) -> bool
+
+      Enter the shell of the given container.
+
+      Should check for the USERSHELLPATH environment variable in the container.
+
+      :Parameters: **service** (*str*) -- The service to enter
+
+
+   .. method:: run_cmd(self, cmd, *args, **kwargs) -> 'Tuple[str, str]'
+
+      Run a command using the system wide ``docker-compose`` command
+
+      If cmd is equal to ``exec``, ``exec_cmd`` will expect to be passed as a named argument.
+      If not, a :class:`ContainerException` will be thrown.
+
+      Additional positional args (*args) will be passed as command arguments when running the command.
+      Named arguments will be passed to :meth:`subprocess.run`
+      (`see their docs <https://docs.python.org/3/library/subprocess.html#subprocess.run>`_).
+
+      :Parameters: **cmd** (*str*) -- The command to run.
+
+      :returns: *Tuple[str, str]* -- The stdout and stderr resulting from the command as a tuple.
+
+
+

@@ -147,10 +147,9 @@
 </li>
 <li class="toctree-l3 has-children"><a class="reference internal" href="api/autonomy_toolkit/utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label for="toctree-checkbox-5"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="api/autonomy_toolkit/utils/atk_config/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.atk_config</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/autonomy_toolkit/utils/docker/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.docker</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/autonomy_toolkit/utils/files/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.files</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/autonomy_toolkit/utils/logger/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.logger</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/autonomy_toolkit/utils/yaml_parser/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.yaml_parser</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/autonomy_toolkit/utils/parsing/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.parsing</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="api/autonomy_toolkit/db/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.db</span></code></a></li>
@@ -294,38 +293,21 @@ made to the repository, the container will <em>not</em> be built automatically. 
 </dd>
 </dl>
 </section>
-</section>
-<section id="run">
-<h3><code class="docutils literal notranslate"><span class="pre">run</span></code><a class="headerlink" href="#run" title="Permalink to this headline">¶</a></h3>
-<p>Entrypoint for the <code class="docutils literal notranslate"><span class="pre">run</span></code> command</p>
-<p>This entrypoint provides easy running of generic docker containers. It’s exactly a wrapper of docker compose,
-where the ATK config file is used. This allows <code class="docutils literal notranslate"><span class="pre">atk</span></code> to be used.</p>
-<p>To use this entrypoint, you simply need to run the following:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>atk run
-</pre></div>
-</div>
-<p>It will search for an ATK config file in all parent directories (defaults for looking for <code class="docutils literal notranslate"><span class="pre">.atk.yml</span></code>; this can
-be overridden with <code class="docutils literal notranslate"><span class="pre">--filename</span></code>) and then use <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span> <span class="pre">run</span></code>. Not many checks are done to ensure the
-file is formatted correctly for <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span></code>, so please refer to any errors output from the command for debugging.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">usage</span><span class="p">:</span> <span class="n">atk</span> <span class="n">run</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">s</span> <span class="n">SERVICES</span> <span class="p">[</span><span class="n">SERVICES</span> <span class="o">...</span><span class="p">]]</span> <span class="p">[</span><span class="o">-</span><span class="n">f</span> <span class="n">FILENAME</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">args</span> <span class="o">...</span><span class="p">]</span>
-</pre></div>
-</div>
-<section id="Named Arguments">
-<h4>Named Arguments<a class="headerlink" href="#Named Arguments" title="Permalink to this headline">¶</a></h4>
-<dl class="option-list">
-<dt><kbd>-s, --services</kbd></dt>
-<dd><p>The services to use. Defaults to ‘all’ or whatever ‘default_services’ is set to in .atk.yml. ‘dev’ or ‘all’ is required for the ‘attach’ argument. If ‘all’ is passed, all the services are used.</p>
-</dd>
-<dt><kbd>-f, --filename</kbd></dt>
-<dd><p>The ATK config file. Defaults to ‘.atk.yml’</p>
-<p>Default: “.atk.yml”</p>
-</dd>
-<dt><kbd>--args</kbd></dt>
-<dd><p>Additional arguments to pass to the docker compose command. No logic is done on the args, the docker command will error out if there is a problem.</p>
-<p>Default: []</p>
-</dd>
-</dl>
-</section>
+<!-- ### `run` -->
+<!-- -->
+<!-- ```{autosimple} autonomy_toolkit.run._init -->
+<!-- ``` -->
+<!-- -->
+<!-- ```{argparse} -->
+<!-- --- -->
+<!-- module: autonomy_toolkit._atk_base -->
+<!-- func: _init -->
+<!-- prog: atk -->
+<!-- path: run -->
+<!-- nosubcommands: -->
+<!-- nodescription: -->
+<!-- --- -->
+<!-- ``` -->
 </section>
 <section id="db">
 <h3><code class="docutils literal notranslate"><span class="pre">db</span></code><a class="headerlink" href="#db" title="Permalink to this headline">¶</a></h3>
@@ -532,10 +514,6 @@ atk -vv db <span class="nb">read</span> configuration.yaml
 </li>
 <li><a class="reference internal" href="#sub-commands">Sub-commands</a><ul>
 <li><a class="reference internal" href="#dev"><code class="docutils literal notranslate"><span class="pre">dev</span></code></a><ul>
-<li><a class="reference internal" href="#Named Arguments">Named Arguments</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#run"><code class="docutils literal notranslate"><span class="pre">run</span></code></a><ul>
 <li><a class="reference internal" href="#Named Arguments">Named Arguments</a></li>
 </ul>
 </li>

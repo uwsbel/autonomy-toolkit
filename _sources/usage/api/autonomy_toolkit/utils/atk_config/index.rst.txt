@@ -21,7 +21,7 @@ Classes
 
 
 
-.. py:class:: ATKConfig(filename: Union[Path, str] = '.atk.yml')
+.. py:class:: ATKConfig(filename: Union[Path, str] = '.atk.yml', container_runtime: str = 'docker')
 
    Helper class that abstracts reading the ``.atk.yml`` file that defines configurations
 
@@ -34,7 +34,7 @@ Classes
       :Parameters: **\*args** -- The nested path of the required attribute, i.e. ``add_required_attribute("first_level", "second_level")`` corresponds to ``first_level: second_level: ...``.
 
 
-   .. method:: add_custom_attribute(self, *args, default: Any = None, dest: str = None, delete: bool = True)
+   .. method:: add_custom_attribute(self, *path: 'List[str]', type: type, default: Any = None, dest: str = None, delete: bool = True)
 
       Add a custom attribute to the ``autonomy-toolkit`` YAML specification.
 
@@ -42,7 +42,7 @@ Classes
       YAML specification. After being read, it will be deleted from the written ``docker compose`` generated
       config file.
 
-      The args list should begin with a list of ``len(*args)-1`` of nested keys. For instance, if a custom attribute
+      The first argument should be a list of nested keys. For instance, if a custom attribute
       should be structured like the following example, then ``add_custom_attribute("project", ...)``
       and ``add_custom_attribute("user", "name", ...)`` should be called.
 
@@ -52,7 +52,7 @@ Classes
           user:
               name: example
 
-      ``args[-1]`` should then be a type that describes the expected type of the variable. This is a required type.
+      :attr:`type` should then be a type that describes the expected type of the variable. This is a required type.
       If the parsed type is not the same as this, an error will be thrown.
 
       ``default`` is the final argument. If it is unset (i.e. remains ``None``), the attribute will be assumed to be required.
@@ -63,17 +63,50 @@ Classes
       provided the yaml config above, if ``dest`` isn't provided for the ``user: name`` attribute, it will be
       set to ``'name'``.
 
-      :Parameters: * **\*args** -- The list of arguments where the first ``len(args)-1`` represent a nested argument list (see docs) and ``args[-1]`` represents the type of the attribute.
+      :Parameters: * **path** (*List[str]*) -- The nested argument list (see docs).
+                   * **type** (*type*) -- Represents the type of the attribute.
                    * **default** (*Any*) -- The default value to set to the attribute when parsing.
                    * **dest** (*str*) -- The destination name for the variable that's generated.
                    * **delete** (*bool*) -- If False, the attribute will `not` be removed from the config file after parsing. Defaults to True.
+
+
+   .. method:: add_attribute_translation_rule(self, *path: 'List[str]', rule: Tuple[str, str])
+
+      Add a translation rule to the ``autonomy-toolkit`` YAML specification.
+
+      Translate rules are meant to aid in making the atk useable by different container runtimes.
+      As an example, singularity-compose uses "instances" whereas docker composes "services". In this instance
+      a translation such as the following would be added.
+
+      .. code-block:: python
+
+          config = ATKConfig()
+          config.add_attribute_translation_rule(rule=("services", "instances"))
+
+      The above rule will then find "services" at the root of the yaml config and replace it
+      with "instances".
+
+      .. code-block: python
+
+          config = ATKConfig()
+          config.add_attribute_translation_rule("services", "dev", rule=("before", "after"))
+
+      This example will walk up to "services->dev" and replace "before" with "after".
+
+      .. note::
+
+          The translation rules are used only when the ATK config file is written.
+          Otherwise, analagous compose terms should be refered to as they are in the ``docker compose`` docs.
+
+      :Parameters: * **path** (*List[str]*) -- The nested argument list (see docs).
+                   * **rule** (*Tuple[str, str]*) -- translation rule (from, to) such that all "from"'s are translated to "to"'s.
 
 
    .. method:: parse(self) -> bool
 
       Parse the ATK config file.
 
-      Will read in the ATK config file as a yaml file. Utilizes the :class:`YAMLParser` class as the parser.
+      Will read in the ATK config file as a yaml file. Utilizes the :class:`ATKYamlFile` class as the parser.
 
       The parser will walk through each custom attribute defined prior to :meth:`func` being called and
       evaluate the attribute. Checks will be made to verify the types are correct, and if required attributes
@@ -83,38 +116,44 @@ Classes
       :returns: *bool* -- whether the file was successfully parsed
 
 
-   .. method:: generate_compose(self, overwrite_lists: bool = False, use_default_compose: bool = True)
+   .. method:: generate_compose(self, services: List[str] = [], overwrite_lists: bool = False, use_default_compose: bool = True)
 
-      Generates a ``docker-compose.yml`` specification file that's used by ``docker compose``
+      Generates a ``atk-compose.yml`` specification file that's used by ``docker compose``
 
       This method will grab the defaults that are shipped with ``autonomy-toolkit`` and merge them with
       the custom configurations provided through the custom yaml config file.
 
-      The file will then be written to :attr:`self.docker_compose.path`.
+      The file will `not` be written. See :meth:`write_compose`.
 
-      :Parameters: * **overwrite_lists** (*bool*) -- If true, all lists in the default that conflict with lists in the custom config will be overwritten. If false, the lists will be extended.
+      :Parameters: * **services** (*List[str]*) -- List of services to maintain in the compose file. If none are passed, all are kept.
+                   * **overwrite_lists** (*bool*) -- If true, all lists in the default that conflict with lists in the custom config will be overwritten. If false, the lists will be extended.
                    * **use_default_compose** (*bool*) -- If false, will not combine the ATK config with the defaults. Defaults to True.
 
 
-   .. method:: overwrite_compose(self, compose: dict)
+   .. method:: write_compose(self, compose: dict = None)
 
-      Overwrites the ``docker compose`` config file with a custom dictionary which is parsed as yaml
+      Writes the ``docker compose`` config file.
 
-      :Parameters: **compose** (*dict*) -- The dictionary to parse as yaml to be used to overwrite the compose file.
+      If ``compose`` is not None, the ``docker compose`` config file will be overwritten
+      with a custom dictionary which is parsed as yaml.
+
+      :Parameters: **compose** (*dict*) -- The dictionary to parse as yaml to be used to overwrite the compose file. Defaults to None (unused).
 
 
-   .. method:: generate_ignore(self)
+   .. method:: generate_dockerignore(self)
 
       Generates a ``.dockerignore`` file that's used by ``docker``
 
 
    .. method:: update_user_count(self, val: int)
 
-      Update the user count file to keep track of how many instances of the ATK container system has been initialized.
+      Update the user count file to keep track of how many instances of the ATK
+      container system has been initialized.
 
-      An early issue with the ``autonomy-toolkit`` package was that if there were two instances of a container running,
-      when one would exit, the clean-up process would take place (i.e. docker compose file would be deleted, etc.),
-      but this wasn't desired. The user count was introduced to alleviate this issue, where the number of containers
+      An early issue with the ``autonomy-toolkit`` package was that if there were
+      two instances of a container running, when one would exit, the clean-up process
+      would take place (i.e. docker compose file would be deleted, etc.), but this wasn't
+      desired. The user count was introduced to alleviate this issue, where the number of containers
       are kept track of. Only when there are zero current "users" will cleanup take place.
 
       This is implemented through a file that's constantly updated as new users are added/removed.
@@ -132,7 +171,8 @@ Classes
 
       Cleanup the system.
 
-      Cleanup consists of deleting the ``docker compose`` config and ignore files, as well as the ``autonomy-toolkit`` user count file
+      Cleanup consists of deleting the ``docker compose`` config and ignore files, as well as
+      the ``autonomy-toolkit`` user count file
 
       :Parameters: **keep_compose** (*bool*) -- If true, will `not` delete the ``docker compose`` config file. Otherwise, it will be deleted.
 

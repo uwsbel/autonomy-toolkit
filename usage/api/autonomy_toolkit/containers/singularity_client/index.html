@@ -1,0 +1,343 @@
+<!doctype html>
+<html class="no-js">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<link rel="index" title="Index" href="../../../../../genindex.html" /><link rel="search" title="Search" href="../../../../../search.html" />
+
+    <link rel="shortcut icon" href="../../../../../_static/cropped-SBEL-32x32.png"/><meta name="generator" content="sphinx-3.4.2, furo 2020.12.30.beta24"/>
+        <title>autonomy_toolkit.containers.singularity_client - Autonomous Vehicle Toolbox 0.0.52 documentation</title>
+      <link rel="stylesheet" href="../../../../../_static/styles/furo.css?digest=33d2fc4f3f180ec1ffc6524e273e21d7d58cbe49">
+    <link rel="stylesheet" href="../../../../../_static/pygments.css">
+    <link media="(prefers-color-scheme: dark)" rel="stylesheet" href="../../../../../_static/pygments_dark.css">
+    
+
+
+<style>
+  :root {
+    --color-code-background: #f0f0f0;
+  --color-code-foreground: black;
+  
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+  }
+
+  /* For allowing end-user-specific overrides */
+  .override-light {
+    --color-code-background: #f0f0f0;
+  --color-code-foreground: black;
+  
+  }
+  .override-dark {
+    --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+  }
+</style><link rel="stylesheet" type="text/css" href="../../../../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/css/custom.css" />
+    <link rel="stylesheet" href="../../../../../_static/styles/furo-extensions.css?digest=26485485040e7aaf717c13fd0188a5ad2c2deb60">
+    <script id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
+    <script defer="defer" src="../../../../../_static/jquery.js"></script>
+    <script defer="defer" src="../../../../../_static/underscore.js"></script>
+    <script defer="defer" src="../../../../../_static/doctools.js"></script>
+    <script defer src="../../../../../_static/scripts/main.js?digest=e931d09b2a40c1bb82b542effe772014573baf67"></script></head>
+  <body dir="">
+    
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+      stroke-width="1.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+      <path stroke="none" d="M0 0h24v24H0z"/>
+      <line x1="4" y1="6" x2="20" y2="6" />
+      <line x1="10" y1="12" x2="20" y2="12" />
+      <line x1="6" y1="18" x2="20" y2="18" />
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+      class="feather feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+      class="feather feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<div class="announcement">
+  <aside class="announcement-content">
+     
+        <a style="text-decoration: none; color: white;" 
+           href="https://sbel.wisc.edu">
+           <img src="https://github.com/uwsbel/autonomy-toolkit/blob/master/docs/_static/cropped-SBEL-192x192.png?raw=true" 
+                style="vertical-align: middle; display: inline; padding-right: 7.5px; height: 20px;"/>
+           Checkout our website!
+        </a>
+     
+  </aside>
+</div>
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../../../../index.html"><div class="brand">Autonomous Vehicle Toolbox 0.0.52 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../../../index.html">
+  
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo only-light" src="../../../../../_static/SBEL-light.png" alt="Light Logo"/>
+    <img class="sidebar-logo only-dark" src="../../../../../_static/SBEL-dark.png" alt="Dark Logo"/>
+  </div>
+  
+  
+</a><form class="sidebar-search-container" method="get" action="../../../../../search.html">
+  <input class="sidebar-search" placeholder=Search name="q">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../index.html">Home</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../background.html">Background</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../setup.html">Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../autonomy-research-testbed.html">Autonomy Research Testbed</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../../tutorials/index.html">Tutorials</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label for="toctree-checkbox-1"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../tutorials/using-the-development-environment/README.html">Using the ATK Development Environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../tutorials/writing-an-atk-yml-file/README.html">Writing an <code class="docutils literal notranslate"><span class="pre">.atk.yml</span></code> File</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../index.html">API Reference</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label for="toctree-checkbox-2"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../cli.html">CLI Documentation</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label for="toctree-checkbox-3"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../ros/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.ros</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label for="toctree-checkbox-4"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../ros/messages/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.ros.messages</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label for="toctree-checkbox-5"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../utils/atk_config/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.atk_config</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../utils/files/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.files</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../utils/logger/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.logger</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../utils/parsing/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.parsing</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../db/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.db</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../dev/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.dev</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../run/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.run</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../contributing.html">Contributing</a></li>
+</ul>
+<p><span class="caption-text">External Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://pypi.org/project/autonomy-toolkit/">PyPI</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/uwsbel/autonomy-toolkit">Github</a></li>
+</ul>
+
+</div>
+</div>
+      </div>
+      
+    </div>
+  </aside>
+  <main class="main">
+    <div class="content">
+      <article role="main">
+        <label class="toc-overlay-icon toc-content-icon" for="__toc">
+          <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+        </label>
+        <section id="module-autonomy_toolkit.containers.singularity_client">
+<span id="autonomy-toolkit-containers-singularity-client"></span><h1><a class="reference internal" href="#module-autonomy_toolkit.containers.singularity_client" title="autonomy_toolkit.containers.singularity_client"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.containers.singularity_client</span></code></a><a class="headerlink" href="#module-autonomy_toolkit.containers.singularity_client" title="Permalink to this headline">¶</a></h1>
+<p>Helpful utilities for interacting with singularity.</p>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h2>
+<section id="classes">
+<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h3>
+<div class="table-wrapper"><table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%"/>
+<col style="width: 90%"/>
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#autonomy_toolkit.containers.singularity_client.SingularityClient" title="autonomy_toolkit.containers.singularity_client.SingularityClient"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SingularityClient</span></code></a></p></td>
+<td><p>Helper class that provides the <code class="xref py py-meth docutils literal notranslate"><span class="pre">run()</span></code> method to execute a command using the <code class="docutils literal notranslate"><span class="pre">singularity</span> <span class="pre">compose</span></code></p></td>
+</tr>
+</tbody>
+</table></div>
+<dl class="py class">
+<dt id="autonomy_toolkit.containers.singularity_client.SingularityClient">
+<em class="property">class </em><code class="sig-name descname">SingularityClient</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">config</span><span class="p">:</span> <span class="n">ATKConfig</span></em>, <em class="sig-param"><span class="n">project</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">compose_file</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'.atk-compose.yml'</span></em>, <em class="sig-param"><span class="n">services</span><span class="o">=</span><span class="default_value">[]</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/autonomy_toolkit/containers/singularity_client.html#SingularityClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.containers.singularity_client.SingularityClient" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../container_client/index.html#autonomy_toolkit.containers.container_client.ContainerClient" title="autonomy_toolkit.containers.container_client.ContainerClient"><code class="xref py py-class docutils literal notranslate"><span class="pre">autonomy_toolkit.containers.container_client.ContainerClient</span></code></a></p>
+<p>Helper class that provides the <a class="reference internal" href="#autonomy_toolkit.containers.singularity_client.SingularityClient.run" title="autonomy_toolkit.containers.singularity_client.SingularityClient.run"><code class="xref py py-meth docutils literal notranslate"><span class="pre">run()</span></code></a> method to execute a command using the <code class="docutils literal notranslate"><span class="pre">singularity</span> <span class="pre">compose</span></code>
+entrypoint.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>project</strong> (<em>str</em>) – The name of the project to use. Analagous with <code class="docutils literal notranslate"><span class="pre">--project-name</span></code> in <code class="docutils literal notranslate"><span class="pre">singularity</span> <span class="pre">compose</span></code>.</p></li>
+<li><p><strong>services</strong> (<em>List[str]</em>) – List of services to use when running the <code class="docutils literal notranslate"><span class="pre">singularity</span> <span class="pre">compose</span></code> command.</p></li>
+<li><p><strong>compose_file</strong> (<em>str</em>) – The name of the compose file to use. Defaults to <code class="docutils literal notranslate"><span class="pre">.atk-compose.yml</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="autonomy_toolkit.containers.singularity_client.SingularityClient.is_installed">
+<code class="sig-name descname">is_installed</code><span class="sig-paren">(</span><span class="sig-paren">)</span> → bool<a class="reference internal" href="../../../../../_modules/autonomy_toolkit/containers/singularity_client.html#SingularityClient.is_installed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.containers.singularity_client.SingularityClient.is_installed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks whether the docker client binary file is present and whether docker compose v2 is installed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><em>bool</em> – True if everything checks out, False if not.</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt id="autonomy_toolkit.containers.singularity_client.SingularityClient.up">
+<code class="sig-name descname">up</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em><span class="sig-paren">)</span> → bool<a class="reference internal" href="../../../../../_modules/autonomy_toolkit/containers/singularity_client.html#SingularityClient.up"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.containers.singularity_client.SingularityClient.up" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bring up the containers.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><em>bool</em> – Whether the command succeeded.</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt id="autonomy_toolkit.containers.singularity_client.SingularityClient.run">
+<code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">service</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">exec_cmd</span></em><span class="sig-paren">)</span> → bool<a class="reference internal" href="../../../../../_modules/autonomy_toolkit/containers/singularity_client.html#SingularityClient.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.containers.singularity_client.SingularityClient.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run a command in a container.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><em>bool</em> – Whether the command succeeded.</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt id="autonomy_toolkit.containers.singularity_client.SingularityClient.shell">
+<code class="sig-name descname">shell</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">service</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em><span class="sig-paren">)</span> → bool<a class="reference internal" href="../../../../../_modules/autonomy_toolkit/containers/singularity_client.html#SingularityClient.shell"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.containers.singularity_client.SingularityClient.shell" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enter the shell of the given container.</p>
+<p>Should check for the USERSHELLPATH environment variable in the container.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>service</strong> (<em>str</em>) – The service to enter</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt id="autonomy_toolkit.containers.singularity_client.SingularityClient.run_cmd">
+<code class="sig-name descname">run_cmd</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">cmd</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span> → Tuple[str, str]<a class="reference internal" href="../../../../../_modules/autonomy_toolkit/containers/singularity_client.html#SingularityClient.run_cmd"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.containers.singularity_client.SingularityClient.run_cmd" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run a command using the system wide <code class="docutils literal notranslate"><span class="pre">docker-compose</span></code> command</p>
+<p>If cmd is equal to <code class="docutils literal notranslate"><span class="pre">exec</span></code>, <code class="docutils literal notranslate"><span class="pre">exec_cmd</span></code> will expect to be passed as a named argument.
+If not, a <code class="xref py py-class docutils literal notranslate"><span class="pre">ContainerException</span></code> will be thrown.</p>
+<p>Additional positional args (<a href="#id1"><span class="problematic" id="id2">*</span></a>args) will be passed as command arguments when running the command.
+Named arguments will be passed to <code class="xref py py-meth docutils literal notranslate"><span class="pre">subprocess.run()</span></code>
+(<a class="reference external" href="https://docs.python.org/3/library/subprocess.html#subprocess.run">see their docs</a>).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>cmd</strong> (<em>str</em>) – The command to run.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>Tuple[str, str]</em> – The stdout and stderr resulting from the command as a tuple.</p>
+</dd>
+</dl>
+</dd></dl>
+</dd></dl>
+</section>
+</section>
+</section>
+
+      </article>
+      <footer>
+        
+        <div class="related-pages">
+          
+          
+        </div>
+
+        <div class="related-information">
+              Copyright &#169; 2022, Simulation Based Engineering Laboratory
+            |
+            Built with <a href="https://www.sphinx-doc.org/">Sphinx</a>
+              and
+              <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+              <a href="https://github.com/pradyunsg/furo">Furo theme</a>.
+            |
+            <a class="muted-link" href="../../../../../_sources/usage/api/autonomy_toolkit/containers/singularity_client/index.rst.txt"
+               rel="nofollow">
+              Show Source
+            </a>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            Contents
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.containers.singularity_client</span></code></a><ul>
+<li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
+<li><a class="reference internal" href="#classes">Classes</a><ul>
+<li><a class="reference internal" href="#autonomy_toolkit.containers.singularity_client.SingularityClient">SingularityClient</a><ul>
+<li><a class="reference internal" href="#autonomy_toolkit.containers.singularity_client.SingularityClient.is_installed">is_installed</a></li>
+<li><a class="reference internal" href="#autonomy_toolkit.containers.singularity_client.SingularityClient.up">up</a></li>
+<li><a class="reference internal" href="#autonomy_toolkit.containers.singularity_client.SingularityClient.run">run</a></li>
+<li><a class="reference internal" href="#autonomy_toolkit.containers.singularity_client.SingularityClient.shell">shell</a></li>
+<li><a class="reference internal" href="#autonomy_toolkit.containers.singularity_client.SingularityClient.run_cmd">run_cmd</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </main>
+</div>
+  </body>
+</html>

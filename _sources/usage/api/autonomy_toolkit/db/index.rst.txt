@@ -67,10 +67,6 @@ Functions
 
        Currently only local databases are supported with the :meth:`~push` and :meth:`~pull` commands.
 
-       .. raw:: html
-
-          </div></div>
-
    .. method:: push(self, bag: Union['ATKDataFile', str], keep: bool = True)
 
       Push a database file to the ATK database.
