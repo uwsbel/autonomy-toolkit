@@ -44,8 +44,8 @@ class SingularityClient(ContainerClient):
         self._binary = Path(singularity_sys)
 
         # Make custom updates to the config file
-        self._tmpdir = None
-        self._build_recipe = None
+        self._tmpdirs = []
+        self._build_recipes = []
         self._update_config()
 
     def is_installed() -> bool:
@@ -91,8 +91,9 @@ class SingularityClient(ContainerClient):
             if "build" in service:
                 build = service["build"]
 
-                self._tmpdir = tempfile.TemporaryDirectory(dir=Path(".").resolve())
-                build["options"] = [f"tmpdir={self._tmpdir.name}", "fakeroot"]
+                tmpdir = tempfile.TemporaryDirectory(dir=Path(".").resolve())
+                build["options"] = [f"tmpdir={tmpdir.name}", "fakeroot"]
+                self._tmpdirs.append(tmpdir)
 
                 # The name for the build definition in singularity compose is "recipe", not "dockerfile"
                 if "dockerfile" in build:
@@ -112,7 +113,7 @@ class SingularityClient(ContainerClient):
                     temp_recipe_file.write(temp_recipe)
 
                     build["recipe"] = temp_recipe
-                    self._build_recipe = temp_recipe
+                    self._build_recipes.append(temp_recipe)
 
         self.config.write_compose(compose)
 
@@ -189,8 +190,9 @@ class SingularityClient(ContainerClient):
 
     def __del__(self):
         import os
-        if self._build_recipe is not None and os.path.exists(self._build_recipe):
-            os.unlink(self._build_recipe)
+        for build_recipe in self._build_recipes:
+            if os.path.exists(build_recipe):
+                os.unlink(build_recipe)
 
-        if self._tmpdir is not None:
-            self._tmpdir.cleanup()
+        for tmpdir in self._tmpdirs:
+            tmpdir.cleanup()
