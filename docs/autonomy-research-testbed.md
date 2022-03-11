@@ -99,6 +99,16 @@ The CAD file for the camera mount can be found [here](https://uwmadison.box.com/
 The frame to hold the camera itself can be found on Thingiverse [here](https://www.thingiverse.com/thing:4755911)
 
 
+
+
+### Wiring Diagram
+This wiring diagram shows how the ART vehicle was configured to provide isolated power to the motors and the electronics as well as the communication lines between the arduino and the electronic speed controller. This should be sufficient for replicating the wiring modifications that were made to the base vehicle, but please reach out with any questions or concerns.
+
+<iframe src="https://uwmadison.app.box.com/embed/s/5h929af660tlvfm4bg3a3fgk7tjjutb4?sortColumn=date&view=list" width="800" height="600" frameborder="0" allowfullscreen webkitallowfullscreen msallowfullscreen></iframe>
+
+
+
+
 ## Autonomy Stack
 
 ### Perception
