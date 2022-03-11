@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
     <link rel="shortcut icon" href="../../../_static/cropped-SBEL-32x32.png"/><meta name="generator" content="sphinx-3.4.2, furo 2020.12.30.beta24"/>
-        <title>autonomy_toolkit.containers.singularity_client - Autonomous Vehicle Toolbox 0.0.53 documentation</title>
+        <title>autonomy_toolkit.containers.singularity_client - Autonomous Vehicle Toolbox 0.0.54 documentation</title>
       <link rel="stylesheet" href="../../../_static/styles/furo.css?digest=33d2fc4f3f180ec1ffc6524e273e21d7d58cbe49">
     <link rel="stylesheet" href="../../../_static/pygments.css">
     <link media="(prefers-color-scheme: dark)" rel="stylesheet" href="../../../_static/pygments_dark.css">
@@ -103,7 +103,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">Autonomous Vehicle Toolbox 0.0.53 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">Autonomous Vehicle Toolbox 0.0.54 documentation</div></a>
     </div>
     <div class="header-right">
       <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
@@ -225,8 +225,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_binary</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">singularity_sys</span><span class="p">)</span>
 
         <span class="c1"># Make custom updates to the config file</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_tmpdir</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_build_recipe</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tmpdirs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_build_recipes</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_update_config</span><span class="p">()</span>
 
 <div class="viewcode-block" id="SingularityClient.is_installed"><a class="viewcode-back" href="../../../usage/api/autonomy_toolkit/containers/singularity_client/index.html#autonomy_toolkit.containers.singularity_client.SingularityClient.is_installed">[docs]</a>    <span class="k">def</span> <span class="nf">is_installed</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
@@ -272,8 +272,9 @@
             <span class="k">if</span> <span class="s2">"build"</span> <span class="ow">in</span> <span class="n">service</span><span class="p">:</span>
                 <span class="n">build</span> <span class="o">=</span> <span class="n">service</span><span class="p">[</span><span class="s2">"build"</span><span class="p">]</span>
 
-                <span class="bp">self</span><span class="o">.</span><span class="n">_tmpdir</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">TemporaryDirectory</span><span class="p">(</span><span class="nb">dir</span><span class="o">=</span><span class="n">Path</span><span class="p">(</span><span class="s2">"."</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">())</span>
-                <span class="n">build</span><span class="p">[</span><span class="s2">"options"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span><span class="s2">"tmpdir=</span><span class="si">{self._tmpdir.name}</span><span class="s2">"</span><span class="p">,</span> <span class="s2">"fakeroot"</span><span class="p">]</span>
+                <span class="n">tmpdir</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">TemporaryDirectory</span><span class="p">(</span><span class="nb">dir</span><span class="o">=</span><span class="n">Path</span><span class="p">(</span><span class="s2">"."</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">())</span>
+                <span class="n">build</span><span class="p">[</span><span class="s2">"options"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span><span class="s2">"tmpdir=</span><span class="si">{tmpdir.name}</span><span class="s2">"</span><span class="p">,</span> <span class="s2">"fakeroot"</span><span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_tmpdirs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tmpdir</span><span class="p">)</span>
 
                 <span class="c1"># The name for the build definition in singularity compose is "recipe", not "dockerfile"</span>
                 <span class="k">if</span> <span class="s2">"dockerfile"</span> <span class="ow">in</span> <span class="n">build</span><span class="p">:</span>
@@ -293,7 +294,7 @@
                     <span class="n">temp_recipe_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">temp_recipe</span><span class="p">)</span>
 
                     <span class="n">build</span><span class="p">[</span><span class="s2">"recipe"</span><span class="p">]</span> <span class="o">=</span> <span class="n">temp_recipe</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">_build_recipe</span> <span class="o">=</span> <span class="n">temp_recipe</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_build_recipes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">temp_recipe</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">write_compose</span><span class="p">(</span><span class="n">compose</span><span class="p">)</span>
 
@@ -370,11 +371,12 @@
 
     <span class="k">def</span> <span class="nf">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="kn">import</span> <span class="nn">os</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_recipe</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_recipe</span><span class="p">):</span>
-            <span class="n">os</span><span class="o">.</span><span class="n">unlink</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_recipe</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">build_recipe</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_recipes</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">build_recipe</span><span class="p">):</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">unlink</span><span class="p">(</span><span class="n">build_recipe</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tmpdir</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_tmpdir</span><span class="o">.</span><span class="n">cleanup</span><span class="p">()</span></div>
+        <span class="k">for</span> <span class="n">tmpdir</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tmpdirs</span><span class="p">:</span>
+            <span class="n">tmpdir</span><span class="o">.</span><span class="n">cleanup</span><span class="p">()</span></div>
 </pre></div>
       </article>
       <footer>
