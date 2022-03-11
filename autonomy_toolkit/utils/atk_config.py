@@ -6,7 +6,7 @@ Abstracted helper class :class:`ATKConfig` used for reading/writing configuratio
 import autonomy_toolkit
 from autonomy_toolkit.utils.logger import LOGGER
 from autonomy_toolkit.utils.files import search_upwards_for_file, unlink_file
-from autonomy_toolkit.utils.yaml_parser import YAMLParser
+from autonomy_toolkit.utils.parsing import ATKYamlFile, ATKTextFile, replace_vars
 
 # Other imports
 from typing import Union
@@ -32,7 +32,7 @@ class ATKConfig:
         def __str__(self):
             return str(self.value)
 
-    def __init__(self, filename: Union[Path, str] = '.atk.yml'):
+    def __init__(self, filename: Union[Path, str] = '.atk.yml', container_runtime: str = "docker"):
         # First, grab the atk file
         self.atk_yml_path = search_upwards_for_file(str(filename))
         if self.atk_yml_path is None:
@@ -40,23 +40,31 @@ class ATKConfig:
                 f"No '{filename}' file was found in this directory or any parent directories. Make sure you are running this command in an autonomy-toolkit compatible repository.")
             exit(-1)
 
+        self.container_runtime = container_runtime
+
         # Fill out file paths we'll create later on
         self.root = self.atk_yml_path.parent
-        self.docker_compose_path = self.root / ".docker-compose.yml"
-        self.docker_ignore_path = self.root / ".dockerignore"
+        self.compose_path = self.root / ".atk-compose.yml"
         self.atk_user_count_path = self.root / ".atk.user_count"
         self.atk_root = Path(autonomy_toolkit.__file__).parent
+
+        # Docker specifics
+        self.docker_ignore_path = self.root / ".dockerignore"
 
         # Add some required attributes
         self._required_attributes = []
 
         # Add some default custom attributes
         self._custom_attributes = {} 
-        self.add_custom_attribute("project", str)
-        self.add_custom_attribute("project_root", str, default=str(self.root))
-        self.add_custom_attribute("external", dict, default={})
+        self.add_custom_attribute("project", type=str)
+        self.add_custom_attribute("project_root", type=str, default=str(self.root))
+        self.add_custom_attribute("external", type=dict, default={})
 
-        self._config : 'YAMLParser' = None
+        # Translate rules are meant to aid in making the atk useable by different container runtimes
+        # As an example, singularity-compose uses instances whereas docker composes services
+        self._attribute_translation_rules = []
+
+        self._config : 'ATKYamlFile' = None
 
     def add_required_attribute(self, *args):
         """
@@ -69,7 +77,7 @@ class ATKConfig:
         """
         self._required_attributes.append(args)
 
-    def add_custom_attribute(self, *args, default: 'Any' = None, dest: 'str' = None, delete: bool = True):
+    def add_custom_attribute(self, *path: 'List[str]', type: 'type', default: 'Any' = None, dest: 'str' = None, delete: bool = True):
         """
         Add a custom attribute to the ``autonomy-toolkit`` YAML specification.
 
@@ -77,7 +85,7 @@ class ATKConfig:
         YAML specification. After being read, it will be deleted from the written ``docker compose`` generated
         config file.
 
-        The args list should begin with a list of ``len(*args)-1`` of nested keys. For instance, if a custom attribute
+        The first argument should be a list of nested keys. For instance, if a custom attribute
         should be structured like the following example, then ``add_custom_attribute("project", ...)`` 
         and ``add_custom_attribute("user", "name", ...)`` should be called.
 
@@ -87,7 +95,7 @@ class ATKConfig:
             user:
                 name: example
 
-        ``args[-1]`` should then be a type that describes the expected type of the variable. This is a required type.
+        :attr:`type` should then be a type that describes the expected type of the variable. This is a required type.
         If the parsed type is not the same as this, an error will be thrown.
 
         ``default`` is the final argument. If it is unset (i.e. remains ``None``), the attribute will be assumed to be required.
@@ -99,22 +107,54 @@ class ATKConfig:
         set to ``'name'``.
 
         Args:
-            *args: The list of arguments where the first ``len(args)-1`` represent a nested argument list (see docs) and ``args[-1]`` represents the type of the attribute.
+            path (List[str]): The nested argument list (see docs).
+            type (type): Represents the type of the attribute.
             default (Any): The default value to set to the attribute when parsing.
             dest (str): The destination name for the variable that's generated.
             delete (bool): If False, the attribute will `not` be removed from the config file after parsing. Defaults to True.
         """
-        path = args[:-1]
-        type = args[-1]
-
         # Create the attribute and add it
         attr = self._Attr(path, type, default=default, delete=delete)
         self._custom_attributes[path[-1] if dest is None else dest] = attr
 
+    def add_attribute_translation_rule(self, *path: 'List[str]', rule: 'Tuple[str, str]'):
+        """
+        Add a translation rule to the ``autonomy-toolkit`` YAML specification.
+
+        Translate rules are meant to aid in making the atk useable by different container runtimes.
+        As an example, singularity-compose uses "instances" whereas docker composes "services". In this instance
+        a translation such as the following would be added.
+
+        .. code-block:: python
+
+            config = ATKConfig()
+            config.add_attribute_translation_rule(rule=("services", "instances"))
+
+        The above rule will then find "services" at the root of the yaml config and replace it
+        with "instances".
+
+        .. code-block: python
+            
+            config = ATKConfig()
+            config.add_attribute_translation_rule("services", "dev", rule=("before", "after"))
+
+        This example will walk up to "services->dev" and replace "before" with "after".
+
+        .. note::
+
+            The translation rules are used only when the ATK config file is written. 
+            Otherwise, analagous compose terms should be refered to as they are in the ``docker compose`` docs.
+
+        Args:
+            path (List[str]): The nested argument list (see docs).
+            rule (Tuple[str, str]): translation rule (from, to) such that all "from"'s are translated to "to"'s.
+        """
+        self._attribute_translation_rules.append((path, rule))
+
     def parse(self) -> bool:
         """Parse the ATK config file.
 
-        Will read in the ATK config file as a yaml file. Utilizes the :class:`YAMLParser` class as the parser.
+        Will read in the ATK config file as a yaml file. Utilizes the :class:`ATKYamlFile` class as the parser.
 
         The parser will walk through each custom attribute defined prior to :meth:`func` being called and 
         evaluate the attribute. Checks will be made to verify the types are correct, and if required attributes
@@ -126,7 +166,7 @@ class ATKConfig:
         """
 
         # First read in the config file
-        self._config = YAMLParser(self.atk_yml_path)
+        self._config = ATKYamlFile(self.atk_yml_path)
 
         # For each required attribute, check that it exists
         for path in self._required_attributes:
@@ -151,97 +191,99 @@ class ATKConfig:
             if attr.delete:
                 del self._config[attr.name[0]]
 
-        # Need to eval custom_attributes twice since they might be nested
-        # TODO: Fix this logic
-        class _CustomAttrs(dict):
-            """Helper class that won't through a KeyError when a key isn't found when using ``eval``
-            """
-            def __missing__(self, key):
-                return key
-        custom_attributes = {k: v.value for k,v in self._custom_attributes.items() if v.value != {}}
-        custom_attributes = yaml.safe_load(eval(f"f'''{yaml.dump(custom_attributes)}'''", _CustomAttrs(custom_attributes)))
-        custom_attributes = yaml.safe_load(eval(f"f'''{yaml.dump(custom_attributes)}'''", custom_attributes))
+        # Users may use mappings in custom attributes, so replace vars here
+        temp = {k: v.value for k,v in self._custom_attributes.items()} # map only to the values
+        self._custom_attributes = replace_vars(temp, temp)
 
         # For each custom attribute, make it a class member for easy grabbing
         for k,v in self._custom_attributes.items():
             # Add the custom attribute as a class member for easy grabbing
             if not hasattr(self, k):
-                if k in custom_attributes:
-                    setattr(self, k, custom_attributes[k])
-                else:
-                    setattr(self, k, v.value)
-
-        self._custom_attributes = custom_attributes
+                setattr(self, k, v)
 
         return True
 
-    def generate_compose(self, overwrite_lists: bool = False, use_default_compose: bool = True):
-        """Generates a ``docker-compose.yml`` specification file that's used by ``docker compose``
+    def generate_compose(self, services: 'List[str]' = [], overwrite_lists: bool = False, use_default_compose: bool = True):
+        """Generates a ``atk-compose.yml`` specification file that's used by ``docker compose``
 
         This method will grab the defaults that are shipped with ``autonomy-toolkit`` and merge them with
         the custom configurations provided through the custom yaml config file.
 
-        The file will then be written to :attr:`self.docker_compose.path`.
+        The file will `not` be written. See :meth:`write_compose`.
 
         Args:
+            services (List[str]): List of services to maintain in the compose file. If none are passed, all are kept.
             overwrite_lists (bool): If true, all lists in the default that conflict with lists in the custom config will be overwritten. If false, the lists will be extended.
             use_default_compose (bool): If false, will not combine the ATK config with the defaults. Defaults to True.
         """
 
         if use_default_compose:
 
-            # Load in the default docker-compose.yml file
-            default_configs = YAMLParser(self.atk_root / "docker" / "default-compose.yml")
+            # Load in the default atk-compose.yml file
+            default_configs = ATKYamlFile(self.atk_root / "containers" / "config" / "default-compose.yml")
 
             # Merge the defaults with the atk config
-            compose_config = ATKConfig._merge_dictionaries(self._config.get_data(), default_configs.get_data(), overwrite_lists)
+            merged_data = ATKConfig._merge_dictionaries(self._config.data, default_configs.data, overwrite_lists)
+            compose_config = ATKYamlFile(text=yaml.dump(merged_data))
 
         else:
-            compose_config = self._config.get_data()
+            compose_config = self._config
 
-        # Run an f-string eval on the entire file
-        compose_config = eval(f"f'''{yaml.dump(compose_config)}'''", self._custom_attributes)
-        
-        # Write the docker compose file
-        docker_compose_path = str(self.docker_compose_path)
-        with open(docker_compose_path, 'w') as f:
-            f.write(compose_config)
+        # Update the compose config to only include services that are in the services argument
+        if compose_config.contains("services") and len(services):
+            compose_config.set("services", value={k: v for k,v in compose_config.data["services"].items() if k in services})
+            
+        # Walk through translations and update any, if desired
+        for path, (rfrom, rto) in self._attribute_translation_rules:
+            compose_config.set(*[*path, rfrom], value=rto, update_key=True)
 
-        self.compose = yaml.safe_load(compose_config)
+        # Do final variable replacement
+        compose_config.replace_vars(self._custom_attributes)
 
-    def overwrite_compose(self, compose: dict):
-        """Overwrites the ``docker compose`` config file with a custom dictionary which is parsed as yaml
+        # Save vars
+        self.compose_config = compose_config
+        self.compose = compose_config.data
+
+    def write_compose(self, compose: dict = None):
+        """Writes the ``docker compose`` config file. 
+
+        If ``compose`` is not None, the ``docker compose`` config file will be overwritten 
+        with a custom dictionary which is parsed as yaml.
 
         Args:
-            compose (dict): The dictionary to parse as yaml to be used to overwrite the compose file.
+            compose (dict): The dictionary to parse as yaml to be used to overwrite the compose file. Defaults to None (unused).
         """
-        # Write the docker compose file
-        with open(self.docker_compose_path, 'w') as f:
-            f.write(yaml.dump(compose))
 
-    def generate_ignore(self):
+        if compose is not None:
+            # Update vars
+            self.compose_config.data = compose
+            self.compose = compose
+
+        # Write the compose file
+        self.compose_config.write(self.compose_path)
+
+    def generate_dockerignore(self):
         """Generates a ``.dockerignore`` file that's used by ``docker``
         """
 
         # First grab the defaults
-        with open(self.atk_root / "docker" / "dockerignore", 'r') as f:
-            ignore_text = f.read()
+        ignore_text = ATKTextFile(self.atk_root / "containers" / "config" / "dockerignore")
 
         # Then concatenate with the existing dockerignore file, if there is one
         if (existing_ignore := search_upwards_for_file('.dockerignore')) is not None:
-            with open(existing_ignore, 'r') as f:
-                ignore_text += f.read()
+            ignore_text += ATKTextFile(existing_ignore)
 
         # And finally, write the file back to the dockerignore path
-        with open(self.docker_ignore_path, "w") as f:
-            f.write(ignore_text)
+        ignore_text.write(self.docker_ignore_path)
 
     def update_user_count(self, val: int):
-        """Update the user count file to keep track of how many instances of the ATK container system has been initialized.
+        """Update the user count file to keep track of how many instances of the ATK 
+        container system has been initialized.
 
-        An early issue with the ``autonomy-toolkit`` package was that if there were two instances of a container running,
-        when one would exit, the clean-up process would take place (i.e. docker compose file would be deleted, etc.),
-        but this wasn't desired. The user count was introduced to alleviate this issue, where the number of containers
+        An early issue with the ``autonomy-toolkit`` package was that if there were 
+        two instances of a container running, when one would exit, the clean-up process 
+        would take place (i.e. docker compose file would be deleted, etc.), but this wasn't 
+        desired. The user count was introduced to alleviate this issue, where the number of containers
         are kept track of. Only when there are zero current "users" will cleanup take place.
 
         This is implemented through a file that's constantly updated as new users are added/removed.
@@ -256,30 +298,33 @@ class ATKConfig:
         Returns:
             int: The number of current members (including the changes introduced by this method call)
         """
-        num = 0
 
         # First, read the existing file
-        if Path(self.atk_user_count_path).exists():
-            with open(self.atk_user_count_path, 'r') as f:
-                num = int(f.read())
+        if not Path(self.atk_user_count_path).exists():
+            atk_user_count_file = ATKTextFile(self.atk_user_count_path, create=True)
 
-        num += val
-        with open(self.atk_user_count_path, 'w') as f:
-            f.write(str(num))
+            # Start out with it being zero
+            atk_user_count_file.data = "0"
+            atk_user_count_file.write(self.atk_user_count_path)
+        else:
+            atk_user_count_file = ATKTextFile(self.atk_user_count_path)
 
-        return num
+        atk_user_count_file.data = str(int(atk_user_count_file.data) + val)
+        atk_user_count_file.write(self.atk_user_count_path)
+
+        return atk_user_count_file.data
 
     def cleanup(self, keep_compose: bool = False):
         """Cleanup the system.
 
-        Cleanup consists of deleting the ``docker compose`` config and ignore files, as well as the ``autonomy-toolkit`` user count file
+        Cleanup consists of deleting the ``docker compose`` config and ignore files, as well as 
+        the ``autonomy-toolkit`` user count file
 
         Args:
             keep_compose (bool): If true, will `not` delete the ``docker compose`` config file. Otherwise, it will be deleted.
         """
         unlink_file(self.atk_user_count_path)
-        unlink_file(self.docker_ignore_path)
-        if not keep_compose: unlink_file(self.docker_compose_path)
+        if not keep_compose: unlink_file(self.compose_path)
 
     def _merge_dictionaries(source, destination, overwrite_lists=False):
         for key, value in source.items():

@@ -6,7 +6,7 @@ CLI command that handles allows generic handling of an ATK config file for runni
 from autonomy_toolkit.utils.atk_config import ATKConfig
 from autonomy_toolkit.utils.logger import LOGGER
 from autonomy_toolkit.utils.files import search_upwards_for_file
-from autonomy_toolkit.utils.docker import get_docker_client_binary_path, compose_is_installed, DockerComposeClient, DockerException
+# from autonomy_toolkit.utils.docker import get_docker_client_binary_path, compose_is_installed, DockerComposeClient, DockerException
 
 # Other imports
 import argparse

@@ -17,7 +17,7 @@ from autonomy_toolkit.ros.messages import MessageType
 from autonomy_toolkit.utils.atk_config import ATKConfig
 from autonomy_toolkit.utils.files import file_exists
 from autonomy_toolkit.utils.logger import LOGGER
-from autonomy_toolkit.utils.yaml_parser import YAMLParser
+from autonomy_toolkit.utils.parsing import ATKYamlFile
 
 # General imports
 from typing import NamedTuple, List, Tuple, Iterable, Any, Union
@@ -81,9 +81,6 @@ class ATKDatabase:
 
         Currently only local databases are supported with the :meth:`~push` and :meth:`~pull` commands.
         
-        .. raw:: html
-
-           </div></div> 
     """
     def __init__(self, local_path: Union['Path', str]):
         self._local_path = Path(local_path)
@@ -992,22 +989,22 @@ def _run_combine(args):
     # Parse the YAML config file first
     if not file_exists(args.config, throw_error=False) and (not args.ros1bag and not args.ros2bag and not args.output):
         raise ValueError(f"combine command requires either a config file or all three of the following: a ros1bag, ros2bag and output path name")
-    yaml_parser = YAMLParser(args.config)
+    yaml_file = ATKYamlFile(args.config)
 
     # Get the ros1 and ros2 bag files
-    ros1bag = yaml_parser.get('rosbag1', 'file', default=args.ros1bag)
-    ros2bag = yaml_parser.get('rosbag2', 'file', default=args.ros2bag)
+    ros1bag = yaml_file.get('rosbag1', 'file', default=args.ros1bag)
+    ros2bag = yaml_file.get('rosbag2', 'file', default=args.ros2bag)
 
     # Get the available topics
-    ros1_topics = yaml_parser.get('rosbag1', 'topics', default=args.ros1_topics)
-    ros2_topics = yaml_parser.get('rosbag2', 'topics', default=args.ros2_topics)
+    ros1_topics = yaml_file.get('rosbag1', 'topics', default=args.ros1_topics)
+    ros2_topics = yaml_file.get('rosbag2', 'topics', default=args.ros2_topics)
 
     # Get the available messages
-    ros1_messages = [MessageType(file=d["file"], name=d["name"]) for d in yaml_parser.get('rosbag1', 'messages', default=args.ros1_messages).values()]
-    ros2_messages = [MessageType(file=d["file"], name=d["name"]) for d in yaml_parser.get('rosbag2', 'messages', default=args.ros2_messages).values()]
+    ros1_messages = [MessageType(file=d["file"], name=d["name"]) for d in yaml_file.get('rosbag1', 'messages', default=args.ros1_messages).values()]
+    ros2_messages = [MessageType(file=d["file"], name=d["name"]) for d in yaml_file.get('rosbag2', 'messages', default=args.ros2_messages).values()]
 
     # Get the output filename
-    output = yaml_parser.get('output', 'file', default=args.output)
+    output = yaml_file.get('output', 'file', default=args.output)
 
     # Do some checks to make sure the files exists/filetypes are correct
     assert file_exists(ros1bag, throw_error=True)
@@ -1059,13 +1056,13 @@ def _run_read(args):
 
     # Parse the YAML config file first
     assert file_exists(args.config, throw_error=True)
-    yaml_parser = YAMLParser(args.config)
+    yaml_file = ATKYamlFile(args.config)
 
     # Get the input filename
-    input = yaml_parser.get('input', 'file', default=args.input)
+    input = yaml_file.get('input', 'file', default=args.input)
 
     # Register the types that we need
-    ros2_messages = [MessageType(file=d["file"], name=d["name"]) for d in yaml_parser.get('input', 'messages', default=[]).values()]
+    ros2_messages = [MessageType(file=d["file"], name=d["name"]) for d in yaml_file.get('input', 'messages', default=[]).values()]
     register_type("data/VehicleInput.msg", "custom_msgs/msg/VehicleInput")
 
     # Read and print out the data

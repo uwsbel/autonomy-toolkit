@@ -1,0 +1,53 @@
+version: "3.9"
+services:
+  dev:
+    image: "atk/@{project}:dev"
+    hostname: "@{project}-dev"
+    container_name: "@{project}-dev"
+    build:
+      context: "@{project_root}"
+      dockerfile: "@{atk_root}/containers/config/dev/dev.dockerfile"
+      network: "host"
+      args:
+        PROJECT: "@{project}"
+        USERNAME: "@{container_username}"
+        USERHOME: "/home/@{container_username}"
+        USERSHELL: "bash"
+        USERSHELLPATH: "/bin/bash"
+        USERSHELLPROFILE: "/home/@{container_username}/.bashrc"
+        SCRIPTS_DIR: "containers/dev/scripts"
+        ROS_DISTRO: "galactic"
+        ROS_WORKSPACE: "workspace"
+        APT_DEPENDENCIES: ""
+        PIP_REQUIREMENTS: ""
+        USER_UID: "@{uid}"
+        USER_GID: "@{gid}"
+    environment:
+      DISPLAY: vnc:0.0
+      NVIDIA_VISIBLE_DEVICES: "all"
+      NVIDIA_DRIVER_CAPABILITIES: "all"
+    tty: true
+    working_dir: "/home/@{container_username}/@{project}/workspace"
+    volumes: 
+     - "@{project_root}:/home/@{container_username}/@{project}"
+  vnc:
+    image: "atk/@{project}:vnc"
+    hostname: "@{project}-vnc"
+    container_name: "@{project}-vnc"
+    build:
+      context: "@{atk_root}/containers/config/vnc"
+      dockerfile: "@{atk_root}/containers/config/vnc/vnc.dockerfile"
+      network: "host"
+      args:
+        VNC_PASSWORD: "@{project}"
+        RUN_XTERM: "yes"
+        RUN_FLUXBOX: "yes"
+    environment:
+      RUN_XTERM: no
+      RUN_FLUXBOX: yes
+    ports:
+      - "8080:8080"
+      - "5900:5900"
+networks:
+  default:
+    name: "@{project}"

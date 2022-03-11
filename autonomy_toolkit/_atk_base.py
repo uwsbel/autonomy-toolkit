@@ -7,7 +7,7 @@ such as `db` to interact with the ATK database.
 # Command imports
 import autonomy_toolkit.db as db
 import autonomy_toolkit.dev as dev
-import autonomy_toolkit.run as run
+# import autonomy_toolkit.run as run
 
 # Utility imports
 from autonomy_toolkit.utils.logger import set_verbosity
@@ -31,7 +31,7 @@ def _init():
     subparsers = parser.add_subparsers()
     db._init(subparsers.add_parser("db", description="Interact with the ATK database"))  # noqa
     dev._init(subparsers.add_parser("dev", description="Work with the ATK development environment"))
-    run._init(subparsers.add_parser("run", description="Work with the ATK config files and generate generic docker compose systems"))
+    # run._init(subparsers.add_parser("run", description="Work with the ATK config files and generate generic docker compose systems"))
 
     return parser
 

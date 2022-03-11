@@ -19,3 +19,7 @@ _version.py
 
 # Except
 !.github/workflows/*
+
+# Ignore some atk specifics
+*singularity.temp
+*.sif

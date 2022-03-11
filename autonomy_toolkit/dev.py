@@ -6,9 +6,11 @@ CLI command that handles working with the ATK development environment
 from autonomy_toolkit.utils import getuser, getuid, getgid
 from autonomy_toolkit.utils.atk_config import ATKConfig
 from autonomy_toolkit.utils.logger import LOGGER
-from autonomy_toolkit.utils.yaml_parser import YAMLParser
+from autonomy_toolkit.utils.parsing import ATKYamlFile, ATKJsonFile
 from autonomy_toolkit.utils.files import search_upwards_for_file
-from autonomy_toolkit.utils.docker import get_docker_client_binary_path, run_docker_cmd, compose_is_installed, DockerComposeClient, is_port_available, DockerException
+from autonomy_toolkit.utils.system import is_port_available
+
+from autonomy_toolkit.containers.container_client import ContainerException
 
 # Other imports
 import yaml, os, argparse, getpass
@@ -33,8 +35,8 @@ def _parse_ports(client, config, args, unknown_args):
 
     # For each service that we're spinning up, check the port mappings to ensure the host
     # port is available.
-    compose = YAMLParser(text=client.run("config", stdout=-1)[0])
-    for service_name, service in compose.get_data()['services'].items():
+    compose = ATKYamlFile(text=client.run_cmd("config", stdout=-1)[0])
+    for service_name, service in compose.data['services'].items():
         # Check ports
         if args.up or args.run:
             for ports in service.get('ports', []):
@@ -46,15 +48,15 @@ def _parse_ports(client, config, args, unknown_args):
                     return False
 
     # Rewrite with the parsed config
-    config.overwrite_compose(compose.get_data())
+    config.write_compose(compose.data)
 
     return True
 
 
-def _parse_custom_cli_arguments(client, config, args, unknown_args):
+def _parse_custom_cli_arguments(config, args, unknown_args):
     # For each service that we're spinning up, check for the custom cli arguments
-    compose = YAMLParser(text=client.run("config", stdout=-1)[0])
-    for service_name, service in compose.get_data()['services'].items():
+    compose = config.compose
+    for service_name, service in compose['services'].items():
         # Add custom cli arguments
         # TODO: Disable 'argparse' as a service name
         service_args = {k: v for k,v in config.custom_cli_arguments.items() if service_name in v}
@@ -72,48 +74,51 @@ def _parse_custom_cli_arguments(client, config, args, unknown_args):
                 # Only use if the arg is set
                 # Assumed it is set if it passes a boolean conversion
                 if getattr(known, v.get('argparse', {}).get('dest', k[2:])):
-                    service.update(ATKConfig._merge_dictionaries(service, v[service_name]))
+                    added_dict = v[service_name].get(config.container_runtime, v[service_name])
+                    service.update(ATKConfig._merge_dictionaries(service, added_dict))
 
             if unknown:
                 LOGGER.warn(f"Found unknown arguments in custom arguents for service '{service_name}': '{', '.join(unknown)}'. Ignoring.")
 
-    # Rewrite with the parsed config
-    config.overwrite_compose(compose.get_data())
-
 def _run_dev(args, unknown_args):
     LOGGER.info("Running 'dev' entrypoint...")
 
-    # Check docker is installed
-    if get_docker_client_binary_path() is None:
-        LOGGER.fatal(f"Docker was not found to be installed. Cannot continue.")
+    # Instantiate the client
+    # Create the abstracted client we'll use for interacting with the compose client
+    container_runtime = os.environ.get("ATK_CONTAINER_RUNTIME", "docker")
+    if container_runtime == "docker":
+        from autonomy_toolkit.containers.docker_client import DockerClient
+        client = DockerClient
+    elif container_runtime == "singularity":
+        from autonomy_toolkit.containers.singularity_client import SingularityClient 
+        client = SingularityClient
+    else:
+        LOGGER.fatal(f"Environment variable 'ATK_CONTAINER_RUNTIME' is set to '{container_runtime}', which is not allowed.")
         return
 
-    # Check docker compose is installed
-    LOGGER.debug("Checking if 'docker compose' (V2) is installed...")
-    if not compose_is_installed():
-        LOGGER.fatal("The command 'docker compose' is not installed. See http://projects.sbel.org/autonomy_toolkit/tutorials/using_the_development_environment.html for more information.")
+    # Check that the client libraries are installed properly
+    if not client.is_installed():
         return
-    LOGGER.debug("'docker compose' (V2) is installed.")
 
     # Grab the ATK config file
     LOGGER.debug(f"Loading '{args.filename}' file.")
-    config = ATKConfig(args.filename)
+    config = ATKConfig(args.filename, container_runtime)
     
     # Add some required attributes
     config.add_required_attribute("services")
     config.add_required_attribute("services", "dev")
 
     # Add some default custom attributes
-    config.add_custom_attribute("atk_root", str, default=str(config.atk_root))
-    config.add_custom_attribute("user", dict, default={})
-    config.add_custom_attribute("user", "host_username", str, default=getuser())
-    config.add_custom_attribute("user", "container_username", str, default="{project}")
-    config.add_custom_attribute("user", "uid", int, default=getuid())
-    config.add_custom_attribute("user", "gid", int, default=getgid())
-    config.add_custom_attribute("default_services", list, default=['dev'])
-    config.add_custom_attribute("overwrite_lists", bool, default=False)
-    config.add_custom_attribute("custom_cli_arguments", dict, default={})
-    # config.add_custom_attribute("build_depends", dict, default={}) TODO
+    config.add_custom_attribute("atk_root", type=str, default=str(config.atk_root))
+    config.add_custom_attribute("user", type=dict, default={})
+    config.add_custom_attribute("user", "host_username", type=str, default=getuser())
+    config.add_custom_attribute("user", "container_username", type=str, default="@{project}")
+    config.add_custom_attribute("user", "uid", type=int, default=getuid())
+    config.add_custom_attribute("user", "gid", type=int, default=getgid())
+    config.add_custom_attribute("default_services", type=list, default=['dev'])
+    config.add_custom_attribute("overwrite_lists", type=bool, default=False)
+    config.add_custom_attribute("custom_cli_arguments", type=dict, default={})
+    # config.add_custom_attribute("build_depends", type=dict, default={}) TODO
 
     # Parse the ATK config file
     if not config.parse():
@@ -143,52 +148,38 @@ def _run_dev(args, unknown_args):
         args.services = config.default_services
     args.services = args.services if 'all' not in args.services else []
 
+    # Generate the compose file
+    config.generate_compose(services=args.services, overwrite_lists=config.overwrite_lists)
+    _parse_custom_cli_arguments(config, args, unknown_args)
+
+    # Now actually instantiate the client
+    client = client(config, config.project, config.compose_path, **vars(args))
+
     # Complete the arguments
     if not args.dry_run:
 
         try:
-            # Write the compose file
-            config.generate_compose(config.overwrite_lists)
-
-            # Write the dockerignore
-            config.generate_ignore()
+            # And write the compose file
+            config.write_compose()
 
             # Keep track of the number of users so we aren't deleting files when they need to persist
             config.update_user_count(1)
 
-            # Create the abstracted client we'll use for interacting with docker compose
-            client = DockerComposeClient(project=config.project, services=args.services, compose_file=config.docker_compose_path)
-
-            # First check if the dev container is running.
-            # If it is, don't run args.up
-            if args.up and not args.down:
-                try:
-                    stdout, stderr = client.run("ps", "--services", *args.services, "--filter", "status=running", stdout=-1, stderr=-1)
-                    LOGGER.warn("The services are already running. If you didn't explicitly call '--up', you can safely ignore this warning.")
-                    args.up = False
-                except DockerException as e:
-                    if "no such service: " not in e.stderr:
-                        raise e
-
             if args.down:
                 LOGGER.info(f"Tearing down...")
-
-                client.run("down", *args.args)
+                client.down(*args.args)
 
             # Make any custom updates at runtime after the compose file has been loaded once
-            if not _parse_ports(client, config, args, unknown_args): return
-            _parse_custom_cli_arguments(client, config, args, unknown_args)
-
+            # Only do if docker, singularity uses the host network
+            if container_runtime != "singularity" and not _parse_ports(client, config, args, unknown_args): return
 
             if args.build:
                 LOGGER.info(f"Building...")
-
-                client.run("build", *args.args)
+                client.build(*args.args)
 
             if args.up:
                 LOGGER.info(f"Spinning up...")
-
-                client.run("up", "-d", *args.args)
+                client.up(*args.args)
 
             if args.attach:
                 LOGGER.info(f"Attaching...")
@@ -202,35 +193,18 @@ def _run_dev(args, unknown_args):
                 # Otherwise, one service must be selected and that service will be attached to
                 service_name = 'dev' if 'dev' in args.services or len(args.services) == 0 else args.services[0]
 
-                # Get the shell we'll use
-                container_name = config.compose["services"][service_name]["container_name"]
-                try:
-                    env, err = run_docker_cmd("exec", container_name, "env", stdout=-1, stderr=-1)
-                except DockerException as e:
-                    if "Error: No such container: " in e.stderr:
-                        LOGGER.fatal(f"Please rerun the command with '--up'. The container cannot be attached to since it hasn't been created.")
-                        return
-                    raise e
-                if "USERSHELLPATH" not in env:
-                    LOGGER.fatal(f"To attach to a container using autonomy_toolkit, the environment variable \"USERSHELLPATH\" must be defined within the container. Was not found, please add it to the container.")
-                    return
-                shellcmd = env.split("USERSHELLPATH=")[1].split('\n')[0]
-
-                try:
-                    client.run("exec", service_name, exec_cmd=shellcmd, *args.args)
-                except DockerException as e:
-                    LOGGER.debug(e)
+                client.shell(service_name, *args.args)
 
             if args.run:
                 LOGGER.info(f"Running...")
+                client.run(args.services[0], *args.args)
 
-                client.run("run", args.services[0], *args.args)
-
-        except DockerException as e:
+        except ContainerException as e:
             LOGGER.fatal(e)
             if e.stderr:
                 LOGGER.fatal(e.stderr)
         finally:
+            del client
             if config.update_user_count(-1) == 0 or args.down:
                 config.cleanup(args.keep_yml)
 
@@ -283,7 +257,7 @@ def _init(subparser):
     subparser.add_argument("-u", "--up", action="store_true", help="Spin up the env.", default=False)
     subparser.add_argument("-d", "--down", action="store_true", help="Tear down the env.", default=False)
     subparser.add_argument("-a", "--attach", action="store_true", help="Attach to the env.", default=False)
-    subparser.add_argument("-r", "--run", action="store_true", help="Run a command in the provided service. Only one service may be provided. No other arguments may be called.", default=False)
+    subparser.add_argument("-r", "--run", action="store_true", help="Run a command in the provided service. Only one service may be provided.", default=False)
     subparser.add_argument("-s", "--services", nargs='+', help="The services to use. Defaults to 'all' or whatever 'default_services' is set to in .atk.yml. 'dev' or 'all' is required for the 'attach' argument. If 'all' is passed, all the services are used.", default=None)
     subparser.add_argument("-f", "--filename", help="The ATK config file. Defaults to '.atk.yml'", default='.atk.yml')
     subparser.add_argument("--keep-yml", action="store_true", help="Don't delete the generated docker-compose file.", default=False)
