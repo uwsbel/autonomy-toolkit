@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
     <link rel="shortcut icon" href="../../../_static/cropped-SBEL-32x32.png"/><meta name="generator" content="sphinx-3.4.2, furo 2020.12.30.beta24"/>
-        <title>autonomy_toolkit.containers.singularity_client - Autonomous Vehicle Toolbox 0.0.54 documentation</title>
+        <title>autonomy_toolkit.containers.singularity_client - Autonomous Vehicle Toolbox 0.0.55 documentation</title>
       <link rel="stylesheet" href="../../../_static/styles/furo.css?digest=33d2fc4f3f180ec1ffc6524e273e21d7d58cbe49">
     <link rel="stylesheet" href="../../../_static/pygments.css">
     <link media="(prefers-color-scheme: dark)" rel="stylesheet" href="../../../_static/pygments_dark.css">
@@ -103,7 +103,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">Autonomous Vehicle Toolbox 0.0.54 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">Autonomous Vehicle Toolbox 0.0.55 documentation</div></a>
     </div>
     <div class="header-right">
       <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
@@ -271,9 +271,11 @@
 
             <span class="k">if</span> <span class="s2">"build"</span> <span class="ow">in</span> <span class="n">service</span><span class="p">:</span>
                 <span class="n">build</span> <span class="o">=</span> <span class="n">service</span><span class="p">[</span><span class="s2">"build"</span><span class="p">]</span>
+                <span class="n">build</span><span class="p">[</span><span class="s2">"options"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="n">build</span><span class="p">[</span><span class="s2">"options"</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"fakeroot"</span><span class="p">)</span>
 
                 <span class="n">tmpdir</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">TemporaryDirectory</span><span class="p">(</span><span class="nb">dir</span><span class="o">=</span><span class="n">Path</span><span class="p">(</span><span class="s2">"."</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">())</span>
-                <span class="n">build</span><span class="p">[</span><span class="s2">"options"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span><span class="s2">"tmpdir=</span><span class="si">{tmpdir.name}</span><span class="s2">"</span><span class="p">,</span> <span class="s2">"fakeroot"</span><span class="p">]</span>
+                <span class="n">build</span><span class="p">[</span><span class="s2">"options"</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">f</span><span class="s2">"tmpdir=</span><span class="si">{tmpdir.name}</span><span class="s2">"</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_tmpdirs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tmpdir</span><span class="p">)</span>
 
                 <span class="c1"># The name for the build definition in singularity compose is "recipe", not "dockerfile"</span>
@@ -304,7 +306,9 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            bool: Whether the command succeeded.</span>
 <span class="sd">        """</span>
-        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">up</span><span class="p">(</span><span class="s2">"--no-resolv"</span><span class="p">)</span></div>
+        <span class="k">if</span> <span class="s2">"--resolv"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+            <span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="s2">"--no-resolv"</span><span class="p">]</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">up</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="SingularityClient.run"><a class="viewcode-back" href="../../../usage/api/autonomy_toolkit/containers/singularity_client/index.html#autonomy_toolkit.containers.singularity_client.SingularityClient.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">service</span><span class="p">,</span> <span class="o">*</span><span class="n">exec_cmd</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="sd">"""Run a command in a container.</span>
