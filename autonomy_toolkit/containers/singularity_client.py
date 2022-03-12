@@ -77,6 +77,9 @@ class SingularityClient(ContainerClient):
         compose = self.config.compose
         compose["instances"] = compose.pop("services")
         for service in compose["instances"].values():
+            tmpdir = tempfile.TemporaryDirectory(dir=Path(".").resolve())
+            self._tmpdirs.append(tmpdir)
+
             # Replicate docker and don't share home
             start = {"options": ["no-home"]}
             service["start"] = ATKConfig._merge_dictionaries(start, service.get("start", {}))
@@ -92,10 +95,8 @@ class SingularityClient(ContainerClient):
                 build = service["build"]
                 build["options"] = []
                 build["options"].append("fakeroot")
-
-                tmpdir = tempfile.TemporaryDirectory(dir=Path(".").resolve())
+                build["options"].append("fix-perms")
                 build["options"].append(f"tmpdir={tmpdir.name}")
-                self._tmpdirs.append(tmpdir)
 
                 # The name for the build definition in singularity compose is "recipe", not "dockerfile"
                 if "dockerfile" in build:
