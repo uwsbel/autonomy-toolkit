@@ -90,9 +90,11 @@ class SingularityClient(ContainerClient):
 
             if "build" in service:
                 build = service["build"]
+                build["options"] = []
+                build["options"].append("fakeroot")
 
                 tmpdir = tempfile.TemporaryDirectory(dir=Path(".").resolve())
-                build["options"] = [f"tmpdir={tmpdir.name}", "fakeroot"]
+                build["options"].append(f"tmpdir={tmpdir.name}")
                 self._tmpdirs.append(tmpdir)
 
                 # The name for the build definition in singularity compose is "recipe", not "dockerfile"
@@ -123,7 +125,9 @@ class SingularityClient(ContainerClient):
         Returns:
             bool: Whether the command succeeded.
         """
-        return super().up("--no-resolv")
+        if "--resolv" not in args:
+            args = [*args, "--no-resolv"]
+        return super().up(*args)
 
     def run(self, service, *exec_cmd) -> bool:
         """Run a command in a container.
