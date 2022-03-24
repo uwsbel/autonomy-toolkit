@@ -27,6 +27,7 @@ RUN usermod -u $USER_UID -g $USER_GID $USERNAME
 ARG USER_GROUPS=""
 RUN if [ -n "$USER_GROUPS" ]; then \
 			for g in $USER_GROUPS; do \
+				getent group $g || groupadd $g; \
 				usermod -aG $g $USERNAME; \
 			done; \
     fi
