@@ -24,6 +24,13 @@ RUN adduser --shell $USERSHELLPATH --disabled-password --gecos "" $USERNAME && \
 RUN groupmod -o -g $USER_GID $USERNAME
 RUN usermod -u $USER_UID -g $USER_GID $USERNAME
 
+ARG USER_GROUPS=""
+RUN if [ -n "$USER_GROUPS" ]; then \
+			for g in $USER_GROUPS; do \
+				usermod -aG $g $USERNAME; \
+			done; \
+    fi
+
 # Check for updates
 RUN apt-get update && apt-get upgrade -y
 
