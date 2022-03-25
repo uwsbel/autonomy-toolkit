@@ -131,8 +131,6 @@ class SingularityClient(ContainerClient):
                     self._tmpfiles.append(temp_recipe)
 
         self.config.write_compose(compose)
-        import os
-        os.system('ls')
 
     def up(self, *args) -> bool:
         """Bring up the containers.
@@ -213,6 +211,5 @@ class SingularityClient(ContainerClient):
             if os.path.exists(tmpfile):
                 os.unlink(tmpfile)
 
-        # for tmpdir in self._tmpdirs:
-        #     print('test')
-        #     tmpdir.cleanup()
+        for tmpdir in self._tmpdirs:
+            tmpdir.cleanup()
