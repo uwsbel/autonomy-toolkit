@@ -45,7 +45,7 @@ class SingularityClient(ContainerClient):
 
         # Make custom updates to the config file
         self._tmpdirs = []
-        self._build_recipes = []
+        self._tmpfiles = []
         self._update_config()
 
     def is_installed() -> bool:
@@ -84,6 +84,18 @@ class SingularityClient(ContainerClient):
             start = {"options": ["no-home"]}
             service["start"] = ATKConfig._merge_dictionaries(start, service.get("start", {}))
 
+            if "environment" in service:
+                atk_env = ".atk-singularity.env"
+                with open(atk_env, "w") as f:
+                    for e,v in service["environment"].items():
+                        f.write(f"export {e}={v}\n")
+
+                vol = [f"./{str(atk_env)}:/.singularity.d/env/atk.sh"]
+                if "volumes" in service:
+                    service["volumes"].extend(vol)
+                else:
+                    service["volumes"] = vol 
+
             # We want singularity compose to not use any networks
             # This means that singularity will use the host network by default
             if "network" not in service:
@@ -116,9 +128,11 @@ class SingularityClient(ContainerClient):
                     temp_recipe_file.write(temp_recipe)
 
                     build["recipe"] = temp_recipe
-                    self._build_recipes.append(temp_recipe)
+                    self._tmpfiles.append(temp_recipe)
 
         self.config.write_compose(compose)
+        import os
+        os.system('ls')
 
     def up(self, *args) -> bool:
         """Bring up the containers.
@@ -195,9 +209,10 @@ class SingularityClient(ContainerClient):
 
     def __del__(self):
         import os
-        for build_recipe in self._build_recipes:
-            if os.path.exists(build_recipe):
-                os.unlink(build_recipe)
+        for tmpfile in self._tmpfiles:
+            if os.path.exists(tmpfile):
+                os.unlink(tmpfile)
 
-        for tmpdir in self._tmpdirs:
-            tmpdir.cleanup()
+        # for tmpdir in self._tmpdirs:
+        #     print('test')
+        #     tmpdir.cleanup()
