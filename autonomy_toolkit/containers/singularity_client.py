@@ -76,7 +76,7 @@ class SingularityClient(ContainerClient):
         # This is consistent to docker, which is what we're aiming for
         compose = self.config.compose
         compose["instances"] = compose.pop("services")
-        for service in compose["instances"].values():
+        for service_name, service in compose["instances"].items():
             tmpdir = tempfile.TemporaryDirectory(dir=Path(".").resolve())
             self._tmpdirs.append(tmpdir)
 
@@ -85,7 +85,7 @@ class SingularityClient(ContainerClient):
             service["start"] = ATKConfig._merge_dictionaries(start, service.get("start", {}))
 
             if "environment" in service:
-                atk_env = ".atk-singularity.env"
+                atk_env = f".atk-singularity-{service_name}.env"
                 with open(atk_env, "w") as f:
                     for e,v in service["environment"].items():
                         f.write(f"export {e}={v}\n")
