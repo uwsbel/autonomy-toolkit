@@ -39,6 +39,15 @@ Classes
       :returns: *bool* -- True if everything checks out, False if not.
 
 
+   .. method:: build(self, *args) -> bool
+
+      Build the images.
+
+      ``singularity-compose`` won't overwrite an existing sif it already exists. Do that here.
+
+      :returns: *bool* -- Whether the command succeeded.
+
+
    .. method:: up(self, *args) -> bool
 
       Bring up the containers.
