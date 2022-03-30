@@ -13,6 +13,6 @@ def is_port_available(port: int) -> bool:
     import socket
 
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-        in_use = s.connect_ex(('localhost', port)) == 0
+        in_use = s.connect_ex(('localhost', int(port))) == 0
 
     return not in_use
