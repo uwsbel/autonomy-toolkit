@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT
 """
 Provides a custom logger object.
 

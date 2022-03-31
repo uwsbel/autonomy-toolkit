@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT
 import signal
 from ._version import version as __version__
 import autonomy_toolkit._atk_base

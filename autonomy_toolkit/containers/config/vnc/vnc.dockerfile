@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT
 FROM theasp/novnc:latest 
 
 # Make a few edits to the theasp/novnc container to function for our needs

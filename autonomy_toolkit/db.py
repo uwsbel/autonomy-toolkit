@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT
 """
 CLI command that handles interacting with the ATK database.
 """

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT
 ARG ROS_DISTRO
 
 FROM ros:${ROS_DISTRO}

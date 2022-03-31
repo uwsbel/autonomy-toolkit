@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT
 Bootstrap: docker
 From: theasp/novnc:latest
 

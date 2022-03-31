@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT
 """
 Provides a utility class :class:`~MessageType` to aid in registering message types
 """

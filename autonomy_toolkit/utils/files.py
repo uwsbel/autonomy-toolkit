@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT
 """
 Provides helper methods for interacting with the filesystem.
 """

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT
 """Helpful utilities for interacting with singularity."""
 
 # Imports from autonomy_toolkit

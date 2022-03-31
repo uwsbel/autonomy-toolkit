@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT
 """
 Helper methods/classes for parsing files.
 """

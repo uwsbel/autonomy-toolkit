@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT
 """
 CLI command that handles allows generic handling of an ATK config file for running docker containers
 """

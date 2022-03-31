@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT
 """
 The entrypoint for the Autonomy Toolkit CLI is `atk`
 The main parser will have a few commands, such as verbosity or a help menu.

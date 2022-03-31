@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT
 """
 Abstracted helper class :class:`ATKConfig` used for reading/writing configuration files for ``autonomy-toolkit``.
 """

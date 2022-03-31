@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT
 
 def is_port_available(port: int) -> bool:
     """Checks whether a specified port is available to be attached to.

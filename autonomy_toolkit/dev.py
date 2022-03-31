@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT
 """
 CLI command that handles working with the ATK development environment
 """
