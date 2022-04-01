@@ -1,7 +1,9 @@
 # SPDX-License-Identifier: MIT
-ARG ROS_DISTRO
+ARG ROS_DISTRO=galactic
+ARG IMAGE_BASE=ros
+ARG IMAGE_TAG=${ROS_DISTRO}
 
-FROM ros:${ROS_DISTRO}
+FROM ${IMAGE_BASE}:${IMAGE_TAG}
 
 LABEL maintainer="Simulation Based Engineering Laboratory <negrut@wisc.edu>"
 
@@ -32,9 +34,6 @@ RUN if [ -n "$USER_GROUPS" ]; then \
 				usermod -aG $g $USERNAME; \
 			done; \
     fi
-
-# Check for updates
-RUN apt-get update && apt-get upgrade -y
 
 # Install dependencies
 ARG APT_DEPENDENCIES
