@@ -70,8 +70,9 @@ def _parse_custom_cli_arguments(config, args, unknown_args):
                     return
                 parser.add_argument(arg_name, **config.custom_cli_arguments[arg_name].get("argparse", {}))
             known, unknown = parser.parse_known_args(unknown_args)
-            output = yaml.load(eval(f"f'''{yaml.dump(service_args)}'''", vars(known)), Loader=yaml.Loader)
-            for k,v in output.items():
+            output = ATKYamlFile(text=yaml.dump(service_args))
+            output.replace_vars(vars(known))
+            for k,v in output.data.items():
                 # Only use if the arg is set
                 # Assumed it is set if it passes a boolean conversion
                 if getattr(known, v.get('argparse', {}).get('dest', k[2:])):
@@ -103,20 +104,19 @@ def _run_dev(args, unknown_args):
 
     # Grab the ATK config file
     LOGGER.debug(f"Loading '{args.filename}' file.")
-    config = ATKConfig(args.filename, container_runtime)
+    config = ATKConfig(args.filename, container_runtime, os.environ.get("ATK_DEFAULT_CONTAINER", "dev"))
     
     # Add some required attributes
     config.add_required_attribute("services")
-    config.add_required_attribute("services", "dev")
+    config.add_required_attribute("services", config.default_container)
 
     # Add some default custom attributes
-    config.add_custom_attribute("atk_root", type=str, default=str(config.atk_root))
     config.add_custom_attribute("user", type=dict, default={})
     config.add_custom_attribute("user", "host_username", type=str, default=getuser())
     config.add_custom_attribute("user", "container_username", type=str, default="@{project}")
     config.add_custom_attribute("user", "uid", type=int, default=getuid())
     config.add_custom_attribute("user", "gid", type=int, default=getgid())
-    config.add_custom_attribute("default_services", type=list, default=['dev'])
+    config.add_custom_attribute("default_services", type=list, default=[config.default_container])
     config.add_custom_attribute("overwrite_lists", type=bool, default=False)
     config.add_custom_attribute("custom_cli_arguments", type=dict, default={})
     # config.add_custom_attribute("build_depends", type=dict, default={}) TODO
@@ -185,14 +185,15 @@ def _run_dev(args, unknown_args):
             if args.attach:
                 LOGGER.info(f"Attaching...")
 
-                if len(args.services) > 1 and 'dev' not in args.services:
-                    LOGGER.fatal(f"'--services' must have either one service or 'dev' (or 'all', which will attach to 'dev') when attach is set to true.")
+                if len(args.services) > 1 and config.default_container not in args.services:
+                    LOGGER.fatal(f"'--services' must have either one service or '{config.default_container}' (or 'all', which will attach to '{config.default_container}') when attach is set to true.")
                     return
 
                 # Determine the service we'd like to attach to
-                # If 'dev' or 'all' is passed, dev will be attached to
+                # If '{config.default_container}' or 'all' is passed, 
+                # {config.default_container} will be attached to
                 # Otherwise, one service must be selected and that service will be attached to
-                service_name = 'dev' if 'dev' in args.services or len(args.services) == 0 else args.services[0]
+                service_name = f"{config.default_container}" if f"{config.default_container}" in args.services or len(args.services) == 0 else args.services[0]
 
                 client.shell(service_name, *args.args)
 

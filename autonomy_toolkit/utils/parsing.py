@@ -91,7 +91,7 @@ def replace_vars(value: 'Union[Dict,Str,Iterable]', vars_dict: dict) -> 'Union[D
                 return str(value)
             if m.group("err") is not None:
                 raise RuntimeError(m.group("err"))
-            return m.group("default") or ""
+            return m.group("default") or m.group(0)
 
         value = var_re.sub(convert, value)
     elif hasattr(value, "__iter__"):

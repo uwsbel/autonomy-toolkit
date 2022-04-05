@@ -33,7 +33,7 @@ class ATKConfig:
         def __str__(self):
             return str(self.value)
 
-    def __init__(self, filename: Union[Path, str] = '.atk.yml', container_runtime: str = "docker"):
+    def __init__(self, filename: Union[Path, str] = '.atk.yml', container_runtime: str = "docker", default_container: str = "dev"):
         # First, grab the atk file
         self.atk_yml_path = search_upwards_for_file(str(filename))
         if self.atk_yml_path is None:
@@ -42,6 +42,7 @@ class ATKConfig:
             exit(-1)
 
         self.container_runtime = container_runtime
+        self.default_container = default_container
 
         # Fill out file paths we'll create later on
         self.root = self.atk_yml_path.parent
@@ -204,7 +205,7 @@ class ATKConfig:
 
         return True
 
-    def generate_compose(self, services: 'List[str]' = [], overwrite_lists: bool = False, use_default_compose: bool = True):
+    def generate_compose(self, services: 'List[str]' = [], overwrite_lists: bool = False):
         """Generates a ``atk-compose.yml`` specification file that's used by ``docker compose``
 
         This method will grab the defaults that are shipped with ``autonomy-toolkit`` and merge them with
@@ -215,20 +216,9 @@ class ATKConfig:
         Args:
             services (List[str]): List of services to maintain in the compose file. If none are passed, all are kept.
             overwrite_lists (bool): If true, all lists in the default that conflict with lists in the custom config will be overwritten. If false, the lists will be extended.
-            use_default_compose (bool): If false, will not combine the ATK config with the defaults. Defaults to True.
         """
 
-        if use_default_compose:
-
-            # Load in the default atk-compose.yml file
-            default_configs = ATKYamlFile(self.atk_root / "containers" / "config" / "default-compose.yml")
-
-            # Merge the defaults with the atk config
-            merged_data = ATKConfig._merge_dictionaries(self._config.data, default_configs.data, overwrite_lists)
-            compose_config = ATKYamlFile(text=yaml.dump(merged_data))
-
-        else:
-            compose_config = self._config
+        compose_config = self._config
 
         # Update the compose config to only include services that are in the services argument
         if compose_config.contains("services") and len(services):
