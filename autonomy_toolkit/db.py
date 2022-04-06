@@ -912,16 +912,17 @@ def _run_pull(args):
         # Parse the ATK config file
         if not config.parse():
             return
-
-        if 'bags' in config.external.get("db", {}):
+        
+        if 'files' in config.external.get("db", {}):
             import gdown, zipfile
 
-            bags = config.external["db"]["bags"]
-            for bag in bags:
-                if 'id' in bag and 'output' in bag :
+            files = config.external["db"]["files"]
+            files = files if args.files is None else [f for f in files if f["name"] in args.files]
+            for f in files:
+                if 'id' in f and 'output' in f:
                     # Grab the variables
-                    id = bag['id']
-                    output = bag['output']
+                    id = f['id']
+                    output = f['output']
                     zipoutput = f"{output}.zip"
 
                     if args.dry_run:
@@ -929,7 +930,7 @@ def _run_pull(args):
 
                     # Check to see if the file already exists
                     if Path(output).exists():
-                        LOGGER.warn(f"'{output}' is alredy a file. Continuing...")
+                        LOGGER.warn(f"'{output}' is already a file. Continuing...")
                         continue
 
                     # Make the directory, if it doesn't exist
@@ -941,10 +942,11 @@ def _run_pull(args):
                     else:
                         LOGGER.warn(f"'{zipoutput}' is already a file. Won't download, but will extract.")
                     with zipfile.ZipFile(zipoutput, 'r') as zip_ref:
-                        zip_ref.extractall(Path(output).parent)
-                        os.unlink(zipoutput)
+                        if not args.keep_zipped:
+                          zip_ref.extractall(Path(output).parent)
+                          os.unlink(zipoutput)
                 else:
-                    LOGGER.fatal(f"Unsupported bag file format.")
+                    LOGGER.fatal(f"Unsupported file format.")
                     return
 
     else:
@@ -1102,6 +1104,8 @@ def _init(subparser):
     # Pull subcommand
     pull = subparsers.add_parser("pull", description="Pull a bag file from the ATKDatabase.")
     pull.add_argument("--use-atk-config", nargs="?", const=".atk.yml", help="If true, an ATK config file is searched for and used to pull data base files. Defaults to look for a file in parent directories called '.atk.yml', but this can be overriden by passing in a variable.", default=None)
+    pull.add_argument("--keep-zipped", action="store_true", help="If true, the file will not be unzipped.", default=False)
+    pull.add_argument("--files", nargs="*", help="The files to pull.", default=None)
     pull.set_defaults(cmd=_run_pull)
 
     # Combine subcommand
