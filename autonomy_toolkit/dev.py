@@ -104,7 +104,9 @@ def _run_dev(args, unknown_args):
 
     # Grab the ATK config file
     LOGGER.debug(f"Loading '{args.filename}' file.")
-    config = ATKConfig(args.filename, container_runtime, os.environ.get("ATK_DEFAULT_CONTAINER", "dev"))
+    default_containers = os.environ.get("ATK_DEFAULT_CONTAINERS", "dev").split(",")
+    config = ATKConfig(args.filename, container_runtime, default_containers[0])
+
     
     # Add some required attributes
     config.add_required_attribute("services")
@@ -116,7 +118,7 @@ def _run_dev(args, unknown_args):
     config.add_custom_attribute("user", "container_username", type=str, default="@{project}")
     config.add_custom_attribute("user", "uid", type=int, default=getuid())
     config.add_custom_attribute("user", "gid", type=int, default=getgid())
-    config.add_custom_attribute("default_services", type=list, default=[config.default_container])
+    config.add_custom_attribute("default_containers", type=list, default=default_containers, force_default="ATK_DEFAULT_CONTAINERS" in os.environ)
     config.add_custom_attribute("overwrite_lists", type=bool, default=False)
     config.add_custom_attribute("custom_cli_arguments", type=dict, default={})
     # config.add_custom_attribute("build_depends", type=dict, default={}) TODO
@@ -146,7 +148,7 @@ def _run_dev(args, unknown_args):
 
     # Get the services we'll use
     if args.services is None: 
-        args.services = config.default_services
+        args.services = config.default_containers
     args.services = args.services if 'all' not in args.services else []
 
     # Generate the compose file
@@ -260,7 +262,7 @@ def _init(subparser):
     subparser.add_argument("-d", "--down", action="store_true", help="Tear down the env.", default=False)
     subparser.add_argument("-a", "--attach", action="store_true", help="Attach to the env.", default=False)
     subparser.add_argument("-r", "--run", action="store_true", help="Run a command in the provided service. Only one service may be provided.", default=False)
-    subparser.add_argument("-s", "--services", nargs='+', help="The services to use. Defaults to 'all' or whatever 'default_services' is set to in .atk.yml. 'dev' or 'all' is required for the 'attach' argument. If 'all' is passed, all the services are used.", default=None)
+    subparser.add_argument("-s", "--services", nargs='+', help="The services to use. Defaults to 'all' or whatever 'default_containers' is set to in .atk.yml. 'dev' or 'all' is required for the 'attach' argument. If 'all' is passed, all the services are used.", default=None)
     subparser.add_argument("-f", "--filename", help="The ATK config file. Defaults to '.atk.yml'", default='.atk.yml')
     subparser.add_argument("--keep-yml", action="store_true", help="Don't delete the generated docker-compose file.", default=False)
     subparser.add_argument("--port-mappings", nargs='+', help="Mappings to replace conflicting host ports at runtime.", default=[])

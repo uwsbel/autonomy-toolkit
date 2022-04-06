@@ -22,13 +22,14 @@ class ATKConfig:
         """Helper class to store an attribute
         """
 
-        def __init__(self, name: 'List[str]', type: 'type', default: 'Any' = None, delete: bool = True):
+        def __init__(self, name: 'List[str]', type: 'type', default: 'Any' = None, delete: bool = True, force_default: bool = False):
             self.name = name
             self.path = '.'.join(name)
             self.type = type
             self.value = default
             self.required = default is None
             self.delete = delete
+            self.force_default = force_default
 
         def __str__(self):
             return str(self.value)
@@ -79,7 +80,7 @@ class ATKConfig:
         """
         self._required_attributes.append(args)
 
-    def add_custom_attribute(self, *path: 'List[str]', type: 'type', default: 'Any' = None, dest: 'str' = None, delete: bool = True):
+    def add_custom_attribute(self, *path: 'List[str]', type: 'type', default: 'Any' = None, dest: 'str' = None, delete: bool = True, force_default: bool = False):
         """
         Add a custom attribute to the ``autonomy-toolkit`` YAML specification.
 
@@ -112,11 +113,12 @@ class ATKConfig:
             path (List[str]): The nested argument list (see docs).
             type (type): Represents the type of the attribute.
             default (Any): The default value to set to the attribute when parsing.
+            force_default (bool): Always use default if True. Defaults to False.
             dest (str): The destination name for the variable that's generated.
             delete (bool): If False, the attribute will `not` be removed from the config file after parsing. Defaults to True.
         """
         # Create the attribute and add it
-        attr = self._Attr(path, type, default=default, delete=delete)
+        attr = self._Attr(path, type, default=default, delete=delete, force_default=force_default)
         self._custom_attributes[path[-1] if dest is None else dest] = attr
 
     def add_attribute_translation_rule(self, *path: 'List[str]', rule: 'Tuple[str, str]'):
@@ -178,7 +180,8 @@ class ATKConfig:
 
         # For each custom attribute, evalute it and remove it from the config
         for path, attr in self._custom_attributes.items():
-            attr.value = self._config.get(*attr.name, default=attr.value)
+            if not attr.force_default:
+              attr.value = self._config.get(*attr.name, default=attr.value)
 
             # Checks
             if attr.required and attr.value is None:
