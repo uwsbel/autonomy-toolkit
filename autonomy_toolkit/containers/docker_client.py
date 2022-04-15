@@ -32,11 +32,8 @@ class DockerClient(ContainerClient):
 
         self._services = services
 
-        self._pre = []
-        self._pre.extend(["-p", self.project])
-        self._pre.extend(["-f", self.compose_file])
-
-        self._post = []
+        self._opts.extend(["-p", self.project])
+        self._opts.extend(["-f", self.compose_file])
 
         # Get the docker binary path
         docker_sys = shutil.which("docker")
@@ -60,7 +57,9 @@ class DockerClient(ContainerClient):
             LOGGER.fatal(f"Docker was not found to be installed. Cannot continue.")
             return False
 
-        help_output, _ = ContainerClient._run_cmd(docker_binary, "compose", "--help", stdout=subprocess.PIPE)
+        from collections import namedtuple
+        CC = namedtuple('ContainerClient', 'dry_run')
+        help_output, _ = ContainerClient._run_cmd(CC(False), docker_binary, "compose", "--help", stdout=subprocess.PIPE)
         docker_compose_is_installed = "compose" in help_output
 
         if not docker_compose_is_installed:

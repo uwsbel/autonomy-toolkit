@@ -31,12 +31,9 @@ class SingularityClient(ContainerClient):
 
         self._services = services
 
-        self._pre = []
-        self._pre.extend(["-p", self.project])
-        self._pre.extend(["-f", self.compose_file])
-        self._pre.append("--debug")
-
-        self._post = []
+        self._opts.extend(["-p", self.project])
+        self._opts.extend(["-f", self.compose_file])
+        self._opts.append("--debug")
 
         # Get the singularity binary path
         singularity_sys = shutil.which("singularity")
@@ -47,7 +44,6 @@ class SingularityClient(ContainerClient):
 
         # Make custom updates to the config file
         self._tmpdirs = []
-        self._tmpfiles = []
         self._update_config()
 
     def is_installed() -> bool:
@@ -130,7 +126,6 @@ class SingularityClient(ContainerClient):
                     temp_recipe_file.write(temp_recipe)
 
                     build["recipe"] = temp_recipe
-                    self._tmpfiles.append(temp_recipe)
 
         self.config.write_compose(compose)
 
@@ -224,7 +219,7 @@ class SingularityClient(ContainerClient):
                 LOGGER.fatal(msg)
                 raise ContainerException(msg)
             exec_cmd = kwargs.pop("exec_cmd")
-            return self._run_cmd(self._binary, cmd, *args, *exec_cmd, *self._post, **kwargs)
+            return self._run_cmd(self._binary, cmd, *args, *exec_cmd, *self._args, **kwargs)
         else:
             return super().run_cmd(cmd, *args, **kwargs)
 
@@ -234,9 +229,5 @@ class SingularityClient(ContainerClient):
         return self._run_cmd("singularity-compose", *args, **kwargs)
 
     def __del__(self):
-        for tmpfile in self._tmpfiles:
-            if os.path.exists(tmpfile):
-                os.unlink(tmpfile)
-
         for tmpdir in self._tmpdirs:
             tmpdir.cleanup()

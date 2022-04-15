@@ -4,19 +4,18 @@ CLI command that handles working with the ATK development environment
 """
 
 # Imports from atk
-from autonomy_toolkit.utils import getuser, getuid, getgid
 from autonomy_toolkit.utils.atk_config import ATKConfig
 from autonomy_toolkit.utils.logger import LOGGER
 from autonomy_toolkit.utils.parsing import ATKYamlFile, ATKJsonFile
 from autonomy_toolkit.utils.files import search_upwards_for_file
-from autonomy_toolkit.utils.system import is_port_available
+from autonomy_toolkit.utils.system import is_port_available, getuser, getuid, getgid
 
 from autonomy_toolkit.containers.container_client import ContainerException
 
 # Other imports
 import yaml, os, argparse, getpass
 
-def _parse_ports(client, config, args, unknown_args):
+def _parse_ports(client, config, args):
     # Loop through each port mapping
     mappings = {}
     for mapping in args.port_mappings:
@@ -36,53 +35,85 @@ def _parse_ports(client, config, args, unknown_args):
 
     # For each service that we're spinning up, check the port mappings to ensure the host
     # port is available.
-    compose = ATKYamlFile(text=client.run_cmd("config", stdout=-1)[0])
-    for service_name, service in compose.data['services'].items():
-        # Check ports
-        if args.up or args.run:
-            for ports in service.get('ports', []):
-                if ports['published'] in mappings:
-                    ports['published'] = mappings[ports['published']]
+    if not args.dry_run:
+        compose = ATKYamlFile(text=client.run_cmd("config", stdout=-1)[0])
+        for service_name, service in compose.data['services'].items():
+            # Check ports
+            if args.up or args.run:
+                for ports in service.get('ports', []):
+                    if ports['published'] in mappings:
+                        ports['published'] = mappings[ports['published']]
 
-                if not is_port_available(ports['published']):
-                    LOGGER.fatal(f"Host port '{ports['published']}' is requested for the '{service_name}' service, but it is already in use. Consider using '--port-mappings'.")
-                    return False
+                    if not is_port_available(ports['published']):
+                        LOGGER.fatal(f"Host port '{ports['published']}' is requested for the '{service_name}' service, but it is already in use. Consider using '--port-mappings'.")
+                        return False
 
-    # Rewrite with the parsed config
-    config.write_compose(compose.data)
+        # Rewrite with the parsed config
+        config.write_compose(compose.data)
 
     return True
 
 
-def _parse_custom_cli_arguments(config, args, unknown_args):
+def _parse_additional_attributes(config, args):
     # For each service that we're spinning up, check for the custom cli arguments
     compose = config.compose
     for service_name, service in compose['services'].items():
+        # ------------------------
         # Add custom cli arguments
+        # ------------------------
+
         # TODO: Disable 'argparse' as a service name
-        service_args = {k: v for k,v in config.custom_cli_arguments.items() if service_name in v}
+        service_args = {k: v for k,v in config.custom_cli_arguments.items() if service_name in v or 'all' in v}
         if service_args:
             # We'll use argparse to parse the unknown flags
             parser = argparse.ArgumentParser(prog=service_name, add_help=False)
             for arg_name, arg_dict in service_args.items():
-                if arg_name[:2] != '--':
-                    LOGGER.fatal(f"The argparse argument must begin with '--'. Got '{arg_name}' instead.")
-                    return
-                parser.add_argument(arg_name, **config.custom_cli_arguments[arg_name].get("argparse", {}))
-            known, unknown = parser.parse_known_args(unknown_args)
+                parser.add_argument(f"--{arg_name}", **config.custom_cli_arguments[arg_name].get("argparse", {}))
+
+            known, unknown = parser.parse_known_args([f"--{arg}" for arg in args.custom_cli_args])
             output = ATKYamlFile(text=yaml.dump(service_args))
             output.replace_vars(vars(known))
             for k,v in output.data.items():
                 # Only use if the arg is set
                 # Assumed it is set if it passes a boolean conversion
-                if getattr(known, v.get('argparse', {}).get('dest', k[2:])):
-                    added_dict = v[service_name].get(config.container_runtime, v[service_name])
-                    service.update(ATKConfig._merge_dictionaries(service, added_dict))
+                if getattr(known, v.get('argparse', {}).get('dest', k)):
+                    _service_name = service_name if 'all' not in v else 'all'
+                    added_dict = v[_service_name].get(config.container_runtime, v[_service_name])
+                    service.update(ATKConfig._merge_dictionaries(added_dict, service))
 
             if unknown:
-                LOGGER.warn(f"Found unknown arguments in custom arguents for service '{service_name}': '{', '.join(unknown)}'. Ignoring.")
+                LOGGER.warn(f"Found unknown arguments in custom arguments for service '{service_name}': '{', '.join(unknown)}'. Ignoring.")
 
-def _run_dev(args, unknown_args):
+        # ---------------------------
+        # Add hardware specific attrs
+        # ---------------------------
+
+        if config.hardware_specific_attributes:
+            from autonomy_toolkit.utils.system import get_mac_address
+             
+            mac = get_mac_address()
+            LOGGER.debug(f"MAC Address: {mac}.")
+
+            user = getuser()
+
+            for attr in config.hardware_specific_attributes:
+                if 'mac_address' in attr and 'user' in attr:
+                    LOGGER.warn(f"'mac_address' and 'user' found in hardware specific attribute. Using 'user'.")
+
+                do = False
+                if 'user' in attr:
+                    do = attr['user'] == user
+                elif 'mac_address' in attr:
+                    do = attr['mac_address'] == mac
+                else:
+                    LOGGER.warn(f"'mac_address' and 'user' are not specified in the hardware specific attribute. Cannot parse.")
+
+                if do:
+                    _service_name = service_name if 'all' not in attr else 'all'
+                    added_dict = attr[_service_name].get(config.container_runtime, attr[_service_name])
+                    service.update(ATKConfig._merge_dictionaries(service, added_dict))
+
+def _run_dev(args):
     LOGGER.info("Running 'dev' entrypoint...")
 
     # Instantiate the client
@@ -121,6 +152,7 @@ def _run_dev(args, unknown_args):
     config.add_custom_attribute("default_containers", type=list, default=default_containers, force_default="ATK_DEFAULT_CONTAINERS" in os.environ)
     config.add_custom_attribute("overwrite_lists", type=bool, default=False)
     config.add_custom_attribute("custom_cli_arguments", type=dict, default={})
+    config.add_custom_attribute("hardware_specific_attributes", type=list, default=[])
     # config.add_custom_attribute("build_depends", type=dict, default={}) TODO
 
     # Parse the ATK config file
@@ -153,64 +185,57 @@ def _run_dev(args, unknown_args):
 
     # Generate the compose file
     config.generate_compose(services=args.services, overwrite_lists=config.overwrite_lists)
-    _parse_custom_cli_arguments(config, args, unknown_args)
+    _parse_additional_attributes(config, args)
 
     # Now actually instantiate the client
     client = client(config, config.project, config.compose_path, **vars(args))
 
     # Complete the arguments
-    if not args.dry_run:
+    try:
+        # And write the compose file
+        config.write_compose()
 
-        try:
-            # And write the compose file
-            config.write_compose()
+        if args.down:
+            LOGGER.info(f"Tearing down...")
+            client.down(*args.args)
 
-            # Keep track of the number of users so we aren't deleting files when they need to persist
-            config.update_user_count(1)
+        # Make any custom updates at runtime after the compose file has been loaded once
+        # Only do if docker, singularity uses the host network
+        if container_runtime != "singularity" and not _parse_ports(client, config, args): return
 
-            if args.down:
-                LOGGER.info(f"Tearing down...")
-                client.down(*args.args)
+        if args.build:
+            LOGGER.info(f"Building...")
+            client.build(*args.args)
 
-            # Make any custom updates at runtime after the compose file has been loaded once
-            # Only do if docker, singularity uses the host network
-            if container_runtime != "singularity" and not _parse_ports(client, config, args, unknown_args): return
+        if args.up:
+            LOGGER.info(f"Spinning up...")
+            client.up(*args.args)
 
-            if args.build:
-                LOGGER.info(f"Building...")
-                client.build(*args.args)
+        if args.attach:
+            LOGGER.info(f"Attaching...")
 
-            if args.up:
-                LOGGER.info(f"Spinning up...")
-                client.up(*args.args)
+            if len(args.services) > 1 and config.default_container not in args.services:
+                LOGGER.fatal(f"'--services' must have either one service or '{config.default_container}' (or 'all', which will attach to '{config.default_container}') when attach is set to true.")
+                return
 
-            if args.attach:
-                LOGGER.info(f"Attaching...")
+            # Determine the service we'd like to attach to
+            # If '{config.default_container}' or 'all' is passed, 
+            # {config.default_container} will be attached to
+            # Otherwise, one service must be selected and that service will be attached to
+            service_name = f"{config.default_container}" if f"{config.default_container}" in args.services or len(args.services) == 0 else args.services[0]
 
-                if len(args.services) > 1 and config.default_container not in args.services:
-                    LOGGER.fatal(f"'--services' must have either one service or '{config.default_container}' (or 'all', which will attach to '{config.default_container}') when attach is set to true.")
-                    return
+            client.shell(service_name, *args.args)
 
-                # Determine the service we'd like to attach to
-                # If '{config.default_container}' or 'all' is passed, 
-                # {config.default_container} will be attached to
-                # Otherwise, one service must be selected and that service will be attached to
-                service_name = f"{config.default_container}" if f"{config.default_container}" in args.services or len(args.services) == 0 else args.services[0]
+        if args.run:
+            LOGGER.info(f"Running...")
+            client.run(args.services[0], *args.args)
 
-                client.shell(service_name, *args.args)
-
-            if args.run:
-                LOGGER.info(f"Running...")
-                client.run(args.services[0], *args.args)
-
-        except ContainerException as e:
-            LOGGER.fatal(e)
-            if e.stderr:
-                LOGGER.fatal(e.stderr)
-        finally:
-            del client
-            if config.update_user_count(-1) == 0 or args.down:
-                config.cleanup(args.keep_yml)
+    except ContainerException as e:
+        LOGGER.fatal(e)
+        if e.stderr:
+            LOGGER.fatal(e.stderr)
+    finally:
+        del client
 
 def _init(subparser):
     """Entrypoint for the `dev` command
@@ -264,8 +289,10 @@ def _init(subparser):
     subparser.add_argument("-r", "--run", action="store_true", help="Run a command in the provided service. Only one service may be provided.", default=False)
     subparser.add_argument("-s", "--services", nargs='+', help="The services to use. Defaults to 'all' or whatever 'default_containers' is set to in .atk.yml. 'dev' or 'all' is required for the 'attach' argument. If 'all' is passed, all the services are used.", default=None)
     subparser.add_argument("-f", "--filename", help="The ATK config file. Defaults to '.atk.yml'", default='.atk.yml')
-    subparser.add_argument("--keep-yml", action="store_true", help="Don't delete the generated docker-compose file.", default=False)
-    subparser.add_argument("--port-mappings", nargs='+', help="Mappings to replace conflicting host ports at runtime.", default=[])
-    subparser.add_argument("--args", nargs=argparse.REMAINDER, help="Additional arguments to pass to the docker compose command. No logic is done on the args, the docker command will error out if there is a problem.", default=[])
+    subparser.add_argument("--port-mappings", nargs='+', help="Mappings to replace conflicting host ports at runtime. Ex: remap exposed port 8080 to be 8081: '--port-mappings 8080:8081'.", default=[])
+    subparser.add_argument("--custom-cli-args", nargs="*", help="Custom CLI arguments that are cross referenced with the 'custom_cli_arguments' field in the ATK config file.", default=[])
+    subparser.add_argument("--options", nargs="*", help="Additional options that are passed to the compose command. Use command as it would be used for the compose argument without the '--'. For docker, 'atk dev -b --options no-cache -s dev' will equate to 'docker compose build --no-cache dev'. Will be passed to _all_ subcommands (i.e. build, up, etc.) if multiple are used.", default=[])
+    subparser.add_argument("--args", nargs=argparse.REMAINDER, help="Additional arguments to pass to the compose command. All character following '--args' is passed at the very end of the compose command, i.e. 'atk dev -r -s dev --args ls' will run '... compose run dev ls'. Will be passed to _all_ subcommands (i.e. build, up, etc.) if multiple are used.", default=[])
+
     subparser.set_defaults(cmd=_run_dev)
 

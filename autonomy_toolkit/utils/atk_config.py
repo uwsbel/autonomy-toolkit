@@ -6,7 +6,7 @@ Abstracted helper class :class:`ATKConfig` used for reading/writing configuratio
 # Imports from atk
 import autonomy_toolkit
 from autonomy_toolkit.utils.logger import LOGGER
-from autonomy_toolkit.utils.files import search_upwards_for_file, unlink_file
+from autonomy_toolkit.utils.files import search_upwards_for_file
 from autonomy_toolkit.utils.parsing import ATKYamlFile, ATKTextFile, replace_vars
 
 # Other imports
@@ -48,11 +48,7 @@ class ATKConfig:
         # Fill out file paths we'll create later on
         self.root = self.atk_yml_path.parent
         self.compose_path = self.root / ".atk-compose.yml"
-        self.atk_user_count_path = self.root / ".atk.user_count"
         self.atk_root = Path(autonomy_toolkit.__file__).parent
-
-        # Docker specifics
-        self.docker_ignore_path = self.root / ".dockerignore"
 
         # Add some required attributes
         self._required_attributes = []
@@ -255,70 +251,6 @@ class ATKConfig:
 
         # Write the compose file
         self.compose_config.write(self.compose_path)
-
-    def generate_dockerignore(self):
-        """Generates a ``.dockerignore`` file that's used by ``docker``
-        """
-
-        # First grab the defaults
-        ignore_text = ATKTextFile(self.atk_root / "containers" / "config" / "dockerignore")
-
-        # Then concatenate with the existing dockerignore file, if there is one
-        if (existing_ignore := search_upwards_for_file('.dockerignore')) is not None:
-            ignore_text += ATKTextFile(existing_ignore)
-
-        # And finally, write the file back to the dockerignore path
-        ignore_text.write(self.docker_ignore_path)
-
-    def update_user_count(self, val: int):
-        """Update the user count file to keep track of how many instances of the ATK 
-        container system has been initialized.
-
-        An early issue with the ``autonomy-toolkit`` package was that if there were 
-        two instances of a container running, when one would exit, the clean-up process 
-        would take place (i.e. docker compose file would be deleted, etc.), but this wasn't 
-        desired. The user count was introduced to alleviate this issue, where the number of containers
-        are kept track of. Only when there are zero current "users" will cleanup take place.
-
-        This is implemented through a file that's constantly updated as new users are added/removed.
-
-        .. warning::
-
-            This doesnt' work.
-
-        Args:
-            val (int): Either 1 or -1 for an added and removed user, respectively.
-
-        Returns:
-            int: The number of current members (including the changes introduced by this method call)
-        """
-
-        # First, read the existing file
-        if not Path(self.atk_user_count_path).exists():
-            atk_user_count_file = ATKTextFile(self.atk_user_count_path, create=True)
-
-            # Start out with it being zero
-            atk_user_count_file.data = "0"
-            atk_user_count_file.write(self.atk_user_count_path)
-        else:
-            atk_user_count_file = ATKTextFile(self.atk_user_count_path)
-
-        atk_user_count_file.data = str(int(atk_user_count_file.data) + val)
-        atk_user_count_file.write(self.atk_user_count_path)
-
-        return atk_user_count_file.data
-
-    def cleanup(self, keep_compose: bool = False):
-        """Cleanup the system.
-
-        Cleanup consists of deleting the ``docker compose`` config and ignore files, as well as 
-        the ``autonomy-toolkit`` user count file
-
-        Args:
-            keep_compose (bool): If true, will `not` delete the ``docker compose`` config file. Otherwise, it will be deleted.
-        """
-        unlink_file(self.atk_user_count_path)
-        if not keep_compose: unlink_file(self.compose_path)
 
     def _merge_dictionaries(source, destination, overwrite_lists=False):
         for key, value in source.items():

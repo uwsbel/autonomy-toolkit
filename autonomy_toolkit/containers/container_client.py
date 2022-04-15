@@ -39,6 +39,16 @@ class ContainerClient(ABC):
         self.project = project
         self.compose_file = compose_file
 
+        self.dry_run = False if 'dry_run' not in kwargs else kwargs['dry_run']
+
+        # Options passed to the compose command
+        # i.e. .. compose ..opts <command> 
+        self._opts = []
+
+        # Args passed to the compose command
+        # i.e. .. compose <command> ...args
+        self._args = []
+
     @staticmethod
     @abstractmethod
     def is_installed() -> bool:
@@ -134,18 +144,17 @@ class ContainerClient(ABC):
                 LOGGER.fatal(msg)
                 raise ContainerException(msg)
             exec_cmd = kwargs.pop("exec_cmd")
-            return self._run_compose_cmd(*self._pre, cmd, *args, *exec_cmd, *self._post, **kwargs)
+            return self._run_compose_cmd(*self._opts, cmd, *args, *exec_cmd, *self._args, **kwargs)
         elif cmd == "run":
-            return self._run_compose_cmd(*self._pre, cmd, *args, *self._post, **kwargs)
+            return self._run_compose_cmd(*self._opts, cmd, *args, *self._args, **kwargs)
         else:
-            return self._run_compose_cmd(*self._pre, cmd, *args, *self._services, *self._post, **kwargs)
+            return self._run_compose_cmd(*self._opts, cmd, *args, *self._services, *self._args, **kwargs)
 
     @abstractmethod
     def _run_compose_cmd(self, *args, **kwargs):
         pass
 
-    @staticmethod
-    def _run_cmd(*args, **kwargs):
+    def _run_cmd(self, *args, **kwargs):
         cmd = ' '.join([str(arg) for arg in args])
         LOGGER.info(f"{cmd}")
 
@@ -158,7 +167,11 @@ class ContainerClient(ABC):
             return stream
 
         args = [arg for arg in args if arg]
-        completed_process = subprocess.run(args, **kwargs)
+        if not self.dry_run:
+            completed_process = subprocess.run(args, **kwargs)
+        else:
+            LOGGER.info(f"'dry_run' set to true. Not running command.")
+            return "", ""
 
         stdout = post_process_stream(completed_process.stdout)
         stderr = post_process_stream(completed_process.stderr)

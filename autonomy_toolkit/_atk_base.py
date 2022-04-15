@@ -41,19 +41,15 @@ def _main():
     parser = _init()
 
     # Parse the arguments and update logging
-    known_args, unknown_args = parser.parse_known_args()
+    args = parser.parse_args()
 
     # Return version if desired and exit
-    if known_args.version:
+    if args.version:
         from autonomy_toolkit import __version__
         print(__version__)
         return
 
-    set_verbosity(known_args.verbosity)
+    set_verbosity(args.verbosity)
 
     # Calls the cmd for the used subparser
-    from inspect import signature
-    if len(signature(known_args.cmd).parameters) == 1:
-        known_args.cmd(known_args)
-    else:
-        known_args.cmd(known_args, unknown_args)
+    args.cmd(args)
