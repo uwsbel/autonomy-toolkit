@@ -97,21 +97,19 @@ def _parse_additional_attributes(config, args):
             user = getuser()
 
             for attr in config.hardware_specific_attributes:
-                if 'mac_address' in attr and 'user' in attr:
-                    LOGGER.warn(f"'mac_address' and 'user' found in hardware specific attribute. Using 'user'.")
+                if 'mac_address' not in attr and 'user' not in attr:
+                    LOGGER.warn(f"'mac_address' and 'user' are not specified in the hardware specific attribute. Cannot parse.")
 
                 do = False
                 if 'user' in attr:
                     do = attr['user'] == user
-                elif 'mac_address' in attr:
+                if 'mac_address' in attr:
                     do = attr['mac_address'] == mac
-                else:
-                    LOGGER.warn(f"'mac_address' and 'user' are not specified in the hardware specific attribute. Cannot parse.")
 
                 if do:
                     _service_name = service_name if 'all' not in attr else 'all'
                     added_dict = attr[_service_name].get(config.container_runtime, attr[_service_name])
-                    service.update(ATKConfig._merge_dictionaries(service, added_dict))
+                    service.update(ATKConfig._merge_dictionaries(added_dict, service))
 
 def _run_dev(args):
     LOGGER.info("Running 'dev' entrypoint...")
@@ -245,7 +243,7 @@ def _init(subparser):
     is used to build, spin up, attach, and tear down the containers. The `dev` entrypoint will basically wrap
     the `docker compose` commands to make it easier to customize the workflow to work best for ATK.
 
-    The `dev` command will search for a file called `.atk.yml`. This is a hidden file, and it defines some custom
+    The `dev` command will search for a file called `atk.yml`. This is a hidden file, and it defines some custom
     configurations for the development environment. It allows users to quickly start and attach to the ATK development environment
     based on a shared `docker-compose.yml` file and any Dockerfile build configurations. 
 
@@ -287,8 +285,8 @@ def _init(subparser):
     subparser.add_argument("-d", "--down", action="store_true", help="Tear down the env.", default=False)
     subparser.add_argument("-a", "--attach", action="store_true", help="Attach to the env.", default=False)
     subparser.add_argument("-r", "--run", action="store_true", help="Run a command in the provided service. Only one service may be provided.", default=False)
-    subparser.add_argument("-s", "--services", nargs='+', help="The services to use. Defaults to 'all' or whatever 'default_containers' is set to in .atk.yml. 'dev' or 'all' is required for the 'attach' argument. If 'all' is passed, all the services are used.", default=None)
-    subparser.add_argument("-f", "--filename", help="The ATK config file. Defaults to '.atk.yml'", default='.atk.yml')
+    subparser.add_argument("-s", "--services", nargs='+', help="The services to use. Defaults to 'all' or whatever 'default_containers' is set to in atk.yml. 'dev' or 'all' is required for the 'attach' argument. If 'all' is passed, all the services are used.", default=None)
+    subparser.add_argument("-f", "--filename", help="The ATK config file. Defaults to 'atk.yml'", default='atk.yml')
     subparser.add_argument("--port-mappings", nargs='+', help="Mappings to replace conflicting host ports at runtime. Ex: remap exposed port 8080 to be 8081: '--port-mappings 8080:8081'.", default=[])
     subparser.add_argument("--custom-cli-args", nargs="*", help="Custom CLI arguments that are cross referenced with the 'custom_cli_arguments' field in the ATK config file.", default=[])
     subparser.add_argument("--options", nargs="*", help="Additional options that are passed to the compose command. Use command as it would be used for the compose argument without the '--'. For docker, 'atk dev -b --options no-cache -s dev' will equate to 'docker compose build --no-cache dev'. Will be passed to _all_ subcommands (i.e. build, up, etc.) if multiple are used.", default=[])

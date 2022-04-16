@@ -15,7 +15,7 @@ from pathlib import Path
 import yaml
 
 class ATKConfig:
-    """Helper class that abstracts reading the ``.atk.yml`` file that defines configurations
+    """Helper class that abstracts reading the ``atk.yml`` file that defines configurations
     """
 
     class _Attr:
@@ -34,7 +34,7 @@ class ATKConfig:
         def __str__(self):
             return str(self.value)
 
-    def __init__(self, filename: Union[Path, str] = '.atk.yml', container_runtime: str = "docker", default_container: str = "dev"):
+    def __init__(self, filename: Union[Path, str] = 'atk.yml', container_runtime: str = "docker", default_container: str = "dev"):
         # First, grab the atk file
         self.atk_yml_path = search_upwards_for_file(str(filename))
         if self.atk_yml_path is None:
