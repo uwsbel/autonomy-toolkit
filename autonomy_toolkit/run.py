@@ -7,35 +7,37 @@ CLI command that handles allows generic handling of an ATK config file for runni
 from autonomy_toolkit.utils.atk_config import ATKConfig
 from autonomy_toolkit.utils.logger import LOGGER
 from autonomy_toolkit.utils.files import search_upwards_for_file
-# from autonomy_toolkit.utils.docker import get_docker_client_binary_path, compose_is_installed, DockerComposeClient, DockerException
+from autonomy_toolkit.containers.container_client import ContainerException
 
 # Other imports
-import argparse
+import os, argparse
 
 def _run_run(args):
     LOGGER.info("Running 'run' entrypoint...")
 
-    # Check docker is installed
-    if get_docker_client_binary_path() is None:
-        LOGGER.fatal(f"Docker was not found to be installed. Cannot continue.")
+    # Instantiate the client
+    # Create the abstracted client we'll use for interacting with the compose client
+    container_runtime = os.environ.get("ATK_CONTAINER_RUNTIME", "docker")
+    if container_runtime == "docker":
+        from autonomy_toolkit.containers.docker_client import DockerClient
+        client = DockerClient
+    else:
+        LOGGER.fatal(f"Environment variable 'ATK_CONTAINER_RUNTIME' is set to '{container_runtime}', which is not allowed.")
         return
 
-    # Check docker compose is installed
-    LOGGER.debug("Checking if 'docker compose' (V2) is installed...")
-    if not compose_is_installed():
-        LOGGER.fatal("The command 'docker compose' is not installed. See http://projects.sbel.org/autonomy_toolkit/tutorials/using_the_development_environment.html for more information.")
+    # Check that the client libraries are installed properly
+    if not client.is_installed():
         return
-    LOGGER.debug("'docker compose' (V2) is installed.")
 
     # Grab the ATK config file
     LOGGER.debug(f"Loading '{args.filename}' file.")
-    config = ATKConfig(args.filename)
+    config = ATKConfig(args.filename, container_runtime)
 
     # Add some required attributes
     config.add_required_attribute("services")
 
     # Add some default custom attributes
-    config.add_custom_attribute("services", dict, delete=False)
+    config.add_custom_attribute("services", type=dict, delete=False)
 
     # Parse the ATK config file
     if not config.parse():
@@ -50,33 +52,27 @@ def _run_run(args):
         LOGGER.fatal("The 'run' command requires one service.")
         return
 
+    # Generate the compose file
+    config.generate_compose(services=args.services)
+
+    # Now actually instantiate the client
+    client = client(config, config.project, config.compose_path, **vars(args))
+
     # Complete the arguments
-    if not args.dry_run:
+    try:
+        # And write the compose file
+        config.write_compose()
 
-        try:
-            # Write the compose file
-            config.generate_compose(use_default_compose=False)
+        # Run!!
+        LOGGER.info(f"Running...")
+        client.run("--service-ports", "--rm", args.services[0], *args.args)
 
-            # Write the dockerignore
-            config.generate_ignore()
-
-            # Keep track of the number of users so we aren't deleting files when they need to persist
-            config.update_user_count(1)
-
-            # Create the abstracted client we'll use for interacting with docker compose
-            client = DockerComposeClient(project=config.project, services=args.services, compose_file=config.docker_compose_path)
-
-            # Run!!
-            LOGGER.info(f"Running...")
-            client.run("run", "--service-ports", "--rm", args.services[0], *args.args)
-
-        except DockerException as e:
-            LOGGER.fatal(e)
-            if e.stderr:
-                LOGGER.fatal(e.stderr)
-        finally:
-            if config.update_user_count(-1) == 0:
-                config.cleanup(args.keep_yml)
+    except ContainerException as e:
+        LOGGER.fatal(e)
+        if e.stderr:
+            LOGGER.fatal(e.stderr)
+    finally:
+        del client
 
 def _init(subparser):
     """Entrypoint for the `run` command
@@ -97,8 +93,8 @@ def _init(subparser):
     LOGGER.debug("Initializing 'run' entrypoint...")
 
     # Add arguments
-    subparser.add_argument("-s", "--services", nargs='+', help="The services to use. Defaults to 'all' or whatever 'default_services' is set to in .atk.yml. 'dev' or 'all' is required for the 'attach' argument. If 'all' is passed, all the services are used.", default=None)
-    subparser.add_argument("-f", "--filename", help="The ATK config file. Defaults to '.atk.yml'", default='.atk.yml')
+    subparser.add_argument("-s", "--services", nargs='+', help="The services to use. Defaults to 'all' or whatever 'default_services' is set to in atk.yml. If 'all' is passed, all the services are used.", default=None)
+    subparser.add_argument("-f", "--filename", help="The ATK config file. Defaults to 'atk.yml'", default='atk.yml')
     subparser.add_argument("--args", nargs=argparse.REMAINDER, help="Additional arguments to pass to the docker compose command. No logic is done on the args, the docker command will error out if there is a problem.", default=[])
     subparser.set_defaults(cmd=_run_run)
 
