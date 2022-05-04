@@ -66,6 +66,11 @@ class SingularityClient(ContainerClient):
 
         return singularity_is_installed and singularity_compose_is_installed
 
+    def get_parsed_config(self, client) -> 'ATKFile':
+        from autonomy_toolkit.utils.parsing import ATKJsonFile
+        config = client.run_cmd("config", stdout=-1)[0].replace("No instances found.\n", "")
+        return ATKJsonFile(text=config)
+
     def _update_config(self) -> bool:
         """Update the config based on the specific runtime that implements this class.
         """
@@ -99,11 +104,9 @@ class SingularityClient(ContainerClient):
             if "network" not in service:
                 service["network"] = {"enable": False}
 
-            service.pop("ports", None) # Ports require sudo; we'll use the host network anyways
-
             if "build" in service:
                 build = service["build"]
-                build["options"] = []
+                build["options"] = build.get("options", [])
                 build["options"].append("fakeroot")
                 build["options"].append("fix-perms")
                 build["options"].append(f"tmpdir={tmpdir.name}")

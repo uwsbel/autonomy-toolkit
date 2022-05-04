@@ -36,16 +36,23 @@ def _parse_ports(client, config, args):
     # For each service that we're spinning up, check the port mappings to ensure the host
     # port is available.
     if not args.dry_run:
-        compose = ATKYamlFile(text=client.run_cmd("config", stdout=-1)[0])
-        for service_name, service in compose.data['services'].items():
+        compose = client.get_parsed_config(client)
+        services = compose.data.get('services', compose.data.get('instances'))
+        for service_name, service in services.items():
             # Check ports
             if args.up or args.run:
-                for ports in service.get('ports', []):
-                    if ports['published'] in mappings:
-                        ports['published'] = mappings[ports['published']]
+                for port in service.get('ports', []):
+                    if 'published' in port:
+                        if port['published'] in mappings:
+                            port['published'] = mappings[port['published']]
 
-                    if not is_port_available(ports['published']):
-                        LOGGER.fatal(f"Host port '{ports['published']}' is requested for the '{service_name}' service, but it is already in use. Consider using '--port-mappings'.")
+                        published = port['published']
+                    else:
+                        # Assumed to be host:container
+                        published,container = port.split(":")
+
+                    if not is_port_available(published):
+                        LOGGER.fatal(f"Host port '{published}' is requested for the '{service_name}' service, but it is already in use. Consider using '--port-mappings'.")
                         return False
 
         # Rewrite with the parsed config
@@ -198,8 +205,7 @@ def _run_dev(args):
             client.down(*args.args)
 
         # Make any custom updates at runtime after the compose file has been loaded once
-        # Only do if docker, singularity uses the host network
-        if container_runtime != "singularity" and not _parse_ports(client, config, args): return
+        if not _parse_ports(client, config, args): return
 
         if args.build:
             LOGGER.info(f"Building...")

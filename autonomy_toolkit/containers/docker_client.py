@@ -67,6 +67,11 @@ class DockerClient(ContainerClient):
             return False
 
         return True
+
+    def get_parsed_config(self, client) -> 'ATKFile':
+        from autonomy_toolkit.utils.parsing import ATKJsonFile
+        config = client.run_cmd("config", "--format=json", stdout=-1)[0].replace("No instances found.\n", "")
+        return ATKJsonFile(text=config)
     
     def shell(self, service: str, *args) -> bool:
         """Enter the shell for a specific container.

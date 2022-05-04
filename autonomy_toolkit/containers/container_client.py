@@ -59,6 +59,10 @@ class ContainerClient(ABC):
         """
         pass
 
+    @abstractmethod
+    def get_parsed_config(self, client) -> 'ATKFile':
+        pass
+
     def down(self, *args) -> bool:
         """Bring down the containers.
 

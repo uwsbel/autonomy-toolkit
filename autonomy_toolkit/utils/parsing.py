@@ -209,7 +209,7 @@ class _ATKDictWrapperFile(ATKFile):
         if temp is not None:
             for arg in args:
                 if arg not in temp:
-                    LOGGER.info(f"f{self._type} does not contain nested attributes: {args}.")
+                    LOGGER.info(f"{self._type} does not contain nested attributes: {args}.")
                     if default is not None:
                         LOGGER.info(f"Using default: {default}.")
                     temp = default
