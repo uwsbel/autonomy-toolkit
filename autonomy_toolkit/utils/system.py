@@ -19,6 +19,9 @@ def is_port_available(port: int) -> bool:
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         in_use = s.connect_ex(('localhost', int(port))) == 0
 
+    with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
+        in_use = s.connect_ex(('localhost', int(port))) == 0 or in_use
+
     return not in_use
 
 def get_mac_address() -> str:
