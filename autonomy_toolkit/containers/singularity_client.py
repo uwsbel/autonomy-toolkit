@@ -132,42 +132,6 @@ class SingularityClient(ContainerClient):
 
         self.config.write_compose(compose)
 
-    def build(self, *args) -> bool:
-        """Build the images.
-
-        ``singularity-compose`` won't overwrite an existing sif it already exists. Do that here.
-
-        Returns:
-            bool: Whether the command succeeded.
-        """
-
-        for service_name, service in self.config.compose["instances"].items():
-            if service_name not in self._services or "build" not in service:
-                continue
-
-            build = service["build"]
-
-            sif = Path(build.get("context", ".")) / f"{service_name}.sif"
-            if sif.exists():
-                res = input(f"The image for {service_name} has already been built. Okay to overwrite? (y|[n]) ") or "n"
-                if res == "y":
-                    os.unlink(sif)
-                elif res == "n":
-                    LOGGER.info(f"Not overwriting {service_name}.sif.")
-                else:
-                    LOGGER.warn(f"Response '{res}' is not recognized. Pass either 'y' or 'n'. Not overwriting {service_name}.sif.")
-        return super().build(*args)
-
-    def up(self, *args) -> bool:
-        """Bring up the containers.
-
-        Returns:
-            bool: Whether the command succeeded.
-        """
-        if "--resolv" not in args:
-            args = [*args, "--no-resolv"]
-        return super().up(*args)
-
     def run(self, service, *exec_cmd) -> bool:
         """Run a command in a container.
 

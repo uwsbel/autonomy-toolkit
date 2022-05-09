@@ -41,7 +41,8 @@ def _parse_ports(client, config, args):
         for service_name, service in services.items():
             # Check ports
             if args.up or args.run:
-                for port in service.get('ports', []):
+                ports = service.get("ports", [])
+                for i, port in enumerate(ports):
                     if 'published' in port:
                         if port['published'] in mappings:
                             port['published'] = mappings[port['published']]
@@ -50,6 +51,10 @@ def _parse_ports(client, config, args):
                     else:
                         # Assumed to be host:container
                         published,container = port.split(":")
+                        published = int(published)
+                        if published in mappings:
+                            published = mappings[published]
+                            ports[i] = f"{published}:{container}"
 
                     if not is_port_available(published):
                         LOGGER.fatal(f"Host port '{published}' is requested for the '{service_name}' service, but it is already in use. Consider using '--port-mappings'.")
