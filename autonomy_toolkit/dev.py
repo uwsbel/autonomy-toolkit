@@ -56,7 +56,7 @@ def _parse_ports(client, config, args):
                             published = mappings[published]
                             ports[i] = f"{published}:{container}"
 
-                    if not is_port_available(published):
+                    if not is_port_available(published, udp='udp' in port):
                         LOGGER.fatal(f"Host port '{published}' is requested for the '{service_name}' service, but it is already in use. Consider using '--port-mappings'.")
                         return False
 

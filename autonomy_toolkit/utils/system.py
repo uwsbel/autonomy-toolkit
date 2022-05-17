@@ -3,13 +3,14 @@
 System utilities for the autonomy_toolkit package
 """
 
-def is_port_available(port: int) -> bool:
+def is_port_available(port: int, udp: bool = False) -> bool:
     """Checks whether a specified port is available to be attached to.
 
     From `podman_compose <https://github.com/containers/podman-compose/blob/devel/podman_compose.py>`_.
 
     Args:
         port (int): The port to check.
+        udp (bool): Also check udp
 
     Returns:
         bool: True if available, False otherwise.
@@ -17,10 +18,12 @@ def is_port_available(port: int) -> bool:
     import socket
 
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        print(s.connect_ex(('localhost', int(port))))
         in_use = s.connect_ex(('localhost', int(port))) == 0
 
-    with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
-        in_use = s.connect_ex(('localhost', int(port))) == 0 or in_use
+    if udp:
+        with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
+            in_use = s.connect_ex(('localhost', int(port))) == 0 or in_use
 
     return not in_use
 
