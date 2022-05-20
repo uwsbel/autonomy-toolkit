@@ -1,6 +1,21 @@
 # SPDX-License-Identifier: MIT
 """
 CLI command that handles allows generic handling of an ATK config file for running docker containers
+
+Entrypoint for the `run` command
+
+This entrypoint provides easy running of generic docker containers. It's exactly a wrapper of docker compose,
+where the ATK config file is used. This allows `atk` to be used.
+
+To use this entrypoint, you simply need to run the following:
+
+```bash
+atk run
+```
+
+It will search for an ATK config file in all parent directories (defaults for looking for `atk.yml`; this can
+be overridden with `--filename`) and then use `docker compose run`. Not many checks are done to ensure the
+file is formatted correctly for `docker compose`, so please refer to any errors output from the command for debugging.
 """
 
 # Imports from atk
@@ -75,21 +90,6 @@ def _run_run(args):
         del client
 
 def _init(subparser):
-    """Entrypoint for the `run` command
-
-    This entrypoint provides easy running of generic docker containers. It's exactly a wrapper of docker compose,
-    where the ATK config file is used. This allows `atk` to be used.
-
-    To use this entrypoint, you simply need to run the following:
-
-    ```bash
-    atk run
-    ```
-
-    It will search for an ATK config file in all parent directories (defaults for looking for `.atk.yml`; this can
-    be overridden with `--filename`) and then use `docker compose run`. Not many checks are done to ensure the
-    file is formatted correctly for `docker compose`, so please refer to any errors output from the command for debugging.
-    """
     LOGGER.debug("Initializing 'run' entrypoint...")
 
     # Add arguments

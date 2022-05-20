@@ -33,8 +33,8 @@ def replace_vars(value: 'Union[Dict,Str,Iterable]', vars_dict: dict) -> 'Union[D
     Code adapted from `podman compose <https://github.com/containers/podman-compose/blob/701311aa7a278eaa8b3a67d5928ee3531b60a9d7/podman_compose.py#L194>`_.
     
     This method functions similarly to docker and docker compose support subset of bash variable substitution,
-    as defined `here <https://docs.docker.com/compose/compose-file/#variable-substitution>`_, `here <https://docs.docker.com/compose/env-file/>`_, and
-    `here <https://www.gnu.org/software/bash/manual/html_node/Shell-Parameter-Expansion.html>`_. In docker/docker compose, variable substitution is defined
+    as defined `by variable substitution <https://docs.docker.com/compose/compose-file/#variable-substitution>`_, `env file <https://docs.docker.com/compose/env-file/>`_, and
+    `shell parameter expansion <https://www.gnu.org/software/bash/manual/html_node/Shell-Parameter-Expansion.html>`_. In docker/docker compose, variable substitution is defined
     through a variety of means, all which use $ as the identifier. To not cause any conflicts, @ is used instead for ``autonomy-toolkit``.
 
     The following attributes may be used:
@@ -303,18 +303,25 @@ class ATKYamlFile(_ATKDictWrapperFile):
         Checks whether the yaml file contains a certain nested attribute
 
         Ex:
-            ```test.yml
-            test:
-                one: red
-                two: blue
-                three: green
-            ```
 
-            parser = YAMLParser('test.yml')
-            parser.contains('test', 'one')          // true
-            parser.contains('test', 'four')         // false
-            parser.contains('test', 'one', 'red')   // false; only will search keys
-           
+            .. code-block:: YAML
+
+                # test.yml
+                test:
+                    one: red
+                    two: blue
+                    three: green
+
+            .. code-block:: Python
+
+                >> parser = YAMLParser('test.yml')
+                >> parser.contains('test', 'one')
+                True
+                >> parser.contains('test', 'four')
+                False
+                >> parser.contains('test', 'one', 'red')
+                False
+
         Args:
             *args: A list of arguments to search in the file
 
@@ -328,17 +335,22 @@ class ATKYamlFile(_ATKDictWrapperFile):
         Grabs the attribute at the nested location provided by args
 
         Ex:
-            ```test.yml
-            test:
-                one: red
-                two: blue
-                three: green
-            ```
+            .. code-block:: YAML
 
-            parser = YAMLParser('test.yml')
-            parser.get('test', 'one')               // red 
-            parser.get('test', 'green', 'test')     // test
-            parser.get('test', 'green')             // raises AttributeError
+                # test.yml
+                test:
+                    one: red
+                    two: blue
+                    three: green
+
+            .. code-block:: Python
+
+                >> parser = YAMLParser('test.yml')
+                >> parser.get('test', 'one')
+                red
+                >> parser.get('test', 'green', 'test')
+                test
+                >> parser.get('test', 'green')             // raises AttributeError
            
         Args:
             *args: A list of arguments to search in the file
@@ -358,22 +370,24 @@ class ATKYamlFile(_ATKDictWrapperFile):
         Sets the attribute at the nested location provided by args
 
         Ex:
-            ```test.yml
-            test:
-                one: red
-                two: blue
-                three: green
-            ```
+            .. code-block:: YAML
 
-            parser = YAMLParser('test.yml')
-            parser.set('test', 'one', value='black')
-            parser.set('test', 'three', value='twenty', update_key=True)
-            print(yaml.dump(parser.data))
+                # test.yml
+                test:
+                    one: red
+                    two: blue
+                    three: green
 
-            test:
-                one: black
-                two: blue
-                twenty: green
+            .. code-block:: Python
+
+                >> parser = YAMLParser('test.yml')
+                >> parser.set('test', 'one', value='black')
+                >> parser.set('test', 'three', value='twenty', update_key=True)
+                >> print(yaml.dump(parser.data))
+                test:
+                    one: black
+                    two: blue
+                    twenty: green
            
         Args:
             *args: A list of arguments to search in the file

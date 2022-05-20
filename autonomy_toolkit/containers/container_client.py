@@ -132,7 +132,7 @@ class ContainerClient(ABC):
         If cmd is equal to ``exec``, ``exec_cmd`` will expect to be passed as a named argument. 
         If not, a :class:`ContainerException` will be thrown.
 
-        Additional positional args (*args) will be passed as command arguments when running the command. 
+        Additional positional args (``*args``) will be passed as command arguments when running the command. 
         Named arguments will be passed to :meth:`subprocess.run` 
         (`see their docs <https://docs.python.org/3/library/subprocess.html#subprocess.run>`_).
 

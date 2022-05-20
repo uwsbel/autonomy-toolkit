@@ -62,7 +62,7 @@ class SingularityClient(ContainerClient):
         singularity_compose_is_installed = singularity_compose_sys is not None
 
         if not singularity_compose_is_installed:
-            LOGGER.fatal("The command 'singularity-compose' is not installed. Visit https://singularityhub.github.io/singularity-compose/ for more information.")
+            LOGGER.fatal("The command 'singularity-compose' is not installed. 'singularity-compose' should be installed using `pip install git+ssh://git@github.com/AaronYoung5/singularity-compose` (or the https equivalent).")
 
         return singularity_is_installed and singularity_compose_is_installed
 
@@ -170,7 +170,7 @@ class SingularityClient(ContainerClient):
         If cmd is equal to ``exec``, ``exec_cmd`` will expect to be passed as a named argument. 
         If not, a :class:`ContainerException` will be thrown.
 
-        Additional positional args (*args) will be passed as command arguments when running the command. 
+        Additional positional args (``*args``) will be passed as command arguments when running the command. 
         Named arguments will be passed to :meth:`subprocess.run` 
         (`see their docs <https://docs.python.org/3/library/subprocess.html#subprocess.run>`_).
 

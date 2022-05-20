@@ -1,6 +1,47 @@
 # SPDX-License-Identifier: MIT
 """
 CLI command that handles working with the ATK development environment
+
+Entrypoint for the `dev` command
+
+This entrypoint provides easy access to the ATK development environment. The dev environment
+leverages containers (think [Docker](https://docker.com)) to allow interoperability across operating systems. Similar to
+`docker compose`, `atk dev` provides configurability through a YAML file that defines how a container should be spun up.
+Further, the configuration is used to build, attach, tear down, and possibly run specific command. The `dev` entrypoint will basically wrap
+the `docker compose` (or any other container system) commands to make it easier to customize the workflow to work best for ATK.
+
+The `dev` command will search for a file called `atk.yml`. This is a hidden file, and it defines some custom
+configurations for the development environment. It allows users to quickly start and attach to the ATK development environment.
+
+There are five possible options that can be used using the `dev` subcommand:
+`build`, `up`, `down`, `attach`, and `run`. For example, if you'd like to build the container, you'd run 
+the following command:
+
+```bash
+atk dev --build
+```
+
+If you'd like to build, start the container, then attach to it, run the following command:
+
+```bash
+atk dev --build --up --attach
+# OR
+atk dev -b -u -a
+# OR
+atk dev -bua
+```
+
+If no arguments are passed, this is equivalent to the following command:
+
+```bash
+atk dev
+# === is equivalent to ===
+atk dev --up --attach
+```
+
+If desired, pass `--down` to stop the container. Further, if the container exists and changes are
+made to the repository, the container will _not_ be built automatically. To do that, add the 
+`--build` argument.
 """
 
 # Imports from atk
@@ -247,47 +288,6 @@ def _run_dev(args):
         del client
 
 def _init(subparser):
-    """Entrypoint for the `dev` command
-
-    This entrypoint provides easy access to the ATK development environment. The dev environment
-    leverages [Docker](https://docker.com) to allow interoperability across operating systems. `docker compose`
-    is used to build, spin up, attach, and tear down the containers. The `dev` entrypoint will basically wrap
-    the `docker compose` commands to make it easier to customize the workflow to work best for ATK.
-
-    The `dev` command will search for a file called `atk.yml`. This is a hidden file, and it defines some custom
-    configurations for the development environment. It allows users to quickly start and attach to the ATK development environment
-    based on a shared `docker-compose.yml` file and any Dockerfile build configurations. 
-
-    There are five possible options that can be used using the `dev` subcommand:
-    `build`, `up`, `down`, `attach`, and `run`. For example, if you'd like to build the container, you'd run 
-    the following command:
-
-    ```bash
-    atk dev --build
-    ```
-
-    If you'd like to build, start the container, then attach to it, run the following command:
-
-    ```bash
-    atk dev --build --up --attach
-    # OR
-    atk dev -b -u -a
-    # OR
-    atk dev -bua
-    ```
-
-    If no arguments are passed, this is equivalent to the following command:
-
-    ```bash
-    atk dev
-    # === is equivalent to ===
-    atk dev --up --attach
-    ```
-
-    If desired, pass `--down` to stop the container. Further, if the container exists and changes are
-    made to the repository, the container will _not_ be built automatically. To do that, add the 
-    `--build` argument.
-    """
     LOGGER.debug("Initializing 'dev' entrypoint...")
 
     # Add arguments
@@ -296,12 +296,12 @@ def _init(subparser):
     subparser.add_argument("-d", "--down", action="store_true", help="Tear down the env.", default=False)
     subparser.add_argument("-a", "--attach", action="store_true", help="Attach to the env.", default=False)
     subparser.add_argument("-r", "--run", action="store_true", help="Run a command in the provided service. Only one service may be provided.", default=False)
-    subparser.add_argument("-s", "--services", nargs='+', help="The services to use. Defaults to 'all' or whatever 'default_containers' is set to in atk.yml. 'dev' or 'all' is required for the 'attach' argument. If 'all' is passed, all the services are used.", default=None)
+    subparser.add_argument("-s", "--services", nargs='+', help="The services to use. Defaults to 'all' or whatever 'default_containers' is set to in atk.yml (can be overwritten with ATK_DEFAULT_CONTAINERS environment variable). If 'all' is passed, all the services are used.", default=None)
     subparser.add_argument("-f", "--filename", help="The ATK config file. Defaults to 'atk.yml'", default='atk.yml')
-    subparser.add_argument("--port-mappings", nargs='+', help="Mappings to replace conflicting host ports at runtime. Ex: remap exposed port 8080 to be 8081: '--port-mappings 8080:8081'.", default=[])
+    subparser.add_argument("--port-mappings", nargs='+', help="Mappings to replace conflicting host ports at runtime. Ex: remap exposed port 8080 to be 8081: '--port-mappings 8080:8081 9090:9091'.", default=[])
     subparser.add_argument("--custom-cli-args", nargs="*", help="Custom CLI arguments that are cross referenced with the 'custom_cli_arguments' field in the ATK config file.", default=[])
-    subparser.add_argument("--options", nargs="*", help="Additional options that are passed to the compose command. Use command as it would be used for the compose argument without the '--'. For docker, 'atk dev -b --options no-cache -s dev' will equate to 'docker compose build --no-cache dev'. Will be passed to _all_ subcommands (i.e. build, up, etc.) if multiple are used.", default=[])
-    subparser.add_argument("--args", nargs=argparse.REMAINDER, help="Additional arguments to pass to the compose command. All character following '--args' is passed at the very end of the compose command, i.e. 'atk dev -r -s dev --args ls' will run '... compose run dev ls'. Will be passed to _all_ subcommands (i.e. build, up, etc.) if multiple are used.", default=[])
+    subparser.add_argument("--opts", nargs="*", help="Additional options that are passed to the compose command. Use command as it would be used for the compose argument without the '--'. For docker, 'atk dev -b --opts no-cache -s dev' will equate to 'docker compose build --no-cache dev'. Will be passed to _all_ subcommands (i.e. build, up, etc.) if multiple are used.", default=[])
+    subparser.add_argument("--args", nargs="*", help="Additional arguments to pass to the compose command. All character following '--args' is passed at the very end of the compose command, i.e. 'atk dev -r -s dev --args ls' will run '... compose run dev ls'. Will be passed to _all_ subcommands (i.e. build, up, etc.) if multiple are used.", default=[])
 
     subparser.set_defaults(cmd=_run_dev)
 

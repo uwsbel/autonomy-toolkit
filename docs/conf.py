@@ -59,10 +59,10 @@ autoapi_options = [
 ]
 autoapi_ignore = []
 autoapi_keep_files = False
+autoapi_keep_files = True
 autoapi_generate_api_docs = True
 autoapi_add_toctree_entry = False
 autoapi_root = "usage/api/"
-autoapi_keep_files = False
 # autoapi_template_dir = "_templates"
 # autoapi_member_order = "groupwise"
 
@@ -125,7 +125,7 @@ html_theme_options = {
     "announcement": """
         <a style=\"text-decoration: none; color: white;\" 
            href=\"https://sbel.wisc.edu\">
-           <img src=\"https://github.com/uwsbel/autonomy-toolkit/blob/master/docs/_static/cropped-SBEL-192x192.png?raw=true\" 
+           <img src=\"https://github.com/uwsbel/autonomy-toolkit/blob/main/docs/_static/cropped-SBEL-192x192.png?raw=true\" 
                 style=\"vertical-align: middle; display: inline; padding-right: 7.5px; height: 20px;\"/>
            Checkout our website!
         </a>

@@ -18,7 +18,6 @@ def is_port_available(port: int, udp: bool = False) -> bool:
     import socket
 
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-        print(s.connect_ex(('localhost', int(port))))
         in_use = s.connect_ex(('localhost', int(port))) == 0
 
     if udp:
