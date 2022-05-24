@@ -2,10 +2,10 @@
 <html class="no-js">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-<link rel="index" title="Index" href="../../../../../genindex.html" /><link rel="search" title="Search" href="../../../../../search.html" /><link rel="next" title="autonomy_toolkit.db" href="../../db/index.html" /><link rel="prev" title="autonomy_toolkit.utils.logger" href="../logger/index.html" />
+<link rel="index" title="Index" href="../../../../../genindex.html" /><link rel="search" title="Search" href="../../../../../search.html" /><link rel="next" title="autonomy_toolkit.utils.system" href="../system/index.html" /><link rel="prev" title="autonomy_toolkit.utils.logger" href="../logger/index.html" />
 
     <link rel="shortcut icon" href="../../../../../_static/cropped-SBEL-32x32.png"/><meta name="generator" content="sphinx-3.4.2, furo 2020.12.30.beta24"/>
-        <title>autonomy_toolkit.utils.parsing - Autonomous Vehicle Toolbox 0.0.62 documentation</title>
+        <title>autonomy_toolkit.utils.parsing - Autonomous Vehicle Toolbox 1.0.8 documentation</title>
       <link rel="stylesheet" href="../../../../../_static/styles/furo.css?digest=33d2fc4f3f180ec1ffc6524e273e21d7d58cbe49">
     <link rel="stylesheet" href="../../../../../_static/pygments.css">
     <link media="(prefers-color-scheme: dark)" rel="stylesheet" href="../../../../../_static/pygments_dark.css">
@@ -88,7 +88,7 @@
      
         <a style="text-decoration: none; color: white;" 
            href="https://sbel.wisc.edu">
-           <img src="https://github.com/uwsbel/autonomy-toolkit/blob/master/docs/_static/cropped-SBEL-192x192.png?raw=true" 
+           <img src="https://github.com/uwsbel/autonomy-toolkit/blob/main/docs/_static/cropped-SBEL-192x192.png?raw=true" 
                 style="vertical-align: middle; display: inline; padding-right: 7.5px; height: 20px;"/>
            Checkout our website!
         </a>
@@ -104,7 +104,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../../index.html"><div class="brand">Autonomous Vehicle Toolbox 0.0.62 documentation</div></a>
+      <a href="../../../../../index.html"><div class="brand">Autonomous Vehicle Toolbox 1.0.8 documentation</div></a>
     </div>
     <div class="header-right">
       <label class="toc-overlay-icon toc-header-icon" for="__toc">
@@ -133,23 +133,35 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../../background.html">Background</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../setup.html">Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../autonomy-research-testbed.html">Autonomy Research Testbed</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../../tutorials/index.html">Tutorials</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label for="toctree-checkbox-1"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../tutorials/using-the-development-environment/README.html">Using the ATK Development Environment</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../tutorials/writing-an-atk-yml-file/README.html">Writing an <code class="docutils literal notranslate"><span class="pre">.atk.yml</span></code> File</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../../configuration/index.html">Configuration</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label for="toctree-checkbox-1"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../configuration/atk-configuration-file.html">ATK Configuration File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../configuration/variable-replacement.html">Variable Replacement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../configuration/environment-variables.html">Environment Variables</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current has-children"><a class="reference internal" href="../../../../index.html">API Reference</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label for="toctree-checkbox-2"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../../tutorials/index.html">Tutorials</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label for="toctree-checkbox-2"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../tutorials/using-the-development-environment/README.html">Using the ATK Development Environment</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../../../../index.html">API Reference</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label for="toctree-checkbox-3"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../../../../cli.html">CLI Documentation</a></li>
-<li class="toctree-l2 current has-children"><a class="reference internal" href="../../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit</span></code></a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label for="toctree-checkbox-3"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
-<li class="toctree-l3 has-children"><a class="reference internal" href="../../ros/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.ros</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label for="toctree-checkbox-4"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 current has-children"><a class="reference internal" href="../../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit</span></code></a><input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label for="toctree-checkbox-4"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../containers/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.containers</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label for="toctree-checkbox-5"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../containers/container_client/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.containers.container_client</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../containers/docker_client/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.containers.docker_client</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../containers/singularity_client/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.containers.singularity_client</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../ros/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.ros</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label for="toctree-checkbox-6"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../ros/messages/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.ros.messages</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3 current has-children"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils</span></code></a><input checked="" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label for="toctree-checkbox-5"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l3 current has-children"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils</span></code></a><input checked="" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label for="toctree-checkbox-7"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="../atk_config/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.atk_config</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../files/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.files</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../logger/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.logger</span></code></a></li>
 <li class="toctree-l4 current current-page"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.parsing</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../system/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.system</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../db/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.db</span></code></a></li>
@@ -244,8 +256,8 @@
 <p>Will replace all variables with the following specification with variables in the <code class="docutils literal notranslate"><span class="pre">vars_dict</span></code> parameter.
 Code adapted from <a class="reference external" href="https://github.com/containers/podman-compose/blob/701311aa7a278eaa8b3a67d5928ee3531b60a9d7/podman_compose.py#L194">podman compose</a>.</p>
 <p>This method functions similarly to docker and docker compose support subset of bash variable substitution,
-as defined <a class="reference external" href="https://docs.docker.com/compose/compose-file/#variable-substitution">here</a>, <a class="reference external" href="https://docs.docker.com/compose/env-file/">here</a>, and
-<a class="reference external" href="https://www.gnu.org/software/bash/manual/html_node/Shell-Parameter-Expansion.html">here</a>. In docker/docker compose, variable substitution is defined
+as defined <a class="reference external" href="https://docs.docker.com/compose/compose-file/#variable-substitution">by variable substitution</a>, <a class="reference external" href="https://docs.docker.com/compose/env-file/">env file</a>, and
+<a class="reference external" href="https://www.gnu.org/software/bash/manual/html_node/Shell-Parameter-Expansion.html">shell parameter expansion</a>. In docker/docker compose, variable substitution is defined
 through a variety of means, all which use $ as the identifier. To not cause any conflicts, @ is used instead for <code class="docutils literal notranslate"><span class="pre">autonomy-toolkit</span></code>.</p>
 <p>The following attributes may be used:</p>
 <ul class="simple">
@@ -377,21 +389,25 @@ read and parsed using the yaml specification.</p>
 <dt id="autonomy_toolkit.utils.parsing.ATKYamlFile.contains">
 <code class="sig-name descname">contains</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em><span class="sig-paren">)</span> → bool<a class="reference internal" href="../../../../../_modules/autonomy_toolkit/utils/parsing.html#ATKYamlFile.contains"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.utils.parsing.ATKYamlFile.contains" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks whether the yaml file contains a certain nested attribute</p>
-<dl>
-<dt>Ex:</dt><dd><p><a href="#id3"><span class="problematic" id="id4">``</span></a><a href="#id5"><span class="problematic" id="id6">`</span></a>test.yml
-test:</p>
+<p>Ex:</p>
 <blockquote>
-<div><p>one: red
-two: blue
-three: green</p>
+<div><div class="highlight-YAML notranslate"><div class="highlight"><pre><span></span><span class="c1"># test.yml</span>
+<span class="nt">test</span><span class="p">:</span>
+    <span class="nt">one</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">red</span>
+    <span class="nt">two</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">blue</span>
+    <span class="nt">three</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">green</span>
+</pre></div>
+</div>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;</span> <span class="n">parser</span> <span class="o">=</span> <span class="n">YAMLParser</span><span class="p">(</span><span class="s1">'test.yml'</span><span class="p">)</span>
+<span class="o">&gt;&gt;</span> <span class="n">parser</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">'test'</span><span class="p">,</span> <span class="s1">'one'</span><span class="p">)</span>
+<span class="bp">True</span>
+<span class="o">&gt;&gt;</span> <span class="n">parser</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">'test'</span><span class="p">,</span> <span class="s1">'four'</span><span class="p">)</span>
+<span class="bp">False</span>
+<span class="o">&gt;&gt;</span> <span class="n">parser</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">'test'</span><span class="p">,</span> <span class="s1">'one'</span><span class="p">,</span> <span class="s1">'red'</span><span class="p">)</span>
+<span class="bp">False</span>
+</pre></div>
+</div>
 </div></blockquote>
-<p><a href="#id7"><span class="problematic" id="id8">``</span></a><a href="#id9"><span class="problematic" id="id10">`</span></a></p>
-<p>parser = YAMLParser(‘test.yml’)
-parser.contains(‘test’, ‘one’)          // true
-parser.contains(‘test’, ‘four’)         // false
-parser.contains(‘test’, ‘one’, ‘red’)   // false; only will search keys</p>
-</dd>
-</dl>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>*args</strong> – A list of arguments to search in the file</p>
@@ -406,18 +422,21 @@ parser.contains(‘test’, ‘one’, ‘red’)   // false; only will search k
 <code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="n">default</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">throw_error</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span> → Any<a class="reference internal" href="../../../../../_modules/autonomy_toolkit/utils/parsing.html#ATKYamlFile.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.utils.parsing.ATKYamlFile.get" title="Permalink to this definition">¶</a></dt>
 <dd><p>Grabs the attribute at the nested location provided by args</p>
 <dl>
-<dt>Ex:</dt><dd><p><a href="#id11"><span class="problematic" id="id12">``</span></a><a href="#id13"><span class="problematic" id="id14">`</span></a>test.yml
-test:</p>
-<blockquote>
-<div><p>one: red
-two: blue
-three: green</p>
-</div></blockquote>
-<p><a href="#id15"><span class="problematic" id="id16">``</span></a><a href="#id17"><span class="problematic" id="id18">`</span></a></p>
-<p>parser = YAMLParser(‘test.yml’)
-parser.get(‘test’, ‘one’)               // red
-parser.get(‘test’, ‘green’, ‘test’)     // test
-parser.get(‘test’, ‘green’)             // raises AttributeError</p>
+<dt>Ex:</dt><dd><div class="highlight-YAML notranslate"><div class="highlight"><pre><span></span><span class="c1"># test.yml</span>
+<span class="nt">test</span><span class="p">:</span>
+    <span class="nt">one</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">red</span>
+    <span class="nt">two</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">blue</span>
+    <span class="nt">three</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">green</span>
+</pre></div>
+</div>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;</span> <span class="n">parser</span> <span class="o">=</span> <span class="n">YAMLParser</span><span class="p">(</span><span class="s1">'test.yml'</span><span class="p">)</span>
+<span class="o">&gt;&gt;</span> <span class="n">parser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'test'</span><span class="p">,</span> <span class="s1">'one'</span><span class="p">)</span>
+<span class="n">red</span>
+<span class="o">&gt;&gt;</span> <span class="n">parser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'test'</span><span class="p">,</span> <span class="s1">'green'</span><span class="p">,</span> <span class="s1">'test'</span><span class="p">)</span>
+<span class="n">test</span>
+<span class="o">&gt;&gt;</span> <span class="n">parser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'test'</span><span class="p">,</span> <span class="s1">'green'</span><span class="p">)</span>             <span class="o">//</span> <span class="n">raises</span> <span class="ne">AttributeError</span>
+</pre></div>
+</div>
 </dd>
 </dl>
 <dl class="field-list simple">
@@ -441,24 +460,23 @@ parser.get(‘test’, ‘green’)             // raises AttributeError</p>
 <code class="sig-name descname">set</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="n">value</span><span class="p">:</span> <span class="n">Any</span></em>, <em class="sig-param"><span class="n">update_key</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">throw_error</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/autonomy_toolkit/utils/parsing.html#ATKYamlFile.set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.utils.parsing.ATKYamlFile.set" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sets the attribute at the nested location provided by args</p>
 <dl>
-<dt>Ex:</dt><dd><p><a href="#id19"><span class="problematic" id="id20">``</span></a><a href="#id21"><span class="problematic" id="id22">`</span></a>test.yml
-test:</p>
-<blockquote>
-<div><p>one: red
-two: blue
-three: green</p>
-</div></blockquote>
-<p><a href="#id23"><span class="problematic" id="id24">``</span></a><a href="#id25"><span class="problematic" id="id26">`</span></a></p>
-<p>parser = YAMLParser(‘test.yml’)
-parser.set(‘test’, ‘one’, value=’black’)
-parser.set(‘test’, ‘three’, value=’twenty’, update_key=True)
-print(yaml.dump(parser.data))</p>
-<dl class="simple">
-<dt>test:</dt><dd><p>one: black
-two: blue
-twenty: green</p>
-</dd>
-</dl>
+<dt>Ex:</dt><dd><div class="highlight-YAML notranslate"><div class="highlight"><pre><span></span><span class="c1"># test.yml</span>
+<span class="nt">test</span><span class="p">:</span>
+    <span class="nt">one</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">red</span>
+    <span class="nt">two</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">blue</span>
+    <span class="nt">three</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">green</span>
+</pre></div>
+</div>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;</span> <span class="n">parser</span> <span class="o">=</span> <span class="n">YAMLParser</span><span class="p">(</span><span class="s1">'test.yml'</span><span class="p">)</span>
+<span class="o">&gt;&gt;</span> <span class="n">parser</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s1">'test'</span><span class="p">,</span> <span class="s1">'one'</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="s1">'black'</span><span class="p">)</span>
+<span class="o">&gt;&gt;</span> <span class="n">parser</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s1">'test'</span><span class="p">,</span> <span class="s1">'three'</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="s1">'twenty'</span><span class="p">,</span> <span class="n">update_key</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="o">&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">parser</span><span class="o">.</span><span class="n">data</span><span class="p">))</span>
+<span class="n">test</span><span class="p">:</span>
+    <span class="n">one</span><span class="p">:</span> <span class="n">black</span>
+    <span class="n">two</span><span class="p">:</span> <span class="n">blue</span>
+    <span class="n">twenty</span><span class="p">:</span> <span class="n">green</span>
+</pre></div>
+</div>
 </dd>
 </dl>
 <dl class="field-list simple">
@@ -508,12 +526,12 @@ twenty: green</p>
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="../../db/index.html">
+          <a class="next-page" href="../system/index.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.db</span></code></div>
+                <div class="title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.system</span></code></div>
               </div>
               <svg><use href="#svg-arrow-right"></use></svg>
             </a>

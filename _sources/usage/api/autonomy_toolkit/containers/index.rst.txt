@@ -1,9 +1,12 @@
-:orphan:
-
 :mod:`autonomy_toolkit.containers`
 ==================================
 
 .. py:module:: autonomy_toolkit.containers
+
+.. autoapi-nested-parse::
+
+   Wrappers of container systems that can be used as the backend for `atk`.
+
 
 
 Submodules

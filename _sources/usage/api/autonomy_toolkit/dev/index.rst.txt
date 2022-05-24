@@ -7,5 +7,46 @@
 
    CLI command that handles working with the ATK development environment
 
+   Entrypoint for the `dev` command
+
+   This entrypoint provides easy access to the ATK development environment. The dev environment
+   leverages containers (think [Docker](https://docker.com)) to allow interoperability across operating systems. Similar to
+   `docker compose`, `atk dev` provides configurability through a YAML file that defines how a container should be spun up.
+   Further, the configuration is used to build, attach, tear down, and possibly run specific command. The `dev` entrypoint will basically wrap
+   the `docker compose` (or any other container system) commands to make it easier to customize the workflow to work best for ATK.
+
+   The `dev` command will search for a file called `atk.yml`. This is a hidden file, and it defines some custom
+   configurations for the development environment. It allows users to quickly start and attach to the ATK development environment.
+
+   There are five possible options that can be used using the `dev` subcommand:
+   `build`, `up`, `down`, `attach`, and `run`. For example, if you'd like to build the container, you'd run
+   the following command:
+
+   ```bash
+   atk dev --build
+   ```
+
+   If you'd like to build, start the container, then attach to it, run the following command:
+
+   ```bash
+   atk dev --build --up --attach
+   # OR
+   atk dev -b -u -a
+   # OR
+   atk dev -bua
+   ```
+
+   If no arguments are passed, this is equivalent to the following command:
+
+   ```bash
+   atk dev
+   # === is equivalent to ===
+   atk dev --up --attach
+   ```
+
+   If desired, pass `--down` to stop the container. Further, if the container exists and changes are
+   made to the repository, the container will _not_ be built automatically. To do that, add the
+   `--build` argument.
+
 
 

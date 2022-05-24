@@ -25,7 +25,7 @@ A symbolic link or symlink is a file that references another. The advantages of 
 From within your `atk` directory, we can have `setuptools` do this for us with the following command (run from within the `atk` root directory):
 
 ```bash
-python setup.py develop
+pip install -e .
 ```
 
 You should now be able to edit the source and have those changes be reflected in whatever file imports `atk`!
@@ -37,7 +37,7 @@ You should now be able to edit the source and have those changes be reflected in
 Further, to update the package available on [PyPI](https://pypi.org/project/autonomy-toolkit/), you must create a [git tag](https://git-scm.com/book/en/v2/Git-Basics-Tagging). When a tag is created and pushed to GitHub, it will start an Action which will automatically push the new release to PyPI. See [versioning](#versioning) for information on how versioning works with `atk`. The Github Action only runs when the tag is pushed to master through a merge request. To create a tag, you may do the following:
 
 ```bash
-git tag v3.0.1
+git tag <tag> # An example tag is v3.0.1
 git push origin master --tags
 ```
 
@@ -66,13 +66,13 @@ autonomy-toolkit
 If you plan on editing the source code, please visit the `autonomy_toolkit/` folder. The `autonomy_toolkit/` folder is structured as follows:
 ```
 autonomy_toolkit/
-├── utils/			# Utility files for use by the rest of the package
+├── utils/					# Utility files for use by the rest of the package
 │   └── ...
-├── ros/				# ROS related utilities, methods, or classes
+├── ros/						# ROS related utilities, methods, or classes
 │   └── ...        	
-├── docker/			# Docker related utilities, methods, or classes
+├── containers/			# Containers related utilities, methods, or classes
 │   └── ...        	
-└── ...					# Core autonomy-toolkit code
+└── ...							# Core autonomy-toolkit code
 ```
 
 As stated earlier, unless given approval by the managers of the repository, there should be no need to edit the source code. The Object Oriented nature of the package means you can just inherit the base classes and add your own logic _outside_ the repo (no need to edit the source). However, bugs or nice features may be added. See [this section](#installing-a-symbolic-linked-version-for-testing) to install the repo for development purposes.

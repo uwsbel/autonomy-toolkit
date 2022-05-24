@@ -21,9 +21,9 @@ Classes
 
 
 
-.. py:class:: ATKConfig(filename: Union[Path, str] = '.atk.yml', container_runtime: str = 'docker')
+.. py:class:: ATKConfig(filename: Union[Path, str] = 'atk.yml', container_runtime: str = 'docker', default_container: str = 'dev')
 
-   Helper class that abstracts reading the ``.atk.yml`` file that defines configurations
+   Helper class that abstracts reading the ``atk.yml`` file that defines configurations
 
    .. method:: add_required_attribute(self, *args)
 
@@ -34,7 +34,7 @@ Classes
       :Parameters: **\*args** -- The nested path of the required attribute, i.e. ``add_required_attribute("first_level", "second_level")`` corresponds to ``first_level: second_level: ...``.
 
 
-   .. method:: add_custom_attribute(self, *path: 'List[str]', type: type, default: Any = None, dest: str = None, delete: bool = True)
+   .. method:: add_custom_attribute(self, *path: 'List[str]', type: type, default: Any = None, dest: str = None, delete: bool = True, force_default: bool = False)
 
       Add a custom attribute to the ``autonomy-toolkit`` YAML specification.
 
@@ -66,6 +66,7 @@ Classes
       :Parameters: * **path** (*List[str]*) -- The nested argument list (see docs).
                    * **type** (*type*) -- Represents the type of the attribute.
                    * **default** (*Any*) -- The default value to set to the attribute when parsing.
+                   * **force_default** (*bool*) -- Always use default if True. Defaults to False.
                    * **dest** (*str*) -- The destination name for the variable that's generated.
                    * **delete** (*bool*) -- If False, the attribute will `not` be removed from the config file after parsing. Defaults to True.
 
@@ -116,7 +117,7 @@ Classes
       :returns: *bool* -- whether the file was successfully parsed
 
 
-   .. method:: generate_compose(self, services: List[str] = [], overwrite_lists: bool = False, use_default_compose: bool = True)
+   .. method:: generate_compose(self, services: List[str] = [], overwrite_lists: bool = False)
 
       Generates a ``atk-compose.yml`` specification file that's used by ``docker compose``
 
@@ -127,7 +128,6 @@ Classes
 
       :Parameters: * **services** (*List[str]*) -- List of services to maintain in the compose file. If none are passed, all are kept.
                    * **overwrite_lists** (*bool*) -- If true, all lists in the default that conflict with lists in the custom config will be overwritten. If false, the lists will be extended.
-                   * **use_default_compose** (*bool*) -- If false, will not combine the ATK config with the defaults. Defaults to True.
 
 
    .. method:: write_compose(self, compose: dict = None)
@@ -138,43 +138,6 @@ Classes
       with a custom dictionary which is parsed as yaml.
 
       :Parameters: **compose** (*dict*) -- The dictionary to parse as yaml to be used to overwrite the compose file. Defaults to None (unused).
-
-
-   .. method:: generate_dockerignore(self)
-
-      Generates a ``.dockerignore`` file that's used by ``docker``
-
-
-   .. method:: update_user_count(self, val: int)
-
-      Update the user count file to keep track of how many instances of the ATK
-      container system has been initialized.
-
-      An early issue with the ``autonomy-toolkit`` package was that if there were
-      two instances of a container running, when one would exit, the clean-up process
-      would take place (i.e. docker compose file would be deleted, etc.), but this wasn't
-      desired. The user count was introduced to alleviate this issue, where the number of containers
-      are kept track of. Only when there are zero current "users" will cleanup take place.
-
-      This is implemented through a file that's constantly updated as new users are added/removed.
-
-      .. warning::
-
-          This doesnt' work.
-
-      :Parameters: **val** (*int*) -- Either 1 or -1 for an added and removed user, respectively.
-
-      :returns: *int* -- The number of current members (including the changes introduced by this method call)
-
-
-   .. method:: cleanup(self, keep_compose: bool = False)
-
-      Cleanup the system.
-
-      Cleanup consists of deleting the ``docker compose`` config and ignore files, as well as
-      the ``autonomy-toolkit`` user count file
-
-      :Parameters: **keep_compose** (*bool*) -- If true, will `not` delete the ``docker compose`` config file. Otherwise, it will be deleted.
 
 
 

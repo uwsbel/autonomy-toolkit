@@ -9,6 +9,8 @@ The ATK development environment has been created to expedite the process from al
 
 This tutorial focuses on the Autonomy Research Testbed (ART) for description purposes. You will therefore need to have cloned the [autonomy-research-testbed](https://github.com/uwsbel/autonomy-research-testbed) repository. ATK is not specific to ART, this is simply used to help explain the API.
 
+Furthermore, it is assumed `docker` is available and used.
+
 ## Setup
 
 Beyond installing the packages outlined in [prerequisites](#prerequisites), there is not much setup that is necessary. The `autonomy-toolkit` package provides tools for easily spinning up containers and attaching to the development environment within Docker.
@@ -86,15 +88,15 @@ The ART stack also comes with a variety of launch packages/files, one of which i
 You first need to start the simulation. The Chrono simulation will act as a TCP server, so the ART launch file will throw errors if the Chrono sim is not started first. To do this, run the following command in one terminal window:
 
 ```bash
-atk dev --run --services chrono --gpus --args python demo_ARCLAB_cone.py
+atk dev --run --services chrono --custom-cli-args gpus --args python demo_ARCLAB_cone.py
 ```
 
-The `--services chrono` tells atk to use the `chrono` container for the `--run` command. `--gpus` is required for the `demo_ARCLAB_cone.py` script because it uses [Chrono::Sensor](https://api.projectchrono.org/group__sensor.html) which requires CUDA. Similar to the `dev` container with the `--up` flag, if the image for the `chrono` container is not already built, `--run` will build it.
+The `--services chrono` tells atk to use the `chrono` container for the `--run` command. `--custom-cli-args gpus` is required for the `demo_ARCLAB_cone.py` script because it uses [Chrono::Sensor](https://api.projectchrono.org/group__sensor.html) which requires CUDA. Similar to the `dev` container with the `--up` flag, if the image for the `chrono` container is not already built, `--run` will build it.
 
 Then, in another terminal window, enter the development environment and run the following command to spin up both the `chrono-ros-bridge` node and the autonomy stack:
 
 ```bash
-$ atk dev --gpus # NOTE: only use --gpus if you have a nvidia gpu
+$ atk dev --custom-cli-args gpus # NOTE: only use --custom-cli-args gpus if you have a nvidia gpu
 WARNING  | logger.set_verbosity :: Verbosity has been set to WARNING
 art-dev:~/art/workspace$ ros2 launch art_simulation_launch art_simulation.launch.py hostname:=art-chrono vis:=true
 ```
@@ -107,8 +109,7 @@ The `hostname:=art-chrono` tells the `chrono-ros-bridge` to connect to the serve
 
 To facilitate the recording and replaying of data in a ROS 2 stack, bags can be created. The entrypoint `ros2 bag ...` allows users to easily record/replay topics. For information on this command, please visit the [official ros documentation](https://docs.ros.org/en/galactic/Tutorials/Ros2bag/Recording-And-Playing-Back-Data.html). Using a ros2 bag to test a control stack is a viable option and is helpful to understand if code is working as expected.
 
-The `autonomy-research-testbed` is shipped with a ros2 bag for testing purposes. To see the file, you'll need [`git-lfs`](https://git-lfs.github.com/). `git-lfs` is used because the file is rather large. 
-Multiple ROS 2 bag files were recorded using ART for testing purposes. To get this file, you'll need to download it from the Box folder. This can be done using the [`wget`](https://pypi.org/project/wget/) Python package and a custom entrypoint in `atk` called `db`. `db`, which stands for database, is an evolving tool and has not been fully implemented. Further documentation will be written in the near future.
+The `autonomy-research-testbed` is shipped with a ros2 bag for testing purposes. Multiple ROS 2 bag files were recorded using ART for testing purposes. To get this file, you'll need to download it from the Box folder. This can be done using the [`wget`](https://pypi.org/project/wget/) Python package and a custom entrypoint in `atk` called `db`. `db`, which stands for database, is an evolving tool and has not been fully implemented. Further documentation will be written in the near future.
 
 You first need to pull the bag files. To do this, you may run the following command:
 
@@ -116,12 +117,12 @@ You first need to pull the bag files. To do this, you may run the following comm
 atk db pull --use-atk-config
 ```
 
-Under the hood, this is also reading the `.atk.yml` file to find the files that need to be pulled.
+Under the hood, this is also reading the `atk.yml` file to find the files that need to be pulled.
 
 The folder will be located at `autonomy-research-testbed/demos/bags/ATK-<ID>/`. ROS 2 bags are contained in folders and the `ros2 bag` command will be used to replay the file. After the file is pulled, enter the development environment and start replaying the bag file. We'll have it loop so the stack can be visualized easier.
 
 ```bash
-$ atk dev --gpus # NOTE: only use --gpus if you have a nvidia gpu
+$ atk dev --custom-cli-args gpus # NOTE: only use --custom-cli-args gpus if you have a nvidia gpu
 WARNING  | logger.set_verbosity :: Verbosity has been set to WARNING
 art-dev:~/art/workspace$ ros2 bag play ../demos/bags/ATK-02-25-2022-03-19-00 -l # or ATK-02-25-2022-04-30-30
 ```
@@ -129,7 +130,7 @@ art-dev:~/art/workspace$ ros2 bag play ../demos/bags/ATK-02-25-2022-03-19-00 -l 
 With the bag being played, open another terminal and start up the stack.
 
 ```bash
-$ atk dev --gpus # NOTE: only use --gpus if you have a nvidia gpu
+$ atk dev --custom-cli-args gpus # NOTE: only use --custom-cli-args gpus if you have a nvidia gpu
 WARNING  | logger.set_verbosity :: Verbosity has been set to WARNING
 art-dev:~/art/workspace$ ros2 launch art_launch art_stack.launch.py vis:=true
 ```
@@ -179,6 +180,13 @@ $ atk dev -s <service> --port-mappings <old-port1>:<new-port1> <old-port2>:<new-
 ```
 
 The syntax is as it appears above, where the `--port-mappings` argument takes any number of mappings such that it goes `<old host port>:<new host port>`.
+
+Example:
+
+```bash
+$ atk dev -s <service> --port-mappings 8080:8081 5900:5901 --up
+```
+
 
 ## Support
 

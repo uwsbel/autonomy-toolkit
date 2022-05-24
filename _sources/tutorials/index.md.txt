@@ -6,7 +6,6 @@ Please refer to some select tutorials to help understand how to use the AV Toolk
 :maxdepth: 1
 
 using-the-development-environment/README.md
-writing-an-atk-yml-file/README.md
 
 ```
 

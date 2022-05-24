@@ -12,6 +12,7 @@ Subpackages
    :titlesonly:
    :maxdepth: 3
 
+   containers/index.rst
    ros/index.rst
    utils/index.rst
 
