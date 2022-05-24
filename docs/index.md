@@ -9,7 +9,6 @@
 Home <self>
 background
 setup
-autonomy-research-testbed
 configuration/index
 tutorials/index
 usage/index
