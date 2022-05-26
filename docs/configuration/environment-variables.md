@@ -8,6 +8,6 @@ Environment variables may be used by `atk` to override existing functionality or
 
 For example, `default_containers` may be set to `['dev', 'vnc']`. If `ATK_DEFAULT_CONTAINERS=nx` then `atk dev` evaluates to `atk dev --services nx`, not `atk dev --services dev vnc`.
 
-## `ATK_DEFAULT_RUNTIME`
+## `ATK_CONTAINER_RUNTIME`
 
-The `atk dev` command provides the option to utilize multiple container orchastration services. By default `docker` is used. At the time of writing, `singularity` is also implemented. To use singularity then, one can set `ATK_DEFAULT_RUNTIME=singularity`.
+The `atk dev` command provides the option to utilize multiple container orchastration services. By default `docker` is used. At the time of writing, `singularity` is also implemented. To use singularity then, one can set `ATK_CONTAINER_RUNTIME=singularity`.
