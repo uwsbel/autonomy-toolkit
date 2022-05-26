@@ -2,10 +2,10 @@
 <html class="no-js">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Container Runtimes" href="container-runtimes.html" /><link rel="prev" title="Variable Replacement" href="variable-replacement.html" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Tutorials" href="../tutorials/index.html" /><link rel="prev" title="Environment Variables" href="environment-variables.html" />
 
     <link rel="shortcut icon" href="../_static/cropped-SBEL-32x32.png"/><meta name="generator" content="sphinx-3.4.2, furo 2020.12.30.beta24"/>
-        <title>Environment Variables - Autonomous Vehicle Toolbox 1.0.8 documentation</title>
+        <title>Container Runtimes - Autonomous Vehicle Toolbox 1.0.8 documentation</title>
       <link rel="stylesheet" href="../_static/styles/furo.css?digest=33d2fc4f3f180ec1ffc6524e273e21d7d58cbe49">
     <link rel="stylesheet" href="../_static/pygments.css">
     <link media="(prefers-color-scheme: dark)" rel="stylesheet" href="../_static/pygments_dark.css">
@@ -135,8 +135,8 @@
 <li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">Configuration</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label for="toctree-checkbox-1"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="atk-configuration-file.html">ATK Configuration File</a></li>
 <li class="toctree-l2"><a class="reference internal" href="variable-replacement.html">Variable Replacement</a></li>
-<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Environment Variables</a></li>
-<li class="toctree-l2"><a class="reference internal" href="container-runtimes.html">Container Runtimes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="environment-variables.html">Environment Variables</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Container Runtimes</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../tutorials/index.html">Tutorials</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label for="toctree-checkbox-2"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -192,17 +192,94 @@
         <label class="toc-overlay-icon toc-content-icon" for="__toc">
           <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
         </label>
-        <section id="environment-variables">
-<h1>Environment Variables<a class="headerlink" href="#environment-variables" title="Permalink to this headline">¶</a></h1>
-<p>Environment variables may be used by <code class="docutils literal notranslate"><span class="pre">atk</span></code> to override existing functionality or to configure the service itself. The available environment variables are described here.</p>
-<section id="atk-default-containers">
-<h2><code class="docutils literal notranslate"><span class="pre">ATK_DEFAULT_CONTAINERS</span></code><a class="headerlink" href="#atk-default-containers" title="Permalink to this headline">¶</a></h2>
-<p><code class="docutils literal notranslate"><span class="pre">$ATK_DEFAULT_CONTAINERS</span></code> is a comma separated list of container/service/instance names that overrides the <code class="docutils literal notranslate"><span class="pre">default_containers</span></code> field in the <code class="docutils literal notranslate"><span class="pre">atk.yml</span></code> file. When set, it’s values will be used when <code class="docutils literal notranslate"><span class="pre">atk</span> <span class="pre">dev</span></code> is called without explicitly specifying the <code class="docutils literal notranslate"><span class="pre">services</span></code> to be used.</p>
-<p>For example, <code class="docutils literal notranslate"><span class="pre">default_containers</span></code> may be set to <code class="docutils literal notranslate"><span class="pre">['dev',</span> <span class="pre">'vnc']</span></code>. If <code class="docutils literal notranslate"><span class="pre">ATK_DEFAULT_CONTAINERS=nx</span></code> then <code class="docutils literal notranslate"><span class="pre">atk</span> <span class="pre">dev</span></code> evaluates to <code class="docutils literal notranslate"><span class="pre">atk</span> <span class="pre">dev</span> <span class="pre">--services</span> <span class="pre">nx</span></code>, not <code class="docutils literal notranslate"><span class="pre">atk</span> <span class="pre">dev</span> <span class="pre">--services</span> <span class="pre">dev</span> <span class="pre">vnc</span></code>.</p>
+        <section id="container-runtimes">
+<h1>Container Runtimes<a class="headerlink" href="#container-runtimes" title="Permalink to this headline">¶</a></h1>
+<p>ATK supports any container orchestration system; the <code class="docutils literal notranslate"><span class="pre">atk.yml</span></code> file follows Docker Compose standards, which is supported by <a class="reference external" href="https://github.com/containers/podman-compose">podman-compose</a>. Furthermore, some container orchestration projects (e.g. <a class="reference external" href="https://singularityhub.github.io/singularity-compose/#/">singularity-compose</a> has some minor changes which requires adjustments to the <code class="docutils literal notranslate"><span class="pre">atk.yml</span></code> file to support it. A mechanism for adjusting the <code class="docutils literal notranslate"><span class="pre">atk.yml</span></code> file for specific orchestration types is supported through ATK (see the <a class="reference external" href="https://projects.sbel.org/autonomy-toolkit/usage/api/autonomy_toolkit/containers/index.html">ATK docs</a> for examples).</p>
+<section id="supported-runtimes">
+<h2>Supported Runtimes<a class="headerlink" href="#supported-runtimes" title="Permalink to this headline">¶</a></h2>
+<p>To change the orchestration backend that is used by ATK, you need to adjust the <code class="docutils literal notranslate"><span class="pre">ATK_CONTAINER_RUNTIME</span></code> environment variable. See <a class="reference internal" href="environment-variables.html"><span class="doc std std-doc">environment variable</span></a> docs for more info.</p>
+<section id="docker-compose">
+<h3>Docker Compose<a class="headerlink" href="#docker-compose" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference external" href="https://docs.docker.com/compose/">Docker Compose</a> is the industry standard when it comes to container orchestration systems. This is used by default.</p>
 </section>
+<section id="singularity-compose">
+<h3>Singularity Compose<a class="headerlink" href="#singularity-compose" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference external" href="https://singularityhub.github.io/singularity-compose/#/">Singularity Compose</a> is a tool in beta release that wraps <a class="reference external" href="https://sylabs.io/guides/3.5/user-guide/index.html">Singularity</a>. A singularity implementation is present in ATK because Docker has security issues that makes it not ideal for use on shared systems (see <a class="reference external" href="https://logrhythm.com/blog/how-to-mitigate-docker-security-risk/">here</a> for more information). Singularity provides a feature that leverages <code class="docutils literal notranslate"><span class="pre">fakeroot</span></code> to let users build and attach to containers on systems where it’s not typically possible to run container systems.</p>
+<p>The system administrator for your shared computer may need to do the following to ensure singularity-compose works as expected:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://sylabs.io/guides/3.5/user-guide/cli/singularity_config_fakeroot.html">Add fakeroot support</a></p></li>
+<li><p>Add your user to the network config</p>
+<ul>
+<li><p>This is only necessary if you don’t want to be root in the container and you’d like to allow port mapping between the container and host. If you don’t mind being root in the container, just use fakeroot.</p></li>
+<li><p>i.e. <code class="docutils literal notranslate"><span class="pre">singularity</span> <span class="pre">global</span> <span class="pre">config</span> <span class="pre">--set</span> <span class="pre">"allow</span> <span class="pre">net</span> <span class="pre">users"</span> <span class="pre">&lt;USER&gt;</span></code></p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
+<p>There may be some configuration necessary to ensure different container systems function properly. Described here are a few mechanisms to support that.</p>
 <section id="atk-container-runtime">
-<h2><code class="docutils literal notranslate"><span class="pre">ATK_CONTAINER_RUNTIME</span></code><a class="headerlink" href="#atk-container-runtime" title="Permalink to this headline">¶</a></h2>
-<p>The <code class="docutils literal notranslate"><span class="pre">atk</span> <span class="pre">dev</span></code> command provides the option to utilize multiple container orchastration services. By default <code class="docutils literal notranslate"><span class="pre">docker</span></code> is used. At the time of writing, <code class="docutils literal notranslate"><span class="pre">singularity</span></code> is also implemented. To use singularity then, one can set <code class="docutils literal notranslate"><span class="pre">ATK_CONTAINER_RUNTIME=singularity</span></code>.</p>
+<h3><code class="docutils literal notranslate"><span class="pre">ATK_CONTAINER_RUNTIME</span></code><a class="headerlink" href="#atk-container-runtime" title="Permalink to this headline">¶</a></h3>
+<p>See <a class="reference internal" href="environment-variables.html"><span class="doc std std-doc">environment variable</span></a> docs for more information on how to properly set the container runtime.</p>
+</section>
+<section id="custom-cli-argments">
+<h3><code class="docutils literal notranslate"><span class="pre">custom_cli_argments</span></code><a class="headerlink" href="#custom-cli-argments" title="Permalink to this headline">¶</a></h3>
+<p>Different container orchestration systems (i.e. <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span></code> or <code class="docutils literal notranslate"><span class="pre">singularity-compose</span></code>) may have different configuration standards, so <code class="docutils literal notranslate"><span class="pre">custom_cli_argments</span></code> may need to be used in conjunction with different container systems.</p>
+<p>By default, whatever is present in the service’s <code class="docutils literal notranslate"><span class="pre">custom_cli_argments</span></code> field will be applied to the service configuration.</p>
+<p>For example, if the following configuration includes this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">project</span><span class="p">:</span> <span class="n">test</span>
+<span class="n">default_containers</span><span class="p">:</span>
+	<span class="o">-</span> <span class="n">dev</span>
+<span class="n">custom_cli_arguments</span><span class="p">:</span>
+  <span class="n">gpus</span><span class="p">:</span>
+    <span class="n">argparse</span><span class="p">:</span>
+      <span class="n">action</span><span class="p">:</span> <span class="s1">'store_true'</span>
+    <span class="nb">all</span><span class="p">:</span>
+      <span class="n">runtime</span><span class="p">:</span> <span class="n">nvidia</span>
+<span class="n">services</span><span class="p">:</span>
+	<span class="n">dev</span><span class="p">:</span>
+		<span class="n">some_configuration_stuff</span><span class="p">:</span> <span class="n">BLAH</span>
+</pre></div>
+</div>
+<p>And a user calls <code class="docutils literal notranslate"><span class="pre">atk</span> <span class="pre">dev</span> <span class="pre">--services</span> <span class="pre">dev</span> <span class="pre">--custom-cli-args</span> <span class="pre">gpus</span></code>, the resulting configuration will look like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">project</span><span class="p">:</span> <span class="n">test</span>
+<span class="n">default_containers</span><span class="p">:</span>
+	<span class="o">-</span> <span class="n">dev</span>
+<span class="n">custom_cli_arguments</span><span class="p">:</span>
+  <span class="n">gpus</span><span class="p">:</span>
+    <span class="n">argparse</span><span class="p">:</span>
+      <span class="n">action</span><span class="p">:</span> <span class="s1">'store_true'</span>
+    <span class="nb">all</span><span class="p">:</span>
+      <span class="n">runtime</span><span class="p">:</span> <span class="n">nvidia</span>
+<span class="n">services</span><span class="p">:</span>
+	<span class="n">dev</span><span class="p">:</span>
+		<span class="n">some_configuration_stuff</span><span class="p">:</span> <span class="n">BLAH</span>
+		<span class="n">runtime</span><span class="p">:</span> <span class="n">nvidia</span> <span class="c1"># NEW!!!</span>
+</pre></div>
+</div>
+<p>However, for singularity, the flag instead should be <code class="docutils literal notranslate"><span class="pre">nv:</span> <span class="pre">true</span></code>. To support this, an optional nested field can be used in each service’s <code class="docutils literal notranslate"><span class="pre">custom_cli_arguments</span></code> configuration that matches the container runtime.</p>
+<p>For instance, if we’d like to support both <code class="docutils literal notranslate"><span class="pre">nvidia:</span> <span class="pre">runtime</span></code> for Docker and <code class="docutils literal notranslate"><span class="pre">nv:</span> <span class="pre">true</span></code> for singularity, you can do the following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">project</span><span class="p">:</span> <span class="n">test</span>
+<span class="n">default_containers</span><span class="p">:</span>
+	<span class="o">-</span> <span class="n">dev</span>
+<span class="n">custom_cli_arguments</span><span class="p">:</span>
+  <span class="n">gpus</span><span class="p">:</span>
+    <span class="n">argparse</span><span class="p">:</span>
+      <span class="n">action</span><span class="p">:</span> <span class="s1">'store_true'</span>
+    <span class="nb">all</span><span class="p">:</span>
+			<span class="n">docker</span><span class="p">:</span>
+				<span class="n">runtime</span><span class="p">:</span> <span class="n">nvidia</span>
+			<span class="n">singularity</span><span class="p">:</span>
+				<span class="n">nv</span><span class="p">:</span> <span class="n">true</span>
+<span class="n">services</span><span class="p">:</span>
+	<span class="n">dev</span><span class="p">:</span>
+		<span class="n">some_configuration_stuff</span><span class="p">:</span> <span class="n">BLAH</span>
+</pre></div>
+</div>
+<p>This will then check at runtime if <code class="docutils literal notranslate"><span class="pre">ATK_CONTAINER_RUNTIME</span></code> matches the first level under the service name (i.e. <code class="docutils literal notranslate"><span class="pre">all</span></code> in this case), and only use that config if found.</p>
+</section>
 </section>
 </section>
 
@@ -210,23 +287,23 @@
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="container-runtimes.html">
+          <a class="next-page" href="../tutorials/index.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Container Runtimes</div>
+                <div class="title">Tutorials</div>
               </div>
               <svg><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="variable-replacement.html">
+          <a class="prev-page" href="environment-variables.html">
               <svg><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Variable Replacement</div>
+                <div class="title">Environment Variables</div>
                 
               </div>
             </a>
@@ -240,7 +317,7 @@
               <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
               <a href="https://github.com/pradyunsg/furo">Furo theme</a>.
             |
-            <a class="muted-link" href="../_sources/configuration/environment-variables.md.txt"
+            <a class="muted-link" href="../_sources/configuration/container-runtimes.md.txt"
                rel="nofollow">
               Show Source
             </a>
@@ -260,9 +337,17 @@
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
-<li><a class="reference internal" href="#">Environment Variables</a><ul>
-<li><a class="reference internal" href="#atk-default-containers"><code class="docutils literal notranslate"><span class="pre">ATK_DEFAULT_CONTAINERS</span></code></a></li>
+<li><a class="reference internal" href="#">Container Runtimes</a><ul>
+<li><a class="reference internal" href="#supported-runtimes">Supported Runtimes</a><ul>
+<li><a class="reference internal" href="#docker-compose">Docker Compose</a></li>
+<li><a class="reference internal" href="#singularity-compose">Singularity Compose</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#configuration">Configuration</a><ul>
 <li><a class="reference internal" href="#atk-container-runtime"><code class="docutils literal notranslate"><span class="pre">ATK_CONTAINER_RUNTIME</span></code></a></li>
+<li><a class="reference internal" href="#custom-cli-argments"><code class="docutils literal notranslate"><span class="pre">custom_cli_argments</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
