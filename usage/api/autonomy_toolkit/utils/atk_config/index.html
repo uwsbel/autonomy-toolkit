@@ -1,11 +1,11 @@
 <!doctype html>
 <html class="no-js">
   <head><meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width,initial-scale=1"/><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width,initial-scale=1"/><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <link rel="index" title="Index" href="../../../../../genindex.html" /><link rel="search" title="Search" href="../../../../../search.html" /><link rel="next" title="autonomy_toolkit.utils.files" href="../files/index.html" /><link rel="prev" title="autonomy_toolkit.utils" href="../index.html" />
 
     <link rel="shortcut icon" href="../../../../../_static/cropped-SBEL-32x32.png"/><meta name="generator" content="sphinx-3.4.2, furo 2020.12.30.beta24"/>
-        <title>autonomy_toolkit.utils.atk_config - Autonomous Vehicle Toolbox 1.0.8 documentation</title>
+        <title>autonomy_toolkit.utils.atk_config - Autonomous Vehicle Toolbox 1.0.9 documentation</title>
       <link rel="stylesheet" href="../../../../../_static/styles/furo.css?digest=33d2fc4f3f180ec1ffc6524e273e21d7d58cbe49">
     <link rel="stylesheet" href="../../../../../_static/pygments.css">
     <link media="(prefers-color-scheme: dark)" rel="stylesheet" href="../../../../../_static/pygments_dark.css">
@@ -104,7 +104,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../../index.html"><div class="brand">Autonomous Vehicle Toolbox 1.0.8 documentation</div></a>
+      <a href="../../../../../index.html"><div class="brand">Autonomous Vehicle Toolbox 1.0.9 documentation</div></a>
     </div>
     <div class="header-right">
       <label class="toc-overlay-icon toc-header-icon" for="__toc">
@@ -200,10 +200,6 @@
 <section id="classes">
 <h3>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h3>
 <div class="table-wrapper"><table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%"/>
-<col style="width: 90%"/>
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#autonomy_toolkit.utils.atk_config.ATKConfig" title="autonomy_toolkit.utils.atk_config.ATKConfig"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ATKConfig</span></code></a></p></td>
 <td><p>Helper class that abstracts reading the <code class="docutils literal notranslate"><span class="pre">atk.yml</span></code> file that defines configurations</p></td>
@@ -220,7 +216,7 @@
 <dd><p>Add a required attribute that must be present in the <code class="docutils literal notranslate"><span class="pre">autonomy-toolkit</span></code> YAML specification.</p>
 <p>Will be checked for existence when <a class="reference internal" href="#autonomy_toolkit.utils.atk_config.ATKConfig.parse" title="autonomy_toolkit.utils.atk_config.ATKConfig.parse"><code class="xref py py-meth docutils literal notranslate"><span class="pre">parse()</span></code></a> is called.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>*args</strong> – The nested path of the required attribute, i.e. <code class="docutils literal notranslate"><span class="pre">add_required_attribute("first_level",</span> <span class="pre">"second_level")</span></code> corresponds to <code class="docutils literal notranslate"><span class="pre">first_level:</span> <span class="pre">second_level:</span> <span class="pre">...</span></code>.</p>
 </dd>
 </dl>
@@ -249,7 +245,7 @@ if <code class="docutils literal notranslate"><span class="pre">dest</span></cod
 provided the yaml config above, if <code class="docutils literal notranslate"><span class="pre">dest</span></code> isn’t provided for the <code class="docutils literal notranslate"><span class="pre">user:</span> <span class="pre">name</span></code> attribute, it will be
 set to <code class="docutils literal notranslate"><span class="pre">'name'</span></code>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>path</strong> (<em>List[str]</em>) – The nested argument list (see docs).</p></li>
 <li><p><strong>type</strong> (<em>type</em>) – Represents the type of the attribute.</p></li>
@@ -279,16 +275,16 @@ with “instances”.</p>
 <p class="admonition-title">Note</p>
 <p>The translation rules are used only when the ATK config file is written.
 Otherwise, analagous compose terms should be refered to as they are in the <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span></code> docs.</p>
-</div>
+
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>path</strong> (<em>List[str]</em>) – The nested argument list (see docs).</p></li>
 <li><p><strong>rule</strong> (<em>Tuple[str, str]</em>) – translation rule (from, to) such that all “from“‘s are translated to “to“‘s.</p></li>
 </ul>
 </dd>
 </dl>
-</dd></dl>
+</div></dd></dl>
 <dl class="py method">
 <dt id="autonomy_toolkit.utils.atk_config.ATKConfig.parse">
 <code class="sig-name descname">parse</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> → bool<a class="reference internal" href="../../../../../_modules/autonomy_toolkit/utils/atk_config.html#ATKConfig.parse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.utils.atk_config.ATKConfig.parse" title="Permalink to this definition">¶</a></dt>
@@ -299,7 +295,7 @@ evaluate the attribute. Checks will be made to verify the types are correct, and
 are defined. If a required attribute is not defined, an error will be thrown and parsing will stop. If an
 attribute has a wrong type, an error will be thrown and parsing will stop.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p><em>bool</em> – whether the file was successfully parsed</p>
 </dd>
 </dl>
@@ -312,7 +308,7 @@ attribute has a wrong type, an error will be thrown and parsing will stop.</p>
 the custom configurations provided through the custom yaml config file.</p>
 <p>The file will <cite>not</cite> be written. See <a class="reference internal" href="#autonomy_toolkit.utils.atk_config.ATKConfig.write_compose" title="autonomy_toolkit.utils.atk_config.ATKConfig.write_compose"><code class="xref py py-meth docutils literal notranslate"><span class="pre">write_compose()</span></code></a>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>services</strong> (<em>List[str]</em>) – List of services to maintain in the compose file. If none are passed, all are kept.</p></li>
 <li><p><strong>overwrite_lists</strong> (<em>bool</em>) – If true, all lists in the default that conflict with lists in the custom config will be overwritten. If false, the lists will be extended.</p></li>
@@ -327,7 +323,7 @@ the custom configurations provided through the custom yaml config file.</p>
 <p>If <code class="docutils literal notranslate"><span class="pre">compose</span></code> is not None, the <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span></code> config file will be overwritten
 with a custom dictionary which is parsed as yaml.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>compose</strong> (<em>dict</em>) – The dictionary to parse as yaml to be used to overwrite the compose file. Defaults to None (unused).</p>
 </dd>
 </dl>

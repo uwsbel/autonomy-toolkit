@@ -1,11 +1,11 @@
 <!doctype html>
 <html class="no-js">
   <head><meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width,initial-scale=1"/><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width,initial-scale=1"/><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <link rel="index" title="Index" href="../../../../../genindex.html" /><link rel="search" title="Search" href="../../../../../search.html" /><link rel="next" title="autonomy_toolkit.utils.system" href="../system/index.html" /><link rel="prev" title="autonomy_toolkit.utils.logger" href="../logger/index.html" />
 
     <link rel="shortcut icon" href="../../../../../_static/cropped-SBEL-32x32.png"/><meta name="generator" content="sphinx-3.4.2, furo 2020.12.30.beta24"/>
-        <title>autonomy_toolkit.utils.parsing - Autonomous Vehicle Toolbox 1.0.8 documentation</title>
+        <title>autonomy_toolkit.utils.parsing - Autonomous Vehicle Toolbox 1.0.9 documentation</title>
       <link rel="stylesheet" href="../../../../../_static/styles/furo.css?digest=33d2fc4f3f180ec1ffc6524e273e21d7d58cbe49">
     <link rel="stylesheet" href="../../../../../_static/pygments.css">
     <link media="(prefers-color-scheme: dark)" rel="stylesheet" href="../../../../../_static/pygments_dark.css">
@@ -104,7 +104,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../../index.html"><div class="brand">Autonomous Vehicle Toolbox 1.0.8 documentation</div></a>
+      <a href="../../../../../index.html"><div class="brand">Autonomous Vehicle Toolbox 1.0.9 documentation</div></a>
     </div>
     <div class="header-right">
       <label class="toc-overlay-icon toc-header-icon" for="__toc">
@@ -200,10 +200,6 @@
 <section id="classes">
 <h3>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h3>
 <div class="table-wrapper"><table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%"/>
-<col style="width: 90%"/>
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#autonomy_toolkit.utils.parsing.ATKFile" title="autonomy_toolkit.utils.parsing.ATKFile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ATKFile</span></code></a></p></td>
 <td><p>Base class that defines a file.</p></td>
@@ -223,10 +219,6 @@
 <section id="functions">
 <h3>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h3>
 <div class="table-wrapper"><table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%"/>
-<col style="width: 90%"/>
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#autonomy_toolkit.utils.parsing.replace_vars_in_file" title="autonomy_toolkit.utils.parsing.replace_vars_in_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">replace_vars_in_file</span></code></a>(file: ATKFile, vars_dict: dict)</p></td>
 <td><p>Performs bash-like substitution in the passed file.</p></td>
@@ -242,7 +234,7 @@
 <dd><p>Performs bash-like substitution in the passed file.</p>
 <p>See <a class="reference internal" href="#autonomy_toolkit.utils.parsing.replace_vars" title="autonomy_toolkit.utils.parsing.replace_vars"><code class="xref py py-meth docutils literal notranslate"><span class="pre">replace_vars()</span></code></a> for further information on implementation.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>file</strong> (<em>ATKFile</em>) – The file to do variable replacement for</p></li>
 <li><p><strong>vars_dict</strong> (<em>dict</em>) – The variable mapping to do the replacement</p></li>
@@ -271,13 +263,13 @@ through a variety of means, all which use $ as the identifier. To not cause any 
 <li><p><code class="docutils literal notranslate"><span class="pre">@@</span></code>: escape that means @</p></li>
 </ul>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>value</strong> (<em>Union[Dict,Str,Iterable]</em>) – The value to do variable placement on</p></li>
 <li><p><strong>vars_dict</strong> (<em>dict</em>) – The dictionary holding the variable mapping for replacement</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><em>Union[Dict,Str,Iterable]</em> – Value with replacements</p>
 </dd>
 </dl>
@@ -290,7 +282,7 @@ through a variety of means, all which use $ as the identifier. To not cause any 
 <p>Derived classes should inherit from <a class="reference internal" href="#autonomy_toolkit.utils.parsing.ATKFile" title="autonomy_toolkit.utils.parsing.ATKFile"><code class="xref py py-class docutils literal notranslate"><span class="pre">ATKFile</span></code></a> and should represent a specific file type (such as
 YAML, JSON, etc.). They <cite>must</cite> utilize the <code class="docutils literal notranslate"><span class="pre">self._data</span></code> attribute to maintain it’s internal data structure.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>type</strong> (<em>str</em>) – The type of file this represents as string (i.e. ‘yaml’, ‘json’, etc.). Used for logging.</p>
 </dd>
 </dl>
@@ -300,7 +292,7 @@ YAML, JSON, etc.). They <cite>must</cite> utilize the <code class="docutils lite
 <dd><p>Performs bash-like substitution in the passed file.</p>
 <p>See <a class="reference internal" href="#autonomy_toolkit.utils.parsing.replace_vars" title="autonomy_toolkit.utils.parsing.replace_vars"><code class="xref py py-meth docutils literal notranslate"><span class="pre">replace_vars()</span></code></a> for further information on implementation.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>vars_dict</strong> (<em>dict</em>) – The variable mapping to do the replacement</p>
 </dd>
 </dl>
@@ -310,7 +302,7 @@ YAML, JSON, etc.). They <cite>must</cite> utilize the <code class="docutils lite
 <em class="property">property </em><code class="sig-name descname">data</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> → Any<a class="reference internal" href="../../../../../_modules/autonomy_toolkit/utils/parsing.html#ATKFile.data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.utils.parsing.ATKFile.data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the data stored by this file</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p><em>Any</em> – the file’s data</p>
 </dd>
 </dl>
@@ -325,10 +317,10 @@ YAML, JSON, etc.). They <cite>must</cite> utilize the <code class="docutils lite
 <code class="sig-name descname">write</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">output</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> → bool<a class="reference internal" href="../../../../../_modules/autonomy_toolkit/utils/parsing.html#ATKFile.write"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.utils.parsing.ATKFile.write" title="Permalink to this definition">¶</a></dt>
 <dd><p>Write this file to some output location.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>output</strong> (<em>str</em>) – The output file to write to</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><em>bool</em> – whether the operation was successful</p>
 </dd>
 </dl>
@@ -338,10 +330,10 @@ YAML, JSON, etc.). They <cite>must</cite> utilize the <code class="docutils lite
 <code class="sig-name descname">read</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">filename</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> → str<a class="reference internal" href="../../../../../_modules/autonomy_toolkit/utils/parsing.html#ATKFile.read"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.utils.parsing.ATKFile.read" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read in the passed file and return it as a string.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>filename</strong> (<em>str</em>) – the file to read</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><em>str</em> – the file’s contents as a string</p>
 </dd>
 </dl>
@@ -356,7 +348,7 @@ YAML, JSON, etc.). They <cite>must</cite> utilize the <code class="docutils lite
 a file will be read and parsed using the json specification. If <code class="docutils literal notranslate"><span class="pre">text</span></code> is passed, the text will be
 read and parsed using the json specification.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>filename</strong> (<em>str</em>) – the filename of the path to read</p></li>
 <li><p><strong>text</strong> (<em>str</em>) – the text to parse</p></li>
@@ -379,7 +371,7 @@ read and parsed using the json specification.</p>
 a file will be read and parsed using the yaml specification. If <code class="docutils literal notranslate"><span class="pre">text</span></code> is passed, the text will be
 read and parsed using the yaml specification.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>filename</strong> (<em>str</em>) – the filename of the path to read</p></li>
 <li><p><strong>text</strong> (<em>str</em>) – the text to parse</p></li>
@@ -410,10 +402,10 @@ read and parsed using the yaml specification.</p>
 </div>
 </div></blockquote>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>*args</strong> – A list of arguments to search in the file</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><em>bool</em> – Whether the nested attributes are contained in the file</p>
 </dd>
 </dl>
@@ -441,17 +433,17 @@ read and parsed using the yaml specification.</p>
 </dd>
 </dl>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>*args</strong> – A list of arguments to search in the file</p></li>
 <li><p><strong>default</strong> (<em>Any</em>) – The default value if the nested attribute isn’t found</p></li>
 <li><p><strong>throw_error</strong> (<em>bool</em>) – Throw an error if default is None and the attribute isn’t found. Defaults to True.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><em>Any</em> – The value at the nested attributes</p>
 </dd>
-<dt class="field-odd">Raises</dt>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>AttributeError</strong> – If the nested attributes don’t actually point to a value (i.e. contains(args) == False)</p>
 </dd>
 </dl>
@@ -481,7 +473,7 @@ read and parsed using the yaml specification.</p>
 </dd>
 </dl>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>*args</strong> – A list of arguments to search in the file</p></li>
 <li><p><strong>value</strong> (<em>Any</em>) – The value to set the found attribute to</p></li>
@@ -489,7 +481,7 @@ read and parsed using the yaml specification.</p>
 <li><p><strong>throw_error</strong> (<em>bool</em>) – Throw an error if the attribute isn’t found. Defaults to True.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Raises</dt>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>AttributeError</strong> – If the nested attributes don’t actually point to a value (i.e. contains(args) == False)</p>
 </dd>
 </dl>
@@ -506,7 +498,7 @@ read and parsed using the yaml specification.</p>
 <dd><p>Bases: <a class="reference internal" href="#autonomy_toolkit.utils.parsing.ATKFile" title="autonomy_toolkit.utils.parsing.ATKFile"><code class="xref py py-class docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.parsing.ATKFile</span></code></a></p>
 <p>Wrapper class around a simple text file.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>filename</strong> (<em>str</em>) – the filename of the path to read</p></li>
 <li><p><strong>create</strong> (<em>bool</em>) – if true, will create filename</p></li>

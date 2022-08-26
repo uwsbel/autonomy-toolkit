@@ -1,11 +1,11 @@
 <!doctype html>
 <html class="no-js">
   <head><meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width,initial-scale=1"/><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width,initial-scale=1"/><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <link rel="index" title="Index" href="../../../../../genindex.html" /><link rel="search" title="Search" href="../../../../../search.html" /><link rel="next" title="autonomy_toolkit.db" href="../../db/index.html" /><link rel="prev" title="autonomy_toolkit.utils.parsing" href="../parsing/index.html" />
 
     <link rel="shortcut icon" href="../../../../../_static/cropped-SBEL-32x32.png"/><meta name="generator" content="sphinx-3.4.2, furo 2020.12.30.beta24"/>
-        <title>autonomy_toolkit.utils.system - Autonomous Vehicle Toolbox 1.0.8 documentation</title>
+        <title>autonomy_toolkit.utils.system - Autonomous Vehicle Toolbox 1.0.9 documentation</title>
       <link rel="stylesheet" href="../../../../../_static/styles/furo.css?digest=33d2fc4f3f180ec1ffc6524e273e21d7d58cbe49">
     <link rel="stylesheet" href="../../../../../_static/pygments.css">
     <link media="(prefers-color-scheme: dark)" rel="stylesheet" href="../../../../../_static/pygments_dark.css">
@@ -104,7 +104,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../../index.html"><div class="brand">Autonomous Vehicle Toolbox 1.0.8 documentation</div></a>
+      <a href="../../../../../index.html"><div class="brand">Autonomous Vehicle Toolbox 1.0.9 documentation</div></a>
     </div>
     <div class="header-right">
       <label class="toc-overlay-icon toc-header-icon" for="__toc">
@@ -200,10 +200,6 @@
 <section id="functions">
 <h3>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h3>
 <div class="table-wrapper"><table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%"/>
-<col style="width: 90%"/>
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#autonomy_toolkit.utils.system.is_port_available" title="autonomy_toolkit.utils.system.is_port_available"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_port_available</span></code></a>(port: int, udp: bool = False) → bool</p></td>
 <td><p>Checks whether a specified port is available to be attached to.</p></td>
@@ -228,13 +224,13 @@
 <dd><p>Checks whether a specified port is available to be attached to.</p>
 <p>From <a class="reference external" href="https://github.com/containers/podman-compose/blob/devel/podman_compose.py">podman_compose</a>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>port</strong> (<em>int</em>) – The port to check.</p></li>
 <li><p><strong>udp</strong> (<em>bool</em>) – Also check udp</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><em>bool</em> – True if available, False otherwise.</p>
 </dd>
 </dl>
@@ -251,7 +247,7 @@
 <dd><p>Get the username of the current user.</p>
 <p>Will leverage the <code class="docutils literal notranslate"><span class="pre">getpass</span></code> package.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p><em>str</em> – The username of the current user</p>
 </dd>
 </dl>
@@ -262,10 +258,10 @@
 <dd><p>Get the uid (user id) for the current user.</p>
 <p>If a Posix system (Linux, Mac) is detected, <code class="docutils literal notranslate"><span class="pre">os.getuid</span></code> is used. Otherwise, <code class="docutils literal notranslate"><span class="pre">default</span></code> is returned.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>default</strong> (<em>int</em>) – The default value if a posix system is not detected. Defaults to 1000.</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><em>int</em> – The uid, either grabbed from the current user or the default if not a posix system.</p>
 </dd>
 </dl>
@@ -276,10 +272,10 @@
 <dd><p>Get the gid (group id) for the current user.</p>
 <p>If a Posix system (Linux, Mac) is detected, <code class="docutils literal notranslate"><span class="pre">os.getgid</span></code> is used. Otherwise, <code class="docutils literal notranslate"><span class="pre">default</span></code> is returned.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>default</strong> (<em>int</em>) – The default value if a posix system is not detected. Defaults to 1000.</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><em>int</em> – The gid, either grabbed from the current user or the default if not a posix system.</p>
 </dd>
 </dl>

@@ -1,11 +1,11 @@
 <!doctype html>
 <html class="no-js">
   <head><meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width,initial-scale=1"/><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width,initial-scale=1"/><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <link rel="index" title="Index" href="../../../../../genindex.html" /><link rel="search" title="Search" href="../../../../../search.html" /><link rel="next" title="autonomy_toolkit.utils.logger" href="../logger/index.html" /><link rel="prev" title="autonomy_toolkit.utils.atk_config" href="../atk_config/index.html" />
 
     <link rel="shortcut icon" href="../../../../../_static/cropped-SBEL-32x32.png"/><meta name="generator" content="sphinx-3.4.2, furo 2020.12.30.beta24"/>
-        <title>autonomy_toolkit.utils.files - Autonomous Vehicle Toolbox 1.0.8 documentation</title>
+        <title>autonomy_toolkit.utils.files - Autonomous Vehicle Toolbox 1.0.9 documentation</title>
       <link rel="stylesheet" href="../../../../../_static/styles/furo.css?digest=33d2fc4f3f180ec1ffc6524e273e21d7d58cbe49">
     <link rel="stylesheet" href="../../../../../_static/pygments.css">
     <link media="(prefers-color-scheme: dark)" rel="stylesheet" href="../../../../../_static/pygments_dark.css">
@@ -104,7 +104,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../../index.html"><div class="brand">Autonomous Vehicle Toolbox 1.0.8 documentation</div></a>
+      <a href="../../../../../index.html"><div class="brand">Autonomous Vehicle Toolbox 1.0.9 documentation</div></a>
     </div>
     <div class="header-right">
       <label class="toc-overlay-icon toc-header-icon" for="__toc">
@@ -200,10 +200,6 @@
 <section id="functions">
 <h3>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h3>
 <div class="table-wrapper"><table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%"/>
-<col style="width: 90%"/>
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#autonomy_toolkit.utils.files.file_exists" title="autonomy_toolkit.utils.files.file_exists"><code class="xref py py-obj docutils literal notranslate"><span class="pre">file_exists</span></code></a>(filename: str, throw_error: bool = False, can_be_directory: bool = False) → bool</p></td>
 <td><p>Check if the passed filename is an actual file</p></td>
@@ -221,14 +217,14 @@
 <code class="sig-name descname">file_exists</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">throw_error</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">can_be_directory</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> → bool<a class="reference internal" href="../../../../../_modules/autonomy_toolkit/utils/files.html#file_exists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.utils.files.file_exists" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check if the passed filename is an actual file</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>filename</strong> (<em>str</em>) – The filename to check</p></li>
 <li><p><strong>throw_error</strong> (<em>bool</em>) – If True, will throw an error if the file doesn’t exist. Defaults to False.</p></li>
 <li><p><strong>can_be_directory</strong> (<em>bool</em>) – If True, will check if it is a directory, in addition to a file</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><em>bool</em> – True if the file exists, false otherwise</p>
 </dd>
 </dl>
@@ -247,7 +243,7 @@ for a file of a particular name.</p>
 </dd>
 </dl>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p><em>Path</em> – the location of the first file found or None, if none was found</p>
 </dd>
 </dl>
@@ -257,7 +253,7 @@ for a file of a particular name.</p>
 <code class="sig-name descname">unlink_file</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/autonomy_toolkit/utils/files.html#unlink_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.utils.files.unlink_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Unlink (remove) a file</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>filename</strong> (<em>str</em>) – The file to remove</p>
 </dd>
 </dl>

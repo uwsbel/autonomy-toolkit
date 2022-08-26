@@ -1,11 +1,11 @@
 <!doctype html>
 <html class="no-js">
   <head><meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width,initial-scale=1"/><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width,initial-scale=1"/><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <link rel="index" title="Index" href="../../../../../genindex.html" /><link rel="search" title="Search" href="../../../../../search.html" /><link rel="next" title="autonomy_toolkit.containers.docker_client" href="../docker_client/index.html" /><link rel="prev" title="autonomy_toolkit.containers" href="../index.html" />
 
     <link rel="shortcut icon" href="../../../../../_static/cropped-SBEL-32x32.png"/><meta name="generator" content="sphinx-3.4.2, furo 2020.12.30.beta24"/>
-        <title>autonomy_toolkit.containers.container_client - Autonomous Vehicle Toolbox 1.0.8 documentation</title>
+        <title>autonomy_toolkit.containers.container_client - Autonomous Vehicle Toolbox 1.0.9 documentation</title>
       <link rel="stylesheet" href="../../../../../_static/styles/furo.css?digest=33d2fc4f3f180ec1ffc6524e273e21d7d58cbe49">
     <link rel="stylesheet" href="../../../../../_static/pygments.css">
     <link media="(prefers-color-scheme: dark)" rel="stylesheet" href="../../../../../_static/pygments_dark.css">
@@ -104,7 +104,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../../index.html"><div class="brand">Autonomous Vehicle Toolbox 1.0.8 documentation</div></a>
+      <a href="../../../../../index.html"><div class="brand">Autonomous Vehicle Toolbox 1.0.9 documentation</div></a>
     </div>
     <div class="header-right">
       <label class="toc-overlay-icon toc-header-icon" for="__toc">
@@ -200,10 +200,6 @@
 <section id="classes">
 <h3>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h3>
 <div class="table-wrapper"><table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%"/>
-<col style="width: 90%"/>
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#autonomy_toolkit.containers.container_client.ContainerClient" title="autonomy_toolkit.containers.container_client.ContainerClient"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ContainerClient</span></code></a></p></td>
 <td><p>Base class that provides an entrypoint for specific container runtimes (i.e. Docker or Singularity).</p></td>
@@ -216,7 +212,7 @@
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
 <p>Exception class that is used by the <a class="reference internal" href="#autonomy_toolkit.containers.container_client.ContainerClient" title="autonomy_toolkit.containers.container_client.ContainerClient"><code class="xref py py-class docutils literal notranslate"><span class="pre">ContainerClient</span></code></a> when an error occurs</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>message</strong> (<em>Any</em>) – The message to be stored in the base class Exception</p></li>
 <li><p><strong>stdout</strong> (<em>str</em>) – The stdout from the command</p></li>
@@ -231,7 +227,7 @@
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
 <p>Base class that provides an entrypoint for specific container runtimes (i.e. Docker or Singularity).</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>config</strong> (<em>ATKConfig</em>) – The config definition</p></li>
 <li><p><strong>project</strong> (<em>str</em>) – The name of the project to use. Analagous with <code class="docutils literal notranslate"><span class="pre">--project-name</span></code> in <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span></code>.</p></li>
@@ -244,7 +240,7 @@
 <em class="property">abstract static </em><code class="sig-name descname">is_installed</code><span class="sig-paren">(</span><span class="sig-paren">)</span> → bool<a class="reference internal" href="../../../../../_modules/autonomy_toolkit/containers/container_client.html#ContainerClient.is_installed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.containers.container_client.ContainerClient.is_installed" title="Permalink to this definition">¶</a></dt>
 <dd><p>Should check if all the necessary packages/binaries are installed and return True, if yes.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p><em>bool</em> – True if everything is installed/setup properly.</p>
 </dd>
 </dl>
@@ -254,7 +250,7 @@
 <code class="sig-name descname">down</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em><span class="sig-paren">)</span> → bool<a class="reference internal" href="../../../../../_modules/autonomy_toolkit/containers/container_client.html#ContainerClient.down"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.containers.container_client.ContainerClient.down" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bring down the containers.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p><em>bool</em> – Whether the command succeeded.</p>
 </dd>
 </dl>
@@ -264,7 +260,7 @@
 <code class="sig-name descname">build</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em><span class="sig-paren">)</span> → bool<a class="reference internal" href="../../../../../_modules/autonomy_toolkit/containers/container_client.html#ContainerClient.build"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.containers.container_client.ContainerClient.build" title="Permalink to this definition">¶</a></dt>
 <dd><p>Build the images.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p><em>bool</em> – Whether the command succeeded.</p>
 </dd>
 </dl>
@@ -274,7 +270,7 @@
 <code class="sig-name descname">up</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em><span class="sig-paren">)</span> → bool<a class="reference internal" href="../../../../../_modules/autonomy_toolkit/containers/container_client.html#ContainerClient.up"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.containers.container_client.ContainerClient.up" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bring up the containers.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p><em>bool</em> – Whether the command succeeded.</p>
 </dd>
 </dl>
@@ -284,7 +280,7 @@
 <code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em><span class="sig-paren">)</span> → bool<a class="reference internal" href="../../../../../_modules/autonomy_toolkit/containers/container_client.html#ContainerClient.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.containers.container_client.ContainerClient.run" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run a command in a container.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p><em>bool</em> – Whether the command succeeded.</p>
 </dd>
 </dl>
@@ -295,7 +291,7 @@
 <dd><p>Enter the shell for a specific container.</p>
 <p>Will check for the USERSHELLPATH and USERSHELLPROFILE environment variable in the container (where the latter isn’t required).</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>service</strong> (<em>str</em>) – The service to enter</p></li>
 <li><p><strong>container</strong> (<em>str</em>) – The container to enter</p></li>
@@ -313,10 +309,10 @@ If not, a <a class="reference internal" href="#autonomy_toolkit.containers.conta
 Named arguments will be passed to <code class="xref py py-meth docutils literal notranslate"><span class="pre">subprocess.run()</span></code>
 (<a class="reference external" href="https://docs.python.org/3/library/subprocess.html#subprocess.run">see their docs</a>).</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>cmd</strong> (<em>str</em>) – The command to run.</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><em>Tuple[str, str]</em> – The stdout and stderr resulting from the command as a tuple.</p>
 </dd>
 </dl>

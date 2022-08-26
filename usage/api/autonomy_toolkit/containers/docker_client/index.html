@@ -1,11 +1,11 @@
 <!doctype html>
 <html class="no-js">
   <head><meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width,initial-scale=1"/><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width,initial-scale=1"/><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <link rel="index" title="Index" href="../../../../../genindex.html" /><link rel="search" title="Search" href="../../../../../search.html" /><link rel="next" title="autonomy_toolkit.containers.singularity_client" href="../singularity_client/index.html" /><link rel="prev" title="autonomy_toolkit.containers.container_client" href="../container_client/index.html" />
 
     <link rel="shortcut icon" href="../../../../../_static/cropped-SBEL-32x32.png"/><meta name="generator" content="sphinx-3.4.2, furo 2020.12.30.beta24"/>
-        <title>autonomy_toolkit.containers.docker_client - Autonomous Vehicle Toolbox 1.0.8 documentation</title>
+        <title>autonomy_toolkit.containers.docker_client - Autonomous Vehicle Toolbox 1.0.9 documentation</title>
       <link rel="stylesheet" href="../../../../../_static/styles/furo.css?digest=33d2fc4f3f180ec1ffc6524e273e21d7d58cbe49">
     <link rel="stylesheet" href="../../../../../_static/pygments.css">
     <link media="(prefers-color-scheme: dark)" rel="stylesheet" href="../../../../../_static/pygments_dark.css">
@@ -104,7 +104,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../../index.html"><div class="brand">Autonomous Vehicle Toolbox 1.0.8 documentation</div></a>
+      <a href="../../../../../index.html"><div class="brand">Autonomous Vehicle Toolbox 1.0.9 documentation</div></a>
     </div>
     <div class="header-right">
       <label class="toc-overlay-icon toc-header-icon" for="__toc">
@@ -200,10 +200,6 @@
 <section id="classes">
 <h3>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h3>
 <div class="table-wrapper"><table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%"/>
-<col style="width: 90%"/>
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#autonomy_toolkit.containers.docker_client.DockerClient" title="autonomy_toolkit.containers.docker_client.DockerClient"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DockerClient</span></code></a></p></td>
 <td><p>Helper class that provides the <code class="xref py py-meth docutils literal notranslate"><span class="pre">run()</span></code> method to execute a command using the <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span></code></p></td>
@@ -217,7 +213,7 @@
 <p>Helper class that provides the <code class="xref py py-meth docutils literal notranslate"><span class="pre">run()</span></code> method to execute a command using the <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span></code>
 entrypoint.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>config</strong> (<em>ATKConfig</em>) – The config definition</p></li>
 <li><p><strong>project</strong> (<em>str</em>) – The name of the project to use. Analagous with <code class="docutils literal notranslate"><span class="pre">--project-name</span></code> in <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span></code>.</p></li>
@@ -231,7 +227,7 @@ entrypoint.</p>
 <code class="sig-name descname">is_installed</code><span class="sig-paren">(</span><span class="sig-paren">)</span> → bool<a class="reference internal" href="../../../../../_modules/autonomy_toolkit/containers/docker_client.html#DockerClient.is_installed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.containers.docker_client.DockerClient.is_installed" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks whether the docker client binary file is present and whether docker compose v2 is installed.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p><em>bool</em> – True if everything checks out, False if not.</p>
 </dd>
 </dl>
@@ -242,7 +238,7 @@ entrypoint.</p>
 <dd><p>Enter the shell for a specific container.</p>
 <p>Will check for the USERSHELLPATH environment variable in the container.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>service</strong> (<em>str</em>) – The service to run the shell for</p>
 </dd>
 </dl>
