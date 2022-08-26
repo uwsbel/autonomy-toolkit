@@ -63,7 +63,7 @@ class DockerClient(ContainerClient):
         docker_compose_is_installed = "compose" in help_output
 
         if not docker_compose_is_installed:
-            LOGGER.fatal("The command 'docker compose' is not installed. See http://projects.sbel.org/autonomy_toolkit/tutorials/using_the_development_environment.html for more information.")
+            LOGGER.fatal("The command 'docker compose' is not installed. See https://projects.sbel.org/autonomy-toolkit/tutorials/using-the-development-environment/README.html for more information.")
             return False
 
         return True
