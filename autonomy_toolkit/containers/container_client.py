@@ -149,7 +149,7 @@ class ContainerClient(ABC):
                 raise ContainerException(msg)
             exec_cmd = kwargs.pop("exec_cmd")
             return self._run_compose_cmd(*self._opts, cmd, *args, *exec_cmd, *self._args, **kwargs)
-        elif cmd == "run":
+        elif cmd == "run" or cmd == "down":
             return self._run_compose_cmd(*self._opts, cmd, *args, *self._args, **kwargs)
         else:
             return self._run_compose_cmd(*self._opts, cmd, *args, *self._services, *self._args, **kwargs)
