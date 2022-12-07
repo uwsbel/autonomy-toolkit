@@ -410,14 +410,14 @@ the file may become corrupt or other processes may be unable to open it.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">bagfile</span> <span class="o">=</span> <span class="s2">"SOME_ROSBAG_FILE.bag"</span>
 
 <span class="c1"># Open the bag file</span>
-<span class="nb">file</span> <span class="o">=</span> <span class="n">ATKDataFile</span><span class="p">(</span><span class="n">bagfile</span><span class="p">)</span>
-<span class="nb">file</span><span class="o">.</span><span class="n">open</span><span class="p">()</span>
+<span class="n">file</span> <span class="o">=</span> <span class="n">ATKDataFile</span><span class="p">(</span><span class="n">bagfile</span><span class="p">)</span>
+<span class="n">file</span><span class="o">.</span><span class="n">open</span><span class="p">()</span>
 
-<span class="k">for</span> <span class="n">timestamp</span><span class="p">,</span> <span class="n">connection</span><span class="p">,</span> <span class="n">msg</span> <span class="ow">in</span> <span class="nb">file</span><span class="o">.</span><span class="n">reader</span><span class="p">:</span>
-    <span class="k">print</span><span class="p">(</span><span class="n">timestamp</span><span class="p">,</span> <span class="n">msg</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">timestamp</span><span class="p">,</span> <span class="n">connection</span><span class="p">,</span> <span class="n">msg</span> <span class="ow">in</span> <span class="n">file</span><span class="o">.</span><span class="n">reader</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">timestamp</span><span class="p">,</span> <span class="n">msg</span><span class="p">)</span>
 
 <span class="c1"># Don't forget to close it!!</span>
-<span class="nb">file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="n">file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
@@ -446,9 +446,9 @@ the contextmanager with the <a class="reference internal" href="#autonomy_toolki
 <p>Examples:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">bagfile</span> <span class="o">=</span> <span class="s2">"SOME_ROSBAG_FILE.bag"</span>
 
-<span class="k">with</span> <span class="n">ATKDataFile</span><span class="p">(</span><span class="n">bagfile</span><span class="p">)</span> <span class="k">as</span> <span class="nb">file</span><span class="p">:</span>
-    <span class="k">for</span> <span class="n">timestamp</span><span class="p">,</span> <span class="n">connection</span><span class="p">,</span> <span class="n">msg</span> <span class="ow">in</span> <span class="nb">file</span><span class="o">.</span><span class="n">reader</span><span class="p">:</span>
-        <span class="k">print</span><span class="p">(</span><span class="n">timestamp</span><span class="p">,</span> <span class="n">msg</span><span class="p">)</span>
+<span class="k">with</span> <span class="n">ATKDataFile</span><span class="p">(</span><span class="n">bagfile</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">timestamp</span><span class="p">,</span> <span class="n">connection</span><span class="p">,</span> <span class="n">msg</span> <span class="ow">in</span> <span class="n">file</span><span class="o">.</span><span class="n">reader</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">timestamp</span><span class="p">,</span> <span class="n">msg</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Alternatively, see <a class="reference internal" href="#autonomy_toolkit.db.ATKDataFile.open" title="autonomy_toolkit.db.ATKDataFile.open"><code class="xref py py-meth docutils literal notranslate"><span class="pre">open()</span></code></a> and <a class="reference internal" href="#autonomy_toolkit.db.ATKDataFile.close" title="autonomy_toolkit.db.ATKDataFile.close"><code class="xref py py-meth docutils literal notranslate"><span class="pre">close()</span></code></a>.</p>
@@ -529,7 +529,7 @@ the contextmanager with the <a class="reference internal" href="#autonomy_toolki
 <span class="c1"># Or you can use pandas</span>
 <span class="k">with</span> <span class="n">ATKDataFileReader</span><span class="p">(</span><span class="n">bagfile</span><span class="p">)</span> <span class="k">as</span> <span class="n">reader</span><span class="p">:</span>
     <span class="n">df</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">convert_to_pandas_df</span><span class="p">()</span>
-    <span class="k">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
@@ -584,7 +584,7 @@ the contextmanager with the <a class="reference internal" href="#autonomy_toolki
 <span class="c1"># You can use a generator</span>
 <span class="k">with</span> <span class="n">ATKDataFileReader</span><span class="p">(</span><span class="n">bagfile</span><span class="p">)</span> <span class="k">as</span> <span class="n">reader</span><span class="p">:</span>
     <span class="k">for</span> <span class="n">timestamp</span><span class="p">,</span> <span class="n">connection</span><span class="p">,</span> <span class="n">msg</span> <span class="ow">in</span> <span class="n">reader</span><span class="p">:</span>
-        <span class="k">print</span><span class="p">(</span><span class="n">timestamp</span><span class="p">,</span> <span class="n">msg</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">timestamp</span><span class="p">,</span> <span class="n">msg</span><span class="p">)</span>
 </pre></div>
 </div>
 <dl class="field-list simple">

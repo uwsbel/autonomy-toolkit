@@ -384,20 +384,20 @@ read and parsed using the yaml specification.</p>
 <dd><p>Checks whether the yaml file contains a certain nested attribute</p>
 <p>Ex:</p>
 <blockquote>
-<div><div class="highlight-YAML notranslate"><div class="highlight"><pre><span></span><span class="c1"># test.yml</span>
-<span class="nt">test</span><span class="p">:</span>
-    <span class="nt">one</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">red</span>
-    <span class="nt">two</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">blue</span>
-    <span class="nt">three</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">green</span>
+<div><div class="highlight-YAML notranslate"><div class="highlight"><pre><span></span><span class="c1"># test.yml</span><span class="w"></span>
+<span class="nt">test</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">one</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">red</span><span class="w"></span>
+<span class="w">    </span><span class="nt">two</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">blue</span><span class="w"></span>
+<span class="w">    </span><span class="nt">three</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">green</span><span class="w"></span>
 </pre></div>
 </div>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;</span> <span class="n">parser</span> <span class="o">=</span> <span class="n">YAMLParser</span><span class="p">(</span><span class="s1">'test.yml'</span><span class="p">)</span>
 <span class="o">&gt;&gt;</span> <span class="n">parser</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">'test'</span><span class="p">,</span> <span class="s1">'one'</span><span class="p">)</span>
-<span class="bp">True</span>
+<span class="kc">True</span>
 <span class="o">&gt;&gt;</span> <span class="n">parser</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">'test'</span><span class="p">,</span> <span class="s1">'four'</span><span class="p">)</span>
-<span class="bp">False</span>
+<span class="kc">False</span>
 <span class="o">&gt;&gt;</span> <span class="n">parser</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">'test'</span><span class="p">,</span> <span class="s1">'one'</span><span class="p">,</span> <span class="s1">'red'</span><span class="p">)</span>
-<span class="bp">False</span>
+<span class="kc">False</span>
 </pre></div>
 </div>
 </div></blockquote>
@@ -415,11 +415,11 @@ read and parsed using the yaml specification.</p>
 <code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="n">default</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">throw_error</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span> → Any<a class="reference internal" href="../../../../../_modules/autonomy_toolkit/utils/parsing.html#ATKYamlFile.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.utils.parsing.ATKYamlFile.get" title="Permalink to this definition">¶</a></dt>
 <dd><p>Grabs the attribute at the nested location provided by args</p>
 <dl>
-<dt>Ex:</dt><dd><div class="highlight-YAML notranslate"><div class="highlight"><pre><span></span><span class="c1"># test.yml</span>
-<span class="nt">test</span><span class="p">:</span>
-    <span class="nt">one</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">red</span>
-    <span class="nt">two</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">blue</span>
-    <span class="nt">three</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">green</span>
+<dt>Ex:</dt><dd><div class="highlight-YAML notranslate"><div class="highlight"><pre><span></span><span class="c1"># test.yml</span><span class="w"></span>
+<span class="nt">test</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">one</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">red</span><span class="w"></span>
+<span class="w">    </span><span class="nt">two</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">blue</span><span class="w"></span>
+<span class="w">    </span><span class="nt">three</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">green</span><span class="w"></span>
 </pre></div>
 </div>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;</span> <span class="n">parser</span> <span class="o">=</span> <span class="n">YAMLParser</span><span class="p">(</span><span class="s1">'test.yml'</span><span class="p">)</span>
@@ -453,17 +453,17 @@ read and parsed using the yaml specification.</p>
 <code class="sig-name descname">set</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="n">value</span><span class="p">:</span> <span class="n">Any</span></em>, <em class="sig-param"><span class="n">update_key</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">throw_error</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/autonomy_toolkit/utils/parsing.html#ATKYamlFile.set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autonomy_toolkit.utils.parsing.ATKYamlFile.set" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sets the attribute at the nested location provided by args</p>
 <dl>
-<dt>Ex:</dt><dd><div class="highlight-YAML notranslate"><div class="highlight"><pre><span></span><span class="c1"># test.yml</span>
-<span class="nt">test</span><span class="p">:</span>
-    <span class="nt">one</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">red</span>
-    <span class="nt">two</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">blue</span>
-    <span class="nt">three</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">green</span>
+<dt>Ex:</dt><dd><div class="highlight-YAML notranslate"><div class="highlight"><pre><span></span><span class="c1"># test.yml</span><span class="w"></span>
+<span class="nt">test</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">one</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">red</span><span class="w"></span>
+<span class="w">    </span><span class="nt">two</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">blue</span><span class="w"></span>
+<span class="w">    </span><span class="nt">three</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">green</span><span class="w"></span>
 </pre></div>
 </div>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;</span> <span class="n">parser</span> <span class="o">=</span> <span class="n">YAMLParser</span><span class="p">(</span><span class="s1">'test.yml'</span><span class="p">)</span>
 <span class="o">&gt;&gt;</span> <span class="n">parser</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s1">'test'</span><span class="p">,</span> <span class="s1">'one'</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="s1">'black'</span><span class="p">)</span>
-<span class="o">&gt;&gt;</span> <span class="n">parser</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s1">'test'</span><span class="p">,</span> <span class="s1">'three'</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="s1">'twenty'</span><span class="p">,</span> <span class="n">update_key</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-<span class="o">&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">parser</span><span class="o">.</span><span class="n">data</span><span class="p">))</span>
+<span class="o">&gt;&gt;</span> <span class="n">parser</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s1">'test'</span><span class="p">,</span> <span class="s1">'three'</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="s1">'twenty'</span><span class="p">,</span> <span class="n">update_key</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="o">&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">parser</span><span class="o">.</span><span class="n">data</span><span class="p">))</span>
 <span class="n">test</span><span class="p">:</span>
     <span class="n">one</span><span class="p">:</span> <span class="n">black</span>
     <span class="n">two</span><span class="p">:</span> <span class="n">blue</span>

@@ -199,13 +199,13 @@
 
 <span class="c1"># Imports from atk</span>
 <span class="kn">import</span> <span class="nn">autonomy_toolkit</span>
-<span class="kn">from</span> <span class="nn">autonomy_toolkit.utils.logger</span> <span class="k">import</span> <span class="n">LOGGER</span>
-<span class="kn">from</span> <span class="nn">autonomy_toolkit.utils.files</span> <span class="k">import</span> <span class="n">search_upwards_for_file</span>
-<span class="kn">from</span> <span class="nn">autonomy_toolkit.utils.parsing</span> <span class="k">import</span> <span class="n">ATKYamlFile</span><span class="p">,</span> <span class="n">ATKTextFile</span><span class="p">,</span> <span class="n">replace_vars</span>
+<span class="kn">from</span> <span class="nn">autonomy_toolkit.utils.logger</span> <span class="kn">import</span> <span class="n">LOGGER</span>
+<span class="kn">from</span> <span class="nn">autonomy_toolkit.utils.files</span> <span class="kn">import</span> <span class="n">search_upwards_for_file</span>
+<span class="kn">from</span> <span class="nn">autonomy_toolkit.utils.parsing</span> <span class="kn">import</span> <span class="n">ATKYamlFile</span><span class="p">,</span> <span class="n">ATKTextFile</span><span class="p">,</span> <span class="n">replace_vars</span>
 
 <span class="c1"># Other imports</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Union</span>
-<span class="kn">from</span> <span class="nn">pathlib</span> <span class="k">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">import</span> <span class="nn">yaml</span>
 
 <div class="viewcode-block" id="ATKConfig"><a class="viewcode-back" href="../../../usage/api/autonomy_toolkit/utils/atk_config/index.html#autonomy_toolkit.utils.atk_config.ATKConfig">[docs]</a><span class="k">class</span> <span class="nc">ATKConfig</span><span class="p">:</span>
@@ -216,7 +216,7 @@
         <span class="sd">"""Helper class to store an attribute</span>
 <span class="sd">        """</span>
 
-        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="s1">'List[str]'</span><span class="p">,</span> <span class="nb">type</span><span class="p">:</span> <span class="s1">'type'</span><span class="p">,</span> <span class="n">default</span><span class="p">:</span> <span class="s1">'Any'</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">delete</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">force_default</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="s1">'List[str]'</span><span class="p">,</span> <span class="nb">type</span><span class="p">:</span> <span class="s1">'type'</span><span class="p">,</span> <span class="n">default</span><span class="p">:</span> <span class="s1">'Any'</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">delete</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">force_default</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="s1">'.'</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="nb">type</span>
@@ -225,15 +225,15 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">delete</span> <span class="o">=</span> <span class="n">delete</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">force_default</span> <span class="o">=</span> <span class="n">force_default</span>
 
-        <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
             <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Path</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'atk.yml'</span><span class="p">,</span> <span class="n">container_runtime</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"docker"</span><span class="p">,</span> <span class="n">default_container</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"dev"</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Path</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'atk.yml'</span><span class="p">,</span> <span class="n">container_runtime</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"docker"</span><span class="p">,</span> <span class="n">default_container</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"dev"</span><span class="p">):</span>
         <span class="c1"># First, grab the atk file</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">atk_yml_path</span> <span class="o">=</span> <span class="n">search_upwards_for_file</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">filename</span><span class="p">))</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">atk_yml_path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">LOGGER</span><span class="o">.</span><span class="n">fatal</span><span class="p">(</span>
-                <span class="n">f</span><span class="s2">"No '</span><span class="si">{filename}</span><span class="s2">' file was found in this directory or any parent directories. Make sure you are running this command in an autonomy-toolkit compatible repository."</span><span class="p">)</span>
+                <span class="sa">f</span><span class="s2">"No '</span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">' file was found in this directory or any parent directories. Make sure you are running this command in an autonomy-toolkit compatible repository."</span><span class="p">)</span>
             <span class="n">exit</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">container_runtime</span> <span class="o">=</span> <span class="n">container_runtime</span>
@@ -365,7 +365,7 @@
         <span class="c1"># For each required attribute, check that it exists</span>
         <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_required_attributes</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="o">*</span><span class="n">path</span><span class="p">):</span>
-                <span class="n">LOGGER</span><span class="o">.</span><span class="n">fatal</span><span class="p">(</span><span class="n">f</span><span class="s2">"Attribute at location '{'.'.join(path)}' is required, but it wasn't found."</span><span class="p">)</span>
+                <span class="n">LOGGER</span><span class="o">.</span><span class="n">fatal</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Attribute at location '</span><span class="si">{</span><span class="s1">'.'</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="si">}</span><span class="s2">' is required, but it wasn't found."</span><span class="p">)</span>
                 <span class="k">return</span> <span class="kc">False</span>
 
         <span class="c1"># For each custom attribute, evalute it and remove it from the config</span>
@@ -375,10 +375,10 @@
 
             <span class="c1"># Checks</span>
             <span class="k">if</span> <span class="n">attr</span><span class="o">.</span><span class="n">required</span> <span class="ow">and</span> <span class="n">attr</span><span class="o">.</span><span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">LOGGER</span><span class="o">.</span><span class="n">fatal</span><span class="p">(</span><span class="n">f</span><span class="s2">"Attribute '</span><span class="si">{path}</span><span class="s2">' is required, but was not found."</span><span class="p">)</span>
+                <span class="n">LOGGER</span><span class="o">.</span><span class="n">fatal</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Attribute '</span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">' is required, but was not found."</span><span class="p">)</span>
                 <span class="k">return</span> <span class="kc">False</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">attr</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">attr</span><span class="o">.</span><span class="n">type</span><span class="p">):</span>
-                <span class="n">LOGGER</span><span class="o">.</span><span class="n">fatal</span><span class="p">(</span><span class="n">f</span><span class="s2">"Attribute '</span><span class="si">{path}</span><span class="s2">' expected to be of type '</span><span class="si">{attr.type}</span><span class="s2">', but got '{type(attr.value)}'."</span><span class="p">)</span>
+                <span class="n">LOGGER</span><span class="o">.</span><span class="n">fatal</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Attribute '</span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">' expected to be of type '</span><span class="si">{</span><span class="n">attr</span><span class="o">.</span><span class="n">type</span><span class="si">}</span><span class="s2">', but got '</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">attr</span><span class="o">.</span><span class="n">value</span><span class="p">)</span><span class="si">}</span><span class="s2">'."</span><span class="p">)</span>
                 <span class="k">return</span> <span class="kc">False</span>
 
             <span class="c1"># Delete the attribute from the config</span>

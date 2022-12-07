@@ -196,11 +196,11 @@
 <span class="sd">"""Base class that container runtimes will inherit from to be used by ATK commands."""</span>
 
 <span class="c1"># Imports from atk</span>
-<span class="kn">from</span> <span class="nn">autonomy_toolkit.utils.logger</span> <span class="k">import</span> <span class="n">LOGGER</span>
+<span class="kn">from</span> <span class="nn">autonomy_toolkit.utils.logger</span> <span class="kn">import</span> <span class="n">LOGGER</span>
 
 <span class="c1"># Other imports</span>
-<span class="kn">from</span> <span class="nn">abc</span> <span class="k">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Optional</span>
+<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Optional</span>
 <span class="kn">import</span> <span class="nn">subprocess</span>
 
 <div class="viewcode-block" id="ContainerException"><a class="viewcode-back" href="../../../usage/api/autonomy_toolkit/containers/container_client/index.html#autonomy_toolkit.containers.container_client.ContainerException">[docs]</a><span class="k">class</span> <span class="nc">ContainerException</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
@@ -213,7 +213,7 @@
 <span class="sd">        stderr (str): The stderr from the command</span>
 <span class="sd">    """</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">stdout</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">stderr</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">stdout</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">stderr</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">stdout</span> <span class="o">=</span> <span class="n">stdout</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">stderr</span> <span class="o">=</span> <span class="n">stderr</span></div>
@@ -228,7 +228,7 @@
 <span class="sd">        compose_file (str): The name of the compose file to use. Defaults to ``.atk-compose.yml``.</span>
 <span class="sd">    """</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="s1">'ATKConfig'</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">compose_file</span><span class="o">=</span><span class="s1">'.atk-compose.yml'</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="s1">'ATKConfig'</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">compose_file</span><span class="o">=</span><span class="s1">'.atk-compose.yml'</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">config</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">project</span> <span class="o">=</span> <span class="n">project</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">compose_file</span> <span class="o">=</span> <span class="n">compose_file</span>
@@ -303,12 +303,12 @@
             <span class="n">env</span><span class="p">,</span> <span class="n">err</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_run_cmd</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_binary</span><span class="p">,</span> <span class="s2">"exec"</span><span class="p">,</span> <span class="n">container</span><span class="p">,</span> <span class="s2">"env"</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
         <span class="k">except</span> <span class="n">ContainerException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="k">if</span> <span class="s2">"Error: No such container: "</span> <span class="ow">in</span> <span class="n">e</span><span class="o">.</span><span class="n">stderr</span><span class="p">:</span>
-                <span class="n">LOGGER</span><span class="o">.</span><span class="n">fatal</span><span class="p">(</span><span class="n">f</span><span class="s2">"Please rerun the command with '--up'. The container cannot be attached to since it hasn't been created."</span><span class="p">)</span>
+                <span class="n">LOGGER</span><span class="o">.</span><span class="n">fatal</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Please rerun the command with '--up'. The container cannot be attached to since it hasn't been created."</span><span class="p">)</span>
                 <span class="k">return</span> <span class="kc">False</span>
             <span class="k">raise</span> <span class="n">e</span>
 
         <span class="k">if</span> <span class="s2">"USERSHELLPATH"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">env</span><span class="p">:</span>
-            <span class="n">LOGGER</span><span class="o">.</span><span class="n">fatal</span><span class="p">(</span><span class="n">f</span><span class="s2">"To attach to a container using autonomy_toolkit, the environment variable </span><span class="se">\"</span><span class="s2">USERSHELLPATH</span><span class="se">\"</span><span class="s2"> must be defined within the container. Was not found, please add it to the container."</span><span class="p">)</span>
+            <span class="n">LOGGER</span><span class="o">.</span><span class="n">fatal</span><span class="p">(</span><span class="sa">f</span><span class="s2">"To attach to a container using autonomy_toolkit, the environment variable </span><span class="se">\"</span><span class="s2">USERSHELLPATH</span><span class="se">\"</span><span class="s2"> must be defined within the container. Was not found, please add it to the container."</span><span class="p">)</span>
             <span class="k">return</span> <span class="kc">False</span>
         <span class="n">shellcmd</span> <span class="o">=</span> <span class="p">[</span><span class="n">env</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"USERSHELLPATH="</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'</span><span class="se">\n</span><span class="s1">'</span><span class="p">)[</span><span class="mi">0</span><span class="p">]]</span>
 
@@ -338,7 +338,7 @@
 <span class="sd">        """</span>
         <span class="k">if</span> <span class="n">cmd</span> <span class="o">==</span> <span class="s2">"exec"</span><span class="p">:</span>
             <span class="k">if</span> <span class="s2">"exec_cmd"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
-                <span class="n">msg</span> <span class="o">=</span> <span class="n">f</span><span class="s2">"The command is '</span><span class="si">{cmd}</span><span class="s2">' and this requires 'exec_cmd' as another named argument."</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"The command is '</span><span class="si">{</span><span class="n">cmd</span><span class="si">}</span><span class="s2">' and this requires 'exec_cmd' as another named argument."</span>
                 <span class="n">LOGGER</span><span class="o">.</span><span class="n">fatal</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
                 <span class="k">raise</span> <span class="n">ContainerException</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
             <span class="n">exec_cmd</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"exec_cmd"</span><span class="p">)</span>
@@ -354,7 +354,7 @@
 
     <span class="k">def</span> <span class="nf">_run_cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="n">cmd</span> <span class="o">=</span> <span class="s1">' '</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span> <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">args</span><span class="p">])</span>
-        <span class="n">LOGGER</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">f</span><span class="s2">"</span><span class="si">{cmd}</span><span class="s2">"</span><span class="p">)</span>
+        <span class="n">LOGGER</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">cmd</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
         <span class="k">def</span> <span class="nf">post_process_stream</span><span class="p">(</span><span class="n">stream</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bytes</span><span class="p">]):</span>
             <span class="k">if</span> <span class="n">stream</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -368,7 +368,7 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">dry_run</span><span class="p">:</span>
             <span class="n">completed_process</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">LOGGER</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">f</span><span class="s2">"'dry_run' set to true. Not running command."</span><span class="p">)</span>
+            <span class="n">LOGGER</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"'dry_run' set to true. Not running command."</span><span class="p">)</span>
             <span class="k">return</span> <span class="s2">""</span><span class="p">,</span> <span class="s2">""</span>
 
         <span class="n">stdout</span> <span class="o">=</span> <span class="n">post_process_stream</span><span class="p">(</span><span class="n">completed_process</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
@@ -376,7 +376,7 @@
 
         <span class="k">if</span> <span class="n">completed_process</span><span class="o">.</span><span class="n">returncode</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">ContainerException</span><span class="p">(</span>
-                <span class="n">f</span><span class="s2">"Got an error code of '</span><span class="si">{completed_process.returncode}</span><span class="s2">': </span><span class="si">{cmd}</span><span class="s2">"</span><span class="p">,</span> <span class="n">stdout</span><span class="p">,</span> <span class="n">stderr</span><span class="p">)</span>
+                <span class="sa">f</span><span class="s2">"Got an error code of '</span><span class="si">{</span><span class="n">completed_process</span><span class="o">.</span><span class="n">returncode</span><span class="si">}</span><span class="s2">': </span><span class="si">{</span><span class="n">cmd</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="n">stdout</span><span class="p">,</span> <span class="n">stderr</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">stdout</span><span class="p">,</span> <span class="n">stderr</span></div>
 </pre></div>

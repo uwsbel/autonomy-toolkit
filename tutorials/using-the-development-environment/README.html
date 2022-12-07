@@ -323,7 +323,7 @@ art-dev:~/art/workspace$ ros2 launch art_launch art_stack.launch.py vis:<span cl
 <section id="port-conflicts">
 <h3>Port Conflicts<a class="headerlink" href="#port-conflicts" title="Permalink to this headline">¶</a></h3>
 <p>If a docker container attempts to map to a host port that is currently in use or otherwise unavailable, it will throw an error and exit. The <code class="docutils literal notranslate"><span class="pre">autonomy-toolkit</span></code> error for this looks similar to the following:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>CRITICAL <span class="p">|</span> dev._parse_ports :: Host port <span class="s1">'&lt;port&gt;'</span> is requested <span class="k">for</span> the <span class="s1">'&lt;service&gt;'</span> service, but it is already in use.
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>CRITICAL <span class="p">|</span> dev._parse_ports :: Host port <span class="s1">'&lt;port&gt;'</span> is requested <span class="k">for</span> the <span class="s1">'&lt;service&gt;'</span> service, but it is already <span class="k">in</span> use.
 </pre></div>
 </div>
 <p>In this instance, <code class="docutils literal notranslate"><span class="pre">&lt;port&gt;</span></code> is requested to be mapped to the host for the service <code class="docutils literal notranslate"><span class="pre">&lt;service&gt;</span></code>, but it can’t happen because it’s already in use. The solution here is to use the <code class="docutils literal notranslate"><span class="pre">--port-mappings</span></code> flag. See below for usage:</p>

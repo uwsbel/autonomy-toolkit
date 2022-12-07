@@ -196,15 +196,15 @@
 <span class="sd">"""Helpful utilities for interacting with docker. Many of these helpers came from the [python_on_whales](https://gabrieldemarmiesse.github.io/python-on-whales/) package."""</span>
 
 <span class="c1"># Imports from autonomy_toolkit</span>
-<span class="kn">from</span> <span class="nn">autonomy_toolkit.utils.logger</span> <span class="k">import</span> <span class="n">LOGGER</span>
-<span class="kn">from</span> <span class="nn">autonomy_toolkit.containers.container_client</span> <span class="k">import</span> <span class="n">ContainerClient</span><span class="p">,</span> <span class="n">ContainerException</span>
+<span class="kn">from</span> <span class="nn">autonomy_toolkit.utils.logger</span> <span class="kn">import</span> <span class="n">LOGGER</span>
+<span class="kn">from</span> <span class="nn">autonomy_toolkit.containers.container_client</span> <span class="kn">import</span> <span class="n">ContainerClient</span><span class="p">,</span> <span class="n">ContainerException</span>
 
 <span class="c1"># External imports</span>
 <span class="kn">import</span> <span class="nn">subprocess</span>
 <span class="kn">import</span> <span class="nn">shutil</span>
 <span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">from</span> <span class="nn">pathlib</span> <span class="k">import</span> <span class="n">Path</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Any</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Any</span>
 
 <span class="n">ENV</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 <span class="n">ENV</span><span class="p">[</span><span class="s2">"COMPOSE_IGNORE_ORPHANS"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"true"</span>
@@ -221,7 +221,7 @@
 <span class="sd">        compose_file (str): The name of the compose file to use. Defaults to ``.atk-compose.yml``.</span>
 <span class="sd">    """</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="s1">'ATKConfig'</span><span class="p">,</span> <span class="n">project</span><span class="p">:</span> <span class="s1">'str'</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">compose_file</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'.atk-compose.yml'</span><span class="p">,</span> <span class="n">services</span> <span class="o">=</span> <span class="p">[],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="s1">'ATKConfig'</span><span class="p">,</span> <span class="n">project</span><span class="p">:</span> <span class="s1">'str'</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">compose_file</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'.atk-compose.yml'</span><span class="p">,</span> <span class="n">services</span> <span class="o">=</span> <span class="p">[],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">compose_file</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_services</span> <span class="o">=</span> <span class="n">services</span>
@@ -248,10 +248,10 @@
         <span class="n">docker_is_installed</span> <span class="o">=</span> <span class="n">docker_binary</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">docker_is_installed</span><span class="p">:</span>
-            <span class="n">LOGGER</span><span class="o">.</span><span class="n">fatal</span><span class="p">(</span><span class="n">f</span><span class="s2">"Docker was not found to be installed. Cannot continue."</span><span class="p">)</span>
+            <span class="n">LOGGER</span><span class="o">.</span><span class="n">fatal</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Docker was not found to be installed. Cannot continue."</span><span class="p">)</span>
             <span class="k">return</span> <span class="kc">False</span>
 
-        <span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">namedtuple</span>
+        <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
         <span class="n">CC</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s1">'ContainerClient'</span><span class="p">,</span> <span class="s1">'dry_run'</span><span class="p">)</span>
         <span class="n">help_output</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">ContainerClient</span><span class="o">.</span><span class="n">_run_cmd</span><span class="p">(</span><span class="n">CC</span><span class="p">(</span><span class="kc">False</span><span class="p">),</span> <span class="n">docker_binary</span><span class="p">,</span> <span class="s2">"compose"</span><span class="p">,</span> <span class="s2">"--help"</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">)</span>
         <span class="n">docker_compose_is_installed</span> <span class="o">=</span> <span class="s2">"compose"</span> <span class="ow">in</span> <span class="n">help_output</span>
@@ -263,7 +263,7 @@
         <span class="k">return</span> <span class="kc">True</span></div>
 
     <span class="k">def</span> <span class="nf">get_parsed_config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">'ATKFile'</span><span class="p">:</span>
-        <span class="kn">from</span> <span class="nn">autonomy_toolkit.utils.parsing</span> <span class="k">import</span> <span class="n">ATKJsonFile</span>
+        <span class="kn">from</span> <span class="nn">autonomy_toolkit.utils.parsing</span> <span class="kn">import</span> <span class="n">ATKJsonFile</span>
         <span class="n">config</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">run_cmd</span><span class="p">(</span><span class="s2">"config"</span><span class="p">,</span> <span class="s2">"--format=json"</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=-</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"No instances found.</span><span class="se">\n</span><span class="s2">"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">ATKJsonFile</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">config</span><span class="p">)</span>
     

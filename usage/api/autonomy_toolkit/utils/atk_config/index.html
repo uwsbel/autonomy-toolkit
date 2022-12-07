@@ -231,9 +231,9 @@ config file.</p>
 <p>The first argument should be a list of nested keys. For instance, if a custom attribute
 should be structured like the following example, then <code class="docutils literal notranslate"><span class="pre">add_custom_attribute("project",</span> <span class="pre">...)</span></code>
 and <code class="docutils literal notranslate"><span class="pre">add_custom_attribute("user",</span> <span class="pre">"name",</span> <span class="pre">...)</span></code> should be called.</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">project</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">example</span>
-<span class="nt">user</span><span class="p">:</span>
-    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">example</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">project</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">example</span><span class="w"></span>
+<span class="nt">user</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">example</span><span class="w"></span>
 </pre></div>
 </div>
 <p><code class="xref py py-attr docutils literal notranslate"><span class="pre">type</span></code> should then be a type that describes the expected type of the variable. This is a required type.

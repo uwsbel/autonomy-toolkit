@@ -202,8 +202,8 @@
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">usage</span><span class="p">:</span> <span class="n">atk</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">version</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">v</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">dry</span><span class="o">-</span><span class="n">run</span><span class="p">]</span> <span class="p">{</span><span class="n">db</span><span class="p">,</span><span class="n">dev</span><span class="p">,</span><span class="n">run</span><span class="p">}</span> <span class="o">...</span>
 </pre></div>
 </div>
-<section id="Named Arguments">
-<h3>Named Arguments<a class="headerlink" href="#Named Arguments" title="Permalink to this headline">¶</a></h3>
+<section id="options">
+<h3>options<a class="headerlink" href="#options" title="Permalink to this headline">¶</a></h3>
 <dl class="option-list">
 <dt><kbd>--version</kbd></dt>
 <dd><p>Level of verbosity</p>
@@ -228,12 +228,12 @@
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">usage</span><span class="p">:</span> <span class="n">atk</span> <span class="n">dev</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">b</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">u</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">d</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">a</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">r</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">s</span> <span class="n">SERVICES</span> <span class="p">[</span><span class="n">SERVICES</span> <span class="o">...</span><span class="p">]]</span>
                <span class="p">[</span><span class="o">-</span><span class="n">f</span> <span class="n">FILENAME</span><span class="p">]</span>
                <span class="p">[</span><span class="o">--</span><span class="n">port</span><span class="o">-</span><span class="n">mappings</span> <span class="n">PORT_MAPPINGS</span> <span class="p">[</span><span class="n">PORT_MAPPINGS</span> <span class="o">...</span><span class="p">]]</span>
-               <span class="p">[</span><span class="o">--</span><span class="n">custom</span><span class="o">-</span><span class="n">cli</span><span class="o">-</span><span class="n">args</span> <span class="p">[</span><span class="n">CUSTOM_CLI_ARGS</span> <span class="p">[</span><span class="n">CUSTOM_CLI_ARGS</span> <span class="o">...</span><span class="p">]]]</span>
-               <span class="p">[</span><span class="o">--</span><span class="n">opts</span> <span class="p">[</span><span class="n">OPTS</span> <span class="p">[</span><span class="n">OPTS</span> <span class="o">...</span><span class="p">]]]</span> <span class="p">[</span><span class="o">--</span><span class="n">args</span> <span class="p">[</span><span class="n">ARGS</span> <span class="p">[</span><span class="n">ARGS</span> <span class="o">...</span><span class="p">]]]</span>
+               <span class="p">[</span><span class="o">--</span><span class="n">custom</span><span class="o">-</span><span class="n">cli</span><span class="o">-</span><span class="n">args</span> <span class="p">[</span><span class="n">CUSTOM_CLI_ARGS</span> <span class="o">...</span><span class="p">]]</span> <span class="p">[</span><span class="o">--</span><span class="n">opts</span> <span class="p">[</span><span class="n">OPTS</span> <span class="o">...</span><span class="p">]]</span>
+               <span class="p">[</span><span class="o">--</span><span class="n">args</span> <span class="p">[</span><span class="n">ARGS</span> <span class="o">...</span><span class="p">]]</span>
 </pre></div>
 </div>
-<section id="Named Arguments">
-<h4>Named Arguments<a class="headerlink" href="#Named Arguments" title="Permalink to this headline">¶</a></h4>
+<section id="options">
+<h4>options<a class="headerlink" href="#options" title="Permalink to this headline">¶</a></h4>
 <dl class="option-list">
 <dt><kbd>-b, --build</kbd></dt>
 <dd><p>Build the env.</p>
@@ -325,20 +325,20 @@ robot.</p>
 </pre></div>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">configuration.yml</span></code>:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">output</span><span class="p">:</span>
-  <span class="nt">file</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">output</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">output</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">output</span><span class="w"></span>
 
-<span class="nt">rosbag1</span><span class="p">:</span>
-  <span class="nt">file</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ros1.bag</span>
-  <span class="nt">topics</span><span class="p">:</span>
-    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">/mocap_node/av/pose</span>
+<span class="nt">rosbag1</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ros1.bag</span><span class="w"></span>
+<span class="w">  </span><span class="nt">topics</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/mocap_node/av/pose</span><span class="w"></span>
 
-<span class="nt">rosbag2</span><span class="p">:</span>
-  <span class="nt">file</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ros2bag/</span>
-  <span class="nt">messages</span><span class="p">:</span>
-    <span class="nt">vehicle_input</span><span class="p">:</span>
-      <span class="nt">file</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">data/VehicleInput.msg</span>
-      <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">custom_msgs/msg/VehicleInput</span>
+<span class="nt">rosbag2</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ros2bag/</span><span class="w"></span>
+<span class="w">  </span><span class="nt">messages</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">vehicle_input</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">data/VehicleInput.msg</span><span class="w"></span>
+<span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">custom_msgs/msg/VehicleInput</span><span class="w"></span>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">usage</span><span class="p">:</span> <span class="n">atk</span> <span class="n">db</span> <span class="n">combine</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">r1</span> <span class="n">ROS1BAG</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">r2</span> <span class="n">ROS2BAG</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">o</span> <span class="n">OUTPUT</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">c</span> <span class="n">CONFIG</span><span class="p">]</span>
@@ -347,8 +347,8 @@ robot.</p>
                       <span class="p">[</span><span class="o">--</span><span class="n">ros2_messages</span> <span class="n">ROS2_MESSAGES</span><span class="p">]</span>
 </pre></div>
 </div>
-<section id="Named Arguments">
-<h5>Named Arguments<a class="headerlink" href="#Named Arguments" title="Permalink to this headline">¶</a></h5>
+<section id="options">
+<h5>options<a class="headerlink" href="#options" title="Permalink to this headline">¶</a></h5>
 <dl class="option-list">
 <dt><kbd>-r1, --ros1bag</kbd></dt>
 <dd><p>ROS1 bag file. Will be overridden if present in the yaml.</p>
@@ -408,12 +408,12 @@ atk -vv db <span class="nb">read</span> configuration.yaml
 </pre></div>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">configuration.yml</span></code>:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">input</span><span class="p">:</span>
-  <span class="nt">file</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">input</span>
-  <span class="nt">messages</span><span class="p">:</span>
-    <span class="nt">vehicle_input</span><span class="p">:</span>
-      <span class="nt">file</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">data/VehicleInput.msg</span>
-      <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">custom_msgs/msg/VehicleInput</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">input</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">input</span><span class="w"></span>
+<span class="w">  </span><span class="nt">messages</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">vehicle_input</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">data/VehicleInput.msg</span><span class="w"></span>
+<span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">custom_msgs/msg/VehicleInput</span><span class="w"></span>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">usage</span><span class="p">:</span> <span class="n">atk</span> <span class="n">db</span> <span class="n">read</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">i</span> <span class="n">INPUT</span><span class="p">]</span> <span class="n">config</span>
@@ -427,8 +427,8 @@ atk -vv db <span class="nb">read</span> configuration.yaml
 </dd>
 </dl>
 </section>
-<section id="Named Arguments">
-<h5>Named Arguments<a class="headerlink" href="#Named Arguments" title="Permalink to this headline">¶</a></h5>
+<section id="options">
+<h5>options<a class="headerlink" href="#options" title="Permalink to this headline">¶</a></h5>
 <dl class="option-list">
 <dt><kbd>-i, --input</kbd></dt>
 <dd><p>The database file to read</p>
@@ -496,22 +496,22 @@ atk -vv db <span class="nb">read</span> configuration.yaml
             <ul>
 <li><a class="reference internal" href="#">CLI Documentation</a><ul>
 <li><a class="reference internal" href="#atk"><code class="docutils literal notranslate"><span class="pre">atk</span></code></a><ul>
-<li><a class="reference internal" href="#Named Arguments">Named Arguments</a></li>
+<li><a class="reference internal" href="#options">options</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#sub-commands">Sub-commands</a><ul>
 <li><a class="reference internal" href="#dev"><code class="docutils literal notranslate"><span class="pre">dev</span></code></a><ul>
-<li><a class="reference internal" href="#Named Arguments">Named Arguments</a></li>
+<li><a class="reference internal" href="#options">options</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#db"><code class="docutils literal notranslate"><span class="pre">db</span></code></a><ul>
 <li><a class="reference internal" href="#db-combine"><code class="docutils literal notranslate"><span class="pre">db</span> <span class="pre">combine</span></code></a><ul>
-<li><a class="reference internal" href="#Named Arguments">Named Arguments</a></li>
+<li><a class="reference internal" href="#options">options</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#db-read"><code class="docutils literal notranslate"><span class="pre">db</span> <span class="pre">read</span></code></a><ul>
 <li><a class="reference internal" href="#Positional Arguments">Positional Arguments</a></li>
-<li><a class="reference internal" href="#Named Arguments">Named Arguments</a></li>
+<li><a class="reference internal" href="#options">options</a></li>
 </ul>
 </li>
 </ul>
