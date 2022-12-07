@@ -1103,7 +1103,8 @@ def _init(subparser):
 
     # Pull subcommand
     pull = subparsers.add_parser("pull", description="Pull a bag file from the ATKDatabase.")
-    pull.add_argument("--use-atk-config", nargs="?", const=".atk.yml", help="If true, an ATK config file is searched for and used to pull data base files. Defaults to look for a file in parent directories called '.atk.yml', but this can be overriden by passing in a variable.", default=None)
+    # TODO requires .atk.yml file from here
+    pull.add_argument("--use-atk-config", nargs="?", const="atk.yml", help="If true, an ATK config file is searched for and used to pull data base files. Defaults to look for a file in parent directories called 'atk.yml', but this can be overriden by passing in a variable.", default=None)
     pull.add_argument("--keep-zipped", action="store_true", help="If true, the file will not be unzipped.", default=False)
     pull.add_argument("--files", nargs="*", help="The files to pull.", default=None)
     pull.set_defaults(cmd=_run_pull)
