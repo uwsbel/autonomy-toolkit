@@ -1,5 +1,5 @@
 sphinx==3.4.2
-furo==2020.12.30b24
+furo==2022.12.7
 rinohtype==0.4.2
 sphinx-autoapi==1.5.1
 sphinx-autobuild
