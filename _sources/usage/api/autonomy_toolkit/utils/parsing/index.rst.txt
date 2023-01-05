@@ -1,5 +1,5 @@
-:mod:`autonomy_toolkit.utils.parsing`
-=====================================
+:py:mod:`autonomy_toolkit.utils.parsing`
+========================================
 
 .. py:module:: autonomy_toolkit.utils.parsing
 
@@ -33,7 +33,8 @@ Functions
    autonomy_toolkit.utils.parsing.replace_vars
 
 
-.. function:: replace_vars_in_file(file: ATKFile, vars_dict: dict)
+
+.. py:function:: replace_vars_in_file(file: ATKFile, vars_dict: dict)
 
    Performs bash-like substitution in the passed file.
 
@@ -43,7 +44,7 @@ Functions
                 * **vars_dict** (*dict*) -- The variable mapping to do the replacement
 
 
-.. function:: replace_vars(value: Union[Dict,Str,Iterable], vars_dict: dict) -> 'Union[Dict,Str,Iterable]'
+.. py:function:: replace_vars(value: Union[Dict,Str,Iterable], vars_dict: dict) -> Union[Dict,Str,Iterable]
 
    bash-like substitution for variables in the yaml file
 
@@ -79,7 +80,7 @@ Functions
 
 .. py:class:: ATKFile(type: str)
 
-   Bases: :class:`abc.ABC`
+   Bases: :py:obj:`abc.ABC`
 
    Base class that defines a file.
 
@@ -88,7 +89,14 @@ Functions
 
    :Parameters: **type** (*str*) -- The type of file this represents as string (i.e. 'yaml', 'json', etc.). Used for logging.
 
-   .. method:: replace_vars(self, vars_dict: dict)
+   .. py:property:: data
+      :type: Any
+
+      Get the data stored by this file
+
+      :returns: *Any* -- the file's data
+
+   .. py:method:: replace_vars(vars_dict: dict)
 
       Performs bash-like substitution in the passed file.
 
@@ -97,21 +105,13 @@ Functions
       :Parameters: **vars_dict** (*dict*) -- The variable mapping to do the replacement
 
 
-   .. method:: data(self) -> 'Any'
-      :property:
-
-      Get the data stored by this file
-
-      :returns: *Any* -- the file's data
-
-
-   .. method:: __str__(self) -> str
+   .. py:method:: __str__() -> str
       :abstractmethod:
 
       Should implement some functionality to convert the underlying data to a string.
 
 
-   .. method:: write(self, output: str) -> bool
+   .. py:method:: write(output: str) -> bool
 
       Write this file to some output location.
 
@@ -120,7 +120,7 @@ Functions
       :returns: *bool* -- whether the operation was successful
 
 
-   .. method:: read(self, filename: str) -> str
+   .. py:method:: read(filename: str) -> str
 
       Read in the passed file and return it as a string.
 
@@ -132,7 +132,7 @@ Functions
 
 .. py:class:: ATKJsonFile(filename: str = None, text: str = None)
 
-   Bases: :class:`autonomy_toolkit.utils.parsing._ATKDictWrapperFile`
+   Bases: :py:obj:`_ATKDictWrapperFile`
 
    A class to aid in parsing json configuration files
 
@@ -143,7 +143,7 @@ Functions
    :Parameters: * **filename** (*str*) -- the filename of the path to read
                 * **text** (*str*) -- the text to parse
 
-   .. method:: __str__(self)
+   .. py:method:: __str__()
 
       Should implement some functionality to convert the underlying data to a string.
 
@@ -151,7 +151,7 @@ Functions
 
 .. py:class:: ATKYamlFile(filename: str = None, text: str = None)
 
-   Bases: :class:`autonomy_toolkit.utils.parsing._ATKDictWrapperFile`
+   Bases: :py:obj:`_ATKDictWrapperFile`
 
    A class to aid in parsing yaml configuration files
 
@@ -164,7 +164,7 @@ Functions
    :Parameters: * **filename** (*str*) -- the filename of the path to read
                 * **text** (*str*) -- the text to parse
 
-   .. method:: contains(self, *args) -> bool
+   .. py:method:: contains(*args) -> bool
 
       Checks whether the yaml file contains a certain nested attribute
 
@@ -193,7 +193,7 @@ Functions
       :returns: *bool* -- Whether the nested attributes are contained in the file
 
 
-   .. method:: get(self, *args, default=None, throw_error=True) -> 'Any'
+   .. py:method:: get(*args, default=None, throw_error=True) -> Any
 
       Grabs the attribute at the nested location provided by args
 
@@ -224,7 +224,7 @@ Functions
       :raises AttributeError: If the nested attributes don't actually point to a value (i.e. contains(args) == False)
 
 
-   .. method:: set(self, *args, value: Any, update_key: bool = False, throw_error: bool = True)
+   .. py:method:: set(*args, value: Any, update_key: bool = False, throw_error: bool = True)
 
       Sets the attribute at the nested location provided by args
 
@@ -256,7 +256,7 @@ Functions
       :raises AttributeError: If the nested attributes don't actually point to a value (i.e. contains(args) == False)
 
 
-   .. method:: __str__(self)
+   .. py:method:: __str__()
 
       Should implement some functionality to convert the underlying data to a string.
 
@@ -264,14 +264,14 @@ Functions
 
 .. py:class:: ATKTextFile(filename: str, create: bool = False)
 
-   Bases: :class:`autonomy_toolkit.utils.parsing.ATKFile`
+   Bases: :py:obj:`ATKFile`
 
    Wrapper class around a simple text file.
 
    :Parameters: * **filename** (*str*) -- the filename of the path to read
                 * **create** (*bool*) -- if true, will create filename
 
-   .. method:: __str__(self)
+   .. py:method:: __str__()
 
       Should implement some functionality to convert the underlying data to a string.
 

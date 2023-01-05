@@ -1,67 +1,59 @@
 <!doctype html>
-<html class="no-js">
+<html class="no-js" lang="en">
   <head><meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width,initial-scale=1"/><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <link rel="shortcut icon" href="../../../_static/cropped-SBEL-32x32.png"/><meta name="generator" content="sphinx-3.4.2, furo 2020.12.30.beta24"/>
+    <link rel="shortcut icon" href="../../../_static/cropped-SBEL-32x32.png"/><!-- Generated with Sphinx 5.3.0 and Furo 2022.12.07 -->
         <title>autonomy_toolkit.utils.parsing - Autonomous Vehicle Toolbox 1.0.11 documentation</title>
-      <link rel="stylesheet" href="../../../_static/styles/furo.css?digest=33d2fc4f3f180ec1ffc6524e273e21d7d58cbe49">
-    <link rel="stylesheet" href="../../../_static/pygments.css">
-    <link media="(prefers-color-scheme: dark)" rel="stylesheet" href="../../../_static/pygments_dark.css">
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=91d0f0d1c444bdcb17a68e833c7a53903343c195" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css" />
+    
     
 
 
 <style>
-  :root {
+  body {
     --color-code-background: #f0f0f0;
   --color-code-foreground: black;
   
   }
-  @media (prefers-color-scheme: dark) {
-    :root {
+  @media not print {
+    body[data-theme="dark"] {
       --color-code-background: #202020;
   --color-code-foreground: #d0d0d0;
   
     }
-  }
-
-  /* For allowing end-user-specific overrides */
-  .override-light {
-    --color-code-background: #f0f0f0;
-  --color-code-foreground: black;
-  
-  }
-  .override-dark {
-    --color-code-background: #202020;
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
   --color-code-foreground: #d0d0d0;
   
+      }
+    }
   }
-</style><link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css" />
-    <link rel="stylesheet" href="../../../_static/styles/furo-extensions.css?digest=26485485040e7aaf717c13fd0188a5ad2c2deb60">
-    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
-    <script defer="defer" src="../../../_static/jquery.js"></script>
-    <script defer="defer" src="../../../_static/underscore.js"></script>
-    <script defer="defer" src="../../../_static/doctools.js"></script>
-    <script defer src="../../../_static/scripts/main.js?digest=e931d09b2a40c1bb82b542effe772014573baf67"></script></head>
-  <body dir="">
+</style></head>
+  <body>
     
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
 <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
   <symbol id="svg-toc" viewBox="0 0 24 24">
     <title>Contents</title>
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-      stroke-width="1.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-      <path stroke="none" d="M0 0h24v24H0z"/>
-      <line x1="4" y1="6" x2="20" y2="6" />
-      <line x1="10" y1="12" x2="20" y2="12" />
-      <line x1="6" y1="18" x2="20" y2="18" />
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
     </svg>
   </symbol>
   <symbol id="svg-menu" viewBox="0 0 24 24">
     <title>Menu</title>
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-      class="feather feather-menu">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
       <line x1="3" y1="12" x2="21" y2="12"></line>
       <line x1="3" y1="6" x2="21" y2="6"></line>
       <line x1="3" y1="18" x2="21" y2="18"></line>
@@ -69,18 +61,57 @@
   </symbol>
   <symbol id="svg-arrow-right" viewBox="0 0 24 24">
     <title>Expand</title>
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-      class="feather feather-chevron-right">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
       <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
     </svg>
   </symbol>
 </svg>
 
 <input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
 <input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
-<label class="overlay sidebar-overlay" for="__navigation"></label>
-<label class="overlay toc-overlay" for="__toc"></label>
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
 
 <div class="announcement">
   <aside class="announcement-content">
@@ -99,6 +130,7 @@
   <header class="mobile-header">
     <div class="header-left">
       <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
         <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
       </label>
     </div>
@@ -106,7 +138,16 @@
       <a href="../../../index.html"><div class="brand">Autonomous Vehicle Toolbox 1.0.11 documentation</div></a>
     </div>
     <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
       <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
         <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
       </label>
     </div>
@@ -122,41 +163,42 @@
   </div>
   
   
-</a><form class="sidebar-search-container" method="get" action="../../../search.html">
-  <input class="sidebar-search" placeholder=Search name="q">
+</a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
   <input type="hidden" name="check_keywords" value="yes">
   <input type="hidden" name="area" value="default">
-</form><div class="sidebar-scroll"><div class="sidebar-tree">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../index.html">Home</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../background.html">Background</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../setup.html">Setup</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../../configuration/index.html">Configuration</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label for="toctree-checkbox-1"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../configuration/index.html">Configuration</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../configuration/atk-configuration-file.html">ATK Configuration File</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../configuration/variable-replacement.html">Variable Replacement</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../configuration/environment-variables.html">Environment Variables</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../configuration/container-runtimes.html">Container Runtimes</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label for="toctree-checkbox-2"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../tutorials/using-the-development-environment/README.html">Using the ATK Development Environment</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../tutorials/autonomy-research-testbed/autonomy-research-testbed.html">Autonomy Research Testbed</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../../usage/index.html">API Reference</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label for="toctree-checkbox-3"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../usage/index.html">API Reference</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../usage/cli.html">CLI Documentation</a></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../../usage/api/autonomy_toolkit/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label for="toctree-checkbox-4"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l3 has-children"><a class="reference internal" href="../../../usage/api/autonomy_toolkit/containers/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.containers</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label for="toctree-checkbox-5"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../usage/api/autonomy_toolkit/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../usage/api/autonomy_toolkit/containers/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.containers</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../../usage/api/autonomy_toolkit/containers/container_client/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.containers.container_client</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../usage/api/autonomy_toolkit/containers/docker_client/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.containers.docker_client</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../usage/api/autonomy_toolkit/containers/singularity_client/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.containers.singularity_client</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3 has-children"><a class="reference internal" href="../../../usage/api/autonomy_toolkit/ros/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.ros</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label for="toctree-checkbox-6"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../usage/api/autonomy_toolkit/ros/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.ros</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../../usage/api/autonomy_toolkit/ros/messages/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.ros.messages</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3 has-children"><a class="reference internal" href="../../../usage/api/autonomy_toolkit/utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label for="toctree-checkbox-7"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../usage/api/autonomy_toolkit/utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../../usage/api/autonomy_toolkit/utils/atk_config/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.atk_config</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../usage/api/autonomy_toolkit/utils/files/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.files</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../usage/api/autonomy_toolkit/utils/logger/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.logger</span></code></a></li>
@@ -173,7 +215,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing</a></li>
 </ul>
-<p><span class="caption-text">External Links</span></p>
+<p class="caption" role="heading"><span class="caption-text">External Links</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference external" href="https://pypi.org/project/autonomy-toolkit/">PyPI</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/uwsbel/autonomy-toolkit">Github</a></li>
@@ -181,21 +223,40 @@
 
 </div>
 </div>
+
       </div>
       
     </div>
   </aside>
-  <main class="main">
+  <div class="main">
     <div class="content">
-      <article role="main">
-        <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
-          <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
-        </label>
-        <h1>Source code for autonomy_toolkit.utils.parsing</h1><div class="highlight"><pre>
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <h1>Source code for autonomy_toolkit.utils.parsing</h1><div class="highlight"><pre>
 <span></span><span class="c1"># SPDX-License-Identifier: MIT</span>
-<span class="sd">"""</span>
+<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Helper methods/classes for parsing files.</span>
-<span class="sd">"""</span>
+<span class="sd">&quot;&quot;&quot;</span>
 
 <span class="c1"># Import some utilities</span>
 <span class="kn">from</span> <span class="nn">autonomy_toolkit.utils.logger</span> <span class="kn">import</span> <span class="n">LOGGER</span>
@@ -209,19 +270,19 @@
 <span class="c1"># Helpers</span>
 <span class="c1"># =======</span>
 
-<div class="viewcode-block" id="replace_vars_in_file"><a class="viewcode-back" href="../../../usage/api/autonomy_toolkit/utils/parsing/index.html#autonomy_toolkit.utils.parsing.replace_vars_in_file">[docs]</a><span class="k">def</span> <span class="nf">replace_vars_in_file</span><span class="p">(</span><span class="n">file</span><span class="p">:</span> <span class="s1">'ATKFile'</span><span class="p">,</span> <span class="n">vars_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
-    <span class="sd">"""Performs bash-like substitution in the passed file.</span>
+<div class="viewcode-block" id="replace_vars_in_file"><a class="viewcode-back" href="../../../usage/api/autonomy_toolkit/utils/parsing/index.html#autonomy_toolkit.utils.parsing.replace_vars_in_file">[docs]</a><span class="k">def</span> <span class="nf">replace_vars_in_file</span><span class="p">(</span><span class="n">file</span><span class="p">:</span> <span class="s1">&#39;ATKFile&#39;</span><span class="p">,</span> <span class="n">vars_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Performs bash-like substitution in the passed file.</span>
 
 <span class="sd">    See :meth:`replace_vars` for further information on implementation.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        file (ATKFile): The file to do variable replacement for</span>
 <span class="sd">        vars_dict (dict): The variable mapping to do the replacement</span>
-<span class="sd">    """</span> 
+<span class="sd">    &quot;&quot;&quot;</span> 
     <span class="n">file</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">replace_vars</span><span class="p">(</span><span class="n">file</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">vars_dict</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="replace_vars"><a class="viewcode-back" href="../../../usage/api/autonomy_toolkit/utils/parsing/index.html#autonomy_toolkit.utils.parsing.replace_vars">[docs]</a><span class="k">def</span> <span class="nf">replace_vars</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="s1">'Union[Dict,Str,Iterable]'</span><span class="p">,</span> <span class="n">vars_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">'Union[Dict,Str,Iterable]'</span><span class="p">:</span>
-    <span class="sd">"""bash-like substitution for variables in the yaml file</span>
+<div class="viewcode-block" id="replace_vars"><a class="viewcode-back" href="../../../usage/api/autonomy_toolkit/utils/parsing/index.html#autonomy_toolkit.utils.parsing.replace_vars">[docs]</a><span class="k">def</span> <span class="nf">replace_vars</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="s1">&#39;Union[Dict,Str,Iterable]&#39;</span><span class="p">,</span> <span class="n">vars_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;Union[Dict,Str,Iterable]&#39;</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;bash-like substitution for variables in the yaml file</span>
 
 <span class="sd">    Will replace all variables with the following specification with variables in the ``vars_dict`` parameter.</span>
 <span class="sd">    Code adapted from `podman compose &lt;https://github.com/containers/podman-compose/blob/701311aa7a278eaa8b3a67d5928ee3531b60a9d7/podman_compose.py#L194&gt;`_.</span>
@@ -253,9 +314,9 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        Union[Dict,Str,Iterable]: Value with replacements</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">var_re</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
-        <span class="sa">r</span><span class="sd">"""</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        \@(?:</span>
 <span class="sd">            (?P&lt;escaped&gt;\@) |</span>
 <span class="sd">            (?P&lt;named&gt;[_a-zA-Z][_a-zA-Z0-9]*) |</span>
@@ -267,7 +328,7 @@
 <span class="sd">                ))?</span>
 <span class="sd">            })</span>
 <span class="sd">        )</span>
-<span class="sd">    """</span><span class="p">,</span>
+<span class="sd">    &quot;&quot;&quot;</span><span class="p">,</span>
         <span class="n">re</span><span class="o">.</span><span class="n">VERBOSE</span><span class="p">,</span>
     <span class="p">)</span>
 
@@ -275,20 +336,20 @@
         <span class="n">value</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">replace_vars</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">vars_dict</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">value</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
     <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
         <span class="k">def</span> <span class="nf">convert</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">"escaped"</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="k">return</span> <span class="s2">"@"</span>
-            <span class="n">name</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">"named"</span><span class="p">)</span> <span class="ow">or</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">"braced"</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;escaped&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="s2">&quot;@&quot;</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;named&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;braced&quot;</span><span class="p">)</span>
             <span class="n">value</span> <span class="o">=</span> <span class="n">vars_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">value</span> <span class="o">==</span> <span class="s2">""</span> <span class="ow">and</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">"empty"</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">value</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span> <span class="ow">and</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;empty&quot;</span><span class="p">):</span>
                 <span class="n">value</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">"err"</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">"err"</span><span class="p">))</span>
-            <span class="k">return</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">"default"</span><span class="p">)</span> <span class="ow">or</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;err&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;err&quot;</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;default&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 
         <span class="n">value</span> <span class="o">=</span> <span class="n">var_re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">convert</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">"__iter__"</span><span class="p">):</span>
+    <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;__iter__&quot;</span><span class="p">):</span>
         <span class="n">value</span> <span class="o">=</span> <span class="p">[</span><span class="n">replace_vars</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">vars_dict</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">value</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">value</span></div>
 
@@ -297,90 +358,90 @@
 <span class="c1"># ==============</span>
 
 <div class="viewcode-block" id="ATKFile"><a class="viewcode-back" href="../../../usage/api/autonomy_toolkit/utils/parsing/index.html#autonomy_toolkit.utils.parsing.ATKFile">[docs]</a><span class="k">class</span> <span class="nc">ATKFile</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
-    <span class="sd">"""Base class that defines a file.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class that defines a file.</span>
 
 <span class="sd">    Derived classes should inherit from :class:`ATKFile` and should represent a specific file type (such as</span>
-<span class="sd">    YAML, JSON, etc.). They `must` utilize the ``self._data`` attribute to maintain it's internal data structure.</span>
+<span class="sd">    YAML, JSON, etc.). They `must` utilize the ``self._data`` attribute to maintain it&#39;s internal data structure.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        type (str): The type of file this represents as string (i.e. 'yaml', 'json', etc.). Used for logging.</span>
-<span class="sd">    """</span>
+<span class="sd">        type (str): The type of file this represents as string (i.e. &#39;yaml&#39;, &#39;json&#39;, etc.). Used for logging.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">type</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_type</span> <span class="o">=</span> <span class="nb">type</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="kc">None</span>
 
 <div class="viewcode-block" id="ATKFile.replace_vars"><a class="viewcode-back" href="../../../usage/api/autonomy_toolkit/utils/parsing/index.html#autonomy_toolkit.utils.parsing.ATKFile.replace_vars">[docs]</a>    <span class="k">def</span> <span class="nf">replace_vars</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vars_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
-        <span class="sd">"""Performs bash-like substitution in the passed file.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Performs bash-like substitution in the passed file.</span>
 
 <span class="sd">        See :meth:`replace_vars` for further information on implementation.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            vars_dict (dict): The variable mapping to do the replacement</span>
-<span class="sd">        """</span> 
+<span class="sd">        &quot;&quot;&quot;</span> 
         <span class="n">replace_vars_in_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vars_dict</span><span class="p">)</span></div>
 
     <span class="nd">@property</span>
-<div class="viewcode-block" id="ATKFile.data"><a class="viewcode-back" href="../../../usage/api/autonomy_toolkit/utils/parsing/index.html#autonomy_toolkit.utils.parsing.ATKFile.data">[docs]</a>    <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">'Any'</span><span class="p">:</span>
-        <span class="sd">"""Get the data stored by this file</span>
+<div class="viewcode-block" id="ATKFile.data"><a class="viewcode-back" href="../../../usage/api/autonomy_toolkit/utils/parsing/index.html#autonomy_toolkit.utils.parsing.ATKFile.data">[docs]</a>    <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;Any&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the data stored by this file</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            Any: the file's data</span>
-<span class="sd">        """</span>
+<span class="sd">            Any: the file&#39;s data</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span></div>
 
     <span class="nd">@data</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_data</span><span class="p">:</span> <span class="s1">'Any'</span><span class="p">):</span>
-        <span class="sd">"""Set the data stored by this file</span>
+    <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_data</span><span class="p">:</span> <span class="s1">&#39;Any&#39;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the data stored by this file</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            new_data (Any): The new information to set to this file's data</span>
-<span class="sd">        """</span>
+<span class="sd">            new_data (Any): The new information to set to this file&#39;s data</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="n">new_data</span>
 
     <span class="nd">@abstractmethod</span>
 <div class="viewcode-block" id="ATKFile.__str__"><a class="viewcode-back" href="../../../usage/api/autonomy_toolkit/utils/parsing/index.html#autonomy_toolkit.utils.parsing.ATKFile.__str__">[docs]</a>    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="sd">"""Should implement some functionality to convert the underlying data to a string."""</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Should implement some functionality to convert the underlying data to a string.&quot;&quot;&quot;</span>
         <span class="k">pass</span></div>
 
 <div class="viewcode-block" id="ATKFile.write"><a class="viewcode-back" href="../../../usage/api/autonomy_toolkit/utils/parsing/index.html#autonomy_toolkit.utils.parsing.ATKFile.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-        <span class="sd">"""Write this file to some output location.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Write this file to some output location.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            output (str): The output file to write to</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            bool: whether the operation was successful</span>
-<span class="sd">        """</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="s1">'w'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
 
         <span class="k">return</span> <span class="kc">True</span></div>
 
 <div class="viewcode-block" id="ATKFile.read"><a class="viewcode-back" href="../../../usage/api/autonomy_toolkit/utils/parsing/index.html#autonomy_toolkit.utils.parsing.ATKFile.read">[docs]</a>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="sd">"""Read in the passed file and return it as a string.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read in the passed file and return it as a string.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            filename (str): the file to read</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            str: the file's contents as a string</span>
-<span class="sd">        """</span>
+<span class="sd">            str: the file&#39;s contents as a string</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">file_exists</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
-            <span class="n">LOGGER</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">"'</span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">' does not exist. Using an empty string."</span><span class="p">)</span>
-            <span class="k">return</span> <span class="s2">""</span>
+            <span class="n">LOGGER</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">&#39; does not exist. Using an empty string.&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="s2">&quot;&quot;</span>
 
         <span class="c1"># Load the file</span>
-        <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Reading '</span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">' as '</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_type</span><span class="si">}</span><span class="s2">'..."</span><span class="p">)</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">"r"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Reading &#39;</span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">&#39; as &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_type</span><span class="si">}</span><span class="s2">&#39;...&quot;</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="n">text</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-        <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Read '</span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">' as '</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_type</span><span class="si">}</span><span class="s2">'."</span><span class="p">)</span>
+        <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Read &#39;</span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">&#39; as &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_type</span><span class="si">}</span><span class="s2">&#39;.&quot;</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">text</span></div></div>
 
 <span class="k">class</span> <span class="nc">_ATKDictWrapperFile</span><span class="p">(</span><span class="n">ATKFile</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">contains</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-        <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Checking if f</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_type</span><span class="si">}</span><span class="s2"> contains nested attributes: </span><span class="si">{</span><span class="n">args</span><span class="si">}</span><span class="s2">..."</span><span class="p">)</span>
+        <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Checking if f</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_type</span><span class="si">}</span><span class="s2"> contains nested attributes: </span><span class="si">{</span><span class="n">args</span><span class="si">}</span><span class="s2">...&quot;</span><span class="p">)</span>
 
         <span class="c1"># If no data is available, always return False:</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -391,31 +452,31 @@
         <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">arg</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">temp</span><span class="p">:</span>
                 <span class="n">_contains</span> <span class="o">=</span> <span class="kc">False</span>
-                <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">"f</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_type</span><span class="si">}</span><span class="s2"> does not contain nested attributes: </span><span class="si">{</span><span class="n">args</span><span class="si">}</span><span class="s2">."</span><span class="p">)</span>
+                <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;f</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_type</span><span class="si">}</span><span class="s2"> does not contain nested attributes: </span><span class="si">{</span><span class="n">args</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
                 <span class="k">break</span>
             <span class="n">temp</span> <span class="o">=</span> <span class="n">temp</span><span class="p">[</span><span class="n">arg</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">_contains</span>
 
-    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">throw_error</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">'Any'</span><span class="p">:</span>
-        <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Getting nested attributes from f</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_type</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">args</span><span class="si">}</span><span class="s2">..."</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">throw_error</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;Any&#39;</span><span class="p">:</span>
+        <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Getting nested attributes from f</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_type</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">args</span><span class="si">}</span><span class="s2">...&quot;</span><span class="p">)</span>
 
         <span class="n">temp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span>
         <span class="k">if</span> <span class="n">temp</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">arg</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">temp</span><span class="p">:</span>
-                    <span class="n">LOGGER</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_type</span><span class="si">}</span><span class="s2"> does not contain nested attributes: </span><span class="si">{</span><span class="n">args</span><span class="si">}</span><span class="s2">."</span><span class="p">)</span>
+                    <span class="n">LOGGER</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_type</span><span class="si">}</span><span class="s2"> does not contain nested attributes: </span><span class="si">{</span><span class="n">args</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
                     <span class="k">if</span> <span class="n">default</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                        <span class="n">LOGGER</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Using default: </span><span class="si">{</span><span class="n">default</span><span class="si">}</span><span class="s2">."</span><span class="p">)</span>
+                        <span class="n">LOGGER</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Using default: </span><span class="si">{</span><span class="n">default</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
                     <span class="n">temp</span> <span class="o">=</span> <span class="n">default</span>
                     <span class="k">break</span>
                 <span class="n">temp</span> <span class="o">=</span> <span class="n">temp</span><span class="p">[</span><span class="n">arg</span><span class="p">]</span>
 
         <span class="k">if</span> <span class="n">temp</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">throw_error</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Default is not set and the nested attribute was not found: </span><span class="si">{</span><span class="n">args</span><span class="si">}</span><span class="s2">."</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Default is not set and the nested attribute was not found: </span><span class="si">{</span><span class="n">args</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">temp</span> 
 
-    <span class="k">def</span> <span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="s1">'Any'</span><span class="p">,</span> <span class="n">update_key</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">throw_error</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="s1">&#39;Any&#39;</span><span class="p">,</span> <span class="n">update_key</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">throw_error</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
         <span class="n">temp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span>
         <span class="n">args</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
         <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
@@ -430,7 +491,7 @@
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">temp</span> <span class="o">=</span> <span class="n">temp</span><span class="p">[</span><span class="n">arg</span><span class="p">]</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"The nested attribute was not found: </span><span class="si">{</span><span class="n">args</span><span class="si">}</span><span class="s2">."</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The nested attribute was not found: </span><span class="si">{</span><span class="n">args</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="n">temp</span>
 
@@ -439,7 +500,7 @@
             <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
 
 <div class="viewcode-block" id="ATKJsonFile"><a class="viewcode-back" href="../../../usage/api/autonomy_toolkit/utils/parsing/index.html#autonomy_toolkit.utils.parsing.ATKJsonFile">[docs]</a><span class="k">class</span> <span class="nc">ATKJsonFile</span><span class="p">(</span><span class="n">_ATKDictWrapperFile</span><span class="p">):</span>
-    <span class="sd">"""A class to aid in parsing json configuration files</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A class to aid in parsing json configuration files</span>
 
 <span class="sd">    The JsonParser can take in `either` a ``filename`` or a ``text`` parameter. If ``filename`` is passed,</span>
 <span class="sd">    a file will be read and parsed using the json specification. If ``text`` is passed, the text will be </span>
@@ -448,15 +509,15 @@
 <span class="sd">    Args:</span>
 <span class="sd">        filename (str): the filename of the path to read</span>
 <span class="sd">        text (str): the text to parse</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="s1">'json'</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="s1">&#39;json&#39;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">filename</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">text</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">LOGGER</span><span class="o">.</span><span class="n">fatal</span><span class="p">(</span><span class="sa">f</span><span class="s2">"filename and text in ATKJsonParser __init__ function are unset!!"</span><span class="p">)</span>
+            <span class="n">LOGGER</span><span class="o">.</span><span class="n">fatal</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;filename and text in ATKJsonParser __init__ function are unset!!&quot;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">filename</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">text</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">LOGGER</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">"filename and text are both set in ATKJsonParser __init__ function. Using filename."</span><span class="p">)</span>
+                <span class="n">LOGGER</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;filename and text are both set in ATKJsonParser __init__ function. Using filename.&quot;</span><span class="p">)</span>
 
             <span class="n">text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span> <span class="k">if</span> <span class="n">filename</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">text</span>
 
@@ -466,7 +527,7 @@
         <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">)</span></div></div>
 
 <div class="viewcode-block" id="ATKYamlFile"><a class="viewcode-back" href="../../../usage/api/autonomy_toolkit/utils/parsing/index.html#autonomy_toolkit.utils.parsing.ATKYamlFile">[docs]</a><span class="k">class</span> <span class="nc">ATKYamlFile</span><span class="p">(</span><span class="n">_ATKDictWrapperFile</span><span class="p">):</span>
-    <span class="sd">"""A class to aid in parsing yaml configuration files</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A class to aid in parsing yaml configuration files</span>
 
 <span class="sd">    Yaml files are human readable configuration files: https://yaml.org/.</span>
 
@@ -477,23 +538,23 @@
 <span class="sd">    Args:</span>
 <span class="sd">        filename (str): the filename of the path to read</span>
 <span class="sd">        text (str): the text to parse</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="s1">'yaml'</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="s1">&#39;yaml&#39;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">filename</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">text</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">LOGGER</span><span class="o">.</span><span class="n">fatal</span><span class="p">(</span><span class="sa">f</span><span class="s2">"filename and text in ATKYamlParser __init__ function are unset!!"</span><span class="p">)</span>
+            <span class="n">LOGGER</span><span class="o">.</span><span class="n">fatal</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;filename and text in ATKYamlParser __init__ function are unset!!&quot;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">filename</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">text</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">LOGGER</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">"filename and text are both set in ATKYamlParser __init__ function. Using filename."</span><span class="p">)</span>
+                <span class="n">LOGGER</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;filename and text are both set in ATKYamlParser __init__ function. Using filename.&quot;</span><span class="p">)</span>
 
             <span class="n">text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span> <span class="k">if</span> <span class="n">filename</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">text</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
 
 <div class="viewcode-block" id="ATKYamlFile.contains"><a class="viewcode-back" href="../../../usage/api/autonomy_toolkit/utils/parsing/index.html#autonomy_toolkit.utils.parsing.ATKYamlFile.contains">[docs]</a>    <span class="k">def</span> <span class="nf">contains</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-        <span class="sd">"""</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Checks whether the yaml file contains a certain nested attribute</span>
 
 <span class="sd">        Ex:</span>
@@ -508,12 +569,12 @@
 
 <span class="sd">            .. code-block:: Python</span>
 
-<span class="sd">                &gt;&gt; parser = YAMLParser('test.yml')</span>
-<span class="sd">                &gt;&gt; parser.contains('test', 'one')</span>
+<span class="sd">                &gt;&gt; parser = YAMLParser(&#39;test.yml&#39;)</span>
+<span class="sd">                &gt;&gt; parser.contains(&#39;test&#39;, &#39;one&#39;)</span>
 <span class="sd">                True</span>
-<span class="sd">                &gt;&gt; parser.contains('test', 'four')</span>
+<span class="sd">                &gt;&gt; parser.contains(&#39;test&#39;, &#39;four&#39;)</span>
 <span class="sd">                False</span>
-<span class="sd">                &gt;&gt; parser.contains('test', 'one', 'red')</span>
+<span class="sd">                &gt;&gt; parser.contains(&#39;test&#39;, &#39;one&#39;, &#39;red&#39;)</span>
 <span class="sd">                False</span>
 
 <span class="sd">        Args:</span>
@@ -521,11 +582,11 @@
 
 <span class="sd">        Returns:</span>
 <span class="sd">            bool: Whether the nested attributes are contained in the file</span>
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="ATKYamlFile.get"><a class="viewcode-back" href="../../../usage/api/autonomy_toolkit/utils/parsing/index.html#autonomy_toolkit.utils.parsing.ATKYamlFile.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">throw_error</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">'Any'</span><span class="p">:</span>
-        <span class="sd">"""</span>
+<div class="viewcode-block" id="ATKYamlFile.get"><a class="viewcode-back" href="../../../usage/api/autonomy_toolkit/utils/parsing/index.html#autonomy_toolkit.utils.parsing.ATKYamlFile.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">throw_error</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;Any&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Grabs the attribute at the nested location provided by args</span>
 
 <span class="sd">        Ex:</span>
@@ -539,28 +600,28 @@
 
 <span class="sd">            .. code-block:: Python</span>
 
-<span class="sd">                &gt;&gt; parser = YAMLParser('test.yml')</span>
-<span class="sd">                &gt;&gt; parser.get('test', 'one')</span>
+<span class="sd">                &gt;&gt; parser = YAMLParser(&#39;test.yml&#39;)</span>
+<span class="sd">                &gt;&gt; parser.get(&#39;test&#39;, &#39;one&#39;)</span>
 <span class="sd">                red</span>
-<span class="sd">                &gt;&gt; parser.get('test', 'green', 'test')</span>
+<span class="sd">                &gt;&gt; parser.get(&#39;test&#39;, &#39;green&#39;, &#39;test&#39;)</span>
 <span class="sd">                test</span>
-<span class="sd">                &gt;&gt; parser.get('test', 'green')             // raises AttributeError</span>
+<span class="sd">                &gt;&gt; parser.get(&#39;test&#39;, &#39;green&#39;)             // raises AttributeError</span>
 <span class="sd">           </span>
 <span class="sd">        Args:</span>
 <span class="sd">            *args: A list of arguments to search in the file</span>
-<span class="sd">            default (Any): The default value if the nested attribute isn't found</span>
-<span class="sd">            throw_error (bool): Throw an error if default is None and the attribute isn't found. Defaults to True.</span>
+<span class="sd">            default (Any): The default value if the nested attribute isn&#39;t found</span>
+<span class="sd">            throw_error (bool): Throw an error if default is None and the attribute isn&#39;t found. Defaults to True.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            Any: The value at the nested attributes</span>
 
 <span class="sd">        Raises:</span>
-<span class="sd">            AttributeError: If the nested attributes don't actually point to a value (i.e. contains(args) == False)</span>
-<span class="sd">        """</span>
+<span class="sd">            AttributeError: If the nested attributes don&#39;t actually point to a value (i.e. contains(args) == False)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">default</span><span class="p">,</span> <span class="n">throw_error</span><span class="o">=</span><span class="n">throw_error</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="ATKYamlFile.set"><a class="viewcode-back" href="../../../usage/api/autonomy_toolkit/utils/parsing/index.html#autonomy_toolkit.utils.parsing.ATKYamlFile.set">[docs]</a>    <span class="k">def</span> <span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="s1">'Any'</span><span class="p">,</span> <span class="n">update_key</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">throw_error</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
-        <span class="sd">"""</span>
+<div class="viewcode-block" id="ATKYamlFile.set"><a class="viewcode-back" href="../../../usage/api/autonomy_toolkit/utils/parsing/index.html#autonomy_toolkit.utils.parsing.ATKYamlFile.set">[docs]</a>    <span class="k">def</span> <span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="s1">&#39;Any&#39;</span><span class="p">,</span> <span class="n">update_key</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">throw_error</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Sets the attribute at the nested location provided by args</span>
 
 <span class="sd">        Ex:</span>
@@ -574,9 +635,9 @@
 
 <span class="sd">            .. code-block:: Python</span>
 
-<span class="sd">                &gt;&gt; parser = YAMLParser('test.yml')</span>
-<span class="sd">                &gt;&gt; parser.set('test', 'one', value='black')</span>
-<span class="sd">                &gt;&gt; parser.set('test', 'three', value='twenty', update_key=True)</span>
+<span class="sd">                &gt;&gt; parser = YAMLParser(&#39;test.yml&#39;)</span>
+<span class="sd">                &gt;&gt; parser.set(&#39;test&#39;, &#39;one&#39;, value=&#39;black&#39;)</span>
+<span class="sd">                &gt;&gt; parser.set(&#39;test&#39;, &#39;three&#39;, value=&#39;twenty&#39;, update_key=True)</span>
 <span class="sd">                &gt;&gt; print(yaml.dump(parser.data))</span>
 <span class="sd">                test:</span>
 <span class="sd">                    one: black</span>
@@ -587,29 +648,29 @@
 <span class="sd">            *args: A list of arguments to search in the file</span>
 <span class="sd">            value (Any): The value to set the found attribute to </span>
 <span class="sd">            update_key (bool): Updates the key rather than the value if True. Defaults to False.</span>
-<span class="sd">            throw_error (bool): Throw an error if the attribute isn't found. Defaults to True.</span>
+<span class="sd">            throw_error (bool): Throw an error if the attribute isn&#39;t found. Defaults to True.</span>
 
 <span class="sd">        Raises:</span>
-<span class="sd">            AttributeError: If the nested attributes don't actually point to a value (i.e. contains(args) == False)</span>
-<span class="sd">        """</span>
+<span class="sd">            AttributeError: If the nested attributes don&#39;t actually point to a value (i.e. contains(args) == False)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">,</span> <span class="n">update_key</span><span class="o">=</span><span class="n">update_key</span><span class="p">,</span> <span class="n">throw_error</span><span class="o">=</span><span class="n">throw_error</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="ATKYamlFile.__str__"><a class="viewcode-back" href="../../../usage/api/autonomy_toolkit/utils/parsing/index.html#autonomy_toolkit.utils.parsing.ATKYamlFile.__str__">[docs]</a>    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">)</span></div></div>
 
 <div class="viewcode-block" id="ATKTextFile"><a class="viewcode-back" href="../../../usage/api/autonomy_toolkit/utils/parsing/index.html#autonomy_toolkit.utils.parsing.ATKTextFile">[docs]</a><span class="k">class</span> <span class="nc">ATKTextFile</span><span class="p">(</span><span class="n">ATKFile</span><span class="p">):</span>
-    <span class="sd">"""Wrapper class around a simple text file.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Wrapper class around a simple text file.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        filename (str): the filename of the path to read</span>
 <span class="sd">        create (bool): if true, will create filename</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">create</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="s1">'text'</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="s1">&#39;text&#39;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">create</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="s2">""</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
@@ -625,21 +686,27 @@
 
         <span class="k">return</span> <span class="bp">self</span></div>
 </pre></div>
-      </article>
+        </article>
+      </div>
       <footer>
         
         <div class="related-pages">
           
           
         </div>
-
-        <div class="related-information">
-              Copyright &#169; 2022, Simulation Based Engineering Laboratory
-            |
-            Built with <a href="https://www.sphinx-doc.org/">Sphinx</a>
-              and
-              <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
-              <a href="https://github.com/pradyunsg/furo">Furo theme</a>.
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2023, Simulation Based Engineering Laboratory
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
         </div>
         
       </footer>
@@ -649,7 +716,13 @@
       
       
     </aside>
-  </main>
-</div>
-  </body>
+  </div>
+</div><script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/scripts/furo.js"></script>
+    </body>
 </html>

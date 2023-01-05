@@ -1,7 +1,7 @@
 :orphan:
 
-:mod:`autonomy_toolkit`
-=======================
+:py:mod:`autonomy_toolkit`
+==========================
 
 .. py:module:: autonomy_toolkit
 
@@ -31,15 +31,13 @@ Submodules
 Package Contents
 ----------------
 
-.. data:: __author__
+.. py:data:: __author__
    :annotation: = Simulation Based Engineering Laboratory (negrut@.wisc.edu)
 
    Simulation Based Engineering Laboratory (negrut@wisc.edu)
 
-
-.. data:: __license__
+.. py:data:: __license__
    :annotation: = BSD3
 
    BSD3
-
 

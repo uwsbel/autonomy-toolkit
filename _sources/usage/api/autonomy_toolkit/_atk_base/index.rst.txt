@@ -1,7 +1,7 @@
 :orphan:
 
-:mod:`autonomy_toolkit._atk_base`
-=================================
+:py:mod:`autonomy_toolkit._atk_base`
+====================================
 
 .. py:module:: autonomy_toolkit._atk_base
 

@@ -1,5 +1,5 @@
-:mod:`autonomy_toolkit.ros`
-===========================
+:py:mod:`autonomy_toolkit.ros`
+==============================
 
 .. py:module:: autonomy_toolkit.ros
 

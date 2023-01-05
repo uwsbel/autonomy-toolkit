@@ -1,5 +1,5 @@
-:mod:`autonomy_toolkit.utils.system`
-====================================
+:py:mod:`autonomy_toolkit.utils.system`
+=======================================
 
 .. py:module:: autonomy_toolkit.utils.system
 
@@ -25,7 +25,8 @@ Functions
    autonomy_toolkit.utils.system.getgid
 
 
-.. function:: is_port_available(port: int, udp: bool = False) -> bool
+
+.. py:function:: is_port_available(port: int, udp: bool = False) -> bool
 
    Checks whether a specified port is available to be attached to.
 
@@ -37,14 +38,14 @@ Functions
    :returns: *bool* -- True if available, False otherwise.
 
 
-.. function:: get_mac_address() -> str
+.. py:function:: get_mac_address() -> str
 
    Get the mac address.
 
    Uses the ``uuid`` library and the ``getnode`` method. Will format in the typical form (i.e. ae:77:99...)
 
 
-.. function:: getuser() -> str
+.. py:function:: getuser() -> str
 
    Get the username of the current user.
 
@@ -53,7 +54,7 @@ Functions
    :returns: *str* -- The username of the current user
 
 
-.. function:: getuid(default: int = 1000) -> int
+.. py:function:: getuid(default: int = 1000) -> int
 
    Get the uid (user id) for the current user.
 
@@ -64,7 +65,7 @@ Functions
    :returns: *int* -- The uid, either grabbed from the current user or the default if not a posix system.
 
 
-.. function:: getgid(default: int = 1000) -> int
+.. py:function:: getgid(default: int = 1000) -> int
 
    Get the gid (group id) for the current user.
 

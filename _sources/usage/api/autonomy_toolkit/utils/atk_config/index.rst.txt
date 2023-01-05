@@ -1,5 +1,5 @@
-:mod:`autonomy_toolkit.utils.atk_config`
-========================================
+:py:mod:`autonomy_toolkit.utils.atk_config`
+===========================================
 
 .. py:module:: autonomy_toolkit.utils.atk_config
 
@@ -21,11 +21,13 @@ Classes
 
 
 
-.. py:class:: ATKConfig(filename: Union[Path, str] = 'atk.yml', container_runtime: str = 'docker', default_container: str = 'dev')
+
+.. py:class:: ATKConfig(filename: Union[pathlib.Path, str] = 'atk.yml', container_runtime: str = 'docker', default_container: str = 'dev')
 
    Helper class that abstracts reading the ``atk.yml`` file that defines configurations
 
-   .. method:: add_required_attribute(self, *args)
+
+   .. py:method:: add_required_attribute(*args)
 
       Add a required attribute that must be present in the ``autonomy-toolkit`` YAML specification.
 
@@ -34,7 +36,7 @@ Classes
       :Parameters: **\*args** -- The nested path of the required attribute, i.e. ``add_required_attribute("first_level", "second_level")`` corresponds to ``first_level: second_level: ...``.
 
 
-   .. method:: add_custom_attribute(self, *path: 'List[str]', type: type, default: Any = None, dest: str = None, delete: bool = True, force_default: bool = False)
+   .. py:method:: add_custom_attribute(*path: List[str], type: ATKConfig.add_custom_attribute.type, default: Any = None, dest: str = None, delete: bool = True, force_default: bool = False)
 
       Add a custom attribute to the ``autonomy-toolkit`` YAML specification.
 
@@ -71,7 +73,7 @@ Classes
                    * **delete** (*bool*) -- If False, the attribute will `not` be removed from the config file after parsing. Defaults to True.
 
 
-   .. method:: add_attribute_translation_rule(self, *path: 'List[str]', rule: Tuple[str, str])
+   .. py:method:: add_attribute_translation_rule(*path: List[str], rule: Tuple[str, str])
 
       Add a translation rule to the ``autonomy-toolkit`` YAML specification.
 
@@ -103,7 +105,7 @@ Classes
                    * **rule** (*Tuple[str, str]*) -- translation rule (from, to) such that all "from"'s are translated to "to"'s.
 
 
-   .. method:: parse(self) -> bool
+   .. py:method:: parse() -> bool
 
       Parse the ATK config file.
 
@@ -117,7 +119,7 @@ Classes
       :returns: *bool* -- whether the file was successfully parsed
 
 
-   .. method:: generate_compose(self, services: List[str] = [], overwrite_lists: bool = False)
+   .. py:method:: generate_compose(services: List[str] = [], overwrite_lists: bool = False)
 
       Generates a ``atk-compose.yml`` specification file that's used by ``docker compose``
 
@@ -130,7 +132,7 @@ Classes
                    * **overwrite_lists** (*bool*) -- If true, all lists in the default that conflict with lists in the custom config will be overwritten. If false, the lists will be extended.
 
 
-   .. method:: write_compose(self, compose: dict = None)
+   .. py:method:: write_compose(compose: dict = None)
 
       Writes the ``docker compose`` config file.
 

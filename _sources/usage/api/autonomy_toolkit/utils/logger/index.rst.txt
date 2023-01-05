@@ -1,5 +1,5 @@
-:mod:`autonomy_toolkit.utils.logger`
-====================================
+:py:mod:`autonomy_toolkit.utils.logger`
+=======================================
 
 .. py:module:: autonomy_toolkit.utils.logger
 
@@ -35,7 +35,8 @@ Functions
    autonomy_toolkit.utils.logger.dumps_dict
 
 
-.. function:: set_verbosity(verbosity: int)
+
+.. py:function:: set_verbosity(verbosity: int)
 
    Set the verbosity level for the logger.
    Default verbosity is WARNING. ``verbosity`` should be a value
@@ -47,7 +48,7 @@ Functions
    :Parameters: **verbosity** (*int*) -- A value between 0 and 2 that represents the number of levels below WARNING that should be used when logging.
 
 
-.. function:: dumps_dict(dic: dict) -> str
+.. py:function:: dumps_dict(dic: dict) -> str
 
    Dumps a dictionary in a pretty-ish format to the logger.
 

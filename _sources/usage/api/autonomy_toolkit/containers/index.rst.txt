@@ -1,5 +1,5 @@
-:mod:`autonomy_toolkit.containers`
-==================================
+:py:mod:`autonomy_toolkit.containers`
+=====================================
 
 .. py:module:: autonomy_toolkit.containers
 

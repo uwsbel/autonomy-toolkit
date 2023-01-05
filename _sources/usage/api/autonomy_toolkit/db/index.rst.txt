@@ -1,5 +1,5 @@
-:mod:`autonomy_toolkit.db`
-==========================
+:py:mod:`autonomy_toolkit.db`
+=============================
 
 .. py:module:: autonomy_toolkit.db
 
@@ -32,7 +32,8 @@ Functions
    autonomy_toolkit.db.register_type
 
 
-.. function:: register_type(msg_file: Union['Path', str], name: str = None)
+
+.. py:function:: register_type(msg_file: Union[pathlib.Path, str], name: str = None)
 
    Registers a custom message type so that it can be read by ``rosbags``
 
@@ -47,7 +48,7 @@ Functions
                 * **name** (*str, optional*) -- The name of the custom message. Only optional if an ``idl`` file is passed.
 
 
-.. py:class:: ATKDatabase(local_path: Union['Path', str])
+.. py:class:: ATKDatabase(local_path: Union[pathlib.Path, str])
 
    This class allows you to programatically interact with the ATK database.
 
@@ -67,7 +68,8 @@ Functions
 
        Currently only local databases are supported with the :meth:`~push` and :meth:`~pull` commands.
 
-   .. method:: push(self, bag: Union['ATKDataFile', str], keep: bool = True)
+
+   .. py:method:: push(bag: Union[ATKDataFile, str], keep: bool = True)
 
       Push a database file to the ATK database.
 
@@ -78,7 +80,7 @@ Functions
                    * **keep** (*bool, optional*) -- If False, will delete the file after pushing it.
 
 
-   .. method:: pull(self, name: str, dest: str = None, as_rosbag: bool = False) -> 'ATKDataFile'
+   .. py:method:: pull(name: str, dest: str = None, as_rosbag: bool = False) -> ATKDataFile
 
       Pulls (downloads) a database file from the ATK database
 
@@ -89,7 +91,7 @@ Functions
                    * **as_rosbag** (*bool, optional*) -- If True, the pulled file will be saved as a ros1 bag.
 
 
-   .. method:: ls(self, path: str = '')
+   .. py:method:: ls(path: str = '')
 
       List the contents of the directory at the database root + ``path``.
 
@@ -134,31 +136,24 @@ Functions
    When pulling a file from the database, it *will* have a name. If you're working with a file locally and have
    not interacted with the database at all, it will generate a new name using the aforementioned structure.
 
-   .. method:: path(self)
-      :property:
+   .. py:property:: path
 
       Path property.
 
-
-   .. method:: name(self)
-      :property:
+   .. py:property:: name
 
       Name property.
 
       As a reminder, the format of the name is ``ATK-mm-dd-YYYY-HH-MM-SS``. It *should* be unique.
 
-
-   .. method:: db_name(self)
-      :property:
+   .. py:property:: db_name
 
       Database name property.
 
       The file name of the bag stored in the database. This differs from :attr:`name` in that it may include
       an extension (i.e. ``.bag``)
 
-
-   .. method:: reader(self)
-      :property:
+   .. py:property:: reader
 
       Get the reader object for this data file
 
@@ -166,8 +161,7 @@ Functions
 
       :raises RuntimeError: The reader hasn't been initialized yet. See :meth:`~__enter__`.
 
-
-   .. method:: to_ros1(self)
+   .. py:method:: to_ros1()
 
       Converts this database file to a ros1 bag.
 
@@ -175,7 +169,7 @@ Functions
       If it represents a ros2 bag, a conversion will be done to ros1.
 
 
-   .. method:: to_ros2(self)
+   .. py:method:: to_ros2()
 
       Converts this database file to a ros2 bag
 
@@ -183,7 +177,7 @@ Functions
       If it represents a ros1 bag, a conversion will be done to ros2.
 
 
-   .. method:: combine(ros1_bag: str, ros2_bag: str, output_bag: str, ros1_topics: List[str] = [], ros2_topics: List[str] = [], ros1_types: List[MessageType] = [], ros2_types: List[MessageType] = [])
+   .. py:method:: combine(ros1_bag: str, ros2_bag: str, output_bag: str, ros1_topics: List[str] = [], ros2_topics: List[str] = [], ros1_types: List[autonomy_toolkit.ros.messages.MessageType] = [], ros2_types: List[autonomy_toolkit.ros.messages.MessageType] = [])
       :staticmethod:
 
       Combine command.
@@ -205,7 +199,7 @@ Functions
       :raises KeyError: Raised if an unidentified message type is attempted to be parsed
 
 
-   .. method:: open(self)
+   .. py:method:: open()
 
       Open up the data file for reading.
 
@@ -235,7 +229,7 @@ Functions
       :raises AssertionError: If the reader is already open
 
 
-   .. method:: close(self)
+   .. py:method:: close()
 
       Close the opened data file.
 
@@ -245,7 +239,7 @@ Functions
       :raises AssertionError: If the reader has not been opened yet
 
 
-   .. method:: __enter__(self)
+   .. py:method:: __enter__()
 
       Read the file when entering contextmanager.
 
@@ -265,7 +259,7 @@ Functions
       Alternatively, see :meth:`~open` and :meth:`~close`.
 
 
-   .. method:: __exit__(self, *args, **kwargs)
+   .. py:method:: __exit__(*args, **kwargs)
 
       Close the file when entering contextmanager.
 
@@ -280,7 +274,7 @@ Functions
    :Parameters: * **path** (*Union[Path, str]*) -- The path to write a file to.
                 * **type** (*int*) -- The ROS version type of the bag you want to write. Can be 1 or 2. If 0, the type will attempted to be inferred.
 
-   .. method:: open(self) -> 'Union[_ATKROS1DataFileWriter, _ATKROS2DataFileWriter]'
+   .. py:method:: open() -> Union[_ATKROS1DataFileWriter, _ATKROS2DataFileWriter]
 
       Method which will return either a :class:`~_ATKROS1DataFileWriter` or a
       :class:`~_ATKROS2DataFileWriter`.
@@ -290,19 +284,19 @@ Functions
       :raises RuntimeError: If the bag already exists. The writer will only write new bags.
 
 
-   .. method:: close(self)
+   .. py:method:: close()
 
       Method to close the writer.
 
       :raises RuntimeError: If the writer was never opened.
 
 
-   .. method:: __enter__(self)
+   .. py:method:: __enter__()
 
       Open ROS bag when entering contextmanager.
 
 
-   .. method:: __exit__(self, *args, **kwargs)
+   .. py:method:: __exit__(*args, **kwargs)
 
       Close ROS bag when entering contextmanager.
 
@@ -314,7 +308,7 @@ Functions
 
    :Parameters: **path** (*Union[Path, str]*) -- The path to write a file to.
 
-   .. method:: convert_to_pandas_df(self) -> pd.DataFrame
+   .. py:method:: convert_to_pandas_df() -> pandas.DataFrame
 
       Convert the sqlite database to a pandas dataframe.
 
@@ -337,7 +331,7 @@ Functions
       :returns: *pandas.DataFrame* -- The ordered dataframe taken from the database.
 
 
-   .. method:: open(self) -> 'Union[_ATKROS1DataFileReader, _ATKROS2DataFileReader]'
+   .. py:method:: open() -> Union[_ATKROS1DataFileReader, _ATKROS2DataFileReader]
 
       Method which will return either a :class:`~_ATKROS1DataFileReader` or a
       :class:`~_ATKROS2DataFileReader`.
@@ -347,24 +341,24 @@ Functions
       :raises RuntimeError: If the bag already exists. The writer will only write new bags.
 
 
-   .. method:: close(self)
+   .. py:method:: close()
 
       Method to close the reader.
 
       :raises RuntimeError: If the reader was never opened.
 
 
-   .. method:: __enter__(self)
+   .. py:method:: __enter__()
 
       Open ROS bag when entering contextmanager.
 
 
-   .. method:: __exit__(self, *args, **kwargs)
+   .. py:method:: __exit__(*args, **kwargs)
 
       Close ROS bag when entering contextmanager.
 
 
-   .. method:: __iter__(self) -> Iterable[Tuple[int, Union['ROS1Connection', ROS2Connection], Any]]
+   .. py:method:: __iter__() -> Iterable[Tuple[int, Union[ROS1Connection, rosbags.rosbag2.connection.Connection], Any]]
 
       Iterate method that returns a generator tuple.
 

@@ -1,5 +1,5 @@
-:mod:`autonomy_toolkit.dev`
-===========================
+:py:mod:`autonomy_toolkit.dev`
+==============================
 
 .. py:module:: autonomy_toolkit.dev
 

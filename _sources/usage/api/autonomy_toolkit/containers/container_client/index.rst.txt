@@ -1,5 +1,5 @@
-:mod:`autonomy_toolkit.containers.container_client`
-===================================================
+:py:mod:`autonomy_toolkit.containers.container_client`
+======================================================
 
 .. py:module:: autonomy_toolkit.containers.container_client
 
@@ -21,9 +21,10 @@ Classes
 
 
 
+
 .. py:exception:: ContainerException(message: Any, stdout: str = None, stderr: str = None)
 
-   Bases: :class:`Exception`
+   Bases: :py:obj:`Exception`
 
    Exception class that is used by the :class:`ContainerClient` when an error occurs
 
@@ -34,7 +35,7 @@ Classes
 
 .. py:class:: ContainerClient(config: ATKConfig, project=None, compose_file='.atk-compose.yml', **kwargs)
 
-   Bases: :class:`abc.ABC`
+   Bases: :py:obj:`abc.ABC`
 
    Base class that provides an entrypoint for specific container runtimes (i.e. Docker or Singularity).
 
@@ -42,7 +43,7 @@ Classes
                 * **project** (*str*) -- The name of the project to use. Analagous with ``--project-name`` in ``docker compose``.
                 * **compose_file** (*str*) -- The name of the compose file to use. Defaults to ``.atk-compose.yml``.
 
-   .. method:: is_installed() -> bool
+   .. py:method:: is_installed() -> bool
       :staticmethod:
       :abstractmethod:
 
@@ -51,35 +52,35 @@ Classes
       :returns: *bool* -- True if everything is installed/setup properly.
 
 
-   .. method:: down(self, *args) -> bool
+   .. py:method:: down(*args) -> bool
 
       Bring down the containers.
 
       :returns: *bool* -- Whether the command succeeded.
 
 
-   .. method:: build(self, *args) -> bool
+   .. py:method:: build(*args) -> bool
 
       Build the images.
 
       :returns: *bool* -- Whether the command succeeded.
 
 
-   .. method:: up(self, *args) -> bool
+   .. py:method:: up(*args) -> bool
 
       Bring up the containers.
 
       :returns: *bool* -- Whether the command succeeded.
 
 
-   .. method:: run(self, *args) -> bool
+   .. py:method:: run(*args) -> bool
 
       Run a command in a container.
 
       :returns: *bool* -- Whether the command succeeded.
 
 
-   .. method:: shell(self, service: str, container: str, *args, exec_flags=None) -> bool
+   .. py:method:: shell(service: str, container: str, *args, exec_flags=None) -> bool
 
       Enter the shell for a specific container.
 
@@ -89,7 +90,7 @@ Classes
                    * **container** (*str*) -- The container to enter
 
 
-   .. method:: run_cmd(self, cmd, *args, **kwargs) -> 'Tuple[str, str]'
+   .. py:method:: run_cmd(cmd, *args, **kwargs) -> Tuple[str, str]
 
       Run a command using the system wide ``compose`` command
 

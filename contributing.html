@@ -1,68 +1,60 @@
 <!doctype html>
-<html class="no-js">
+<html class="no-js" lang="en">
   <head><meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width,initial-scale=1"/><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="prev" title="autonomy_toolkit.run" href="usage/api/autonomy_toolkit/run/index.html" />
 
-    <link rel="shortcut icon" href="_static/cropped-SBEL-32x32.png"/><meta name="generator" content="sphinx-3.4.2, furo 2020.12.30.beta24"/>
+    <link rel="shortcut icon" href="_static/cropped-SBEL-32x32.png"/><!-- Generated with Sphinx 5.3.0 and Furo 2022.12.07 -->
         <title>Contributing - Autonomous Vehicle Toolbox 1.0.11 documentation</title>
-      <link rel="stylesheet" href="_static/styles/furo.css?digest=33d2fc4f3f180ec1ffc6524e273e21d7d58cbe49">
-    <link rel="stylesheet" href="_static/pygments.css">
-    <link media="(prefers-color-scheme: dark)" rel="stylesheet" href="_static/pygments_dark.css">
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=91d0f0d1c444bdcb17a68e833c7a53903343c195" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+    <link rel="stylesheet" type="text/css" href="_static/css/custom.css" />
+    
     
 
 
 <style>
-  :root {
+  body {
     --color-code-background: #f0f0f0;
   --color-code-foreground: black;
   
   }
-  @media (prefers-color-scheme: dark) {
-    :root {
+  @media not print {
+    body[data-theme="dark"] {
       --color-code-background: #202020;
   --color-code-foreground: #d0d0d0;
   
     }
-  }
-
-  /* For allowing end-user-specific overrides */
-  .override-light {
-    --color-code-background: #f0f0f0;
-  --color-code-foreground: black;
-  
-  }
-  .override-dark {
-    --color-code-background: #202020;
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
   --color-code-foreground: #d0d0d0;
   
+      }
+    }
   }
-</style><link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
-    <link rel="stylesheet" type="text/css" href="_static/css/custom.css" />
-    <link rel="stylesheet" href="_static/styles/furo-extensions.css?digest=26485485040e7aaf717c13fd0188a5ad2c2deb60">
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script defer="defer" src="_static/jquery.js"></script>
-    <script defer="defer" src="_static/underscore.js"></script>
-    <script defer="defer" src="_static/doctools.js"></script>
-    <script defer src="_static/scripts/main.js?digest=e931d09b2a40c1bb82b542effe772014573baf67"></script></head>
-  <body dir="">
+</style></head>
+  <body>
     
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
 <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
   <symbol id="svg-toc" viewBox="0 0 24 24">
     <title>Contents</title>
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-      stroke-width="1.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-      <path stroke="none" d="M0 0h24v24H0z"/>
-      <line x1="4" y1="6" x2="20" y2="6" />
-      <line x1="10" y1="12" x2="20" y2="12" />
-      <line x1="6" y1="18" x2="20" y2="18" />
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
     </svg>
   </symbol>
   <symbol id="svg-menu" viewBox="0 0 24 24">
     <title>Menu</title>
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-      class="feather feather-menu">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
       <line x1="3" y1="12" x2="21" y2="12"></line>
       <line x1="3" y1="6" x2="21" y2="6"></line>
       <line x1="3" y1="18" x2="21" y2="18"></line>
@@ -70,18 +62,57 @@
   </symbol>
   <symbol id="svg-arrow-right" viewBox="0 0 24 24">
     <title>Expand</title>
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-      class="feather feather-chevron-right">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
       <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
     </svg>
   </symbol>
 </svg>
 
 <input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
 <input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
-<label class="overlay sidebar-overlay" for="__navigation"></label>
-<label class="overlay toc-overlay" for="__toc"></label>
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
 
 <div class="announcement">
   <aside class="announcement-content">
@@ -100,6 +131,7 @@
   <header class="mobile-header">
     <div class="header-left">
       <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
         <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
       </label>
     </div>
@@ -107,7 +139,16 @@
       <a href="index.html"><div class="brand">Autonomous Vehicle Toolbox 1.0.11 documentation</div></a>
     </div>
     <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
       <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
         <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
       </label>
     </div>
@@ -123,41 +164,42 @@
   </div>
   
   
-</a><form class="sidebar-search-container" method="get" action="search.html">
-  <input class="sidebar-search" placeholder=Search name="q">
+</a><form class="sidebar-search-container" method="get" action="search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
   <input type="hidden" name="check_keywords" value="yes">
   <input type="hidden" name="area" value="default">
-</form><div class="sidebar-scroll"><div class="sidebar-tree">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="index.html">Home</a></li>
 <li class="toctree-l1"><a class="reference internal" href="background.html">Background</a></li>
 <li class="toctree-l1"><a class="reference internal" href="setup.html">Setup</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="configuration/index.html">Configuration</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label for="toctree-checkbox-1"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="configuration/index.html">Configuration</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="configuration/atk-configuration-file.html">ATK Configuration File</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuration/variable-replacement.html">Variable Replacement</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuration/environment-variables.html">Environment Variables</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuration/container-runtimes.html">Container Runtimes</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="tutorials/index.html">Tutorials</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label for="toctree-checkbox-2"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="tutorials/index.html">Tutorials</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="tutorials/using-the-development-environment/README.html">Using the ATK Development Environment</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tutorials/autonomy-research-testbed/autonomy-research-testbed.html">Autonomy Research Testbed</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="usage/index.html">API Reference</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label for="toctree-checkbox-3"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="usage/index.html">API Reference</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="usage/cli.html">CLI Documentation</a></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="usage/api/autonomy_toolkit/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label for="toctree-checkbox-4"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l3 has-children"><a class="reference internal" href="usage/api/autonomy_toolkit/containers/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.containers</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label for="toctree-checkbox-5"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="usage/api/autonomy_toolkit/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="usage/api/autonomy_toolkit/containers/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.containers</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="usage/api/autonomy_toolkit/containers/container_client/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.containers.container_client</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="usage/api/autonomy_toolkit/containers/docker_client/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.containers.docker_client</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="usage/api/autonomy_toolkit/containers/singularity_client/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.containers.singularity_client</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3 has-children"><a class="reference internal" href="usage/api/autonomy_toolkit/ros/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.ros</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label for="toctree-checkbox-6"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="usage/api/autonomy_toolkit/ros/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.ros</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="usage/api/autonomy_toolkit/ros/messages/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.ros.messages</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3 has-children"><a class="reference internal" href="usage/api/autonomy_toolkit/utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label for="toctree-checkbox-7"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="usage/api/autonomy_toolkit/utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="usage/api/autonomy_toolkit/utils/atk_config/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.atk_config</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="usage/api/autonomy_toolkit/utils/files/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.files</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="usage/api/autonomy_toolkit/utils/logger/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.logger</span></code></a></li>
@@ -174,7 +216,7 @@
 </li>
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Contributing</a></li>
 </ul>
-<p><span class="caption-text">External Links</span></p>
+<p class="caption" role="heading"><span class="caption-text">External Links</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference external" href="https://pypi.org/project/autonomy-toolkit/">PyPI</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/uwsbel/autonomy-toolkit">Github</a></li>
@@ -182,63 +224,83 @@
 
 </div>
 </div>
+
       </div>
       
     </div>
   </aside>
-  <main class="main">
+  <div class="main">
     <div class="content">
-      <article role="main">
-        <label class="toc-overlay-icon toc-content-icon" for="__toc">
-          <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
-        </label>
-        <section id="contributing">
-<h1>Contributing<a class="headerlink" href="#contributing" title="Permalink to this headline">¶</a></h1>
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="contributing">
+<h1>Contributing<a class="headerlink" href="#contributing" title="Permalink to this heading">#</a></h1>
 <p>Contributing to the repository is fairly easy. The CLI was developed to be scalable and provide easy flexibility when creating new commands. There could be bugs or additional subcommands that would like to be added, so please see below for instructions on how to actually make contributions to this project.</p>
 <blockquote>
 <div><p>Note: If you’re contributing to the repository, it can be assumed you know what you’re doing. Please be thoughtful in your changes and consult the correct people if you’re looking to make changes.</p>
 </div></blockquote>
 <section id="setup">
-<h2>Setup<a class="headerlink" href="#setup" title="Permalink to this headline">¶</a></h2>
+<h2>Setup<a class="headerlink" href="#setup" title="Permalink to this heading">#</a></h2>
 <p>There are two forms of contributions: source code or documentation. Editing the documentation is as simple as cloning the repo and adding/editing content within the <code class="docutils literal notranslate"><span class="pre">docs</span></code> folder. All documentation is written in <code class="docutils literal notranslate"><span class="pre">markdown</span></code> and converted to <code class="docutils literal notranslate"><span class="pre">html</span></code> through <code class="docutils literal notranslate"><span class="pre">myst_parser</span></code> and <code class="docutils literal notranslate"><span class="pre">sphinx</span></code>. To edit the source code, as well as the documentation, you will want to install the package through a symlink.</p>
 <blockquote>
 <div><p><strong>Note</strong>: A <code class="docutils literal notranslate"><span class="pre">conda</span></code> or <code class="docutils literal notranslate"><span class="pre">virtualenv</span></code> will add isolation to your python environments and reduce conflicts amongst packages. It is <em>highly</em> recommended to use one!!</p>
 </div></blockquote>
 <section id="cloning-the-repo">
-<h3>Cloning the Repo<a class="headerlink" href="#cloning-the-repo" title="Permalink to this headline">¶</a></h3>
+<h3>Cloning the Repo<a class="headerlink" href="#cloning-the-repo" title="Permalink to this heading">#</a></h3>
 <p>Clone the repo as normal:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git clone https://github.com/uwsbel/autonomy-toolkit.git <span class="o">&amp;&amp;</span> <span class="nb">cd</span> autonomy-toolkit
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/uwsbel/autonomy-toolkit.git<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>autonomy-toolkit
 </pre></div>
 </div>
 </section>
 <section id="installing-a-symbolic-linked-version-for-testing">
-<h3>Installing a Symbolic Linked Version for Testing<a class="headerlink" href="#installing-a-symbolic-linked-version-for-testing" title="Permalink to this headline">¶</a></h3>
+<h3>Installing a Symbolic Linked Version for Testing<a class="headerlink" href="#installing-a-symbolic-linked-version-for-testing" title="Permalink to this heading">#</a></h3>
 <p>A symbolic link or symlink is a file that references another. The advantages of symlinks is that a folder or file can <em>essentially</em> be placed in two separate locations. In reference to this repository, we want to create a symlinked install because when we edit the code within the cloned repo, we want that change also to be reflected in the installed files.</p>
 <p>From within your <code class="docutils literal notranslate"><span class="pre">atk</span></code> directory, we can have <code class="docutils literal notranslate"><span class="pre">setuptools</span></code> do this for us with the following command (run from within the <code class="docutils literal notranslate"><span class="pre">atk</span></code> root directory):</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install -e .
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.
 </pre></div>
 </div>
 <p>You should now be able to edit the source and have those changes be reflected in whatever file imports <code class="docutils literal notranslate"><span class="pre">atk</span></code>!</p>
 </section>
 <section id="deploy-your-changes">
-<h3>Deploy your Changes<a class="headerlink" href="#deploy-your-changes" title="Permalink to this headline">¶</a></h3>
+<h3>Deploy your Changes<a class="headerlink" href="#deploy-your-changes" title="Permalink to this heading">#</a></h3>
 <p><a class="reference external" href="https://github.com/features/actions">GitHub actions</a> are used to automatically build the site and <a class="reference external" href="https://pages.github.com/">GitHub pages</a> are used to host the static site. To update deployed content, you have to push to the <code class="docutils literal notranslate"><span class="pre">master</span></code> branch. Once the changes are pushed, the site will rebuild. Please ensure there are no errors in your code/documentation before doing so, as you may get an email from github if something bad happens.</p>
-<p>Further, to update the package available on <a class="reference external" href="https://pypi.org/project/autonomy-toolkit/">PyPI</a>, you must create a <a class="reference external" href="https://git-scm.com/book/en/v2/Git-Basics-Tagging">git tag</a>. When a tag is created and pushed to GitHub, it will start an Action which will automatically push the new release to PyPI. See <a class="reference external" href="#versioning">versioning</a> for information on how versioning works with <code class="docutils literal notranslate"><span class="pre">atk</span></code>. The Github Action only runs when the tag is pushed to master through a merge request. To create a tag, you may do the following:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git tag &lt;tag&gt; <span class="c1"># An example tag is v3.0.1</span>
-git push origin master --tags
+<p>Further, to update the package available on <a class="reference external" href="https://pypi.org/project/autonomy-toolkit/">PyPI</a>, you must create a <a class="reference external" href="https://git-scm.com/book/en/v2/Git-Basics-Tagging">git tag</a>. When a tag is created and pushed to GitHub, it will start an Action which will automatically push the new release to PyPI. See <span class="xref myst">versioning</span> for information on how versioning works with <code class="docutils literal notranslate"><span class="pre">atk</span></code>. The Github Action only runs when the tag is pushed to master through a merge request. To create a tag, you may do the following:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>tag<span class="w"> </span>&lt;tag&gt;<span class="w"> </span><span class="c1"># An example tag is v3.0.1</span>
+git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>master<span class="w"> </span>--tags
 </pre></div>
 </div>
 <section id="versioning">
-<h4>Versioning<a class="headerlink" href="#versioning" title="Permalink to this headline">¶</a></h4>
+<h4>Versioning<a class="headerlink" href="#versioning" title="Permalink to this heading">#</a></h4>
 <p>Versioning is done automatically through <code class="docutils literal notranslate"><span class="pre">tags</span></code> by <a class="reference external" href="https://github.com/pypa/setuptools_scm">setuptools_scm</a>. When a tag is pushed to the <code class="docutils literal notranslate"><span class="pre">master</span></code> branch, a new package is pushed to PyPI with the attached tag. Therefore, you must ensure the tag you push is <em>after</em> the previous tags seen on GitHub (otherwise nothing will push to PyPI).</p>
 </section>
 </section>
 </section>
 <section id="guidelines">
-<h2>Guidelines<a class="headerlink" href="#guidelines" title="Permalink to this headline">¶</a></h2>
+<h2>Guidelines<a class="headerlink" href="#guidelines" title="Permalink to this heading">#</a></h2>
 <p>A lot of work has gone into making this package functional and scalable. Please consider all of the following guidelines and follow them to ensure the repository will persist for a long time.</p>
 <section id="file-structure">
-<h3>File Structure<a class="headerlink" href="#file-structure" title="Permalink to this headline">¶</a></h3>
+<h3>File Structure<a class="headerlink" href="#file-structure" title="Permalink to this heading">#</a></h3>
 <p>The repository is structured as follows:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>autonomy-toolkit
 ├── LICENSE
@@ -250,7 +312,7 @@ git push origin master --tags
 </div>
 </section>
 <section id="editing-the-source-code">
-<h3>Editing the Source Code<a class="headerlink" href="#editing-the-source-code" title="Permalink to this headline">¶</a></h3>
+<h3>Editing the Source Code<a class="headerlink" href="#editing-the-source-code" title="Permalink to this heading">#</a></h3>
 <p>If you plan on editing the source code, please visit the <code class="docutils literal notranslate"><span class="pre">autonomy_toolkit/</span></code> folder. The <code class="docutils literal notranslate"><span class="pre">autonomy_toolkit/</span></code> folder is structured as follows:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>autonomy_toolkit/
 ├── utils/					# Utility files for use by the rest of the package
@@ -262,19 +324,19 @@ git push origin master --tags
 └── ...							# Core autonomy-toolkit code
 </pre></div>
 </div>
-<p>As stated earlier, unless given approval by the managers of the repository, there should be no need to edit the source code. The Object Oriented nature of the package means you can just inherit the base classes and add your own logic <em>outside</em> the repo (no need to edit the source). However, bugs or nice features may be added. See <a class="reference external" href="#installing-a-symbolic-linked-version-for-testing">this section</a> to install the repo for development purposes.</p>
+<p>As stated earlier, unless given approval by the managers of the repository, there should be no need to edit the source code. The Object Oriented nature of the package means you can just inherit the base classes and add your own logic <em>outside</em> the repo (no need to edit the source). However, bugs or nice features may be added. See <span class="xref myst">this section</span> to install the repo for development purposes.</p>
 <section id="commenting">
-<h4>Commenting<a class="headerlink" href="#commenting" title="Permalink to this headline">¶</a></h4>
+<h4>Commenting<a class="headerlink" href="#commenting" title="Permalink to this heading">#</a></h4>
 <p>Commenting your code is not only <em>required</em> when contributing to this repository, but also common practice in almost every place where code is written.</p>
 <p>Please follow <a class="reference external" href="https://google.github.io/styleguide/pyguide.html">Google’s guidelines for Python Styling</a>. These comments are also used to automatically generate the documentation. For Visual Studio Code users, the <a class="reference external" href="https://github.com/NilsJPWerner/autoDocstring">Python Docstring Generator</a> package may be helpful.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Any docstrings parsed by <code class="docutils literal notranslate"><span class="pre">autosimple</span></code>, such as the functions in <a class="reference internal" href="usage/cli.html"><span class="doc std std-doc">usage.md</span></a>, are parsed as markdown. Docstrings parsed by autoapi, such as in <a class="reference internal" href="usage/api/autonomy_toolkit/db/index.html"><span class="doc std std-doc">atk.db</span></a>, are parsed as reStructuredText.</p>
-
-</div></section>
+</div>
+</section>
 </section>
 <section id="editing-the-documentation">
-<h3>Editing the Documentation<a class="headerlink" href="#editing-the-documentation" title="Permalink to this headline">¶</a></h3>
+<h3>Editing the Documentation<a class="headerlink" href="#editing-the-documentation" title="Permalink to this heading">#</a></h3>
 <p>If you plan on editing the documentation pages (i.e. adding a tutorial or fixing an existing page), please visit the <code class="docutils literal notranslate"><span class="pre">docs/</span></code> folder. The <code class="docutils literal notranslate"><span class="pre">docs/</span></code> folder is structured as follows:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>docs/
 ├── _static/						# Static files that persist through the build process
@@ -284,7 +346,7 @@ git push origin master --tags
 ├── installation.md			# Installation build instructions
 ├── contributing.md			# Contributing tab with instructions on how to contribute to the repo
 ├── conf.py							# Settings related to extensions, themes, etc.
-└── index.md						# The "home" page
+└── index.md						# The &quot;home&quot; page
 </pre></div>
 </div>
 <p>Please try to maintain the file structure as described above. All tabs with only a single page (i.e. background or contributing), should have their <code class="docutils literal notranslate"><span class="pre">markdown</span></code> file with in the <code class="docutils literal notranslate"><span class="pre">docs/</span></code> folder. If the tab has or will have multiple pages (i.e. a tutorials tab), create a folder titled the same as that tab. To add pages, insert the name of the file without the <code class="docutils literal notranslate"><span class="pre">.md</span></code> extension within the table of contents inside <code class="docutils literal notranslate"><span class="pre">index.md</span></code>. Each folder should also contain an <code class="docutils literal notranslate"><span class="pre">index.md</span></code> used as the home page of that tab.</p>
@@ -292,11 +354,11 @@ git push origin master --tags
 </section>
 </section>
 <section id="building-the-documentation">
-<h2>Building the Documentation<a class="headerlink" href="#building-the-documentation" title="Permalink to this headline">¶</a></h2>
+<h2>Building the Documentation<a class="headerlink" href="#building-the-documentation" title="Permalink to this heading">#</a></h2>
 <p>There are multiple ways to build sphinx documentation. The easiest is using the <code class="docutils literal notranslate"><span class="pre">Makefile</span></code> or <code class="docutils literal notranslate"><span class="pre">make.bat</span></code> file provided directly in this repository. You will need to install all the necessary dependencies and build the html pages. To do that, run the following commands:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> autonomy-toolkit/docs
-pip install -r requirements.txt
-make clean html
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>autonomy-toolkit/docs
+pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
+make<span class="w"> </span>clean<span class="w"> </span>html
 </pre></div>
 </div>
 <p>To view the build, go to your browser, and open the <code class="docutils literal notranslate"><span class="pre">index.html</span></code> file located inside <code class="docutils literal notranslate"><span class="pre">docs/build/html/</span></code>.</p>
@@ -304,13 +366,14 @@ make clean html
 </section>
 </section>
 
-      </article>
+        </article>
+      </div>
       <footer>
         
         <div class="related-pages">
           
           <a class="prev-page" href="usage/api/autonomy_toolkit/run/index.html">
-              <svg><use href="#svg-arrow-right"></use></svg>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
@@ -321,19 +384,19 @@ make clean html
               </div>
             </a>
         </div>
-
-        <div class="related-information">
-              Copyright &#169; 2022, Simulation Based Engineering Laboratory
-            |
-            Built with <a href="https://www.sphinx-doc.org/">Sphinx</a>
-              and
-              <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
-              <a href="https://github.com/pradyunsg/furo">Furo theme</a>.
-            |
-            <a class="muted-link" href="_sources/contributing.md.txt"
-               rel="nofollow">
-              Show Source
-            </a>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2023, Simulation Based Engineering Laboratory
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
         </div>
         
       </footer>
@@ -344,7 +407,7 @@ make clean html
       <div class="toc-sticky toc-scroll">
         <div class="toc-title-container">
           <span class="toc-title">
-            Contents
+            On this page
           </span>
         </div>
         <div class="toc-tree-container">
@@ -380,7 +443,13 @@ make clean html
       
       
     </aside>
-  </main>
-</div>
-  </body>
+  </div>
+</div><script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/scripts/furo.js"></script>
+    </body>
 </html>

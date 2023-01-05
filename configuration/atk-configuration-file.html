@@ -1,68 +1,60 @@
 <!doctype html>
-<html class="no-js">
+<html class="no-js" lang="en">
   <head><meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width,initial-scale=1"/><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Variable Replacement" href="variable-replacement.html" /><link rel="prev" title="Configuration" href="index.html" />
 
-    <link rel="shortcut icon" href="../_static/cropped-SBEL-32x32.png"/><meta name="generator" content="sphinx-3.4.2, furo 2020.12.30.beta24"/>
+    <link rel="shortcut icon" href="../_static/cropped-SBEL-32x32.png"/><!-- Generated with Sphinx 5.3.0 and Furo 2022.12.07 -->
         <title>ATK Configuration File - Autonomous Vehicle Toolbox 1.0.11 documentation</title>
-      <link rel="stylesheet" href="../_static/styles/furo.css?digest=33d2fc4f3f180ec1ffc6524e273e21d7d58cbe49">
-    <link rel="stylesheet" href="../_static/pygments.css">
-    <link media="(prefers-color-scheme: dark)" rel="stylesheet" href="../_static/pygments_dark.css">
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=91d0f0d1c444bdcb17a68e833c7a53903343c195" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom.css" />
+    
     
 
 
 <style>
-  :root {
+  body {
     --color-code-background: #f0f0f0;
   --color-code-foreground: black;
   
   }
-  @media (prefers-color-scheme: dark) {
-    :root {
+  @media not print {
+    body[data-theme="dark"] {
       --color-code-background: #202020;
   --color-code-foreground: #d0d0d0;
   
     }
-  }
-
-  /* For allowing end-user-specific overrides */
-  .override-light {
-    --color-code-background: #f0f0f0;
-  --color-code-foreground: black;
-  
-  }
-  .override-dark {
-    --color-code-background: #202020;
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
   --color-code-foreground: #d0d0d0;
   
+      }
+    }
   }
-</style><link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/css/custom.css" />
-    <link rel="stylesheet" href="../_static/styles/furo-extensions.css?digest=26485485040e7aaf717c13fd0188a5ad2c2deb60">
-    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-    <script defer="defer" src="../_static/jquery.js"></script>
-    <script defer="defer" src="../_static/underscore.js"></script>
-    <script defer="defer" src="../_static/doctools.js"></script>
-    <script defer src="../_static/scripts/main.js?digest=e931d09b2a40c1bb82b542effe772014573baf67"></script></head>
-  <body dir="">
+</style></head>
+  <body>
     
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
 <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
   <symbol id="svg-toc" viewBox="0 0 24 24">
     <title>Contents</title>
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-      stroke-width="1.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-      <path stroke="none" d="M0 0h24v24H0z"/>
-      <line x1="4" y1="6" x2="20" y2="6" />
-      <line x1="10" y1="12" x2="20" y2="12" />
-      <line x1="6" y1="18" x2="20" y2="18" />
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
     </svg>
   </symbol>
   <symbol id="svg-menu" viewBox="0 0 24 24">
     <title>Menu</title>
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-      class="feather feather-menu">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
       <line x1="3" y1="12" x2="21" y2="12"></line>
       <line x1="3" y1="6" x2="21" y2="6"></line>
       <line x1="3" y1="18" x2="21" y2="18"></line>
@@ -70,18 +62,57 @@
   </symbol>
   <symbol id="svg-arrow-right" viewBox="0 0 24 24">
     <title>Expand</title>
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-      class="feather feather-chevron-right">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
       <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
     </svg>
   </symbol>
 </svg>
 
 <input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
 <input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
-<label class="overlay sidebar-overlay" for="__navigation"></label>
-<label class="overlay toc-overlay" for="__toc"></label>
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
 
 <div class="announcement">
   <aside class="announcement-content">
@@ -100,6 +131,7 @@
   <header class="mobile-header">
     <div class="header-left">
       <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
         <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
       </label>
     </div>
@@ -107,7 +139,16 @@
       <a href="../index.html"><div class="brand">Autonomous Vehicle Toolbox 1.0.11 documentation</div></a>
     </div>
     <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
       <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
         <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
       </label>
     </div>
@@ -123,41 +164,42 @@
   </div>
   
   
-</a><form class="sidebar-search-container" method="get" action="../search.html">
-  <input class="sidebar-search" placeholder=Search name="q">
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
   <input type="hidden" name="check_keywords" value="yes">
   <input type="hidden" name="area" value="default">
-</form><div class="sidebar-scroll"><div class="sidebar-tree">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../index.html">Home</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../background.html">Background</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../setup.html">Setup</a></li>
-<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">Configuration</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label for="toctree-checkbox-1"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">Configuration</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
 <li class="toctree-l2 current current-page"><a class="current reference internal" href="#">ATK Configuration File</a></li>
 <li class="toctree-l2"><a class="reference internal" href="variable-replacement.html">Variable Replacement</a></li>
 <li class="toctree-l2"><a class="reference internal" href="environment-variables.html">Environment Variables</a></li>
 <li class="toctree-l2"><a class="reference internal" href="container-runtimes.html">Container Runtimes</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../tutorials/index.html">Tutorials</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label for="toctree-checkbox-2"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../tutorials/index.html">Tutorials</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../tutorials/using-the-development-environment/README.html">Using the ATK Development Environment</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tutorials/autonomy-research-testbed/autonomy-research-testbed.html">Autonomy Research Testbed</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../usage/index.html">API Reference</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label for="toctree-checkbox-3"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../usage/index.html">API Reference</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../usage/cli.html">CLI Documentation</a></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../usage/api/autonomy_toolkit/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label for="toctree-checkbox-4"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l3 has-children"><a class="reference internal" href="../usage/api/autonomy_toolkit/containers/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.containers</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label for="toctree-checkbox-5"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../usage/api/autonomy_toolkit/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../usage/api/autonomy_toolkit/containers/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.containers</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="../usage/api/autonomy_toolkit/containers/container_client/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.containers.container_client</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../usage/api/autonomy_toolkit/containers/docker_client/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.containers.docker_client</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../usage/api/autonomy_toolkit/containers/singularity_client/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.containers.singularity_client</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3 has-children"><a class="reference internal" href="../usage/api/autonomy_toolkit/ros/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.ros</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label for="toctree-checkbox-6"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../usage/api/autonomy_toolkit/ros/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.ros</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="../usage/api/autonomy_toolkit/ros/messages/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.ros.messages</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3 has-children"><a class="reference internal" href="../usage/api/autonomy_toolkit/utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label for="toctree-checkbox-7"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../usage/api/autonomy_toolkit/utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="../usage/api/autonomy_toolkit/utils/atk_config/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.atk_config</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../usage/api/autonomy_toolkit/utils/files/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.files</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../usage/api/autonomy_toolkit/utils/logger/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.logger</span></code></a></li>
@@ -174,7 +216,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing</a></li>
 </ul>
-<p><span class="caption-text">External Links</span></p>
+<p class="caption" role="heading"><span class="caption-text">External Links</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference external" href="https://pypi.org/project/autonomy-toolkit/">PyPI</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/uwsbel/autonomy-toolkit">Github</a></li>
@@ -182,114 +224,134 @@
 
 </div>
 </div>
+
       </div>
       
     </div>
   </aside>
-  <main class="main">
+  <div class="main">
     <div class="content">
-      <article role="main">
-        <label class="toc-overlay-icon toc-content-icon" for="__toc">
-          <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
-        </label>
-        <section id="atk-configuration-file">
-<h1>ATK Configuration File<a class="headerlink" href="#atk-configuration-file" title="Permalink to this headline">¶</a></h1>
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="atk-configuration-file">
+<h1>ATK Configuration File<a class="headerlink" href="#atk-configuration-file" title="Permalink to this heading">#</a></h1>
 <p>The ATK configuration file (<code class="docutils literal notranslate"><span class="pre">atk.yml</span></code>) is used to describe the project and provides configurability to the user when the <code class="docutils literal notranslate"><span class="pre">atk</span></code> command is invoked.</p>
 <p>Essentially, the <code class="docutils literal notranslate"><span class="pre">atk.yml</span></code> is a 1:1 replacement for traditional container orchestration tools, such as <a class="reference external" href="https://docs.docker.com/compose/">docker compose</a>. There are some minor adjustments that improve modularity, which are described here.</p>
 <section id="example-file">
-<h2>Example File<a class="headerlink" href="#example-file" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">project</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">art</span><span class="w"></span>
+<h2>Example File<a class="headerlink" href="#example-file" title="Permalink to this heading">#</a></h2>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">project</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">art</span>
 <span class="nt">default_containers</span><span class="p">:</span><span class="w"> </span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dev</span><span class="w"></span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vnc</span><span class="w"></span>
-<span class="nt">custom_cli_arguments</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="nt">gpus</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">argparse</span><span class="p">:</span><span class="w"></span>
-<span class="w">      </span><span class="nt">action</span><span class="p">:</span><span class="w"> </span><span class="s">'store_true'</span><span class="w"></span>
-<span class="w">    </span><span class="nt">all</span><span class="p">:</span><span class="w"></span>
-<span class="w">      </span><span class="nt">runtime</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia</span><span class="w"></span>
-<span class="w">  </span><span class="nt">x11</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">argparse</span><span class="p">:</span><span class="w"></span>
-<span class="w">      </span><span class="nt">action</span><span class="p">:</span><span class="w"> </span><span class="s">'store_true'</span><span class="w"></span>
-<span class="w">    </span><span class="nt">dev</span><span class="p">:</span><span class="w"></span>
-<span class="w">      </span><span class="nt">volumes</span><span class="p">:</span><span class="w"></span>
-<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"/tmp/.X11-unix:/tmp/.X11-unix"</span><span class="w"></span>
-<span class="w">      </span><span class="nt">environment</span><span class="p">:</span><span class="w"></span>
-<span class="w">        </span><span class="nt">DISPLAY</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${DISPLAY}</span><span class="w"></span>
-<span class="nt">services</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="nt">dev</span><span class="p">:</span><span class="w"> </span><span class="nl">&amp;dev_service</span><span class="w"></span>
-<span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="s">"atk/@{project}:dev"</span><span class="w"></span>
-<span class="w">    </span><span class="nt">hostname</span><span class="p">:</span><span class="w"> </span><span class="s">"@{project}-dev"</span><span class="w"></span>
-<span class="w">    </span><span class="nt">container_name</span><span class="p">:</span><span class="w"> </span><span class="s">"@{project}-dev"</span><span class="w"></span>
-<span class="w">    </span><span class="nt">build</span><span class="p">:</span><span class="w"> </span><span class="nl">&amp;dev_build</span><span class="w"></span>
-<span class="w">      </span><span class="nt">context</span><span class="p">:</span><span class="w"> </span><span class="s">"./"</span><span class="w"></span>
-<span class="w">      </span><span class="nt">dockerfile</span><span class="p">:</span><span class="w"> </span><span class="s">"./containers/dev/dev.dockerfile"</span><span class="w"></span>
-<span class="w">      </span><span class="nt">network</span><span class="p">:</span><span class="w"> </span><span class="s">"host"</span><span class="w"></span>
-<span class="w">      </span><span class="nt">args</span><span class="p">:</span><span class="w"> </span><span class="nl">&amp;dev_build_args</span><span class="w"></span>
-<span class="w">        </span><span class="nt">PROJECT</span><span class="p">:</span><span class="w"> </span><span class="s">"@{project}"</span><span class="w"></span>
-<span class="w">        </span><span class="nt">USER_UID</span><span class="p">:</span><span class="w"> </span><span class="s">"@{uid}"</span><span class="w"></span>
-<span class="w">        </span><span class="nt">USER_GID</span><span class="p">:</span><span class="w"> </span><span class="s">"@{gid}"</span><span class="w"></span>
-<span class="w">        </span><span class="nt">APT_DEPENDENCIES</span><span class="p">:</span><span class="w"> </span><span class="s">"bash</span><span class="nv"> </span><span class="s">zsh</span><span class="nv"> </span><span class="s">vim</span><span class="nv"> </span><span class="s">git</span><span class="nv"> </span><span class="s">python3-pip"</span><span class="w"></span>
-<span class="w">        </span><span class="nt">PIP_REQUIREMENTS</span><span class="p">:</span><span class="w"> </span><span class="s">"pandas</span><span class="nv"> </span><span class="s">matplotlib</span><span class="nv"> </span><span class="s">numpy&gt;=1.19"</span><span class="w"></span>
-<span class="w">        </span><span class="nt">USER_GROUPS</span><span class="p">:</span><span class="w"> </span><span class="s">"dialout</span><span class="nv"> </span><span class="s">video"</span><span class="w"></span>
-<span class="w">    </span><span class="nt">environment</span><span class="p">:</span><span class="w"></span>
-<span class="w">      </span><span class="nt">DISPLAY</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vnc:0.0</span><span class="w"></span>
-<span class="w">      </span><span class="nt">NVIDIA_VISIBLE_DEVICES</span><span class="p">:</span><span class="w"> </span><span class="s">"all"</span><span class="w"></span>
-<span class="w">      </span><span class="nt">NVIDIA_DRIVER_CAPABILITIES</span><span class="p">:</span><span class="w"> </span><span class="s">"all"</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dev</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vnc</span>
+<span class="nt">custom_cli_arguments</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">gpus</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">argparse</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">action</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;store_true&#39;</span>
+<span class="w">    </span><span class="nt">all</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">runtime</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia</span>
+<span class="w">  </span><span class="nt">x11</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">argparse</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">action</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;store_true&#39;</span>
+<span class="w">    </span><span class="nt">dev</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">volumes</span><span class="p">:</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;/tmp/.X11-unix:/tmp/.X11-unix&quot;</span>
+<span class="w">      </span><span class="nt">environment</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">DISPLAY</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${DISPLAY}</span>
+<span class="nt">services</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">dev</span><span class="p">:</span><span class="w"> </span><span class="nl">&amp;dev_service</span>
+<span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;atk/@{project}:dev&quot;</span>
+<span class="w">    </span><span class="nt">hostname</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;@{project}-dev&quot;</span>
+<span class="w">    </span><span class="nt">container_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;@{project}-dev&quot;</span>
+<span class="w">    </span><span class="nt">build</span><span class="p">:</span><span class="w"> </span><span class="nl">&amp;dev_build</span>
+<span class="w">      </span><span class="nt">context</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;./&quot;</span>
+<span class="w">      </span><span class="nt">dockerfile</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;./containers/dev/dev.dockerfile&quot;</span>
+<span class="w">      </span><span class="nt">network</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;host&quot;</span>
+<span class="w">      </span><span class="nt">args</span><span class="p">:</span><span class="w"> </span><span class="nl">&amp;dev_build_args</span>
+<span class="w">        </span><span class="nt">PROJECT</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;@{project}&quot;</span>
+<span class="w">        </span><span class="nt">USER_UID</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;@{uid}&quot;</span>
+<span class="w">        </span><span class="nt">USER_GID</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;@{gid}&quot;</span>
+<span class="w">        </span><span class="nt">APT_DEPENDENCIES</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;bash</span><span class="nv"> </span><span class="s">zsh</span><span class="nv"> </span><span class="s">vim</span><span class="nv"> </span><span class="s">git</span><span class="nv"> </span><span class="s">python3-pip&quot;</span>
+<span class="w">        </span><span class="nt">PIP_REQUIREMENTS</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;pandas</span><span class="nv"> </span><span class="s">matplotlib</span><span class="nv"> </span><span class="s">numpy&gt;=1.19&quot;</span>
+<span class="w">        </span><span class="nt">USER_GROUPS</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;dialout</span><span class="nv"> </span><span class="s">video&quot;</span>
+<span class="w">    </span><span class="nt">environment</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">DISPLAY</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vnc:0.0</span>
+<span class="w">      </span><span class="nt">NVIDIA_VISIBLE_DEVICES</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;all&quot;</span>
+<span class="w">      </span><span class="nt">NVIDIA_DRIVER_CAPABILITIES</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;all&quot;</span>
 <span class="w">    </span><span class="nt">volumes</span><span class="p">:</span><span class="w"> </span>
-<span class="w">     </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"@{project_root}:/home/@{container_username}/@{project}"</span><span class="w"></span>
-<span class="w">    </span><span class="nt">tty</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
-<span class="w">    </span><span class="nt">working_dir</span><span class="p">:</span><span class="w"> </span><span class="s">"/home/@{container_username}/@{project}/workspace"</span><span class="w"></span>
-<span class="w">  </span><span class="nt">nx</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">&lt;&lt;</span><span class="p">:</span><span class="w"> </span><span class="nv">*dev_service</span><span class="w"></span>
-<span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="s">"atk/@{project}:nx"</span><span class="w"></span>
-<span class="w">    </span><span class="nt">hostname</span><span class="p">:</span><span class="w"> </span><span class="s">"@{project}-nx"</span><span class="w"></span>
-<span class="w">    </span><span class="nt">container_name</span><span class="p">:</span><span class="w"> </span><span class="s">"@{project}-nx"</span><span class="w"></span>
-<span class="w">    </span><span class="nt">build</span><span class="p">:</span><span class="w"></span>
-<span class="w">      </span><span class="nt">&lt;&lt;</span><span class="p">:</span><span class="w"> </span><span class="nv">*dev_build</span><span class="w"></span>
-<span class="w">      </span><span class="nt">args</span><span class="p">:</span><span class="w"></span>
-<span class="w">        </span><span class="nt">&lt;&lt;</span><span class="p">:</span><span class="w"> </span><span class="nv">*dev_build_args</span><span class="w"></span>
-<span class="w">        </span><span class="nt">CONTAINERNAME</span><span class="p">:</span><span class="w"> </span><span class="s">"nx"</span><span class="w"></span>
-<span class="w">  </span><span class="nt">vnc</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="s">"atk/@{project}:vnc"</span><span class="w"></span>
-<span class="w">    </span><span class="nt">hostname</span><span class="p">:</span><span class="w"> </span><span class="s">"@{project}-vnc"</span><span class="w"></span>
-<span class="w">    </span><span class="nt">container_name</span><span class="p">:</span><span class="w"> </span><span class="s">"@{project}-vnc"</span><span class="w"></span>
-<span class="w">    </span><span class="nt">build</span><span class="p">:</span><span class="w"></span>
-<span class="w">      </span><span class="nt">context</span><span class="p">:</span><span class="w"> </span><span class="s">"./containers/vnc"</span><span class="w"></span>
-<span class="w">      </span><span class="nt">dockerfile</span><span class="p">:</span><span class="w"> </span><span class="s">"./vnc.dockerfile"</span><span class="w"></span>
-<span class="w">      </span><span class="nt">network</span><span class="p">:</span><span class="w"> </span><span class="s">"host"</span><span class="w"></span>
-<span class="w">      </span><span class="nt">args</span><span class="p">:</span><span class="w"></span>
-<span class="w">        </span><span class="nt">VNC_PASSWORD</span><span class="p">:</span><span class="w"> </span><span class="s">"@{project}"</span><span class="w"></span>
-<span class="w">        </span><span class="nt">RUN_XTERM</span><span class="p">:</span><span class="w"> </span><span class="s">"yes"</span><span class="w"></span>
-<span class="w">        </span><span class="nt">RUN_FLUXBOX</span><span class="p">:</span><span class="w"> </span><span class="s">"yes"</span><span class="w"></span>
-<span class="w">    </span><span class="nt">environment</span><span class="p">:</span><span class="w"></span>
-<span class="w">      </span><span class="nt">RUN_XTERM</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">no</span><span class="w"></span>
-<span class="w">      </span><span class="nt">RUN_FLUXBOX</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">yes</span><span class="w"></span>
-<span class="w">    </span><span class="nt">ports</span><span class="p">:</span><span class="w"></span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"8080:8080"</span><span class="w"></span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"5900:5900"</span><span class="w"></span>
-<span class="nt">networks</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="nt">default</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">"@{project}"</span><span class="w"></span>
+<span class="w">     </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;@{project_root}:/home/@{container_username}/@{project}&quot;</span>
+<span class="w">    </span><span class="nt">tty</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">working_dir</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;/home/@{container_username}/@{project}/workspace&quot;</span>
+<span class="w">  </span><span class="nt">nx</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">&lt;&lt;</span><span class="p">:</span><span class="w"> </span><span class="nv">*dev_service</span>
+<span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;atk/@{project}:nx&quot;</span>
+<span class="w">    </span><span class="nt">hostname</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;@{project}-nx&quot;</span>
+<span class="w">    </span><span class="nt">container_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;@{project}-nx&quot;</span>
+<span class="w">    </span><span class="nt">build</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">&lt;&lt;</span><span class="p">:</span><span class="w"> </span><span class="nv">*dev_build</span>
+<span class="w">      </span><span class="nt">args</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">&lt;&lt;</span><span class="p">:</span><span class="w"> </span><span class="nv">*dev_build_args</span>
+<span class="w">        </span><span class="nt">CONTAINERNAME</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;nx&quot;</span>
+<span class="w">  </span><span class="nt">vnc</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;atk/@{project}:vnc&quot;</span>
+<span class="w">    </span><span class="nt">hostname</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;@{project}-vnc&quot;</span>
+<span class="w">    </span><span class="nt">container_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;@{project}-vnc&quot;</span>
+<span class="w">    </span><span class="nt">build</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">context</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;./containers/vnc&quot;</span>
+<span class="w">      </span><span class="nt">dockerfile</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;./vnc.dockerfile&quot;</span>
+<span class="w">      </span><span class="nt">network</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;host&quot;</span>
+<span class="w">      </span><span class="nt">args</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">VNC_PASSWORD</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;@{project}&quot;</span>
+<span class="w">        </span><span class="nt">RUN_XTERM</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;yes&quot;</span>
+<span class="w">        </span><span class="nt">RUN_FLUXBOX</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;yes&quot;</span>
+<span class="w">    </span><span class="nt">environment</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">RUN_XTERM</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">no</span>
+<span class="w">      </span><span class="nt">RUN_FLUXBOX</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">yes</span>
+<span class="w">    </span><span class="nt">ports</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;8080:8080&quot;</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;5900:5900&quot;</span>
+<span class="nt">networks</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">default</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;@{project}&quot;</span>
 </pre></div>
 </div>
 <p>The above example <code class="docutils literal notranslate"><span class="pre">atk.yml</span></code> file showcases many of the usages and features of the <code class="docutils literal notranslate"><span class="pre">atk.yml</span></code> specification.</p>
 </section>
 <section id="atk-yml-fields">
-<h2><code class="docutils literal notranslate"><span class="pre">atk.yml</span></code> Fields<a class="headerlink" href="#atk-yml-fields" title="Permalink to this headline">¶</a></h2>
+<h2><code class="docutils literal notranslate"><span class="pre">atk.yml</span></code> Fields<a class="headerlink" href="#atk-yml-fields" title="Permalink to this heading">#</a></h2>
 <p>The <code class="docutils literal notranslate"><span class="pre">atk.yml</span></code> file is populated with various fields at the root level of the yaml.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Some fields’ values are accessible as variables elsewhere in the <code class="docutils literal notranslate"><span class="pre">atk.yml</span></code> file. See <a class="reference internal" href="variable-replacement.html"><span class="doc std std-doc">here</span></a> for more info. The variable destination is also listed below for each field (if applicable).</p>
-
+</div>
 <section id="project">
-<h3><code class="docutils literal notranslate"><span class="pre">project</span></code><a class="headerlink" href="#project" title="Permalink to this headline">¶</a></h3>
+<h3><code class="docutils literal notranslate"><span class="pre">project</span></code><a class="headerlink" href="#project" title="Permalink to this heading">#</a></h3>
 <p>This field specifies the name of the project. It is a required field, and can be accessed via the <code class="docutils literal notranslate"><span class="pre">project</span></code> variable.</p>
 <p>This field is typically used throughout the <code class="docutils literal notranslate"><span class="pre">atk.yml</span></code> file to aptly name variables other attributes.</p>
 </section>
 <section id="default-containers">
-<h3><code class="docutils literal notranslate"><span class="pre">default_containers</span></code><a class="headerlink" href="#default-containers" title="Permalink to this headline">¶</a></h3>
-<p>This field specifies the default containers (see <a class="reference external" href="#containers">containers</a>) that is used by the <code class="docutils literal notranslate"><span class="pre">atk</span> <span class="pre">dev</span></code> command. This field can be overridden by the <code class="docutils literal notranslate"><span class="pre">ATK_DEFAULT_CONTAINERS</span></code> environment variable (see <a class="reference internal" href="environment-variables.html"><span class="doc std std-doc">here</span></a> for more info).</p>
+<h3><code class="docutils literal notranslate"><span class="pre">default_containers</span></code><a class="headerlink" href="#default-containers" title="Permalink to this heading">#</a></h3>
+<p>This field specifies the default containers (see <span class="xref myst">containers</span>) that is used by the <code class="docutils literal notranslate"><span class="pre">atk</span> <span class="pre">dev</span></code> command. This field can be overridden by the <code class="docutils literal notranslate"><span class="pre">ATK_DEFAULT_CONTAINERS</span></code> environment variable (see <a class="reference internal" href="environment-variables.html"><span class="doc std std-doc">here</span></a> for more info).</p>
 <p>For the <code class="docutils literal notranslate"><span class="pre">atk</span> <span class="pre">dev</span></code> command, this applies as follows:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">atk</span> <span class="n">dev</span> <span class="o">--</span><span class="n">up</span> <span class="o">--</span><span class="n">attach</span>
 
@@ -307,28 +369,28 @@ atk dev --up --attach
 # Provided the ATK_DEFAULT_CONTAINERS=nx
 # Evaluates to...
 
-atk dev --up --attach --services nx     # Even though default_containers=['dev', 'vnc']
+atk dev --up --attach --services nx     # Even though default_containers=[&#39;dev&#39;, &#39;vnc&#39;]
 </pre></div>
 </div>
 </section>
 <section id="custom-cli-arguments">
-<h3><code class="docutils literal notranslate"><span class="pre">custom_cli_arguments</span></code><a class="headerlink" href="#custom-cli-arguments" title="Permalink to this headline">¶</a></h3>
+<h3><code class="docutils literal notranslate"><span class="pre">custom_cli_arguments</span></code><a class="headerlink" href="#custom-cli-arguments" title="Permalink to this heading">#</a></h3>
 <p>This field is the primary advantage of using <code class="docutils literal notranslate"><span class="pre">autonomy-toolkit</span></code> over other container orchestrations. This field provides users the ability to, at runtime, specify custom configuration variables to be used that are not used by default.</p>
 <p>Use cases here include activating hardware-specific flags for the container orchestration, build flag augmentation, optional container adjustments, etc.</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">custom_cli_arguments</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="nt">gpus</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">argparse</span><span class="p">:</span><span class="w"></span>
-<span class="w">      </span><span class="nt">action</span><span class="p">:</span><span class="w"> </span><span class="s">'store_true'</span><span class="w"></span>
-<span class="w">    </span><span class="nt">all</span><span class="p">:</span><span class="w"></span>
-<span class="w">      </span><span class="nt">runtime</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia</span><span class="w"></span>
-<span class="w">  </span><span class="nt">x11</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">argparse</span><span class="p">:</span><span class="w"></span>
-<span class="w">      </span><span class="nt">action</span><span class="p">:</span><span class="w"> </span><span class="s">'store_true'</span><span class="w"></span>
-<span class="w">    </span><span class="nt">dev</span><span class="p">:</span><span class="w"></span>
-<span class="w">      </span><span class="nt">volumes</span><span class="p">:</span><span class="w"></span>
-<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"/tmp/.X11-unix:/tmp/.X11-unix"</span><span class="w"></span>
-<span class="w">      </span><span class="nt">environment</span><span class="p">:</span><span class="w"></span>
-<span class="w">        </span><span class="nt">DISPLAY</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${DISPLAY}</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">custom_cli_arguments</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">gpus</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">argparse</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">action</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;store_true&#39;</span>
+<span class="w">    </span><span class="nt">all</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">runtime</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia</span>
+<span class="w">  </span><span class="nt">x11</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">argparse</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">action</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;store_true&#39;</span>
+<span class="w">    </span><span class="nt">dev</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">volumes</span><span class="p">:</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;/tmp/.X11-unix:/tmp/.X11-unix&quot;</span>
+<span class="w">      </span><span class="nt">environment</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">DISPLAY</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${DISPLAY}</span>
 </pre></div>
 </div>
 <p>In the above example, these custom arguments can be specified as show below.</p>
@@ -338,103 +400,104 @@ atk dev --up --attach --services nx     # Even though default_containers=['dev',
 <p>This will then parse the flag using <a class="reference external" href="https://docs.python.org/3/library/argparse.html"><code class="docutils literal notranslate"><span class="pre">argparse</span></code></a> using the accompanied <code class="docutils literal notranslate"><span class="pre">argparse</span></code> field in the passed flag. If <code class="docutils literal notranslate"><span class="pre">'store_true'</span></code> is set as the action, the resulting configuration will simply be used. The second field immediately following the flag name (i.e. <code class="docutils literal notranslate"><span class="pre">gpus</span></code>) is the containers this flag applies to (i.e. <code class="docutils literal notranslate"><span class="pre">all</span></code> in the <code class="docutils literal notranslate"><span class="pre">gpus</span></code> example). This specifies which containers this flag will be activated for; for instance, since <code class="docutils literal notranslate"><span class="pre">all</span></code> is used for <code class="docutils literal notranslate"><span class="pre">gpus</span></code>, all containers will have this flag activate it’s configuration; for the <code class="docutils literal notranslate"><span class="pre">x11</span></code> flag, only <code class="docutils literal notranslate"><span class="pre">dev</span></code> is specified, so only <code class="docutils literal notranslate"><span class="pre">dev</span></code> will have <code class="docutils literal notranslate"><span class="pre">x11</span></code>’s configuration activated for.</p>
 <p>Say for the above example that <code class="docutils literal notranslate"><span class="pre">gpus</span></code> is passed as a custom arg, the attributes immediately following the container filter (i.e. <code class="docutils literal notranslate"><span class="pre">all</span></code> or <code class="docutils literal notranslate"><span class="pre">dev</span></code>) will be copied to that containers root configuration level.</p>
 <p>A simplified <code class="docutils literal notranslate"><span class="pre">atk.yml</span></code> is showed below for description purposes:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">custom_cli_arguments</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="nt">gpus</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">argparse</span><span class="p">:</span><span class="w"></span>
-<span class="w">      </span><span class="nt">action</span><span class="p">:</span><span class="w"> </span><span class="s">'store_true'</span><span class="w"></span>
-<span class="w">    </span><span class="nt">all</span><span class="p">:</span><span class="w"></span>
-<span class="w">      </span><span class="nt">runtime</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia</span><span class="w"></span>
-<span class="w">  </span><span class="nt">x11</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">argparse</span><span class="p">:</span><span class="w"></span>
-<span class="w">      </span><span class="nt">action</span><span class="p">:</span><span class="w"> </span><span class="s">'store_true'</span><span class="w"></span>
-<span class="w">    </span><span class="nt">dev</span><span class="p">:</span><span class="w"></span>
-<span class="w">      </span><span class="nt">volumes</span><span class="p">:</span><span class="w"></span>
-<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"/tmp/.X11-unix:/tmp/.X11-unix"</span><span class="w"></span>
-<span class="nt">services</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="nt">dev</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="s">"atk/@{project}:dev"</span><span class="w"></span>
-<span class="w">    </span><span class="nt">hostname</span><span class="p">:</span><span class="w"> </span><span class="s">"@{project}-dev"</span><span class="w"></span>
-<span class="w">    </span><span class="nt">container_name</span><span class="p">:</span><span class="w"> </span><span class="s">"@{project}-dev"</span><span class="w"></span>
-<span class="w">    </span><span class="nt">build</span><span class="p">:</span><span class="w"></span>
-<span class="w">      </span><span class="nt">context</span><span class="p">:</span><span class="w"> </span><span class="s">"./"</span><span class="w"></span>
-<span class="w">      </span><span class="nt">dockerfile</span><span class="p">:</span><span class="w"> </span><span class="s">"./containers/dev/dev.dockerfile"</span><span class="w"></span>
-<span class="w">      </span><span class="nt">network</span><span class="p">:</span><span class="w"> </span><span class="s">"host"</span><span class="w"></span>
-<span class="w">    </span><span class="nt">environment</span><span class="p">:</span><span class="w"></span>
-<span class="w">      </span><span class="nt">DISPLAY</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${DISPLAY}</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">custom_cli_arguments</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">gpus</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">argparse</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">action</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;store_true&#39;</span>
+<span class="w">    </span><span class="nt">all</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">runtime</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia</span>
+<span class="w">  </span><span class="nt">x11</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">argparse</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">action</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;store_true&#39;</span>
+<span class="w">    </span><span class="nt">dev</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">volumes</span><span class="p">:</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;/tmp/.X11-unix:/tmp/.X11-unix&quot;</span>
+<span class="nt">services</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">dev</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;atk/@{project}:dev&quot;</span>
+<span class="w">    </span><span class="nt">hostname</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;@{project}-dev&quot;</span>
+<span class="w">    </span><span class="nt">container_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;@{project}-dev&quot;</span>
+<span class="w">    </span><span class="nt">build</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">context</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;./&quot;</span>
+<span class="w">      </span><span class="nt">dockerfile</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;./containers/dev/dev.dockerfile&quot;</span>
+<span class="w">      </span><span class="nt">network</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;host&quot;</span>
+<span class="w">    </span><span class="nt">environment</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">DISPLAY</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${DISPLAY}</span>
 <span class="w">    </span><span class="nt">volumes</span><span class="p">:</span><span class="w"> </span>
-<span class="w">     </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"@{project_root}:/home/@{container_username}/@{project}"</span><span class="w"></span>
-<span class="w">    </span><span class="nt">tty</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
+<span class="w">     </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;@{project_root}:/home/@{container_username}/@{project}&quot;</span>
+<span class="w">    </span><span class="nt">tty</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 </pre></div>
 </div>
 <p>If then <code class="docutils literal notranslate"><span class="pre">atk</span> <span class="pre">dev</span> <span class="pre">--up</span> <span class="pre">--attach</span> <span class="pre">--services</span> <span class="pre">dev</span> <span class="pre">--custom-cli-args</span> <span class="pre">gpus</span> <span class="pre">x11</span></code> is used, the resulting configuration that’s used by the selected container orchestration is as follows:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">custom_cli_arguments</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="nt">gpus</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">argparse</span><span class="p">:</span><span class="w"></span>
-<span class="w">      </span><span class="nt">action</span><span class="p">:</span><span class="w"> </span><span class="s">'store_true'</span><span class="w"></span>
-<span class="w">    </span><span class="nt">all</span><span class="p">:</span><span class="w"></span>
-<span class="w">      </span><span class="nt">runtime</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia</span><span class="w"></span>
-<span class="nt">services</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="nt">dev</span><span class="p">:</span><span class="w"> </span><span class="nl">&amp;dev_service</span><span class="w"></span>
-<span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="s">"atk/@{project}:dev"</span><span class="w"></span>
-<span class="w">    </span><span class="nt">hostname</span><span class="p">:</span><span class="w"> </span><span class="s">"@{project}-dev"</span><span class="w"></span>
-<span class="w">    </span><span class="nt">container_name</span><span class="p">:</span><span class="w"> </span><span class="s">"@{project}-dev"</span><span class="w"></span>
-<span class="w">    </span><span class="nt">build</span><span class="p">:</span><span class="w"></span>
-<span class="w">      </span><span class="nt">context</span><span class="p">:</span><span class="w"> </span><span class="s">"./"</span><span class="w"></span>
-<span class="w">      </span><span class="nt">dockerfile</span><span class="p">:</span><span class="w"> </span><span class="s">"./containers/dev/dev.dockerfile"</span><span class="w"></span>
-<span class="w">      </span><span class="nt">network</span><span class="p">:</span><span class="w"> </span><span class="s">"host"</span><span class="w"></span>
-<span class="w">    </span><span class="nt">environment</span><span class="p">:</span><span class="w"></span>
-<span class="w">      </span><span class="nt">DISPLAY</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${DISPLAY}</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">custom_cli_arguments</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">gpus</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">argparse</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">action</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;store_true&#39;</span>
+<span class="w">    </span><span class="nt">all</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">runtime</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia</span>
+<span class="nt">services</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">dev</span><span class="p">:</span><span class="w"> </span><span class="nl">&amp;dev_service</span>
+<span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;atk/@{project}:dev&quot;</span>
+<span class="w">    </span><span class="nt">hostname</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;@{project}-dev&quot;</span>
+<span class="w">    </span><span class="nt">container_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;@{project}-dev&quot;</span>
+<span class="w">    </span><span class="nt">build</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">context</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;./&quot;</span>
+<span class="w">      </span><span class="nt">dockerfile</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;./containers/dev/dev.dockerfile&quot;</span>
+<span class="w">      </span><span class="nt">network</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;host&quot;</span>
+<span class="w">    </span><span class="nt">environment</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">DISPLAY</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${DISPLAY}</span>
 <span class="w">    </span><span class="nt">volumes</span><span class="p">:</span><span class="w"> </span>
-<span class="w">     </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"@{project_root}:/home/@{container_username}/@{project}"</span><span class="w"></span>
-<span class="w">     </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"/tmp/.X11-unix:/tmp/.X11-unix"</span><span class="w"> </span><span class="c1"># ======== NEW ========</span><span class="w"></span>
-<span class="w">    </span><span class="nt">tty</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
-<span class="w">    </span><span class="nt">runtime</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia</span><span class="w"> </span><span class="c1"># ======== NEW ========</span><span class="w"></span>
-<span class="w">  </span><span class="nt">nx</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">&lt;&lt;</span><span class="p">:</span><span class="w"> </span><span class="nv">*dev_service</span><span class="w"></span>
-<span class="w">    </span><span class="nt">runtime</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia</span><span class="w"> </span><span class="c1"># ======== NEW ========</span><span class="w"></span>
+<span class="w">     </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;@{project_root}:/home/@{container_username}/@{project}&quot;</span>
+<span class="w">     </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;/tmp/.X11-unix:/tmp/.X11-unix&quot;</span><span class="w"> </span><span class="c1"># ======== NEW ========</span>
+<span class="w">    </span><span class="nt">tty</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">runtime</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia</span><span class="w"> </span><span class="c1"># ======== NEW ========</span>
+<span class="w">  </span><span class="nt">nx</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">&lt;&lt;</span><span class="p">:</span><span class="w"> </span><span class="nv">*dev_service</span>
+<span class="w">    </span><span class="nt">runtime</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia</span><span class="w"> </span><span class="c1"># ======== NEW ========</span>
 </pre></div>
 </div>
 </section>
-</div></section>
+</section>
 <section id="overwrite-lists">
-<h2><code class="docutils literal notranslate"><span class="pre">overwrite_lists</span></code><a class="headerlink" href="#overwrite-lists" title="Permalink to this headline">¶</a></h2>
+<h2><code class="docutils literal notranslate"><span class="pre">overwrite_lists</span></code><a class="headerlink" href="#overwrite-lists" title="Permalink to this heading">#</a></h2>
 <p>If set to <code class="docutils literal notranslate"><span class="pre">true</span></code>, any list defined later that conflicts with custom cli arg, or any other merged entry, will be overwritten with the new list. The default behavior extends the existing list with the new entries.</p>
 </section>
 <section id="user">
-<h2><code class="docutils literal notranslate"><span class="pre">user</span></code><a class="headerlink" href="#user" title="Permalink to this headline">¶</a></h2>
+<h2><code class="docutils literal notranslate"><span class="pre">user</span></code><a class="headerlink" href="#user" title="Permalink to this heading">#</a></h2>
 <p>This is a nested field with multiple subfields which generate variable names.</p>
 <p>Example:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">user</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="nt">container_username</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my_container_name</span><span class="w"></span>
-<span class="w">  </span><span class="nt">host_username</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my_host_name</span><span class="w"></span>
-<span class="w">  </span><span class="nt">uid</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span><span class="w"></span>
-<span class="w">  </span><span class="nt">gid</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">user</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">container_username</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my_container_name</span>
+<span class="w">  </span><span class="nt">host_username</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my_host_name</span>
+<span class="w">  </span><span class="nt">uid</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
+<span class="w">  </span><span class="nt">gid</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
 </pre></div>
 </div>
 <section id="user-container-username">
-<h3><code class="docutils literal notranslate"><span class="pre">user.container_username</span></code><a class="headerlink" href="#user-container-username" title="Permalink to this headline">¶</a></h3>
+<h3><code class="docutils literal notranslate"><span class="pre">user.container_username</span></code><a class="headerlink" href="#user-container-username" title="Permalink to this heading">#</a></h3>
 <p>Evaluates to <code class="docutils literal notranslate"><span class="pre">username</span></code> which can be used throughout the <code class="docutils literal notranslate"><span class="pre">atk.yml</span></code> file. Typically used by <code class="docutils literal notranslate"><span class="pre">atk</span> <span class="pre">dev</span></code> when building a container to correctly specify the username for permission or naming reasons. By default, if not set explicitly, it will evaluate to whatever <code class="docutils literal notranslate"><span class="pre">project</span></code> is set to.</p>
 </section>
 <section id="user-host-username">
-<h3><code class="docutils literal notranslate"><span class="pre">user.host_username</span></code><a class="headerlink" href="#user-host-username" title="Permalink to this headline">¶</a></h3>
+<h3><code class="docutils literal notranslate"><span class="pre">user.host_username</span></code><a class="headerlink" href="#user-host-username" title="Permalink to this heading">#</a></h3>
 <p>Evaluates to <code class="docutils literal notranslate"><span class="pre">host_username</span></code>. The username of the host. If not directly set, will evaluate to the output of <a class="reference external" href="https://docs.python.org/3/library/getpass.html#getpass.getuser"><code class="docutils literal notranslate"><span class="pre">getpass.getuser()</span></code></a>.</p>
 </section>
 <section id="user-uid">
-<h3><code class="docutils literal notranslate"><span class="pre">user.uid</span></code><a class="headerlink" href="#user-uid" title="Permalink to this headline">¶</a></h3>
+<h3><code class="docutils literal notranslate"><span class="pre">user.uid</span></code><a class="headerlink" href="#user-uid" title="Permalink to this heading">#</a></h3>
 <p>The Linux user ID. This can be used by the <code class="docutils literal notranslate"><span class="pre">atk</span> <span class="pre">dev</span></code> command for permission related reasons.</p>
 </section>
 <section id="user-gid">
-<h3><code class="docutils literal notranslate"><span class="pre">user.gid</span></code><a class="headerlink" href="#user-gid" title="Permalink to this headline">¶</a></h3>
+<h3><code class="docutils literal notranslate"><span class="pre">user.gid</span></code><a class="headerlink" href="#user-gid" title="Permalink to this heading">#</a></h3>
 <p>The Linux group ID. This can be used by the <code class="docutils literal notranslate"><span class="pre">atk</span> <span class="pre">dev</span></code> command for permission related reasons.</p>
 </section>
 </section>
 <section id="external">
-<h2><code class="docutils literal notranslate"><span class="pre">external</span></code><a class="headerlink" href="#external" title="Permalink to this headline">¶</a></h2>
+<h2><code class="docutils literal notranslate"><span class="pre">external</span></code><a class="headerlink" href="#external" title="Permalink to this heading">#</a></h2>
 <p>The <code class="docutils literal notranslate"><span class="pre">external</span></code> field extends usability to allow the user to specify any configuration, even if it isn’t applicable to container orchestration or <code class="docutils literal notranslate"><span class="pre">atk</span> <span class="pre">dev</span></code>. For instance, <code class="docutils literal notranslate"><span class="pre">atk</span> <span class="pre">db</span></code> may utilize the <code class="docutils literal notranslate"><span class="pre">external</span></code> field to specify files for download.</p>
 </section>
 </section>
 
-      </article>
+        </article>
+      </div>
       <footer>
         
         <div class="related-pages">
@@ -445,10 +508,10 @@ atk dev --up --attach --services nx     # Even though default_containers=['dev',
                 </div>
                 <div class="title">Variable Replacement</div>
               </div>
-              <svg><use href="#svg-arrow-right"></use></svg>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
           <a class="prev-page" href="index.html">
-              <svg><use href="#svg-arrow-right"></use></svg>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
@@ -459,19 +522,19 @@ atk dev --up --attach --services nx     # Even though default_containers=['dev',
               </div>
             </a>
         </div>
-
-        <div class="related-information">
-              Copyright &#169; 2022, Simulation Based Engineering Laboratory
-            |
-            Built with <a href="https://www.sphinx-doc.org/">Sphinx</a>
-              and
-              <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
-              <a href="https://github.com/pradyunsg/furo">Furo theme</a>.
-            |
-            <a class="muted-link" href="../_sources/configuration/atk-configuration-file.md.txt"
-               rel="nofollow">
-              Show Source
-            </a>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2023, Simulation Based Engineering Laboratory
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
         </div>
         
       </footer>
@@ -482,7 +545,7 @@ atk dev --up --attach --services nx     # Even though default_containers=['dev',
       <div class="toc-sticky toc-scroll">
         <div class="toc-title-container">
           <span class="toc-title">
-            Contents
+            On this page
           </span>
         </div>
         <div class="toc-tree-container">
@@ -515,7 +578,13 @@ atk dev --up --attach --services nx     # Even though default_containers=['dev',
       
       
     </aside>
-  </main>
-</div>
-  </body>
+  </div>
+</div><script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/scripts/furo.js"></script>
+    </body>
 </html>

@@ -1,5 +1,5 @@
-:mod:`autonomy_toolkit.containers.docker_client`
-================================================
+:py:mod:`autonomy_toolkit.containers.docker_client`
+===================================================
 
 .. py:module:: autonomy_toolkit.containers.docker_client
 
@@ -21,9 +21,10 @@ Classes
 
 
 
+
 .. py:class:: DockerClient(config: ATKConfig, project: str = None, compose_file: str = '.atk-compose.yml', services=[], **kwargs)
 
-   Bases: :class:`autonomy_toolkit.containers.container_client.ContainerClient`
+   Bases: :py:obj:`autonomy_toolkit.containers.container_client.ContainerClient`
 
    Helper class that provides the :meth:`run` method to execute a command using the ``docker compose``
    entrypoint.
@@ -33,14 +34,14 @@ Classes
                 * **services** (*List[str]*) -- List of services to use when running the ``docker compose`` command.
                 * **compose_file** (*str*) -- The name of the compose file to use. Defaults to ``.atk-compose.yml``.
 
-   .. method:: is_installed() -> bool
+   .. py:method:: is_installed() -> bool
 
       Checks whether the docker client binary file is present and whether docker compose v2 is installed.
 
       :returns: *bool* -- True if everything checks out, False if not.
 
 
-   .. method:: shell(self, service: str, *args) -> bool
+   .. py:method:: shell(service: str, *args) -> bool
 
       Enter the shell for a specific container.
 
