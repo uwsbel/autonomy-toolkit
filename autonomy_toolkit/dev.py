@@ -85,6 +85,7 @@ def _parse_ports(client, config, args):
                 ports = service.get("ports", [])
                 for i, port in enumerate(ports):
                     if 'published' in port:
+                        port['published'] = int(port['published'])
                         if port['published'] in mappings:
                             port['published'] = mappings[port['published']]
 
