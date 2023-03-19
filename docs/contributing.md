@@ -32,18 +32,18 @@ You should now be able to edit the source and have those changes be reflected in
 
 ### Deploy your Changes
 
-[GitHub actions](https://github.com/features/actions) are used to automatically build the site and [GitHub pages](https://pages.github.com/) are used to host the static site. To update deployed content, you have to push to the `master` branch. Once the changes are pushed, the site will rebuild. Please ensure there are no errors in your code/documentation before doing so, as you may get an email from github if something bad happens.
+[GitHub actions](https://github.com/features/actions) are used to automatically build the site and [GitHub pages](https://pages.github.com/) are used to host the static site. To update deployed content, you have to push to the `main` branch. Once the changes are pushed, the site will rebuild. Please ensure there are no errors in your code/documentation before doing so, as you may get an email from github if something bad happens.
 
-Further, to update the package available on [PyPI](https://pypi.org/project/autonomy-toolkit/), you must create a [git tag](https://git-scm.com/book/en/v2/Git-Basics-Tagging). When a tag is created and pushed to GitHub, it will start an Action which will automatically push the new release to PyPI. See [versioning](#versioning) for information on how versioning works with `atk`. The Github Action only runs when the tag is pushed to master through a merge request. To create a tag, you may do the following:
+Further, to update the package available on [PyPI](https://pypi.org/project/autonomy-toolkit/), you must create a [git tag](https://git-scm.com/book/en/v2/Git-Basics-Tagging). When a tag is created and pushed to GitHub, it will start an Action which will automatically push the new release to PyPI. See [versioning](#versioning) for information on how versioning works with `atk`. The Github Action only runs when the tag is pushed to main through a merge request. To create a tag, you may do the following:
 
 ```bash
 git tag <tag> # An example tag is v3.0.1
-git push origin master --tags
+git push origin main --tags
 ```
 
 #### Versioning
 
-Versioning is done automatically through `tags` by [setuptools\_scm](https://github.com/pypa/setuptools_scm). When a tag is pushed to the `master` branch, a new package is pushed to PyPI with the attached tag. Therefore, you must ensure the tag you push is *after* the previous tags seen on GitHub (otherwise nothing will push to PyPI).
+Versioning is done automatically through `tags` by [setuptools\_scm](https://github.com/pypa/setuptools_scm). When a tag is pushed to the `main` branch, a new package is pushed to PyPI with the attached tag. Therefore, you must ensure the tag you push is *after* the previous tags seen on GitHub (otherwise nothing will push to PyPI).
 
 ## Guidelines
 
