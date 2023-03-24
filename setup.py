@@ -20,7 +20,7 @@ def create_version():
     from setuptools_scm.version import get_local_dirty_tag
 
     def clean_scheme(version):
-        return get_local_dirty_tag(version) if version.dirty else '+clean'
+        return get_local_dirty_tag(version) if version.dirty else ''
 
     return {'local_scheme': clean_scheme}
 
