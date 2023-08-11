@@ -282,7 +282,6 @@
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>This is merely a recommendation. Virtual and/or Conda environments simply isolate your Python versions and packages from other systems so that you can have different isolated environments on your system. If your main Python version is greater than 3.8.2 and you’re not concerned about isolating your Python packages, ignore this section.</p>
-</div></div>
 </div>
 <p>In order to install the <code class="docutils literal notranslate"><span class="pre">autonomy-toolkit</span></code> package, your Python version has to be greater than 3.8.2. This is a requirement of the <a class="reference external" href="https://pypi.org/project/rosbags/"><code class="docutils literal notranslate"><span class="pre">rosbags</span></code></a> package used. Different Python versions introduced and deprecated different features, which is why it is common practice to require a certain Python version.</p>
 <p>A common and <em>recommended</em> way of maintaining Python versions, along with their packages, on your system is through <a class="reference external" href="https://docs.python.org/3/tutorial/venv.html">Python Virtual Environments</a> or <a class="reference external" href="https://anaconda.org">Anaconda</a>. Virtual environments isolate your Python versions and packages from other environments. Imagine you are working on a project that requires Python2.7 and another that requires Python3.8. These versions are completely incompatible with one another, so their packages and code will be, too. The solution to this problem would be to create a Python2.7 virtual environment and a Python3.8 virtual environment. The primary difference between <code class="docutils literal notranslate"><span class="pre">venv</span></code> and Anaconda is that Anaconda is not restricted to only Python packages but allows you to install other packages that use other languages. For the <code class="docutils literal notranslate"><span class="pre">autonomy-toolkit</span></code> package, no such non-Python packages are used, so either can be used (though Anaconda is more common). Further, <code class="docutils literal notranslate"><span class="pre">venv</span></code> requires the Python version you intend to use to be installed on your system already, which Anaconda does not.</p>
@@ -291,7 +290,6 @@
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>You will need to install Anaconda for your system before creating the environment. To do that, please refer to their <a class="reference external" href="https://docs.anaconda.com/anaconda/install/index.html">official documentation</a>.</p>
-</div></div>
 </div>
 <p>To create a <code class="docutils literal notranslate"><span class="pre">conda</span></code> environment, you can do something like the following:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>conda<span class="w"> </span>create<span class="w"> </span>-n<span class="w"> </span>atk<span class="w"> </span><span class="nv">python</span><span class="o">=</span><span class="m">3</span>.8.2
@@ -304,7 +302,6 @@ $<span class="w"> </span>conda<span class="w"> </span>activate<span class="w"> <
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>You <em>must</em> have Python &gt;= 3.8.2 installed already for this to work. If you don’t already have Python &gt;= 3.8.2, you will need to create an environment via <span class="xref myst">conda</span>.</p>
-</div></div>
 </div>
 <p>To create a Python virtual environment using <code class="docutils literal notranslate"><span class="pre">venv</span></code>, you can do something like the following:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>atk
