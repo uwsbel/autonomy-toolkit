@@ -211,6 +211,9 @@ def _run_dev(args):
     if not config.parse():
         return
 
+    # Update project, if overwritten
+    config.project = config.project if args.project is None else args.project
+
     # Additional checks
     if any(c.isupper() for c in config.project):
         LOGGER.fatal(f"'project' is set to '{config.project}' which is not allowed since it has capital letters. Please choose a name with only lowercase.")
@@ -299,6 +302,7 @@ def _init(subparser):
     subparser.add_argument("-r", "--run", action="store_true", help="Run a command in the provided service. Only one service may be provided.", default=False)
     subparser.add_argument("-s", "--services", nargs='+', help="The services to use. Defaults to 'all' or whatever 'default_containers' is set to in atk.yml (can be overwritten with ATK_DEFAULT_CONTAINERS environment variable). If 'all' is passed, all the services are used.", default=None)
     subparser.add_argument("-f", "--filename", help="The ATK config file. Defaults to 'atk.yml'", default='atk.yml')
+    subparser.add_argument("--project", help="Overrides the project name in the 'atk.yml' file. Unused if empty.", default=None)
     subparser.add_argument("--port-mappings", nargs='+', help="Mappings to replace conflicting host ports at runtime. Ex: remap exposed port 8080 to be 8081: '--port-mappings 8080:8081 9090:9091'.", default=[])
     subparser.add_argument("--custom-cli-args", nargs="*", help="Custom CLI arguments that are cross referenced with the 'custom_cli_arguments' field in the ATK config file.", default=[])
     subparser.add_argument("--opts", nargs="*", help="Additional options that are passed to the compose command. Use command as it would be used for the compose argument without the '--'. For docker, 'atk dev -b --opts no-cache -s dev' will equate to 'docker compose build --no-cache dev'. Will be passed to _all_ subcommands (i.e. build, up, etc.) if multiple are used.", default=[])
