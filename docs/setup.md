@@ -25,7 +25,6 @@ To install the `autonomy-toolkit` Python package, it is fairly simple.
 
 ```{note}
 This is merely a recommendation. Virtual and/or Conda environments simply isolate your Python versions and packages from other systems so that you can have different isolated environments on your system. If your main Python version is greater than 3.8.2 and you're not concerned about isolating your Python packages, ignore this section.
-</div></div>
 ```
 
 In order to install the `autonomy-toolkit` package, your Python version has to be greater than 3.8.2. This is a requirement of the [`rosbags`](https://pypi.org/project/rosbags/) package used. Different Python versions introduced and deprecated different features, which is why it is common practice to require a certain Python version.
@@ -36,7 +35,6 @@ A common and _recommended_ way of maintaining Python versions, along with their 
 
 ```{note}
 You will need to install Anaconda for your system before creating the environment. To do that, please refer to their [official documentation](https://docs.anaconda.com/anaconda/install/index.html).
-</div></div>
 ```
 
 To create a `conda` environment, you can do something like the following:
@@ -50,7 +48,6 @@ $ conda activate atk
 
 ```{warning}
 You _must_ have Python >= 3.8.2 installed already for this to work. If you don't already have Python >= 3.8.2, you will need to create an environment via [conda](#create-a-python-environment-with-conda).
-</div></div>
 ```
 
 To create a Python virtual environment using `venv`, you can do something like the following:
