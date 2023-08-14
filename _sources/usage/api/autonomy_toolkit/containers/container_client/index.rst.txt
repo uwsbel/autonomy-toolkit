@@ -33,7 +33,7 @@ Classes
                 * **stderr** (*str*) -- The stderr from the command
 
 
-.. py:class:: ContainerClient(config: ATKConfig, project=None, compose_file='.atk-compose.yml', **kwargs)
+.. py:class:: ContainerClient(config: ATKConfig, project=None, compose_file='.atk-compose.yml', *, dry_run: bool = False, opts: str = '', args: List[Any] = [], **kwargs)
 
    Bases: :py:obj:`abc.ABC`
 
