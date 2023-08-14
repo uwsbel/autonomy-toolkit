@@ -6,7 +6,7 @@ from autonomy_toolkit.utils.logger import LOGGER
 
 # Other imports
 from abc import ABC, abstractmethod
-from typing import Any, Optional
+from typing import Any, Optional, List
 import subprocess
 
 class ContainerException(Exception):
@@ -34,20 +34,20 @@ class ContainerClient(ABC):
         compose_file (str): The name of the compose file to use. Defaults to ``.atk-compose.yml``.
     """
 
-    def __init__(self, config: 'ATKConfig', project=None, compose_file='.atk-compose.yml', **kwargs):
+    def __init__(self, config: 'ATKConfig', project=None, compose_file='.atk-compose.yml', *, dry_run: bool = False, opts: str = "", args: List[Any] = [],  **kwargs):
         self.config = config
         self.project = project
         self.compose_file = compose_file
 
-        self.dry_run = False if 'dry_run' not in kwargs else kwargs['dry_run']
+        self.dry_run = dry_run
 
         # Options passed to the compose command
         # i.e. .. compose ..opts <command> 
-        self._opts = []
+        self._opts = opts.split(" ")
 
         # Args passed to the compose command
         # i.e. .. compose <command> ...args
-        self._args = []
+        self._args = args.split(" ")
 
     @staticmethod
     @abstractmethod

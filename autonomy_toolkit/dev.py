@@ -196,6 +196,7 @@ def _run_dev(args):
     config.add_required_attribute("services", config.default_container)
 
     # Add some default custom attributes
+    config.add_custom_attribute("project", type=str, default=args.project, force_default=True if args.project is not None else False)
     config.add_custom_attribute("user", type=dict, default={})
     config.add_custom_attribute("user", "host_username", type=str, default=getuser())
     config.add_custom_attribute("user", "container_username", type=str, default="@{project}")
@@ -210,9 +211,7 @@ def _run_dev(args):
     # Parse the ATK config file
     if not config.parse():
         return
-
-    # Update project, if overwritten
-    config.project = config.project if args.project is None else args.project
+    del args.project
 
     # Additional checks
     if any(c.isupper() for c in config.project):
@@ -305,8 +304,8 @@ def _init(subparser):
     subparser.add_argument("--project", help="Overrides the project name in the 'atk.yml' file. Will default to using the project attribute in the 'atk.yml' file.", default=None)
     subparser.add_argument("--port-mappings", nargs='+', help="Mappings to replace conflicting host ports at runtime. Ex: remap exposed port 8080 to be 8081: '--port-mappings 8080:8081 9090:9091'.", default=[])
     subparser.add_argument("--custom-cli-args", nargs="*", help="Custom CLI arguments that are cross referenced with the 'custom_cli_arguments' field in the ATK config file.", default=[])
-    subparser.add_argument("--opts", nargs="*", help="Additional options that are passed to the compose command. Use command as it would be used for the compose argument without the '--'. For docker, 'atk dev -b --opts no-cache -s dev' will equate to 'docker compose build --no-cache dev'. Will be passed to _all_ subcommands (i.e. build, up, etc.) if multiple are used.", default=[])
-    subparser.add_argument("--args", nargs="*", help="Additional arguments to pass to the compose command. All character following '--args' is passed at the very end of the compose command, i.e. 'atk dev -r -s dev --args ls' will run '... compose run dev ls'. Will be passed to _all_ subcommands (i.e. build, up, etc.) if multiple are used.", default=[])
+    subparser.add_argument("--opts", type=str, help="Additional options that are passed to the compose command. Use command as it would be used for the compose argument without the '--'. For docker, 'atk dev -b --opts no-cache -s dev' will equate to 'docker compose build --no-cache dev'. Will be passed to _all_ subcommands (i.e. build, up, etc.) if multiple are used.", default="")
+    subparser.add_argument("--args", type=str, help="Additional arguments to pass to the compose command. All character following '--args' is passed at the very end of the compose command, i.e. 'atk dev -r -s dev --args ls' will run '... compose run dev ls'. Will be passed to _all_ subcommands (i.e. build, up, etc.) if multiple are used.", default="")
 
     subparser.set_defaults(cmd=_run_dev)
 

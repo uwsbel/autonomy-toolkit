@@ -55,7 +55,6 @@ class ATKConfig:
 
         # Add some default custom attributes
         self._custom_attributes = {} 
-        self.add_custom_attribute("project", type=str)
         self.add_custom_attribute("project_root", type=str, default=str(self.root))
         self.add_custom_attribute("external", type=dict, default={})
 

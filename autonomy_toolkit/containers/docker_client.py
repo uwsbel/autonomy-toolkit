@@ -32,8 +32,8 @@ class DockerClient(ContainerClient):
 
         self._services = services
 
-        self._opts.extend(["-p", self.project])
-        self._opts.extend(["-f", self.compose_file])
+        self._opts = ["-p", self.project] + self._opts
+        self._opts = ["-f", self.compose_file] + self._opts
 
         # Get the docker binary path
         docker_sys = shutil.which("docker")
