@@ -1,12 +1,13 @@
 # Setup
 
-The Autonomy Toolkit has two software elements: the command line interface (CLI) and the Python package. The CLI and Python package are installed in the same way. 
+The Autonomy Toolkit has two software elements: the command line interface (CLI) and the Python package. The CLI and Python package are installed in the same way.
 
 Setup and installation information is provided in this guide.
 
 ## Prerequisites
 
 Before you can install the `autonomy-toolkit` package, you will need to install a few other packages. Please see the linked installation instructions before continuing.
+
 - Python >= 3.8.2: [Further details below](#python-environments)
 - [Docker](https://docker.com): [Installation instructions](https://docs.docker.com/get-docker/)
 - [docker compose v2](https://docs.docker.com/compose/): [Installation instructions](https://docs.docker.com/compose/cli-command/)
@@ -17,17 +18,15 @@ Before you can install the `autonomy-toolkit` package, you will need to install 
 
 Once the [prerequisites](#prerequisites) have been installed, you may proceed to installing the `autonomy-toolkit` package.
 
-## Python Package 
+## Python Package
 
-To install the `autonomy-toolkit` Python package, it is fairly simple. 
+To install the `autonomy-toolkit` Python package, it is fairly simple.
 
 ### Python Environments
 
 ```{note}
 This is merely a recommendation. Virtual and/or Conda environments simply isolate your Python versions and packages from other systems so that you can have different isolated environments on your system. If your main Python version is greater than 3.8.2 and you're not concerned about isolating your Python packages, ignore this section.
 ```
-
-In order to install the `autonomy-toolkit` package, your Python version has to be greater than 3.8.2. This is a requirement of the [`rosbags`](https://pypi.org/project/rosbags/) package used. Different Python versions introduced and deprecated different features, which is why it is common practice to require a certain Python version.
 
 A common and _recommended_ way of maintaining Python versions, along with their packages, on your system is through [Python Virtual Environments](https://docs.python.org/3/tutorial/venv.html) or [Anaconda](https://anaconda.org). Virtual environments isolate your Python versions and packages from other environments. Imagine you are working on a project that requires Python2.7 and another that requires Python3.8. These versions are completely incompatible with one another, so their packages and code will be, too. The solution to this problem would be to create a Python2.7 virtual environment and a Python3.8 virtual environment. The primary difference between `venv` and Anaconda is that Anaconda is not restricted to only Python packages but allows you to install other packages that use other languages. For the `autonomy-toolkit` package, no such non-Python packages are used, so either can be used (though Anaconda is more common). Further, `venv` requires the Python version you intend to use to be installed on your system already, which Anaconda does not.
 
@@ -59,13 +58,13 @@ $ python -m venv atk
 You must then source the virtual environment. This depends on your system. See below for information on how to do that.
 
 | Platform | Shell           | Command to activate virtual environment |
-|----------|-----------------|-----------------------------------------|
-| POSIX    | bash/zsh        | `$ source <venv>/bin/activate`            |
-|          | fish            | `$ source <venv>/bin/activate.fish`       |
-|          | csh/tcsh        | `$ source <venv>/bin/activate.csh`       |
-|          | PowerShell Core | `$ <venv>/bin/Activate.ps1`              |
-| Windows  | cmd.exe         | `C:\> <venv>\Scripts\activate.bat`       |
-|          | PowerShell      | `PS C:\> <venv>\Scripts\Activate.ps1`    |
+| -------- | --------------- | --------------------------------------- |
+| POSIX    | bash/zsh        | `$ source <venv>/bin/activate`          |
+|          | fish            | `$ source <venv>/bin/activate.fish`     |
+|          | csh/tcsh        | `$ source <venv>/bin/activate.csh`      |
+|          | PowerShell Core | `$ <venv>/bin/Activate.ps1`             |
+| Windows  | cmd.exe         | `C:\> <venv>\Scripts\activate.bat`      |
+|          | PowerShell      | `PS C:\> <venv>\Scripts\Activate.ps1`   |
 
 You may also want to refer to the [`venv` documentation](https://docs.python.org/3/library/venv.html).
 
@@ -74,7 +73,7 @@ You may also want to refer to the [`venv` documentation](https://docs.python.org
 The `autonomy-toolkit` package is available on [PyPI](https://pypi.org/project/autonomy-toolkit). To install it, run the following command:
 
 ```bash
-pip install autonomy-toolkit 
+pip install autonomy-toolkit
 ```
 
 ### From Sources
@@ -83,13 +82,13 @@ Or, you can install the `autonomy-tookit` package from sources. To do that, clon
 
 ```bash
 git clone git@github.com:uwsbel/autonomy-toolkit.git
-cd autonomy-toolkit 
+cd autonomy-toolkit
 ```
 
 Then, use `setuptools` to install the `autonomy-toolkit` package:
 
 ```bash
-pip install . 
+pip install .
 ```
 
 _**Note: If you're planning on developing the package, you may wish to install it as symlinks:**_

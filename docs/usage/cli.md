@@ -12,6 +12,7 @@
 ## `atk`
 
 ```{autosimple} autonomy_toolkit._atk_base._init
+
 ```
 
 ```{argparse}
@@ -31,6 +32,7 @@ Subcommands immediately succeed the `atk` command. They implement additional log
 ### `dev`
 
 ```{autosimple} autonomy_toolkit.dev._init
+
 ```
 
 ```{argparse}
@@ -39,70 +41,6 @@ module: autonomy_toolkit._atk_base
 func: _init
 prog: atk
 path: dev
-nosubcommands:
-nodescription:
----
-```
-
-<!-- ### `run` -->
-<!--  -->
-<!-- ```{autosimple} autonomy_toolkit.run._init -->
-<!-- ``` -->
-<!--  -->
-<!-- ```{argparse} -->
-<!-- --- -->
-<!-- module: autonomy_toolkit._atk_base -->
-<!-- func: _init -->
-<!-- prog: atk -->
-<!-- path: run -->
-<!-- nosubcommands: -->
-<!-- nodescription: -->
-<!-- --- -->
-<!-- ``` -->
-
-### `db`
-
-```{autosimple} autonomy_toolkit.db._init
-```
-
-```{argparse}
----
-module: autonomy_toolkit._atk_base
-func: _init
-prog: atk
-path: db
-nosubcommands:
-nodescription:
----
-```
-
-#### `db combine`
-
-```{autosimple} autonomy_toolkit.db._run_combine
-```
-
-```{argparse}
----
-module: autonomy_toolkit._atk_base
-func: _init
-prog: atk
-path: db combine 
-nosubcommands:
-nodescription:
----
-```
-
-#### `db read`
-
-```{autosimple} autonomy_toolkit.db._run_read
-```
-
-```{argparse}
----
-module: autonomy_toolkit._atk_base
-func: _init
-prog: atk
-path: db read 
 nosubcommands:
 nodescription:
 ---

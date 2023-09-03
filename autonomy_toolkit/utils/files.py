@@ -7,10 +7,13 @@ Provides helper methods for interacting with the filesystem.
 from autonomy_toolkit.utils.logger import LOGGER
 
 # External library imports
+from typing import Union
 from pathlib import Path
-import os
 
-def file_exists(filename: str, throw_error: bool = False, can_be_directory: bool = False) -> bool:
+
+def file_exists(
+    filename: str, throw_error: bool = False, can_be_directory: bool = False
+) -> bool:
     """
     Check if the passed filename is an actual file
 
@@ -23,7 +26,7 @@ def file_exists(filename: str, throw_error: bool = False, can_be_directory: bool
         bool: True if the file exists, false otherwise
 
     Throws:
-        FileNotFoundError: If filename is not a file and throw_error is set to true    
+        FileNotFoundError: If filename is not a file and throw_error is set to true
     """
     if can_be_directory:
         is_file = Path(filename).exists()
@@ -34,8 +37,8 @@ def file_exists(filename: str, throw_error: bool = False, can_be_directory: bool
     return is_file
 
 
-def search_upwards_for_file(filename: str) -> Path:
-    """Search in the current directory and all directories above it 
+def search_upwards_for_file(filename: Union[Path, str]) -> Path:
+    """Search in the current directory and all directories above it
     for a file of a particular name.
 
     Arg:
@@ -57,15 +60,24 @@ def search_upwards_for_file(filename: str) -> Path:
 
     return None
 
-def unlink_file(filename: str):
-    """Unlink (remove) a file
+
+def read_file(filename: Union[Path, str]) -> str:
+    """Read in the passed file and return it as a string.
 
     Args:
-        filename (str): The file to remove
+        filename (str): the file to read
+
+    Returns:
+        str: the file's contents as a string
     """
-    if not Path(filename).exists():
-        LOGGER.warn(f"'{filename}' was deleted prematurely. This may be a bug.")
-        return 1
-    else:
-        os.unlink(filename)
-        return 0
+    if not file_exists(filename):
+        LOGGER.warn(f"'{filename}' does not exist. Using an empty string.")
+        return ""
+
+    # Load the file
+    LOGGER.debug(f"Reading '{filename}' as 'yaml'...")
+    with open(filename, "r") as f:
+        text = f.read()
+    LOGGER.debug(f"Read '{filename}' as 'yaml'.")
+
+    return text
