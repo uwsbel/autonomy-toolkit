@@ -10,7 +10,7 @@ import os
 from typing import Optional, Any, List, Dict, Tuple
 
 ENV = os.environ.copy()
-ENV["COMPOSE_IGNORE_ORPHANS"] = "true"
+ENV["COMPOSE_IGNORE_ORPHANS"] = 1
 
 
 class ContainerException(Exception):
@@ -144,8 +144,12 @@ class DockerClient:
         return self._run_cmd("docker", "compose", *args, **kwargs)
 
     def _run_cmd(self, *args, return_output=False, **kwargs):
+        if return_output:
+            kwargs["stdout"] = subprocess.PIPE
+            kwargs["stderr"] = subprocess.PIPE
+
         cmd = " ".join([str(arg) for arg in args])
-        LOGGER.info(f"{cmd}")
+        LOGGER.debug(f"{cmd}")
 
         def post_process_stream(stream: Optional[bytes]):
             if stream is None:
