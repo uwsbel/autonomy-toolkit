@@ -15,12 +15,20 @@ import mergedeep
 
 
 class ATKConfig:
-    """Helper class that abstracts reading the ``atk.yml`` file that defines configurations"""
+    """Helper class that abstracts reading the ``atk.yml`` file that defines configurations.
+
+    Args:
+        filename (Union[Path, str]): The name of the file to read. This can be a path or just the name of the file. The file should be located at or above the current working directory.
+        services (List[str]): List of services to use when running the ``docker compose`` command.
+
+    Keyword Args:
+        compose_file (Union[Path, str]): The name of the compose file to use. Defaults to ``.atk-compose.yml``.
+    """
 
     def __init__(
         self,
         filename: Union[Path, str],
-        services: List[str] = [],
+        services: List[str],
         *,
         compose_file: Union[Path, str] = ".atk-compose.yml",
     ):
@@ -52,11 +60,23 @@ class ATKConfig:
             )
         self.project = self.config["x-project"]
 
-    def update_services(self, arg) -> bool:
+    def update_services(self, arg):
+        """Uses ``mergedeep`` to update the services with the given argument
+
+        Args:
+            arg (Any): The argument to update the services with. This can be a dictionary, list, or any other type that ``mergedeep`` supports.
+        """
         for service in self.config["services"].values():
             mergedeep.merge(service, arg, strategy=mergedeep.Strategy.ADDITIVE)
 
     def update_services_with_optionals(self, optionals: List[str]):
+        """Updates the services with the given optionals.
+
+        The optionals arg defines which optionals to add to the services. The optionals are defined in the ``x-optionals`` field of the atk.yml file.
+
+        Args:
+            optionals (List[str]): List of optionals to add to the services.
+        """
         for opt in optionals:
             if opt not in self.config["x-optionals"]:
                 LOGGER.warn(
@@ -66,6 +86,13 @@ class ATKConfig:
             self.update_services(self.config["x-optionals"][opt])
 
     def write(self) -> bool:
+        """Dump the config to the compose file to be read by docker compose"""
         # Rewrite the compose file
-        with open(self.compose_file, "w") as f:
-            yaml.dump(self.config, f)
+        try:
+            with open(self.compose_file, "w") as f:
+                yaml.dump(self.config, f)
+        except Exception as e:
+            LOGGER.fatal(f"Failed to write compose file: {e}")
+            return False
+
+        return True

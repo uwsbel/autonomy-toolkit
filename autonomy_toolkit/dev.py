@@ -38,7 +38,8 @@ def _run_dev(args):
     config.update_services_with_optionals(args.optionals)
 
     # Write the new configuration file
-    config.write()
+    if not config.write():
+        return False
 
     # Create the docker client
     client = DockerClient(
@@ -75,23 +76,35 @@ def _init(subparser):
         "-s",
         "--services",
         nargs="+",
-        help="The services to use. This is a required argument.",
+        help="The services to use. This is a required argument. Can be passed as `-s service1 service2` or `-s service1 -s service2`.",
         action="extend",
         default=[],
         required=True,
     )
 
     subparser.add_argument(
-        "-b", "--build", action="store_true", help="Build the env.", default=False
+        "-b", "--build", action="store_true", help="Build the image(s).", default=False
     )
     subparser.add_argument(
-        "-u", "--up", action="store_true", help="Spin up the env.", default=False
+        "-u",
+        "--up",
+        action="store_true",
+        help="Spin up the container(s).",
+        default=False,
     )
     subparser.add_argument(
-        "-d", "--down", action="store_true", help="Tear down the env.", default=False
+        "-d",
+        "--down",
+        action="store_true",
+        help="Tear down the container(s).",
+        default=False,
     )
     subparser.add_argument(
-        "-a", "--attach", action="store_true", help="Attach to the env.", default=False
+        "-a",
+        "--attach",
+        action="store_true",
+        help="Attach to the container. Only one service may be provided.",
+        default=False,
     )
     subparser.add_argument(
         "-r",
@@ -108,20 +121,24 @@ def _init(subparser):
     )
     subparser.add_argument(
         "--optionals",
-        nargs="*",
+        nargs="+",
         help="Custom CLI arguments that are cross referenced with the 'x-optionals' field in the ATK config file.",
         default=[],
     )
     subparser.add_argument(
-        "--compose-opts",
-        nargs="*",
-        help="Additional options that are passed to the compose command. Use command as it would be used for the compose argument without the '--'. For docker, 'atk dev -b --opts no-cache -s dev' will equate to 'docker compose build --no-cache dev'. Will be passed to _all_ subcommands (i.e. build, up, etc.) if multiple are used.",
+        "--compose-arg",
+        dest="compose_args",
+        nargs=1,
+        help="Additional arguments that are passed to the compose command. If the arg has a `--`, you must use an `=`. Example: `atk dev -s dev -r --compose-arg=ls` will evaluate to `docker compose run dev ls`. You may use `--compose-arg` multiple times to append multiple options. Will be passed to _all_ selected subcommands (i.e. build, up, etc.).",
+        action="extend",
         default=[],
     )
     subparser.add_argument(
-        "--compose-args",
-        nargs="*",
-        help="Additional arguments to pass to the compose command. All character following '--args' is passed at the very end of the compose command, i.e. 'atk dev -r -s dev --args ls' will run '... compose run dev ls'. Will be passed to _all_ subcommands (i.e. build, up, etc.) if multiple are used.",
+        "--compose-opt",
+        dest="compose_opts",
+        nargs=1,
+        help="Additional options that are passed to the compose command. If the arg has a `--`, you must use an `=`. Example: `atk dev -s dev -b --compose-opt=--no-cache` will evaluate to `docker compose build --no-cache dev`. You may use `--compose-opt` multiple times to append multiple options. Will be passed to _all_ selected subcommands (i.e. build, up, etc.).",
+        action="extend",
         default=[],
     )
 
