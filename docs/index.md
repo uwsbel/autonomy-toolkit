@@ -22,4 +22,3 @@ contributing
 PyPI <https://pypi.org/project/autonomy-toolkit/>
 Github <https://github.com/uwsbel/autonomy-toolkit>
 ```
-

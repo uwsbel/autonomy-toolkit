@@ -2,4 +2,3 @@
 """
 Utilities for the autonomy_toolkit package
 """
-

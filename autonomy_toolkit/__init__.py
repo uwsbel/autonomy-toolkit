@@ -8,6 +8,7 @@ __author__ = "Simulation Based Engineering Laboratory (negrut@.wisc.edu)"
 __license__ = "BSD3"
 """BSD3"""
 
+
 def _signal_handler(sig, frame):
     """Signal handler that will exit if ctrl+c is recorded in the terminal window.
 
@@ -19,6 +20,7 @@ def _signal_handler(sig, frame):
     """
 
     import sys
+
     sys.exit(0)
 
 
@@ -26,4 +28,3 @@ def _signal_handler(sig, frame):
 signal.signal(signal.SIGINT, _signal_handler)
 
 del signal
-

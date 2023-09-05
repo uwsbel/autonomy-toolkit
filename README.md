@@ -1,6 +1,6 @@
 # Autonomy Toolkit
 
-Autonomy Toolkit, dubbed `autonomy-toolkit`, is meant to be a simplified mechansim for quickly setting up and developing a ROS 2 based control stack. The `autonomy-toolkit` platform is under activate development by the [Simulation Based Engineering Laboratory](https://sbel.wisc.edu) at the [University of Wisconsin-Madison](https://wisc.edu). 
+Autonomy Toolkit, dubbed `autonomy-toolkit`, is meant to be a simplified mechansim for quickly setting up and developing a ROS 2 based control stack. The `autonomy-toolkit` platform is under activate development by the [Simulation Based Engineering Laboratory](https://sbel.wisc.edu) at the [University of Wisconsin-Madison](https://wisc.edu).
 
 ## Background
 
@@ -26,6 +26,6 @@ Visit our website at [sbel.wisc.edu](https://sbel.wisc.edu)!
 <br>
 
 <div>
-	<img src="https://github.com/uwsbel/autonomy-toolkit/blob/master/docs/_static/SBEL-dark.png?raw=true" alt="Simulation Based Engineering Lab Logo" class="readme-img" height="100px">  
+	<img src="https://github.com/uwsbel/autonomy-toolkit/blob/master/docs/_static/SBEL-dark.png?raw=true" alt="Simulation Based Engineering Lab Logo" class="readme-img" height="100px">
 	<img src="https://github.com/uwsbel/autonomy-toolkit/blob/master/docs/_static/UWCrest.png?raw=true" alt="University of Wisconsin - Madison Crest" class="readme-img" height="100px" align="right">
 </div>

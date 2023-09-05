@@ -6,7 +6,7 @@ Should be used like the following:
 
 .. highlight:: python
 .. code-block:: python
-    
+
     from autonomy_toolkit.utils.logger import LOGGER
 
     LOGGER.fatal("Fatal")
@@ -23,7 +23,7 @@ from colorlog import ColoredFormatter
 LOGGER = logging.getLogger(__name__)
 
 # Create a handler with the desired format
-DEFAULT_LOGGING_FORMAT = '%(log_color)s%(levelname)-8s%(reset)s | %(log_color)s%(module)s.%(funcName)s :: %(message)s%(reset)s'
+DEFAULT_LOGGING_FORMAT = "%(log_color)s%(levelname)-8s%(reset)s | %(log_color)s%(module)s.%(funcName)s :: %(message)s%(reset)s"
 CONSOLE_HANDLER = logging.StreamHandler()
 CONSOLE_HANDLER.setFormatter(ColoredFormatter(DEFAULT_LOGGING_FORMAT))
 
@@ -51,13 +51,13 @@ def set_verbosity(verbosity: int):
 
     if verbosity < 0 or verbosity > 2:
         raise ValueError(
-            f"Verbosity should be greater than 0 and less than 3. Got {verbosity}.")
+            f"Verbosity should be greater than 0 and less than 3. Got {verbosity}."
+        )
 
     level = DEFAULT_LOGGING_LEVEL - verbosity * 10
     LOGGER.setLevel(level)
     CONSOLE_HANDLER.setLevel(level)
-    LOGGER.log(
-        level, f"Verbosity has been set to {logging.getLevelName(level)}")
+    LOGGER.log(level, f"Verbosity has been set to {logging.getLevelName(level)}")
 
 
 def dumps_dict(dic: dict) -> str:
@@ -65,10 +65,11 @@ def dumps_dict(dic: dict) -> str:
     Dumps a dictionary in a pretty-ish format to the logger.
 
     Args:
-       dic (dict): The dictionary to print 
+       dic (dict): The dictionary to print
 
     Returns:
         str: The pretty-ish string representation of the dict argument
     """
     import json
+
     return json.dumps(dic, indent=4)

@@ -2,7 +2,7 @@
 
 The [`autonomy-research-testbed`](https://github.com/uwsbel/autonomy-research-testbed) (ART) platform is purpose built to be an all-in-one test platform for autonomous algorithm development and simulation validation. Provided is documented hardware, a pre-made control stack, an optimized development-to-deployment workflow, and a database system to easily store and interact with ROS-based data files.
 
-On this page, general background of the project is discussed and an overview of design decisions is provided. 
+On this page, general background of the project is discussed and an overview of design decisions is provided.
 
 ## Purpose
 
@@ -17,7 +17,7 @@ This simulation environment, built on top of Chrono, utilizes multiple modules t
 ### Bill of Materials
 
 | Component                 | Qty   | Unit Price | Link                                                                      |
-| -----------               | ----- | -----     | ------                                                                    | 
+| -----------               | ----- | -----     | ------                                                                    |
 | Shredder RC Car Base      | 1     | $399.99   | [https://tinyurl.com/4mnectre](https://tinyurl.com/4mnectre)              |
 | inline fuse (optional)    | 1     | $9.99     | [https://tinyurl.com/dr5ycz9w](https://tinyurl.com/dr5ycz9w)                              |
 | Power Wiring              | 1     | $11.99    | [https://tinyurl.com/5erssk6k](https://tinyurl.com/5erssk6k)                              |
@@ -130,4 +130,3 @@ Once the left and right boundaries are estimated, a center position at distance 
 
 ### Control
 The control nodes takes the target position and calculates an error between the current heading of the vehicle, and the target position. It then uses a proportional gain to calculate the input steering and produces a vehicle input message with desired throttle [0,1], steering [-1,1], and braking [0,1].
-

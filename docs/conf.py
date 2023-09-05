@@ -10,7 +10,7 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-import autonomy_toolkit 
+import autonomy_toolkit
 from datetime import date
 from pathlib import Path
 import sys
@@ -27,6 +27,7 @@ author = "Simulation Based Engineering Laboratory"
 
 # The full version, including alpha/beta/rc tags
 from importlib.metadata import version as get_version
+
 release = get_version("autonomy_toolkit")
 
 # -- General configuration ---------------------------------------------------
@@ -82,13 +83,14 @@ napoleon_attr_annotations = True
 
 from sphinx.ext import autodoc
 
+
 class SimpleDocumenter(autodoc.MethodDocumenter):
     objtype = "simple"
 
-    #do not indent the content
+    # do not indent the content
     content_indent = ""
 
-    #do not add a header to the docstring
+    # do not add a header to the docstring
     def add_directive_header(self, sig):
         pass
 
@@ -123,9 +125,9 @@ html_theme = "furo"
 html_favicon = "_static/cropped-SBEL-32x32.png"
 html_theme_options = {
     "announcement": """
-        <a style=\"text-decoration: none; color: white;\" 
+        <a style=\"text-decoration: none; color: white;\"
            href=\"https://sbel.wisc.edu\">
-           <img src=\"https://github.com/uwsbel/autonomy-toolkit/blob/main/docs/_static/cropped-SBEL-192x192.png?raw=true\" 
+           <img src=\"https://github.com/uwsbel/autonomy-toolkit/blob/main/docs/_static/cropped-SBEL-192x192.png?raw=true\"
                 style=\"vertical-align: middle; display: inline; padding-right: 7.5px; height: 20px;\"/>
            Checkout our website!
         </a>
