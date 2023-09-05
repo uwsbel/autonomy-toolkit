@@ -12,6 +12,7 @@ from typing import Union, List
 from pathlib import Path
 import yaml
 import mergedeep
+import os
 
 
 class ATKConfig:
@@ -52,13 +53,6 @@ class ATKConfig:
             raise Exception(
                 f"An error occurred while parsing {filename}. Set verbosity to info for more details."
             )
-
-        # Grab the project name
-        if "x-project" not in self.config:
-            raise Exception(
-                f"The 'x-project' field was not found in {filename}. Cannot continue."
-            )
-        self.project = self.config["x-project"]
 
     def update_services(self, arg):
         """Uses ``mergedeep`` to update the services with the given argument

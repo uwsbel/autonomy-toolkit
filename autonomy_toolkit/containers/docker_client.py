@@ -1,13 +1,14 @@
 # SPDX-License-Identifier: MIT
-"""Helpful utilities for interacting with docker. Many of these helpers came from the [python_on_whales](https://gabrieldemarmiesse.github.io/python-on-whales/) package."""
+"""Helpful utilities for interacting with docker."""
 
 # Imports from autonomy_toolkit
 from autonomy_toolkit.utils.logger import LOGGER
+from autonomy_toolkit.utils.atk_config import ATKConfig
 
 # External imports
 import subprocess
 import os
-from typing import Optional, Any, List, Dict, Tuple
+from typing import Optional, Any, List, Dict
 
 ENV = os.environ.copy()
 ENV["COMPOSE_IGNORE_ORPHANS"] = 1
@@ -30,20 +31,18 @@ class ContainerException(Exception):
 
 
 class DockerClient:
-    """
-    Helper class that provides the :meth:`run` method to execute a command using the ``docker compose``
-    entrypoint.
+    """Client interface for interacting with docker compose orchestration.
 
     Args:
-        config (ATKConfig): The config definition
-        project (str): The name of the project to use. Analagous with ``--project-name`` in ``docker compose``.
-        services (List[str]): List of services to use when running the ``docker compose`` command.
-        compose_file (str): The name of the compose file to use. Defaults to ``.atk-compose.yml``.
+        config (ATKConfig): The ATK configuration object.
+        dry_run (bool): Whether to actually run the commands or just print them. Use DEBUG logging level to see the commands.
+        opts (List[str]): Options to pass to the ``docker compose`` command.
+        args (List[str]): Arguments to pass to the ``docker compose <command>`` command.
     """
 
     def __init__(
         self,
-        config: "ATKConfig",
+        config: ATKConfig,
         *,
         dry_run: bool = False,
         opts: List[str] = [],
@@ -57,7 +56,6 @@ class DockerClient:
         # Options passed to the compose command
         # i.e. .. compose ..opts <command>
         self._opts = opts
-        self._opts = ["-p", config.project] + self._opts
         self._opts = ["-f", self.compose_file] + self._opts
 
         # Args passed to the compose subcommand
