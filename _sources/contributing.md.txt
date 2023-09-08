@@ -2,13 +2,17 @@
 
 Contributing to the repository is fairly easy. The CLI was developed to be scalable and provide easy flexibility when creating new commands. There could be bugs or additional subcommands that would like to be added, so please see below for instructions on how to actually make contributions to this project.
 
-> Note: If you're contributing to the repository, it can be assumed you know what you're doing. Please be thoughtful in your changes and consult the correct people if you're looking to make changes.
+```{note}
+If you're contributing to the repository, it can be assumed you know what you're doing. Please be thoughtful in your changes and consult the correct people if you're looking to make changes.
+```
 
 ## Setup
 
 There are two forms of contributions: source code or documentation. Editing the documentation is as simple as cloning the repo and adding/editing content within the `docs` folder. All documentation is written in `markdown` and converted to `html` through `myst_parser` and `sphinx`. To edit the source code, as well as the documentation, you will want to install the package through a symlink.
 
-> **Note**: A `conda` or `virtualenv` will add isolation to your python environments and reduce conflicts amongst packages. It is _highly_ recommended to use one!!
+```{note}
+A `conda` or `virtualenv` will add isolation to your python environments and reduce conflicts amongst packages. It is _highly_ recommended to use one!!
+```
 
 ### Cloning the Repo
 
@@ -43,7 +47,7 @@ git push origin main --tags
 
 #### Versioning
 
-Versioning is done automatically through `tags` by [setuptools\_scm](https://github.com/pypa/setuptools_scm). When a tag is pushed to the `main` branch, a new package is pushed to PyPI with the attached tag. Therefore, you must ensure the tag you push is *after* the previous tags seen on GitHub (otherwise nothing will push to PyPI).
+Versioning is done automatically through `tags` by [setuptools_scm](https://github.com/pypa/setuptools_scm). When a tag is pushed to the `main` branch, a new package is pushed to PyPI with the attached tag. Therefore, you must ensure the tag you push is _after_ the previous tags seen on GitHub (otherwise nothing will push to PyPI).
 
 ## Guidelines
 
@@ -52,6 +56,7 @@ A lot of work has gone into making this package functional and scalable. Please 
 ### File Structure
 
 The repository is structured as follows:
+
 ```
 autonomy-toolkit
 ├── LICENSE
@@ -64,20 +69,21 @@ autonomy-toolkit
 ### Editing the Source Code
 
 If you plan on editing the source code, please visit the `autonomy_toolkit/` folder. The `autonomy_toolkit/` folder is structured as follows:
+
 ```
 autonomy_toolkit/
 ├── utils/					# Utility files for use by the rest of the package
 │   └── ...
 ├── ros/						# ROS related utilities, methods, or classes
-│   └── ...        	
+│   └── ...
 ├── containers/			# Containers related utilities, methods, or classes
-│   └── ...        	
+│   └── ...
 └── ...							# Core autonomy-toolkit code
 ```
 
 As stated earlier, unless given approval by the managers of the repository, there should be no need to edit the source code. The Object Oriented nature of the package means you can just inherit the base classes and add your own logic _outside_ the repo (no need to edit the source). However, bugs or nice features may be added. See [this section](#installing-a-symbolic-linked-version-for-testing) to install the repo for development purposes.
 
-#### Commenting 
+#### Commenting
 
 Commenting your code is not only _required_ when contributing to this repository, but also common practice in almost every place where code is written.
 
@@ -90,6 +96,7 @@ Any docstrings parsed by `autosimple`, such as the functions in [usage.md](./usa
 ### Editing the Documentation
 
 If you plan on editing the documentation pages (i.e. adding a tutorial or fixing an existing page), please visit the `docs/` folder. The `docs/` folder is structured as follows:
+
 ```
 docs/
 ├── _static/						# Static files that persist through the build process
@@ -109,6 +116,7 @@ Markdown files are converted to reStructuredText by `myst_parser` which is used 
 ## Building the Documentation
 
 There are multiple ways to build sphinx documentation. The easiest is using the `Makefile` or `make.bat` file provided directly in this repository. You will need to install all the necessary dependencies and build the html pages. To do that, run the following commands:
+
 ```bash
 cd autonomy-toolkit/docs
 pip install -r requirements.txt

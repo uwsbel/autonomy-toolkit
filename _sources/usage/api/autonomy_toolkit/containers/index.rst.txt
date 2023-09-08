@@ -15,8 +15,6 @@ Submodules
    :titlesonly:
    :maxdepth: 1
 
-   container_client/index.rst
    docker_client/index.rst
-   singularity_client/index.rst
 
 

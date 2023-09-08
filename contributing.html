@@ -3,10 +3,10 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
-<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="prev" title="autonomy_toolkit.run" href="usage/api/autonomy_toolkit/run/index.html" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="prev" title="autonomy_toolkit.utils.logger" href="usage/api/autonomy_toolkit/utils/logger/index.html" />
 
     <link rel="shortcut icon" href="_static/cropped-SBEL-32x32.png"/><!-- Generated with Sphinx 5.3.0 and Furo 2022.12.07 -->
-        <title>Contributing - Autonomous Vehicle Toolbox 1.0.14 documentation</title>
+        <title>Contributing - Autonomous Vehicle Toolbox 1.0.15 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=91d0f0d1c444bdcb17a68e833c7a53903343c195" />
     <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
@@ -117,9 +117,9 @@
 <div class="announcement">
   <aside class="announcement-content">
      
-        <a style="text-decoration: none; color: white;" 
+        <a style="text-decoration: none; color: white;"
            href="https://sbel.wisc.edu">
-           <img src="https://github.com/uwsbel/autonomy-toolkit/blob/main/docs/_static/cropped-SBEL-192x192.png?raw=true" 
+           <img src="https://github.com/uwsbel/autonomy-toolkit/blob/main/docs/_static/cropped-SBEL-192x192.png?raw=true"
                 style="vertical-align: middle; display: inline; padding-right: 7.5px; height: 20px;"/>
            Checkout our website!
         </a>
@@ -136,7 +136,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">Autonomous Vehicle Toolbox 1.0.14 documentation</div></a>
+      <a href="index.html"><div class="brand">Autonomous Vehicle Toolbox 1.0.15 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -176,13 +176,10 @@
 <li class="toctree-l1"><a class="reference internal" href="setup.html">Setup</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="configuration/index.html">Configuration</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="configuration/atk-configuration-file.html">ATK Configuration File</a></li>
-<li class="toctree-l2"><a class="reference internal" href="configuration/variable-replacement.html">Variable Replacement</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuration/environment-variables.html">Environment Variables</a></li>
-<li class="toctree-l2"><a class="reference internal" href="configuration/container-runtimes.html">Container Runtimes</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="tutorials/index.html">Tutorials</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="tutorials/using-the-development-environment/README.html">Using the ATK Development Environment</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tutorials/autonomy-research-testbed/autonomy-research-testbed.html">Autonomy Research Testbed</a></li>
 </ul>
 </li>
@@ -190,26 +187,15 @@
 <li class="toctree-l2"><a class="reference internal" href="usage/cli.html">CLI Documentation</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="usage/api/autonomy_toolkit/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l3 has-children"><a class="reference internal" href="usage/api/autonomy_toolkit/containers/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.containers</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l4"><a class="reference internal" href="usage/api/autonomy_toolkit/containers/container_client/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.containers.container_client</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="usage/api/autonomy_toolkit/containers/docker_client/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.containers.docker_client</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="usage/api/autonomy_toolkit/containers/singularity_client/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.containers.singularity_client</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3 has-children"><a class="reference internal" href="usage/api/autonomy_toolkit/ros/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.ros</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l4"><a class="reference internal" href="usage/api/autonomy_toolkit/ros/messages/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.ros.messages</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3 has-children"><a class="reference internal" href="usage/api/autonomy_toolkit/utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="usage/api/autonomy_toolkit/utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="usage/api/autonomy_toolkit/utils/atk_config/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.atk_config</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="usage/api/autonomy_toolkit/utils/files/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.files</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="usage/api/autonomy_toolkit/utils/logger/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.logger</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="usage/api/autonomy_toolkit/utils/parsing/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.parsing</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="usage/api/autonomy_toolkit/utils/system/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.system</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="usage/api/autonomy_toolkit/db/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.db</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="usage/api/autonomy_toolkit/dev/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.dev</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="usage/api/autonomy_toolkit/run/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.run</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -257,15 +243,17 @@
           <section id="contributing">
 <h1>Contributing<a class="headerlink" href="#contributing" title="Permalink to this heading">#</a></h1>
 <p>Contributing to the repository is fairly easy. The CLI was developed to be scalable and provide easy flexibility when creating new commands. There could be bugs or additional subcommands that would like to be added, so please see below for instructions on how to actually make contributions to this project.</p>
-<blockquote>
-<div><p>Note: If you’re contributing to the repository, it can be assumed you know what you’re doing. Please be thoughtful in your changes and consult the correct people if you’re looking to make changes.</p>
-</div></blockquote>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you’re contributing to the repository, it can be assumed you know what you’re doing. Please be thoughtful in your changes and consult the correct people if you’re looking to make changes.</p>
+</div>
 <section id="setup">
 <h2>Setup<a class="headerlink" href="#setup" title="Permalink to this heading">#</a></h2>
 <p>There are two forms of contributions: source code or documentation. Editing the documentation is as simple as cloning the repo and adding/editing content within the <code class="docutils literal notranslate"><span class="pre">docs</span></code> folder. All documentation is written in <code class="docutils literal notranslate"><span class="pre">markdown</span></code> and converted to <code class="docutils literal notranslate"><span class="pre">html</span></code> through <code class="docutils literal notranslate"><span class="pre">myst_parser</span></code> and <code class="docutils literal notranslate"><span class="pre">sphinx</span></code>. To edit the source code, as well as the documentation, you will want to install the package through a symlink.</p>
-<blockquote>
-<div><p><strong>Note</strong>: A <code class="docutils literal notranslate"><span class="pre">conda</span></code> or <code class="docutils literal notranslate"><span class="pre">virtualenv</span></code> will add isolation to your python environments and reduce conflicts amongst packages. It is <em>highly</em> recommended to use one!!</p>
-</div></blockquote>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>A <code class="docutils literal notranslate"><span class="pre">conda</span></code> or <code class="docutils literal notranslate"><span class="pre">virtualenv</span></code> will add isolation to your python environments and reduce conflicts amongst packages. It is <em>highly</em> recommended to use one!!</p>
+</div>
 <section id="cloning-the-repo">
 <h3>Cloning the Repo<a class="headerlink" href="#cloning-the-repo" title="Permalink to this heading">#</a></h3>
 <p>Clone the repo as normal:</p>
@@ -318,9 +306,9 @@ git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </
 ├── utils/					# Utility files for use by the rest of the package
 │   └── ...
 ├── ros/						# ROS related utilities, methods, or classes
-│   └── ...        	
+│   └── ...
 ├── containers/			# Containers related utilities, methods, or classes
-│   └── ...        	
+│   └── ...
 └── ...							# Core autonomy-toolkit code
 </pre></div>
 </div>
@@ -331,7 +319,7 @@ git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </
 <p>Please follow <a class="reference external" href="https://google.github.io/styleguide/pyguide.html">Google’s guidelines for Python Styling</a>. These comments are also used to automatically generate the documentation. For Visual Studio Code users, the <a class="reference external" href="https://github.com/NilsJPWerner/autoDocstring">Python Docstring Generator</a> package may be helpful.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Any docstrings parsed by <code class="docutils literal notranslate"><span class="pre">autosimple</span></code>, such as the functions in <a class="reference internal" href="usage/cli.html"><span class="doc std std-doc">usage.md</span></a>, are parsed as markdown. Docstrings parsed by autoapi, such as in <a class="reference internal" href="usage/api/autonomy_toolkit/db/index.html"><span class="doc std std-doc">atk.db</span></a>, are parsed as reStructuredText.</p>
+<p>Any docstrings parsed by <code class="docutils literal notranslate"><span class="pre">autosimple</span></code>, such as the functions in <a class="reference internal" href="usage/cli.html"><span class="doc std std-doc">usage.md</span></a>, are parsed as markdown. Docstrings parsed by autoapi, such as in <span class="xref myst">atk.db</span>, are parsed as reStructuredText.</p>
 </div>
 </section>
 </section>
@@ -372,14 +360,14 @@ make<span class="w"> </span>clean<span class="w"> </span>html
         
         <div class="related-pages">
           
-          <a class="prev-page" href="usage/api/autonomy_toolkit/run/index.html">
+          <a class="prev-page" href="usage/api/autonomy_toolkit/utils/logger/index.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.run</span></code></div>
+                <div class="title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">autonomy_toolkit.utils.logger</span></code></div>
                 
               </div>
             </a>

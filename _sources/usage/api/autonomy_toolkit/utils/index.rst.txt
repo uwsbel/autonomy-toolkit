@@ -18,7 +18,5 @@ Submodules
    atk_config/index.rst
    files/index.rst
    logger/index.rst
-   parsing/index.rst
-   system/index.rst
 
 

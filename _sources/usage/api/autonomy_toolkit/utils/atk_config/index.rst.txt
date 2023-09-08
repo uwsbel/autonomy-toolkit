@@ -22,124 +22,35 @@ Classes
 
 
 
-.. py:class:: ATKConfig(filename: Union[pathlib.Path, str] = 'atk.yml', container_runtime: str = 'docker', default_container: str = 'dev')
+.. py:class:: ATKConfig(filename: Union[pathlib.Path, str], services: List[str], *, compose_file: Union[pathlib.Path, str] = '.atk-compose.yml')
 
-   Helper class that abstracts reading the ``atk.yml`` file that defines configurations
+   Helper class that abstracts reading the ``atk.yml`` file that defines configurations.
 
+   :Parameters: * **filename** (*Union[Path, str]*) -- The name of the file to read. This can be a path or just the name of the file. The file should be located at or above the current working directory.
+                * **services** (*List[str]*) -- List of services to use when running the ``docker compose`` command.
 
-   .. py:method:: add_required_attribute(*args)
+   :keyword compose_file: The name of the compose file to use. Defaults to ``.atk-compose.yml``.
+   :kwtype compose_file: Union[Path, str]
 
-      Add a required attribute that must be present in the ``autonomy-toolkit`` YAML specification.
+   .. py:method:: update_services(arg)
 
-      Will be checked for existence when :meth:`parse` is called.
+      Uses ``mergedeep`` to update the services with the given argument
 
-      :Parameters: **\*args** -- The nested path of the required attribute, i.e. ``add_required_attribute("first_level", "second_level")`` corresponds to ``first_level: second_level: ...``.
-
-
-   .. py:method:: add_custom_attribute(*path: List[str], type: ATKConfig.add_custom_attribute.type, default: Any = None, dest: str = None, delete: bool = True, force_default: bool = False)
-
-      Add a custom attribute to the ``autonomy-toolkit`` YAML specification.
-
-      A custom attribute is any root-level attribute that's outside of the regular ``docker compose``
-      YAML specification. After being read, it will be deleted from the written ``docker compose`` generated
-      config file.
-
-      The first argument should be a list of nested keys. For instance, if a custom attribute
-      should be structured like the following example, then ``add_custom_attribute("project", ...)``
-      and ``add_custom_attribute("user", "name", ...)`` should be called.
-
-      .. code-block:: yaml
-
-          project: example
-          user:
-              name: example
-
-      :attr:`type` should then be a type that describes the expected type of the variable. This is a required type.
-      If the parsed type is not the same as this, an error will be thrown.
-
-      ``default`` is the final argument. If it is unset (i.e. remains ``None``), the attribute will be assumed to be required.
-      If set, when parsing, the value will be updated to be ``default`` if it is not set in the ATK config file.
-
-      ``dest`` is the destination name for the variable that's generated from the custom attribute. By default,
-      if ``dest`` is ``None``, the last path element in ``args`` will be used. For instance,
-      provided the yaml config above, if ``dest`` isn't provided for the ``user: name`` attribute, it will be
-      set to ``'name'``.
-
-      :Parameters: * **path** (*List[str]*) -- The nested argument list (see docs).
-                   * **type** (*type*) -- Represents the type of the attribute.
-                   * **default** (*Any*) -- The default value to set to the attribute when parsing.
-                   * **force_default** (*bool*) -- Always use default if True. Defaults to False.
-                   * **dest** (*str*) -- The destination name for the variable that's generated.
-                   * **delete** (*bool*) -- If False, the attribute will `not` be removed from the config file after parsing. Defaults to True.
+      :Parameters: **arg** (*Any*) -- The argument to update the services with. This can be a dictionary, list, or any other type that ``mergedeep`` supports.
 
 
-   .. py:method:: add_attribute_translation_rule(*path: List[str], rule: Tuple[str, str])
+   .. py:method:: update_services_with_optionals(optionals: List[str])
 
-      Add a translation rule to the ``autonomy-toolkit`` YAML specification.
+      Updates the services with the given optionals.
 
-      Translate rules are meant to aid in making the atk useable by different container runtimes.
-      As an example, singularity-compose uses "instances" whereas docker composes "services". In this instance
-      a translation such as the following would be added.
+      The optionals arg defines which optionals to add to the services. The optionals are defined in the ``x-optionals`` field of the atk.yml file.
 
-      .. code-block:: python
-
-          config = ATKConfig()
-          config.add_attribute_translation_rule(rule=("services", "instances"))
-
-      The above rule will then find "services" at the root of the yaml config and replace it
-      with "instances".
-
-      .. code-block: python
-
-          config = ATKConfig()
-          config.add_attribute_translation_rule("services", "dev", rule=("before", "after"))
-
-      This example will walk up to "services->dev" and replace "before" with "after".
-
-      .. note::
-
-          The translation rules are used only when the ATK config file is written.
-          Otherwise, analagous compose terms should be refered to as they are in the ``docker compose`` docs.
-
-      :Parameters: * **path** (*List[str]*) -- The nested argument list (see docs).
-                   * **rule** (*Tuple[str, str]*) -- translation rule (from, to) such that all "from"'s are translated to "to"'s.
+      :Parameters: **optionals** (*List[str]*) -- List of optionals to add to the services.
 
 
-   .. py:method:: parse() -> bool
+   .. py:method:: write() -> bool
 
-      Parse the ATK config file.
-
-      Will read in the ATK config file as a yaml file. Utilizes the :class:`ATKYamlFile` class as the parser.
-
-      The parser will walk through each custom attribute defined prior to :meth:`func` being called and
-      evaluate the attribute. Checks will be made to verify the types are correct, and if required attributes
-      are defined. If a required attribute is not defined, an error will be thrown and parsing will stop. If an
-      attribute has a wrong type, an error will be thrown and parsing will stop.
-
-      :returns: *bool* -- whether the file was successfully parsed
-
-
-   .. py:method:: generate_compose(services: List[str] = [], overwrite_lists: bool = False)
-
-      Generates a ``atk-compose.yml`` specification file that's used by ``docker compose``
-
-      This method will grab the defaults that are shipped with ``autonomy-toolkit`` and merge them with
-      the custom configurations provided through the custom yaml config file.
-
-      The file will `not` be written. See :meth:`write_compose`.
-
-      :Parameters: * **services** (*List[str]*) -- List of services to maintain in the compose file. If none are passed, all are kept.
-                   * **overwrite_lists** (*bool*) -- If true, all lists in the default that conflict with lists in the custom config will be overwritten. If false, the lists will be extended.
-
-
-   .. py:method:: write_compose(compose: dict = None)
-
-      Writes the ``docker compose`` config file.
-
-      If ``compose`` is not None, the ``docker compose`` config file will be overwritten
-      with a custom dictionary which is parsed as yaml.
-
-      :Parameters: **compose** (*dict*) -- The dictionary to parse as yaml to be used to overwrite the compose file. Defaults to None (unused).
+      Dump the config to the compose file to be read by docker compose
 
 
 

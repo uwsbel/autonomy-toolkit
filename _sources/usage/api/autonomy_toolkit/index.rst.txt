@@ -13,19 +13,7 @@ Subpackages
    :maxdepth: 3
 
    containers/index.rst
-   ros/index.rst
    utils/index.rst
-
-
-Submodules
-----------
-.. toctree::
-   :titlesonly:
-   :maxdepth: 1
-
-   db/index.rst
-   dev/index.rst
-   run/index.rst
 
 
 Package Contents

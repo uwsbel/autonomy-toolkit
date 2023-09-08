@@ -5,7 +5,7 @@
 
 .. autoapi-nested-parse::
 
-   Helpful utilities for interacting with docker. Many of these helpers came from the [python_on_whales](https://gabrieldemarmiesse.github.io/python-on-whales/) package.
+   Helpful utilities for interacting with docker.
 
 
 
@@ -22,32 +22,76 @@ Classes
 
 
 
-.. py:class:: DockerClient(config: ATKConfig, project: str = None, compose_file: str = '.atk-compose.yml', services=[], **kwargs)
+.. py:exception:: ContainerException(message: Any, stdout: str = None, stderr: str = None)
 
-   Bases: :py:obj:`autonomy_toolkit.containers.container_client.ContainerClient`
+   Bases: :py:obj:`Exception`
 
-   Helper class that provides the :meth:`run` method to execute a command using the ``docker compose``
-   entrypoint.
+   Exception class that is used by the :class:`ContainerClient` when an error occurs
 
-   :Parameters: * **config** (*ATKConfig*) -- The config definition
-                * **project** (*str*) -- The name of the project to use. Analagous with ``--project-name`` in ``docker compose``.
-                * **services** (*List[str]*) -- List of services to use when running the ``docker compose`` command.
-                * **compose_file** (*str*) -- The name of the compose file to use. Defaults to ``.atk-compose.yml``.
-
-   .. py:method:: is_installed() -> bool
-
-      Checks whether the docker client binary file is present and whether docker compose v2 is installed.
-
-      :returns: *bool* -- True if everything checks out, False if not.
+   :Parameters: * **message** (*Any*) -- The message to be stored in the base class Exception
+                * **stdout** (*str*) -- The stdout from the command
+                * **stderr** (*str*) -- The stderr from the command
 
 
-   .. py:method:: shell(service: str, *args) -> bool
+.. py:class:: DockerClient(config: autonomy_toolkit.utils.atk_config.ATKConfig, *, dry_run: bool = False, opts: List[str] = [], args: List[str] = [])
 
-      Enter the shell for a specific container.
+   Client interface for interacting with docker compose orchestration.
 
-      Will check for the USERSHELLPATH environment variable in the container.
+   :Parameters: * **config** (*ATKConfig*) -- The ATK configuration object.
+                * **dry_run** (*bool*) -- Whether to actually run the commands or just print them. Use DEBUG logging level to see the commands.
+                * **opts** (*List[str]*) -- Options to pass to the ``docker compose`` command.
+                * **args** (*List[str]*) -- Arguments to pass to the ``docker compose <command>`` command.
 
-      :Parameters: **service** (*str*) -- The service to run the shell for
+   .. py:method:: down() -> bool
+
+      Bring down the containers.
+
+      :returns: *bool* -- Whether the command succeeded.
+
+
+   .. py:method:: build() -> bool
+
+      Build the images.
+
+      :returns: *bool* -- Whether the command succeeded.
+
+
+   .. py:method:: up() -> bool
+
+      Bring up the containers.
+
+      :returns: *bool* -- Whether the command succeeded.
+
+
+   .. py:method:: run(*args) -> bool
+
+      Run a command in a container.
+
+      :returns: *bool* -- Whether the command succeeded.
+
+
+   .. py:method:: attach() -> bool
+
+      Attach to a container.
+
+      NOTE: We assume a shell session is desired.
+
+      This is somewhat difficult, as we don't know the default shell of the user in the container. We therefore have to determine this at runtime with a pretty nasty command.
+
+      :returns: *bool* -- Whether the command succeeded.
+
+
+   .. py:method:: run_cmd(cmd, *args, **kwargs) -> bool
+
+      Run a command using the system wide ``compose`` command
+
+      Additional positional args (``*args``) will be passed as command arguments when running the command.
+      Named arguments will be passed to :meth:`subprocess.run`
+      (`see their docs <https://docs.python.org/3/library/subprocess.html#subprocess.run>`_).
+
+      :Parameters: **cmd** (*str*) -- The command to run.
+
+      :returns: *Bool* -- Whether the command succeeded.
 
 
 
