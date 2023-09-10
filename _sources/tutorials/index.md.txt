@@ -5,7 +5,7 @@ Please refer to some select tutorials to help understand how to use the AV Toolk
 ```{toctree}
 :maxdepth: 1
 
-using-the-development-environment/README.md
+using-the-development-environment/using-the-development-environment.md
 autonomy-research-testbed/autonomy-research-testbed.md
 
 ```
