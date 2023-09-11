@@ -351,15 +351,7 @@
         <span class="c1"># fmt: on</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_args</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;sh&quot;</span><span class="p">,</span> <span class="s2">&quot;-c&quot;</span><span class="p">,</span> <span class="n">exec_cmd</span><span class="p">]</span>
 
-        <span class="k">try</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">run_cmd</span><span class="p">(</span><span class="s2">&quot;exec&quot;</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
-        <span class="k">except</span> <span class="n">ContainerException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="k">if</span> <span class="s2">&quot;is not running&quot;</span> <span class="ow">in</span> <span class="n">e</span><span class="o">.</span><span class="n">stderr</span><span class="p">:</span>
-                <span class="n">LOGGER</span><span class="o">.</span><span class="n">fatal</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;Please run the command with &#39;--up&#39;. The container cannot be attached to since it hasn&#39;t been created.&quot;</span>
-                <span class="p">)</span>
-                <span class="k">return</span> <span class="kc">False</span>
-            <span class="k">raise</span> <span class="n">e</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">run_cmd</span><span class="p">(</span><span class="s2">&quot;exec&quot;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="DockerClient.run_cmd"><a class="viewcode-back" href="../../../usage/api/autonomy_toolkit/containers/docker_client/index.html#autonomy_toolkit.containers.docker_client.DockerClient.run_cmd">[docs]</a>    <span class="k">def</span> <span class="nf">run_cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cmd</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Run a command using the system wide ``compose`` command</span>
@@ -410,10 +402,8 @@
         <span class="n">stderr</span> <span class="o">=</span> <span class="n">post_process_stream</span><span class="p">(</span><span class="n">completed_process</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">completed_process</span><span class="o">.</span><span class="n">returncode</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">ContainerException</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Got an error code of &#39;</span><span class="si">{</span><span class="n">completed_process</span><span class="o">.</span><span class="n">returncode</span><span class="si">}</span><span class="s2">&#39;: </span><span class="si">{</span><span class="n">cmd</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
-                <span class="n">stdout</span><span class="p">,</span>
-                <span class="n">stderr</span><span class="p">,</span>
+            <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Got an error code of &#39;</span><span class="si">{</span><span class="n">completed_process</span><span class="o">.</span><span class="n">returncode</span><span class="si">}</span><span class="s2">&#39;: </span><span class="si">{</span><span class="n">cmd</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">stdout</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">stderr</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
             <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">return_output</span><span class="p">:</span>
