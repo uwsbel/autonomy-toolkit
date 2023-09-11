@@ -109,15 +109,7 @@ class DockerClient:
         # fmt: on
         self._args += ["sh", "-c", exec_cmd]
 
-        try:
-            return self.run_cmd("exec", stderr=-1)
-        except ContainerException as e:
-            if "is not running" in e.stderr:
-                LOGGER.fatal(
-                    f"Please run the command with '--up'. The container cannot be attached to since it hasn't been created."
-                )
-                return False
-            raise e
+        return self.run_cmd("exec")
 
     def run_cmd(self, cmd, *args, **kwargs) -> bool:
         """Run a command using the system wide ``compose`` command
@@ -168,10 +160,8 @@ class DockerClient:
         stderr = post_process_stream(completed_process.stderr)
 
         if completed_process.returncode:
-            raise ContainerException(
-                f"Got an error code of '{completed_process.returncode}': {cmd}",
-                stdout,
-                stderr,
+            LOGGER.debug(
+                f"Got an error code of '{completed_process.returncode}': {cmd}: {stdout}: {stderr}",
             )
 
         if return_output:
