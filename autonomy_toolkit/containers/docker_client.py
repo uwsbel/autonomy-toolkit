@@ -4,6 +4,7 @@
 # Imports from autonomy_toolkit
 from autonomy_toolkit.utils.logger import LOGGER
 from autonomy_toolkit.utils.atk_config import ATKConfig
+from autonomy_toolkit.utils.files import file_exists
 
 # External imports
 import subprocess
@@ -57,7 +58,8 @@ class DockerClient:
         # i.e. .. compose ..opts <command>
         self._opts = opts
         self._opts = ["-f", self.compose_file] + self._opts
-        self._opts = ["--env-file", config.env_file] + self._opts
+        if file_exists(config.env_file):
+            self._opts = ["--env-file", config.env_file] + self._opts
 
         # Args passed to the compose subcommand
         # i.e. .. compose <command> ...args
