@@ -9,16 +9,12 @@ Setup and installation information is provided in this guide.
 Before you can install the `autonomy-toolkit` package, you will need to install a few other packages. Please see the linked installation instructions before continuing.
 
 - Python >= 3.8.2: [Further details below](#python-environments)
-- [Docker](https://docker.com): [Installation instructions](https://docs.docker.com/get-docker/)
+- [Docker](https://docker.com): [Installation instructions](https://docs.docker.com/get-docker/) (additional [post installation instructions](https://docs.docker.com/engine/install/linux-postinstall/) for Linux users)
 - [docker compose v2](https://docs.docker.com/compose/): [Installation instructions](https://docs.docker.com/compose/cli-command/)
 
 ```{note}
 The docker compose version must be greater than 2.12.x. To check, run `docker compose version`.
 ```
-
-### Additional Prerequisites For Linux Users
-
-- You can run Docker as a non-root user and have activated the Docker daemon ([resource for that](https://docs.docker.com/engine/install/linux-postinstall/))
 
 Once the [prerequisites](#prerequisites) have been installed, you may proceed to installing the `autonomy-toolkit` package.
 
