@@ -39,7 +39,7 @@ Classes
       :Parameters: **arg** (*Any*) -- The argument to update the services with. This can be a dictionary, list, or any other type that ``mergedeep`` supports.
 
 
-   .. py:method:: update_services_with_optionals(optionals: List[str])
+   .. py:method:: update_services_with_optionals(optionals: List[str]) -> bool
 
       Updates the services with the given optionals.
 
