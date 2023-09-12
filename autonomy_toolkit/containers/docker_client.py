@@ -57,6 +57,7 @@ class DockerClient:
         # i.e. .. compose ..opts <command>
         self._opts = opts
         self._opts = ["-f", self.compose_file] + self._opts
+        self._opts = ["--env-file", config.env_file] + self._opts
 
         # Args passed to the compose subcommand
         # i.e. .. compose <command> ...args

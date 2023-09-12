@@ -31,6 +31,7 @@ class ATKConfig:
         filename: Union[Path, str],
         services: List[str],
         *,
+        env_filename: Union[Path, str] = "atk.env",
         compose_file: Union[Path, str] = ".atk-compose.yml",
     ):
         self.services = services
@@ -42,8 +43,9 @@ class ATKConfig:
                 f"No '{filename}' file was found in this directory or any parent directories. Make sure you are running this command in an autonomy-toolkit compatible repository. Cannot continue."
             )
 
-        # Save the generated compose file at the same level as the atk.yml file
+        # Set the path of the generated compose file and the env file at the same level as the atk.yml file
         self.compose_file = self.atk_yml_path.parent / compose_file
+        self.env_file = self.atk_yml_path.parent / env_filename
 
         # Parse the atk yml file
         try:

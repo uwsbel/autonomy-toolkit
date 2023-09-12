@@ -29,7 +29,7 @@ def _run_dev(args):
     # Find the atk.yml file
     filename = args.filename
     try:
-        config = ATKConfig(filename, args.services)
+        config = ATKConfig(filename, args.services, env_filename=args.env_file)
     except Exception as e:
         LOGGER.fatal(e)
         return False
@@ -118,6 +118,11 @@ def _init(subparser):
         "--filename",
         help="The ATK config file. Defaults to 'atk.yml'",
         default="atk.yml",
+    )
+    subparser.add_argument(
+        "--env-file",
+        help="The ATK environment file. Defaults to 'atk.env'",
+        default="atk.env",
     )
     subparser.add_argument(
         "--optionals",
