@@ -12,6 +12,10 @@ Before you can install the `autonomy-toolkit` package, you will need to install 
 - [Docker](https://docker.com): [Installation instructions](https://docs.docker.com/get-docker/)
 - [docker compose v2](https://docs.docker.com/compose/): [Installation instructions](https://docs.docker.com/compose/cli-command/)
 
+```{note}
+The docker compose version must be greater than 2.12.x. To check, run `docker compose version`.
+```
+
 ### Additional Prerequisites For Linux Users
 
 - You can run Docker as a non-root user and have activated the Docker daemon ([resource for that](https://docs.docker.com/engine/install/linux-postinstall/))
