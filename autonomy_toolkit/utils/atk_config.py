@@ -65,7 +65,7 @@ class ATKConfig:
         for service in self.config["services"].values():
             mergedeep.merge(service, arg, strategy=mergedeep.Strategy.ADDITIVE)
 
-    def update_services_with_optionals(self, optionals: List[str]):
+    def update_services_with_optionals(self, optionals: List[str]) -> bool:
         """Updates the services with the given optionals.
 
         The optionals arg defines which optionals to add to the services. The optionals are defined in the ``x-optionals`` field of the atk.yml file.
@@ -73,13 +73,21 @@ class ATKConfig:
         Args:
             optionals (List[str]): List of optionals to add to the services.
         """
+        if len(optionals) and "x-optionals" not in self.config:
+            LOGGER.error(
+                "Optionals must be in the 'x-optionals' field at the root of the docker compose file. 'x-optionals' not found."
+            )
+            return False
+
         for opt in optionals:
             if opt not in self.config["x-optionals"]:
-                LOGGER.warn(
-                    f"Optional '{opt}' was not found in the 'x-optionals' field. Ignoring."
+                LOGGER.error(
+                    f"Optional '{opt}' was not found in the 'x-optionals' field."
                 )
-                continue
+                return False
             self.update_services(self.config["x-optionals"][opt])
+
+        return True
 
     def write(self) -> bool:
         """Dump the config to the compose file to be read by docker compose"""

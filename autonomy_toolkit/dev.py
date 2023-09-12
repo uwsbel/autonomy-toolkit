@@ -35,7 +35,8 @@ def _run_dev(args):
         return False
 
     # Update the config with optionals
-    config.update_services_with_optionals(args.optionals)
+    if not config.update_services_with_optionals(args.optionals):
+        return False
 
     # Write the new configuration file
     if not config.write():
