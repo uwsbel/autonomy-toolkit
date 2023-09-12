@@ -273,6 +273,7 @@
         <span class="n">filename</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Path</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
         <span class="n">services</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
         <span class="o">*</span><span class="p">,</span>
+        <span class="n">env_filename</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Path</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;atk.env&quot;</span><span class="p">,</span>
         <span class="n">compose_file</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Path</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;.atk-compose.yml&quot;</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">services</span> <span class="o">=</span> <span class="n">services</span>
@@ -284,8 +285,9 @@
                 <span class="sa">f</span><span class="s2">&quot;No &#39;</span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">&#39; file was found in this directory or any parent directories. Make sure you are running this command in an autonomy-toolkit compatible repository. Cannot continue.&quot;</span>
             <span class="p">)</span>
 
-        <span class="c1"># Save the generated compose file at the same level as the atk.yml file</span>
+        <span class="c1"># Set the path of the generated compose file and the env file at the same level as the atk.yml file</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">compose_file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">atk_yml_path</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="n">compose_file</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">env_file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">atk_yml_path</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="n">env_filename</span>
 
         <span class="c1"># Parse the atk yml file</span>
         <span class="k">try</span><span class="p">:</span>

@@ -299,6 +299,7 @@
         <span class="c1"># i.e. .. compose ..opts &lt;command&gt;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_opts</span> <span class="o">=</span> <span class="n">opts</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_opts</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;-f&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">compose_file</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_opts</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_opts</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;--env-file&quot;</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">env_file</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_opts</span>
 
         <span class="c1"># Args passed to the compose subcommand</span>
         <span class="c1"># i.e. .. compose &lt;command&gt; ...args</span>
