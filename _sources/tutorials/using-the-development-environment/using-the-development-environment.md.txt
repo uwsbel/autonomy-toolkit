@@ -82,7 +82,7 @@ The ART stack also comes with a variety of launch packages/files, one of which i
 You first need to start the simulation. The Chrono simulation will act as a TCP server, so the ART launch file will throw errors if the Chrono sim is not started first. To do this, run the following command in one terminal window:
 
 ```bash
-atk dev --run --services chrono --optionals gpus --compose-args python3 demo_ARCLAB_cone.py
+atk dev --run --services chrono --optionals gpus --compose-arg "python3 demo_ARCLAB_cone.py"
 ```
 
 The `--services chrono` tells atk to use the `chrono` container for the `--run` command. `--optionals gpus` is required for the `demo_ARCLAB_cone.py` script because it uses [Chrono::Sensor](https://api.projectchrono.org/group__sensor.html) which requires CUDA. Similar to the `dev` container with the `--up` flag, if the image for the `chrono` container is not already built, `--run` will build it.

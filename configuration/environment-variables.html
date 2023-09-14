@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Tutorials" href="../tutorials/index.html" /><link rel="prev" title="ATK Configuration File" href="atk-configuration-file.html" />
 
     <link rel="shortcut icon" href="../_static/cropped-SBEL-32x32.png"/><!-- Generated with Sphinx 5.3.0 and Furo 2022.12.07 -->
-        <title>Environment Variables - Autonomous Vehicle Toolbox 2.0.3 documentation</title>
+        <title>Environment Variables - Autonomous Vehicle Toolbox 2.0.4 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=91d0f0d1c444bdcb17a68e833c7a53903343c195" />
     <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
@@ -136,7 +136,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">Autonomous Vehicle Toolbox 2.0.3 documentation</div></a>
+      <a href="../index.html"><div class="brand">Autonomous Vehicle Toolbox 2.0.4 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -253,7 +253,7 @@
 <p>Because <code class="docutils literal notranslate"><span class="pre">atk</span></code> is simply a wrapper of <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span></code>, all the traditional techniques to use environment variables in <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span></code> still works. It is recommended to put a <code class="docutils literal notranslate"><span class="pre">atk.env</span></code> file in the same directly as the <code class="docutils literal notranslate"><span class="pre">atk.yml</span></code> file as no additional configuration is needed to read the <code class="docutils literal notranslate"><span class="pre">atk.env</span></code> file automatically.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>By default, <code class="docutils literal notranslate"><span class="pre">atk</span></code> passes <code class="docutils literal notranslate"><span class="pre">--env-file</span> <span class="pre">atk.env</span></code> to <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span></code>. This can be overriden directly within <code class="docutils literal notranslate"><span class="pre">atk</span></code> with the <code class="docutils literal notranslate"><span class="pre">--env-file</span></code> flag. See <code class="docutils literal notranslate"><span class="pre">atk</span> <span class="pre">dev</span> <span class="pre">-h</span></code> for more information.</p>
+<p>By default, <code class="docutils literal notranslate"><span class="pre">atk</span></code> passes <code class="docutils literal notranslate"><span class="pre">--env-file</span> <span class="pre">atk.env</span></code> to <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span></code>. This can be overridden directly within <code class="docutils literal notranslate"><span class="pre">atk</span></code> with the <code class="docutils literal notranslate"><span class="pre">--env-file-override</span></code> flag. See <code class="docutils literal notranslate"><span class="pre">atk</span> <span class="pre">dev</span> <span class="pre">-h</span></code> for more information.</p>
 </div>
 </section>
 <section id="atk-environment-variables">

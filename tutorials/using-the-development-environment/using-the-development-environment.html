@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="Autonomy Research Testbed" href="../autonomy-research-testbed/autonomy-research-testbed.html" /><link rel="prev" title="Tutorials" href="../index.html" />
 
     <link rel="shortcut icon" href="../../_static/cropped-SBEL-32x32.png"/><!-- Generated with Sphinx 5.3.0 and Furo 2022.12.07 -->
-        <title>Using the ATK Development Environment - Autonomous Vehicle Toolbox 2.0.3 documentation</title>
+        <title>Using the ATK Development Environment - Autonomous Vehicle Toolbox 2.0.4 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=91d0f0d1c444bdcb17a68e833c7a53903343c195" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
@@ -136,7 +136,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">Autonomous Vehicle Toolbox 2.0.3 documentation</div></a>
+      <a href="../../index.html"><div class="brand">Autonomous Vehicle Toolbox 2.0.4 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -309,7 +309,7 @@ art-dev:~/art/workspace$
 <p>Another image provided by the ART platform is <code class="docutils literal notranslate"><span class="pre">chrono</span></code>. The <code class="docutils literal notranslate"><span class="pre">chrono</span></code> image has been developed to provide a independent and prebuilt interface to the Chrono simulator. ART has been developed to have a Chrono model and various scenarios/examples are provided as a means of testing the interface between the ART stack and <code class="docutils literal notranslate"><span class="pre">chrono</span></code>.</p>
 <p>The ART stack also comes with a variety of launch packages/files, one of which is the <code class="docutils literal notranslate"><span class="pre">art.launch.py</span></code> file in the <code class="docutils literal notranslate"><span class="pre">art_launch</span></code> package. In this section, we’ll spin up a Chrono simulation using the <code class="docutils literal notranslate"><span class="pre">chrono</span></code> container and then use <code class="docutils literal notranslate"><span class="pre">art.launch.py</span></code> to start up the control stack to control the simulated vehicle autonomously through a track of red and green cones. The interface between Chrono and ROS 2 has been implemented through the <a class="reference external" href="https://github.com/uwsbel/chrono-ros-bridge.git">chrono-ros-bridge</a>. This package is already provided in the ART workspace and the generated node is called upon in <code class="docutils literal notranslate"><span class="pre">art.launch.py</span></code>.</p>
 <p>You first need to start the simulation. The Chrono simulation will act as a TCP server, so the ART launch file will throw errors if the Chrono sim is not started first. To do this, run the following command in one terminal window:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>atk<span class="w"> </span>dev<span class="w"> </span>--run<span class="w"> </span>--services<span class="w"> </span>chrono<span class="w"> </span>--optionals<span class="w"> </span>gpus<span class="w"> </span>--compose-args<span class="w"> </span>python3<span class="w"> </span>demo_ARCLAB_cone.py
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>atk<span class="w"> </span>dev<span class="w"> </span>--run<span class="w"> </span>--services<span class="w"> </span>chrono<span class="w"> </span>--optionals<span class="w"> </span>gpus<span class="w"> </span>--compose-arg<span class="w"> </span><span class="s2">&quot;python3 demo_ARCLAB_cone.py&quot;</span>
 </pre></div>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">--services</span> <span class="pre">chrono</span></code> tells atk to use the <code class="docutils literal notranslate"><span class="pre">chrono</span></code> container for the <code class="docutils literal notranslate"><span class="pre">--run</span></code> command. <code class="docutils literal notranslate"><span class="pre">--optionals</span> <span class="pre">gpus</span></code> is required for the <code class="docutils literal notranslate"><span class="pre">demo_ARCLAB_cone.py</span></code> script because it uses <a class="reference external" href="https://api.projectchrono.org/group__sensor.html">Chrono::Sensor</a> which requires CUDA. Similar to the <code class="docutils literal notranslate"><span class="pre">dev</span></code> container with the <code class="docutils literal notranslate"><span class="pre">--up</span></code> flag, if the image for the <code class="docutils literal notranslate"><span class="pre">chrono</span></code> container is not already built, <code class="docutils literal notranslate"><span class="pre">--run</span></code> will build it.</p>

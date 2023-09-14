@@ -11,7 +11,7 @@ See [Environment Variables](environment-variables.md) for more information regar
 ## Example File
 
 ```yaml
-x-project: art
+name: art
 x-optionals:
   devices:
     devices:
@@ -72,11 +72,15 @@ The above example `atk.yml` file showcases many of the usages and features of th
 
 The `atk.yml` file is populated with various fields at the root level of the yaml. All are prefixed with `x-`, as this is reserved in `docker compose` and will not throw an error when reading.
 
-### `x-project`
+### `name`
 
-This field specifies the name of the project. It is a required field, and can be accessed via the `x-project` variable.
+This field specifies the name of the project. It is part of the `docker compse` specification. It is a highly recommended to be included as if not defined explicitly, container and network names are defined with arbitrary names.
 
 ### `x-optionals`
+
+```{warning}
+Note that [extensions](https://docs.docker.com/compose/compose-file/11-extension/) (the `docker compose` name in the specification for `x-<variable>`) are not carried over with the [`include`](https://docs.docker.com/compose/compose-file/14-include/) keyword.
+```
 
 This field is the primary advantage of using `autonomy-toolkit` over other container orchestrations. This field provides users the ability to, at runtime, specify custom configuration variables to be used that are not used by default.
 
@@ -107,7 +111,7 @@ Say for the above example that `gpus` is passed as an optional, the attributes i
 A simplified `atk.yml` is showed below for description purposes:
 
 ```yaml
-x-project: art
+name: art
 x-optionals:
   devices:
     devices:
