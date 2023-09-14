@@ -63,7 +63,7 @@ Classes
       :returns: *bool* -- Whether the command succeeded.
 
 
-   .. py:method:: run(*args) -> bool
+   .. py:method:: run() -> bool
 
       Run a command in a container.
 
@@ -81,7 +81,7 @@ Classes
       :returns: *bool* -- Whether the command succeeded.
 
 
-   .. py:method:: run_cmd(cmd, *args, **kwargs) -> bool
+   .. py:method:: run_cmd(cmd, *args, without_ots: bool = False, **kwargs) -> bool
 
       Run a command using the system wide ``compose`` command
 
@@ -92,6 +92,11 @@ Classes
       :Parameters: **cmd** (*str*) -- The command to run.
 
       :returns: *Bool* -- Whether the command succeeded.
+
+
+   .. py:method:: run_compose_cmd(*args, **kwargs) -> bool
+
+      Run a docker compose command.
 
 
 

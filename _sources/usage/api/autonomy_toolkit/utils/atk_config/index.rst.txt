@@ -48,9 +48,23 @@ Classes
       :Parameters: **optionals** (*List[str]*) -- List of optionals to add to the services.
 
 
-   .. py:method:: write() -> bool
+   .. py:method:: write(filename: Optional[Union[pathlib.Path, str]] = None) -> bool
 
       Dump the config to the compose file to be read by docker compose
+
+
+   .. py:method:: read(filename: Optional[Union[pathlib.Path, str]] = None) -> bool
+
+      Read the config to the compose file to be used by docker compose
+
+
+   .. py:method:: load(client: DockerClient, opts: List[str]) -> bool
+
+      Loads the config file using `docker compose config`
+
+      This allows us to use docker's multi-file loading (e.g. `-f <file1>.yaml -f <file2>.yaml`), `include` and other docker compose features.
+
+      :Parameters: **client** (*DockerClient*) -- The docker client to use to write the compose file.
 
 
 

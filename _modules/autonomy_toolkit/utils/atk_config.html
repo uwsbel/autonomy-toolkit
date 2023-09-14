@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
     <link rel="shortcut icon" href="../../../_static/cropped-SBEL-32x32.png"/><!-- Generated with Sphinx 5.3.0 and Furo 2022.12.07 -->
-        <title>autonomy_toolkit.utils.atk_config - Autonomous Vehicle Toolbox 2.0.4 documentation</title>
+        <title>autonomy_toolkit.utils.atk_config - Autonomous Vehicle Toolbox 2.0.5 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=91d0f0d1c444bdcb17a68e833c7a53903343c195" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
@@ -135,7 +135,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">Autonomous Vehicle Toolbox 2.0.4 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">Autonomous Vehicle Toolbox 2.0.5 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -250,7 +250,8 @@
 <span class="kn">from</span> <span class="nn">autonomy_toolkit.utils.files</span> <span class="kn">import</span> <span class="n">search_upwards_for_file</span><span class="p">,</span> <span class="n">read_file</span><span class="p">,</span> <span class="n">file_exists</span>
 
 <span class="c1"># Other imports</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">List</span>
+<span class="kn">import</span> <span class="nn">tempfile</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">import</span> <span class="nn">yaml</span>
 <span class="kn">import</span> <span class="nn">mergedeep</span>
@@ -290,13 +291,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">env_file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">atk_yml_path</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="n">env_filename</span>
 
         <span class="c1"># Parse the atk yml file</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">read_file</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">atk_yml_path</span><span class="p">))</span>
-        <span class="k">except</span> <span class="n">yaml</span><span class="o">.</span><span class="n">YAMLError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="n">LOGGER</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
-            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;An error occurred while parsing </span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">. Set verbosity to info for more details.&quot;</span>
-            <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
 
 <div class="viewcode-block" id="ATKConfig.update_services"><a class="viewcode-back" href="../../../usage/api/autonomy_toolkit/utils/atk_config/index.html#autonomy_toolkit.utils.atk_config.ATKConfig.update_services">[docs]</a>    <span class="k">def</span> <span class="nf">update_services</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Uses ``mergedeep`` to update the services with the given argument</span>
@@ -331,9 +326,10 @@
 
         <span class="k">return</span> <span class="kc">True</span></div>
 
-<div class="viewcode-block" id="ATKConfig.write"><a class="viewcode-back" href="../../../usage/api/autonomy_toolkit/utils/atk_config/index.html#autonomy_toolkit.utils.atk_config.ATKConfig.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<div class="viewcode-block" id="ATKConfig.write"><a class="viewcode-back" href="../../../usage/api/autonomy_toolkit/utils/atk_config/index.html#autonomy_toolkit.utils.atk_config.ATKConfig.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Path</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Dump the config to the compose file to be read by docker compose&quot;&quot;&quot;</span>
-        <span class="c1"># Rewrite the compose file</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="n">filename</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">compose_file</span>
+
         <span class="k">try</span><span class="p">:</span>
             <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">compose_file</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
                 <span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
@@ -341,6 +337,44 @@
             <span class="n">LOGGER</span><span class="o">.</span><span class="n">fatal</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Failed to write compose file: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="k">return</span> <span class="kc">False</span>
 
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+<div class="viewcode-block" id="ATKConfig.read"><a class="viewcode-back" href="../../../usage/api/autonomy_toolkit/utils/atk_config/index.html#autonomy_toolkit.utils.atk_config.ATKConfig.read">[docs]</a>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Path</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read the config to the compose file to be used by docker compose&quot;&quot;&quot;</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="n">filename</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">atk_yml_path</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">read_file</span><span class="p">(</span><span class="n">filename</span><span class="p">))</span>
+        <span class="k">except</span> <span class="n">yaml</span><span class="o">.</span><span class="n">YAMLError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">LOGGER</span><span class="o">.</span><span class="n">fatal</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Failed to read compose file: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+<div class="viewcode-block" id="ATKConfig.load"><a class="viewcode-back" href="../../../usage/api/autonomy_toolkit/utils/atk_config/index.html#autonomy_toolkit.utils.atk_config.ATKConfig.load">[docs]</a>    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">:</span> <span class="s2">&quot;DockerClient&quot;</span><span class="p">,</span> <span class="n">opts</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Loads the config file using `docker compose config`</span>
+
+<span class="sd">        This allows us to use docker&#39;s multi-file loading (e.g. `-f &lt;file1&gt;.yaml -f &lt;file2&gt;.yaml`), `include` and other docker compose features.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            client (DockerClient): The docker client to use to write the compose file.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">(</span><span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">temp_file</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">temp_file</span><span class="o">.</span><span class="n">name</span><span class="p">):</span>
+                <span class="k">return</span> <span class="kc">False</span>
+            <span class="n">client</span><span class="o">.</span><span class="n">run_compose_cmd</span><span class="p">(</span>
+                <span class="s2">&quot;-f&quot;</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">atk_yml_path</span><span class="p">,</span>
+                <span class="o">*</span><span class="n">opts</span><span class="p">,</span>
+                <span class="s2">&quot;config&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;-o&quot;</span><span class="p">,</span>
+                <span class="n">temp_file</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                <span class="s2">&quot;--no-interpolate&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;--no-path-resolution&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;--no-normalize&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;--no-consistency&quot;</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">temp_file</span><span class="o">.</span><span class="n">name</span><span class="p">):</span>
+                <span class="k">return</span> <span class="kc">False</span>
         <span class="k">return</span> <span class="kc">True</span></div></div>
 </pre></div>
         </article>

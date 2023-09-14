@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="autonomy_toolkit" href="api/autonomy_toolkit/index.html" /><link rel="prev" title="API Reference" href="index.html" />
 
     <link rel="shortcut icon" href="../_static/cropped-SBEL-32x32.png"/><!-- Generated with Sphinx 5.3.0 and Furo 2022.12.07 -->
-        <title>CLI Documentation - Autonomous Vehicle Toolbox 2.0.4 documentation</title>
+        <title>CLI Documentation - Autonomous Vehicle Toolbox 2.0.5 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=91d0f0d1c444bdcb17a68e833c7a53903343c195" />
     <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
@@ -136,7 +136,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">Autonomous Vehicle Toolbox 2.0.4 documentation</div></a>
+      <a href="../index.html"><div class="brand">Autonomous Vehicle Toolbox 2.0.5 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -275,7 +275,8 @@
 <section id="dev">
 <h3><code class="docutils literal notranslate"><span class="pre">dev</span></code><a class="headerlink" href="#dev" title="Permalink to this heading">#</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">usage</span><span class="p">:</span> <span class="n">atk</span> <span class="n">dev</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="o">-</span><span class="n">s</span> <span class="n">SERVICES</span> <span class="p">[</span><span class="n">SERVICES</span> <span class="o">...</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">b</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">u</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">d</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">a</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">r</span><span class="p">]</span>
-               <span class="p">[</span><span class="o">-</span><span class="n">f</span> <span class="n">FILENAME</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">env</span><span class="o">-</span><span class="n">file</span> <span class="n">ENV_FILE</span><span class="p">]</span>
+               <span class="p">[</span><span class="o">--</span><span class="n">filename</span><span class="o">-</span><span class="n">override</span> <span class="n">FILENAME_OVERRIDE</span><span class="p">]</span>
+               <span class="p">[</span><span class="o">--</span><span class="n">env</span><span class="o">-</span><span class="n">file</span><span class="o">-</span><span class="n">override</span> <span class="n">ENV_FILE_OVERRIDE</span><span class="p">]</span>
                <span class="p">[</span><span class="o">--</span><span class="n">optionals</span> <span class="n">OPTIONALS</span> <span class="p">[</span><span class="n">OPTIONALS</span> <span class="o">...</span><span class="p">]]</span>
                <span class="p">[</span><span class="o">--</span><span class="n">compose</span><span class="o">-</span><span class="n">arg</span> <span class="n">COMPOSE_ARGS</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">compose</span><span class="o">-</span><span class="n">opt</span> <span class="n">COMPOSE_OPTS</span><span class="p">]</span>
 </pre></div>
@@ -307,12 +308,12 @@
 <dd><p>Run a command in the provided service. Only one service may be provided.</p>
 <p>Default: False</p>
 </dd>
-<dt><kbd>-f, --filename</kbd></dt>
-<dd><p>The ATK config file. Defaults to ‘atk.yml’</p>
+<dt><kbd>--filename-override</kbd></dt>
+<dd><p>Override the default ATK config filename. Will search upwards for file. Defaults to ‘atk.yml’</p>
 <p>Default: “atk.yml”</p>
 </dd>
-<dt><kbd>--env-file</kbd></dt>
-<dd><p>The ATK environment file. Defaults to ‘atk.env’</p>
+<dt><kbd>--env-file-override</kbd></dt>
+<dd><p>Override the default ATK environment filename. Will search upwards for file. Defaults to ‘atk.env’</p>
 <p>Default: “atk.env”</p>
 </dd>
 <dt><kbd>--optionals</kbd></dt>
@@ -324,7 +325,7 @@
 <p>Default: []</p>
 </dd>
 <dt><kbd>--compose-opt</kbd></dt>
-<dd><p>Additional options that are passed to the compose command. If the arg has a <cite>–</cite>, you must use an <cite>=</cite>. Example: <cite>atk dev -s dev -b –compose-opt=–no-cache</cite> will evaluate to <cite>docker compose build –no-cache dev</cite>. You may use <cite>–compose-opt</cite> multiple times to append multiple options. Will be passed to _all_ selected subcommands (i.e. build, up, etc.).</p>
+<dd><p>NOTE: unknown flags passed to <cite>atk dev</cite> are directly passed to <cite>docker compose</cite> as options, this is merely an explicit alias for that functionality. Additional options that are passed to the compose command. If the arg has a <cite>–</cite>, you must use an <cite>=</cite>. Example: <cite>atk dev -s dev -b –compose-opt=–no-cache</cite> will evaluate to <cite>docker compose build –no-cache dev</cite>. You may use <cite>–compose-opt</cite> multiple times to append multiple options. Will be passed to _all_ selected subcommands (i.e. build, up, etc.).</p>
 <p>Default: []</p>
 </dd>
 </dl>

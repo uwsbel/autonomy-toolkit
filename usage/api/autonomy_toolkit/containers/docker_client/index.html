@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="../../../../../genindex.html" /><link rel="search" title="Search" href="../../../../../search.html" /><link rel="next" title="autonomy_toolkit.utils" href="../../utils/index.html" /><link rel="prev" title="autonomy_toolkit.containers" href="../index.html" />
 
     <link rel="shortcut icon" href="../../../../../_static/cropped-SBEL-32x32.png"/><!-- Generated with Sphinx 5.3.0 and Furo 2022.12.07 -->
-        <title>autonomy_toolkit.containers.docker_client - Autonomous Vehicle Toolbox 2.0.4 documentation</title>
+        <title>autonomy_toolkit.containers.docker_client - Autonomous Vehicle Toolbox 2.0.5 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/styles/furo.css?digest=91d0f0d1c444bdcb17a68e833c7a53903343c195" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/graphviz.css" />
@@ -136,7 +136,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../../index.html"><div class="brand">Autonomous Vehicle Toolbox 2.0.4 documentation</div></a>
+      <a href="../../../../../index.html"><div class="brand">Autonomous Vehicle Toolbox 2.0.5 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -322,7 +322,7 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="autonomy_toolkit.containers.docker_client.DockerClient.run">
-<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../../../../../_modules/autonomy_toolkit/containers/docker_client.html#DockerClient.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autonomy_toolkit.containers.docker_client.DockerClient.run" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../../../../../_modules/autonomy_toolkit/containers/docker_client.html#DockerClient.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autonomy_toolkit.containers.docker_client.DockerClient.run" title="Permalink to this definition">#</a></dt>
 <dd><p>Run a command in a container.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -346,7 +346,7 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="autonomy_toolkit.containers.docker_client.DockerClient.run_cmd">
-<span class="sig-name descname"><span class="pre">run_cmd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cmd</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../../../../../_modules/autonomy_toolkit/containers/docker_client.html#DockerClient.run_cmd"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autonomy_toolkit.containers.docker_client.DockerClient.run_cmd" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">run_cmd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cmd</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">without_ots</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../../../../../_modules/autonomy_toolkit/containers/docker_client.html#DockerClient.run_cmd"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autonomy_toolkit.containers.docker_client.DockerClient.run_cmd" title="Permalink to this definition">#</a></dt>
 <dd><p>Run a command using the system wide <code class="docutils literal notranslate"><span class="pre">compose</span></code> command</p>
 <p>Additional positional args (<code class="docutils literal notranslate"><span class="pre">*args</span></code>) will be passed as command arguments when running the command.
 Named arguments will be passed to <code class="xref py py-meth docutils literal notranslate"><span class="pre">subprocess.run()</span></code>
@@ -359,6 +359,12 @@ Named arguments will be passed to <code class="xref py py-meth docutils literal 
 <dd class="field-even"><p><em>Bool</em> – Whether the command succeeded.</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="autonomy_toolkit.containers.docker_client.DockerClient.run_compose_cmd">
+<span class="sig-name descname"><span class="pre">run_compose_cmd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../../../../../_modules/autonomy_toolkit/containers/docker_client.html#DockerClient.run_compose_cmd"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autonomy_toolkit.containers.docker_client.DockerClient.run_compose_cmd" title="Permalink to this definition">#</a></dt>
+<dd><p>Run a docker compose command.</p>
 </dd></dl>
 
 </dd></dl>
@@ -433,6 +439,7 @@ Named arguments will be passed to <code class="xref py py-meth docutils literal 
 <li><a class="reference internal" href="#autonomy_toolkit.containers.docker_client.DockerClient.run"><code class="docutils literal notranslate"><span class="pre">DockerClient.run()</span></code></a></li>
 <li><a class="reference internal" href="#autonomy_toolkit.containers.docker_client.DockerClient.attach"><code class="docutils literal notranslate"><span class="pre">DockerClient.attach()</span></code></a></li>
 <li><a class="reference internal" href="#autonomy_toolkit.containers.docker_client.DockerClient.run_cmd"><code class="docutils literal notranslate"><span class="pre">DockerClient.run_cmd()</span></code></a></li>
+<li><a class="reference internal" href="#autonomy_toolkit.containers.docker_client.DockerClient.run_compose_cmd"><code class="docutils literal notranslate"><span class="pre">DockerClient.run_compose_cmd()</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#autonomy_toolkit.containers.docker_client.ContainerException">ContainerException</a></li>
@@ -443,6 +450,7 @@ Named arguments will be passed to <code class="xref py py-meth docutils literal 
 <li><a class="reference internal" href="#autonomy_toolkit.containers.docker_client.DockerClient.run">run</a></li>
 <li><a class="reference internal" href="#autonomy_toolkit.containers.docker_client.DockerClient.attach">attach</a></li>
 <li><a class="reference internal" href="#autonomy_toolkit.containers.docker_client.DockerClient.run_cmd">run_cmd</a></li>
+<li><a class="reference internal" href="#autonomy_toolkit.containers.docker_client.DockerClient.run_compose_cmd">run_compose_cmd</a></li>
 </ul>
 </li>
 </ul>
