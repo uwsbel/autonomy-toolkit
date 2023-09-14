@@ -61,7 +61,8 @@ def _main():
     parser = _init()
 
     # Parse the arguments and update logging
-    args = parser.parse_args()
+    args, unknown = parser.parse_known_args()
+    args._unknown_args = unknown
 
     # Return version if desired and exit
     if args.version:

@@ -27,9 +27,10 @@ def _run_dev(args):
     LOGGER.info("Running 'dev' entrypoint...")
 
     # Find the atk.yml file
-    filename = args.filename
     try:
-        config = ATKConfig(filename, args.services, env_filename=args.env_file)
+        config = ATKConfig(
+            args.filename_override, args.services, env_filename=args.env_file_override
+        )
     except Exception as e:
         LOGGER.fatal(e)
         return False
@@ -43,6 +44,8 @@ def _run_dev(args):
         return False
 
     # Create the docker client
+    args.compose_opts.extend(args._unknown_args)
+    print(args.compose_opts)
     client = DockerClient(
         config,
         dry_run=args.dry_run,
@@ -115,14 +118,13 @@ def _init(subparser):
         default=False,
     )
     subparser.add_argument(
-        "-f",
-        "--filename",
-        help="The ATK config file. Defaults to 'atk.yml'",
+        "--filename-override",
+        help="Override the default ATK config filename. Will search upwards for file. Defaults to 'atk.yml'",
         default="atk.yml",
     )
     subparser.add_argument(
-        "--env-file",
-        help="The ATK environment file. Defaults to 'atk.env'",
+        "--env-file-override",
+        help="Override the default ATK environment filename. Will search upwards for file. Defaults to 'atk.env'",
         default="atk.env",
     )
     subparser.add_argument(
@@ -143,7 +145,7 @@ def _init(subparser):
         "--compose-opt",
         dest="compose_opts",
         nargs=1,
-        help="Additional options that are passed to the compose command. If the arg has a `--`, you must use an `=`. Example: `atk dev -s dev -b --compose-opt=--no-cache` will evaluate to `docker compose build --no-cache dev`. You may use `--compose-opt` multiple times to append multiple options. Will be passed to _all_ selected subcommands (i.e. build, up, etc.).",
+        help="NOTE: unknown flags passed to `atk dev` are directly passed to `docker compose` as options, this is merely an explicit alias for that functionality. Additional options that are passed to the compose command. If the arg has a `--`, you must use an `=`. Example: `atk dev -s dev -b --compose-opt=--no-cache` will evaluate to `docker compose build --no-cache dev`. You may use `--compose-opt` multiple times to append multiple options. Will be passed to _all_ selected subcommands (i.e. build, up, etc.).",
         action="extend",
         default=[],
     )
