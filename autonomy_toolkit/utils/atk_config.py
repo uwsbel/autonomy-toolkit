@@ -8,7 +8,8 @@ from autonomy_toolkit.utils.logger import LOGGER
 from autonomy_toolkit.utils.files import search_upwards_for_file, read_file, file_exists
 
 # Other imports
-from typing import Union, List
+import tempfile
+from typing import Union, List, Optional
 from pathlib import Path
 import yaml
 import mergedeep
@@ -48,13 +49,7 @@ class ATKConfig:
         self.env_file = self.atk_yml_path.parent / env_filename
 
         # Parse the atk yml file
-        try:
-            self.config = yaml.safe_load(read_file(self.atk_yml_path))
-        except yaml.YAMLError as e:
-            LOGGER.info(e)
-            raise Exception(
-                f"An error occurred while parsing {filename}. Set verbosity to info for more details."
-            )
+        self.read()
 
     def update_services(self, arg):
         """Uses ``mergedeep`` to update the services with the given argument
@@ -89,9 +84,10 @@ class ATKConfig:
 
         return True
 
-    def write(self) -> bool:
+    def write(self, filename: Optional[Union[Path, str]] = None) -> bool:
         """Dump the config to the compose file to be read by docker compose"""
-        # Rewrite the compose file
+        filename = filename or self.compose_file
+
         try:
             with open(self.compose_file, "w") as f:
                 yaml.dump(self.config, f)
@@ -99,4 +95,42 @@ class ATKConfig:
             LOGGER.fatal(f"Failed to write compose file: {e}")
             return False
 
+        return True
+
+    def read(self, filename: Optional[Union[Path, str]] = None) -> bool:
+        """Read the config to the compose file to be used by docker compose"""
+        filename = filename or self.atk_yml_path
+
+        try:
+            self.config = yaml.safe_load(read_file(filename))
+        except yaml.YAMLError as e:
+            LOGGER.fatal(f"Failed to read compose file: {e}")
+            return False
+        return True
+
+    def load(self, client: "DockerClient", opts: List[str]) -> bool:
+        """Loads the config file using `docker compose config`
+
+        This allows us to use docker's multi-file loading (e.g. `-f <file1>.yaml -f <file2>.yaml`), `include` and other docker compose features.
+
+        Args:
+            client (DockerClient): The docker client to use to write the compose file.
+        """
+        with tempfile.NamedTemporaryFile("w") as temp_file:
+            if not self.write(temp_file.name):
+                return False
+            client.run_compose_cmd(
+                "-f",
+                self.atk_yml_path,
+                *opts,
+                "config",
+                "-o",
+                temp_file.name,
+                "--no-interpolate",
+                "--no-path-resolution",
+                "--no-normalize",
+                "--no-consistency",
+            )
+            if not self.read(temp_file.name):
+                return False
         return True

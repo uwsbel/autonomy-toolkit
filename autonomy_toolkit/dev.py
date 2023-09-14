@@ -35,6 +35,19 @@ def _run_dev(args):
         LOGGER.fatal(e)
         return False
 
+    # Create the docker client
+    args.compose_opts.extend(args._unknown_args)
+    client = DockerClient(
+        config,
+        dry_run=args.dry_run,
+        opts=args.compose_opts,
+        args=args.compose_args,
+    )
+
+    # Load the config with the docker client before updating the services
+    if not config.load(client, args.compose_opts):
+        return False
+
     # Update the config with optionals
     if not config.update_services_with_optionals(args.optionals):
         return False
@@ -42,16 +55,6 @@ def _run_dev(args):
     # Write the new configuration file
     if not config.write():
         return False
-
-    # Create the docker client
-    args.compose_opts.extend(args._unknown_args)
-    print(args.compose_opts)
-    client = DockerClient(
-        config,
-        dry_run=args.dry_run,
-        opts=args.compose_opts,
-        args=args.compose_args,
-    )
 
     # Run the commands
     # Will do in this order: down, build, up, attach

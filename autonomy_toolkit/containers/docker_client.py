@@ -89,13 +89,13 @@ class DockerClient:
         """
         return self.run_cmd("up", "-d")
 
-    def run(self, *args) -> bool:
+    def run(self) -> bool:
         """Run a command in a container.
 
         Returns:
             bool: Whether the command succeeded.
         """
-        return self.run_cmd("run", *args)
+        return self.run_cmd("run")
 
     def attach(self) -> bool:
         """Attach to a container.
@@ -114,7 +114,7 @@ class DockerClient:
 
         return self.run_cmd("exec")
 
-    def run_cmd(self, cmd, *args, **kwargs) -> bool:
+    def run_cmd(self, cmd, *args, without_ots: bool = False, **kwargs) -> bool:
         """Run a command using the system wide ``compose`` command
 
         Additional positional args (``*args``) will be passed as command arguments when running the command.
@@ -128,11 +128,11 @@ class DockerClient:
             Bool: Whether the command succeeded.
         """
 
-        return self._run_compose_cmd(
+        return self.run_compose_cmd(
             *self._opts, cmd, *args, *self.services, *self._args, **kwargs
         )
 
-    def _run_compose_cmd(self, *args, **kwargs):
+    def run_compose_cmd(self, *args, **kwargs) -> bool:
         """Run a docker compose command."""
         return self._run_cmd("docker", "compose", *args, **kwargs)
 
