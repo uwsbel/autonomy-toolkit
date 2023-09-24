@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="Autonomy Research Testbed" href="../autonomy-research-testbed/autonomy-research-testbed.html" /><link rel="prev" title="Tutorials" href="../index.html" />
 
     <link rel="shortcut icon" href="../../_static/cropped-SBEL-32x32.png"/><!-- Generated with Sphinx 5.3.0 and Furo 2022.12.07 -->
-        <title>Using the ATK Development Environment - Autonomous Vehicle Toolbox 2.0.6 documentation</title>
+        <title>Using the ATK Development Environment - Autonomous Vehicle Toolbox 2.0.7 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=91d0f0d1c444bdcb17a68e833c7a53903343c195" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
@@ -136,7 +136,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">Autonomous Vehicle Toolbox 2.0.6 documentation</div></a>
+      <a href="../../index.html"><div class="brand">Autonomous Vehicle Toolbox 2.0.7 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -356,17 +356,36 @@ art-dev:~/art/workspace$<span class="w"> </span>ros2<span class="w"> </span>laun
 <a class="reference internal image-reference" href="https://raw.githubusercontent.com/uwsbel/autonomy-toolkit/master/docs/tutorials/using-the-development-environment/images/real-novnc-screenshot.png?raw"><img alt="https://raw.githubusercontent.com/uwsbel/autonomy-toolkit/master/docs/tutorials/using-the-development-environment/images/real-novnc-screenshot.png?raw" src="https://raw.githubusercontent.com/uwsbel/autonomy-toolkit/master/docs/tutorials/using-the-development-environment/images/real-novnc-screenshot.png?raw" style="width: 49%;" /></a>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>If a port conflict occurs (<span class="xref myst">as described later</span>), you will need to replace <code class="docutils literal notranslate"><span class="pre">8080</span></code> in <a class="reference external" href="http://localhost:8080">localhost:8080</a> with whatever you remap the new port to.</p>
+<p>If a port conflict occurs (<span class="xref myst">as described later</span>), you will need to replace <code class="docutils literal notranslate"><span class="pre">8080</span></code> in <a class="reference external" href="http://localhost:8080">localhost:8080</a> with whatever the port is remapped to. See <span class="xref myst">Port Mappings</span> for more info.</p>
 </div>
 </section>
 </section>
 <section id="possible-problems">
 <h2>Possible Problems<a class="headerlink" href="#possible-problems" title="Permalink to this heading">#</a></h2>
 <p>This sections outlines some possible pitfalls or frequently run into errors.</p>
-<div class="admonition-todo admonition" id="id1">
-<p class="admonition-title">Todo</p>
-<p>Add possible problems here.</p>
+<section id="port-mappings">
+<h3>Port mappings<a class="headerlink" href="#port-mappings" title="Permalink to this heading">#</a></h3>
+<p>Looking at the <code class="docutils literal notranslate"><span class="pre">atk.yml</span></code>, you may see the following:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nn">...</span>
+<span class="nt">services</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">vnc</span><span class="p">:</span>
+<span class="w">        </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+<span class="w">        </span><span class="l l-Scalar l-Scalar-Plain">ports</span><span class="p p-Indicator">:</span>
+<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;127.0.0.1:8080-8099:8080&quot;</span>
+<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;127.0.0.1:5900-5999:5900&quot;</span>
+<span class="nn">...</span>
+</pre></div>
 </div>
+<p>Essentially, this is saying “bind port <code class="docutils literal notranslate"><span class="pre">8080</span></code> in the container to any port in the range <code class="docutils literal notranslate"><span class="pre">8080</span></code>-<code class="docutils literal notranslate"><span class="pre">8099</span></code> on this computer.” <code class="docutils literal notranslate"><span class="pre">127.0.0.1</span></code> indicates the loopback interface, making it more secure as someone with your IP can’t access the containers <code class="docutils literal notranslate"><span class="pre">8080</span></code> port (not the case if <code class="docutils literal notranslate"><span class="pre">127.0.0.1</span></code> was omitted).</p>
+<p>This may cause confusion, however, as it’s not known what port the host is using since it’s a range. To check what port the container is using, run the following command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>atk<span class="w"> </span>dev<span class="w"> </span>-c<span class="w"> </span>ps<span class="w"> </span>-s<span class="w"> </span>vnc
+NAME<span class="w">                </span>IMAGE<span class="w">               </span>COMMAND<span class="w">                </span>SERVICE<span class="w">             </span>CREATED<span class="w">             </span>STATUS<span class="w">              </span>PORTS
+art-vnc<span class="w">             </span>atk/art:vnc<span class="w">         </span><span class="s2">&quot;/opt/entrypoint.sh&quot;</span><span class="w">   </span>vnc<span class="w">                 </span><span class="m">36</span><span class="w"> </span>seconds<span class="w"> </span>ago<span class="w">      </span>Up<span class="w"> </span><span class="m">36</span><span class="w"> </span>seconds<span class="w">       </span><span class="m">127</span>.0.0.1:5901-&gt;5900/tcp,<span class="w"> </span><span class="m">127</span>.0.0.1:8081-&gt;8080/tcp
+</pre></div>
+</div>
+<p>From the output, you can see the <code class="docutils literal notranslate"><span class="pre">art-vnc</span></code> container (i.e. the <code class="docutils literal notranslate"><span class="pre">vnc</span></code> service) has mapped it’s <code class="docutils literal notranslate"><span class="pre">8080</span></code> port to <code class="docutils literal notranslate"><span class="pre">8081</span></code>. When viewing the <code class="docutils literal notranslate"><span class="pre">novnc</span></code> viewer in the browser then, the url will be <code class="docutils literal notranslate"><span class="pre">http://localhost:8081</span></code>.</p>
+<p>See the Docker Compose <a class="reference external" href="https://docs.docker.com/compose/compose-file/compose-file-v3/#ports">official documentation</a> for more detailed information.</p>
+</section>
 </section>
 <section id="support">
 <h2>Support<a class="headerlink" href="#support" title="Permalink to this heading">#</a></h2>
@@ -446,7 +465,10 @@ art-dev:~/art/workspace$<span class="w"> </span>ros2<span class="w"> </span>laun
 <li><a class="reference internal" href="#visualizing-gui-windows-with-vnc">Visualizing GUI Windows with VNC</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#possible-problems">Possible Problems</a></li>
+<li><a class="reference internal" href="#possible-problems">Possible Problems</a><ul>
+<li><a class="reference internal" href="#port-mappings">Port mappings</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#support">Support</a></li>
 <li><a class="reference internal" href="#see-also">See Also</a></li>
 </ul>
