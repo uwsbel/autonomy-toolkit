@@ -148,16 +148,41 @@ You can then navigate to [localhost:8080](http://localhost:8080) to see the visu
 ```
 
 ```{note}
-If a port conflict occurs ([as described later](#port-conflicts)), you will need to replace `8080` in [localhost:8080](http://localhost:8080) with whatever you remap the new port to.
+If a port conflict occurs ([as described later](#port-conflicts)), you will need to replace `8080` in [localhost:8080](http://localhost:8080) with whatever the port is remapped to. See [Port Mappings](#port-mappings) for more info.
 ```
 
 ## Possible Problems
 
 This sections outlines some possible pitfalls or frequently run into errors.
 
-```{todo}
-Add possible problems here.
+### Port mappings
+
+Looking at the `atk.yml`, you may see the following:
+
+```yaml
+...
+services:
+    vnc:
+        ...
+        ports:
+            - "127.0.0.1:8080-8099:8080"
+            - "127.0.0.1:5900-5999:5900"
+...
 ```
+
+Essentially, this is saying "bind port `8080` in the container to any port in the range `8080`-`8099` on this computer." `127.0.0.1` indicates the loopback interface, making it more secure as someone with your IP can't access the containers `8080` port (not the case if `127.0.0.1` was omitted).
+
+This may cause confusion, however, as it's not known what port the host is using since it's a range. To check what port the container is using, run the following command:
+
+```bash
+$ atk dev -c ps -s vnc
+NAME                IMAGE               COMMAND                SERVICE             CREATED             STATUS              PORTS
+art-vnc             atk/art:vnc         "/opt/entrypoint.sh"   vnc                 36 seconds ago      Up 36 seconds       127.0.0.1:5901->5900/tcp, 127.0.0.1:8081->8080/tcp
+```
+
+From the output, you can see the `art-vnc` container (i.e. the `vnc` service) has mapped it's `8080` port to `8081`. When viewing the `novnc` viewer in the browser then, the url will be `http://localhost:8081`.
+
+See the Docker Compose [official documentation](https://docs.docker.com/compose/compose-file/compose-file-v3/#ports) for more detailed information.
 
 ## Support
 

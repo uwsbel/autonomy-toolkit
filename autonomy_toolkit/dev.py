@@ -4,7 +4,8 @@ from autonomy_toolkit.utils.atk_config import ATKConfig
 from autonomy_toolkit.containers.docker_client import DockerClient
 
 # External imports
-from typing import Tuple
+import inspect
+from functools import partial
 
 
 def _run_cmd(client, cmd, num_required_services=-1):
@@ -15,11 +16,18 @@ def _run_cmd(client, cmd, num_required_services=-1):
         return False
 
     LOGGER.info(f"Running '{cmd}'...")
-    if not getattr(client, cmd)():
+    try:
+        method = getattr(client, cmd)
+        if not inspect.ismethod(method):
+            raise AttributeError
+    except AttributeError:
+        method = partial(client.run_cmd, cmd)
+
+    if not method():
         LOGGER.fatal(f"Failed to run '{cmd}'.")
         return False
-    LOGGER.info(f"Finished running '{cmd}'.")
 
+    LOGGER.info(f"Finished running '{cmd}'.")
     return True
 
 
@@ -70,6 +78,9 @@ def _run_dev(args):
     if args.attach and not _run_cmd(client, "attach", 1):
         return False
 
+    if args.command and not _run_cmd(client, args.command, 1):
+        return False
+
     if args.run and not _run_cmd(client, "run", 1):
         return False
 
@@ -89,6 +100,14 @@ def _init(subparser):
         required=True,
     )
 
+    subparser.add_argument(
+        "-c",
+        "--cmd",
+        dest="command",
+        type=str,
+        help="A tool to circumvent the atk interface and directly run a docker compose command. Example: `atk dev -c config -s dev` is equivalent to `docker compose -f <path-in-parent>/atk.yml config dev",
+        default=None,
+    )
     subparser.add_argument(
         "-b", "--build", action="store_true", help="Build the image(s).", default=False
     )
