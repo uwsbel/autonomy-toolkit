@@ -94,20 +94,12 @@ def _init(subparser):
         "-s",
         "--services",
         nargs="+",
-        help="The services to use. This is a required argument. Can be passed as `-s service1 service2` or `-s service1 -s service2`.",
+        help="The services to use. Can be passed as `-s service1 service2` or `-s service1 -s service2`. This is a required argument to promote explicitness.",
         action="extend",
         default=[],
         required=True,
     )
 
-    subparser.add_argument(
-        "-c",
-        "--cmd",
-        dest="command",
-        type=str,
-        help="A tool to circumvent the atk interface and directly run a docker compose command. Example: `atk dev -c config -s dev` is equivalent to `docker compose -f <path-in-parent>/atk.yml config dev",
-        default=None,
-    )
     subparser.add_argument(
         "-b", "--build", action="store_true", help="Build the image(s).", default=False
     )
@@ -138,6 +130,14 @@ def _init(subparser):
         action="store_true",
         help="Run a command in the provided service. Only one service may be provided.",
         default=False,
+    )
+    subparser.add_argument(
+        "-c",
+        "--cmd",
+        dest="command",
+        type=str,
+        help="A tool to circumvent the atk interface and directly run a docker compose command. Example: `atk dev -c config -s dev` is equivalent to `docker compose -f <path-in-parent>/atk.yml config dev`.",
+        default=None,
     )
     subparser.add_argument(
         "--filename-override",
