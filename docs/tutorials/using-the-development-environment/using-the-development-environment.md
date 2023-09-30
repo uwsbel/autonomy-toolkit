@@ -34,7 +34,7 @@ For any commands mentioned herein, it will be assumed they are run from within t
 The first time you attempt to use the ART development environment, the docker image will need to be built (the `atk` package will do this for you). This may take upwards of 10 minutes, depending on the number of packages your control stack needs to install. After the initial build, you may never need to build the stack again (unless you need additional packages installed). To build the image the first time around, you can run the following command:
 
 ```bash
-atk dev --up --attach
+atk dev --services dev --up --attach
 ```
 
 And since the image has never been built, the `--up` argument will also build it. This is only the case if the image cannot be found.
@@ -42,7 +42,7 @@ And since the image has never been built, the `--up` argument will also build it
 If you make changes to the workspace and need additional packages to be installed into the image, you can run the same command with the build flag:
 
 ```bash
-atk dev --build
+atk dev --services dev --build
 ```
 
 ```{warning}
@@ -52,12 +52,16 @@ If the container is already running (i.e. `atk dev --up` has already been called
 After you run `atk dev`, you should see a shell prompt like the following:
 
 ```bash
-$ atk dev --up --attach
+$ atk dev --services dev --up --attach
 WARNING  | logger.set_verbosity :: Verbosity has been set to WARNING
 art-dev:~/art/workspace$
 ```
 
 For more information regarding the `atk` command, please see the [documentation page](https://projects.sbel.org/autonomy-toolkit/usage/cli.html#dev).
+
+```{note}
+You may use the shorthand `-s [SERVICES]` instead of `--services [SERVICES]`.
+```
 
 ### Developing Inside the Container
 
@@ -90,7 +94,7 @@ The `--services chrono` tells atk to use the `chrono` container for the `--run` 
 Then, in another terminal window, enter the development environment and run the following command to spin up both the `chrono-ros-bridge` node and the autonomy stack:
 
 ```bash
-$ atk dev --up --attach --optionals gpus # NOTE: only use --optionals gpus if you have a nvidia gpu
+$ atk dev --services dev --up --attach --optionals gpus # NOTE: only use --optionals gpus if you have a nvidia gpu
 WARNING  | logger.set_verbosity :: Verbosity has been set to WARNING
 art-dev:~/art/workspace$ ros2 launch art_launch art.launch.py use_sim:=true hostname:=art-chrono vis:=true
 ```
@@ -112,7 +116,7 @@ unzip -d <path-to-art-repo>/demos/bags/ <path-to-bag>/ATK-02-25-2022-04-30-30.zi
 ROS 2 bags are contained in folders and the `ros2 bag` command will be used to replay the file. After the file is pulled, enter the development environment and start replaying the bag file. We'll have it loop so the stack can be visualized easier.
 
 ```bash
-$ atk dev --up --attach --optionals gpus # NOTE: only use --optionals if you have a nvidia gpu
+$ atk dev --services dev --up --attach --optionals gpus # NOTE: only use --optionals if you have a nvidia gpu
 WARNING  | logger.set_verbosity :: Verbosity has been set to WARNING
 art-dev:~/art/workspace$ ros2 bag play ../demos/bags/ATK-02-25-2022-04-30-30 -l
 ```
@@ -120,7 +124,7 @@ art-dev:~/art/workspace$ ros2 bag play ../demos/bags/ATK-02-25-2022-04-30-30 -l
 With the bag being played, open another terminal and start up the stack.
 
 ```bash
-$ atk dev --optionals gpus # NOTE: only use --optionals gpus if you have a nvidia gpu
+$ atk dev --services dev --optionals gpus # NOTE: only use --optionals gpus if you have a nvidia gpu
 WARNING  | logger.set_verbosity :: Verbosity has been set to WARNING
 art-dev:~/art/workspace$ ros2 launch art_launch art.launch.py disable_art_vehicle:=true disable_art_sensing:=true vis:=true
 ```
