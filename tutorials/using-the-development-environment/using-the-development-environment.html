@@ -272,12 +272,12 @@
 <section id="entering-the-development-environment">
 <h3>Entering the Development Environment<a class="headerlink" href="#entering-the-development-environment" title="Link to this heading">#</a></h3>
 <p>The first time you attempt to use the ART development environment, the docker image will need to be built (the <code class="docutils literal notranslate"><span class="pre">atk</span></code> package will do this for you). This may take upwards of 10 minutes, depending on the number of packages your control stack needs to install. After the initial build, you may never need to build the stack again (unless you need additional packages installed). To build the image the first time around, you can run the following command:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>atk<span class="w"> </span>dev<span class="w"> </span>--up<span class="w"> </span>--attach
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>atk<span class="w"> </span>dev<span class="w"> </span>--services<span class="w"> </span>dev<span class="w"> </span>--up<span class="w"> </span>--attach
 </pre></div>
 </div>
 <p>And since the image has never been built, the <code class="docutils literal notranslate"><span class="pre">--up</span></code> argument will also build it. This is only the case if the image cannot be found.</p>
 <p>If you make changes to the workspace and need additional packages to be installed into the image, you can run the same command with the build flag:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>atk<span class="w"> </span>dev<span class="w"> </span>--build
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>atk<span class="w"> </span>dev<span class="w"> </span>--services<span class="w"> </span>dev<span class="w"> </span>--build
 </pre></div>
 </div>
 <div class="admonition warning">
@@ -285,12 +285,16 @@
 <p>If the container is already running (i.e. <code class="docutils literal notranslate"><span class="pre">atk</span> <span class="pre">dev</span> <span class="pre">--up</span></code> has already been called), the new built image will not be loaded automatically. You need to tear down the container by running <code class="docutils literal notranslate"><span class="pre">atk</span> <span class="pre">dev</span> <span class="pre">--down</span></code> or <code class="docutils literal notranslate"><span class="pre">atk</span> <span class="pre">dev</span> <span class="pre">-d</span></code> and then spin up the container again with <code class="docutils literal notranslate"><span class="pre">atk</span> <span class="pre">dev</span> <span class="pre">--up</span></code>. This can be done with one command: <code class="docutils literal notranslate"><span class="pre">atk</span> <span class="pre">dev</span> <span class="pre">--down</span> <span class="pre">--up</span> <span class="pre">--build</span></code>.</p>
 </div>
 <p>After you run <code class="docutils literal notranslate"><span class="pre">atk</span> <span class="pre">dev</span></code>, you should see a shell prompt like the following:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>atk<span class="w"> </span>dev<span class="w"> </span>--up<span class="w"> </span>--attach
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>atk<span class="w"> </span>dev<span class="w"> </span>--services<span class="w"> </span>dev<span class="w"> </span>--up<span class="w"> </span>--attach
 WARNING<span class="w">  </span><span class="p">|</span><span class="w"> </span>logger.set_verbosity<span class="w"> </span>::<span class="w"> </span>Verbosity<span class="w"> </span>has<span class="w"> </span>been<span class="w"> </span><span class="nb">set</span><span class="w"> </span>to<span class="w"> </span>WARNING
 art-dev:~/art/workspace$
 </pre></div>
 </div>
 <p>For more information regarding the <code class="docutils literal notranslate"><span class="pre">atk</span></code> command, please see the <a class="reference external" href="https://projects.sbel.org/autonomy-toolkit/usage/cli.html#dev">documentation page</a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You may use the shorthand <code class="docutils literal notranslate"><span class="pre">-s</span> <span class="pre">[SERVICES]</span></code> instead of <code class="docutils literal notranslate"><span class="pre">--services</span> <span class="pre">[SERVICES]</span></code>.</p>
+</div>
 </section>
 <section id="developing-inside-the-container">
 <h3>Developing Inside the Container<a class="headerlink" href="#developing-inside-the-container" title="Link to this heading">#</a></h3>
@@ -314,7 +318,7 @@ art-dev:~/art/workspace$
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">--services</span> <span class="pre">chrono</span></code> tells atk to use the <code class="docutils literal notranslate"><span class="pre">chrono</span></code> container for the <code class="docutils literal notranslate"><span class="pre">--run</span></code> command. <code class="docutils literal notranslate"><span class="pre">--optionals</span> <span class="pre">gpus</span></code> is required for the <code class="docutils literal notranslate"><span class="pre">demo_ARCLAB_cone.py</span></code> script because it uses <a class="reference external" href="https://api.projectchrono.org/group__sensor.html">Chrono::Sensor</a> which requires CUDA. Similar to the <code class="docutils literal notranslate"><span class="pre">dev</span></code> container with the <code class="docutils literal notranslate"><span class="pre">--up</span></code> flag, if the image for the <code class="docutils literal notranslate"><span class="pre">chrono</span></code> container is not already built, <code class="docutils literal notranslate"><span class="pre">--run</span></code> will build it.</p>
 <p>Then, in another terminal window, enter the development environment and run the following command to spin up both the <code class="docutils literal notranslate"><span class="pre">chrono-ros-bridge</span></code> node and the autonomy stack:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>atk<span class="w"> </span>dev<span class="w"> </span>--up<span class="w"> </span>--attach<span class="w"> </span>--optionals<span class="w"> </span>gpus<span class="w"> </span><span class="c1"># NOTE: only use --optionals gpus if you have a nvidia gpu</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>atk<span class="w"> </span>dev<span class="w"> </span>--services<span class="w"> </span>dev<span class="w"> </span>--up<span class="w"> </span>--attach<span class="w"> </span>--optionals<span class="w"> </span>gpus<span class="w"> </span><span class="c1"># NOTE: only use --optionals gpus if you have a nvidia gpu</span>
 WARNING<span class="w">  </span><span class="p">|</span><span class="w"> </span>logger.set_verbosity<span class="w"> </span>::<span class="w"> </span>Verbosity<span class="w"> </span>has<span class="w"> </span>been<span class="w"> </span><span class="nb">set</span><span class="w"> </span>to<span class="w"> </span>WARNING
 art-dev:~/art/workspace$<span class="w"> </span>ros2<span class="w"> </span>launch<span class="w"> </span>art_launch<span class="w"> </span>art.launch.py<span class="w"> </span>use_sim:<span class="o">=</span><span class="nb">true</span><span class="w"> </span>hostname:<span class="o">=</span>art-chrono<span class="w"> </span>vis:<span class="o">=</span><span class="nb">true</span>
 </pre></div>
@@ -330,13 +334,13 @@ art-dev:~/art/workspace$<span class="w"> </span>ros2<span class="w"> </span>laun
 </pre></div>
 </div>
 <p>ROS 2 bags are contained in folders and the <code class="docutils literal notranslate"><span class="pre">ros2</span> <span class="pre">bag</span></code> command will be used to replay the file. After the file is pulled, enter the development environment and start replaying the bag file. We’ll have it loop so the stack can be visualized easier.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>atk<span class="w"> </span>dev<span class="w"> </span>--up<span class="w"> </span>--attach<span class="w"> </span>--optionals<span class="w"> </span>gpus<span class="w"> </span><span class="c1"># NOTE: only use --optionals if you have a nvidia gpu</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>atk<span class="w"> </span>dev<span class="w"> </span>--services<span class="w"> </span>dev<span class="w"> </span>--up<span class="w"> </span>--attach<span class="w"> </span>--optionals<span class="w"> </span>gpus<span class="w"> </span><span class="c1"># NOTE: only use --optionals if you have a nvidia gpu</span>
 WARNING<span class="w">  </span><span class="p">|</span><span class="w"> </span>logger.set_verbosity<span class="w"> </span>::<span class="w"> </span>Verbosity<span class="w"> </span>has<span class="w"> </span>been<span class="w"> </span><span class="nb">set</span><span class="w"> </span>to<span class="w"> </span>WARNING
 art-dev:~/art/workspace$<span class="w"> </span>ros2<span class="w"> </span>bag<span class="w"> </span>play<span class="w"> </span>../demos/bags/ATK-02-25-2022-04-30-30<span class="w"> </span>-l
 </pre></div>
 </div>
 <p>With the bag being played, open another terminal and start up the stack.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>atk<span class="w"> </span>dev<span class="w"> </span>--optionals<span class="w"> </span>gpus<span class="w"> </span><span class="c1"># NOTE: only use --optionals gpus if you have a nvidia gpu</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>atk<span class="w"> </span>dev<span class="w"> </span>--services<span class="w"> </span>dev<span class="w"> </span>--optionals<span class="w"> </span>gpus<span class="w"> </span><span class="c1"># NOTE: only use --optionals gpus if you have a nvidia gpu</span>
 WARNING<span class="w">  </span><span class="p">|</span><span class="w"> </span>logger.set_verbosity<span class="w"> </span>::<span class="w"> </span>Verbosity<span class="w"> </span>has<span class="w"> </span>been<span class="w"> </span><span class="nb">set</span><span class="w"> </span>to<span class="w"> </span>WARNING
 art-dev:~/art/workspace$<span class="w"> </span>ros2<span class="w"> </span>launch<span class="w"> </span>art_launch<span class="w"> </span>art.launch.py<span class="w"> </span>disable_art_vehicle:<span class="o">=</span><span class="nb">true</span><span class="w"> </span>disable_art_sensing:<span class="o">=</span><span class="nb">true</span><span class="w"> </span>vis:<span class="o">=</span><span class="nb">true</span>
 </pre></div>
