@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: MIT
 import signal
-from ._version import version as __version__
-import autonomy_toolkit._atk_base
+from autonomy_toolkit._version import version as __version__  # type: ignore # noqa: F401
+import autonomy_toolkit._atk_base  # type: ignore # noqa: F401
 
 __author__ = "Simulation Based Engineering Laboratory (negrut@.wisc.edu)"
 """Simulation Based Engineering Laboratory (negrut@wisc.edu)"""

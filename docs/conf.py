@@ -60,7 +60,7 @@ autoapi_options = [
 ]
 autoapi_ignore = []
 autoapi_keep_files = False
-autoapi_keep_files = True
+# autoapi_keep_files = True
 autoapi_generate_api_docs = True
 autoapi_add_toctree_entry = False
 autoapi_root = "usage/api/"
@@ -79,6 +79,9 @@ napoleon_use_param = False
 napoleon_use_rtype = False
 napoleon_type_aliases = None
 napoleon_attr_annotations = True
+
+# MyST
+myst_heading_anchors = 7
 
 
 from sphinx.ext import autodoc
