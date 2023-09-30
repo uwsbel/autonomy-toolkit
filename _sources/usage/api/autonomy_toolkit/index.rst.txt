@@ -20,12 +20,12 @@ Package Contents
 ----------------
 
 .. py:data:: __author__
-   :annotation: = Simulation Based Engineering Laboratory (negrut@.wisc.edu)
+   :value: 'Simulation Based Engineering Laboratory (negrut@.wisc.edu)'
 
    Simulation Based Engineering Laboratory (negrut@wisc.edu)
 
 .. py:data:: __license__
-   :annotation: = BSD3
+   :value: 'BSD3'
 
    BSD3
 

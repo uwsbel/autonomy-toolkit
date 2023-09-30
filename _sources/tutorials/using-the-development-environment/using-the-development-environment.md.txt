@@ -148,14 +148,14 @@ You can then navigate to [localhost:8080](http://localhost:8080) to see the visu
 ```
 
 ```{note}
-If a port conflict occurs ([as described later](#port-conflicts)), you will need to replace `8080` in [localhost:8080](http://localhost:8080) with whatever the port is remapped to. See [Port Mappings](#port-mappings) for more info.
+If a port conflict occurs ([as described later](#port-conflicts)), you will need to replace `8080` in [localhost:8080](http://localhost:8080) with whatever the port is remapped to. See [Port Conflicts](#port-conflicts) for more info.
 ```
 
 ## Possible Problems
 
 This sections outlines some possible pitfalls or frequently run into errors.
 
-### Port mappings
+### Port Conflicts
 
 Looking at the `atk.yml`, you may see the following:
 

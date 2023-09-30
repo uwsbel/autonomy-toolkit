@@ -38,7 +38,7 @@ You should now be able to edit the source and have those changes be reflected in
 
 [GitHub actions](https://github.com/features/actions) are used to automatically build the site and [GitHub pages](https://pages.github.com/) are used to host the static site. To update deployed content, you have to push to the `main` branch. Once the changes are pushed, the site will rebuild. Please ensure there are no errors in your code/documentation before doing so, as you may get an email from github if something bad happens.
 
-Further, to update the package available on [PyPI](https://pypi.org/project/autonomy-toolkit/), you must create a [git tag](https://git-scm.com/book/en/v2/Git-Basics-Tagging). When a tag is created and pushed to GitHub, it will start an Action which will automatically push the new release to PyPI. See [versioning](#versioning) for information on how versioning works with `atk`. The Github Action only runs when the tag is pushed to main through a merge request. To create a tag, you may do the following:
+Further, to update the package available on [PyPI](https://pypi.org/project/autonomy-toolkit/), you must create a [git tag](https://git-scm.com/book/en/v2/Git-Basics-Tagging). When a tag is created and pushed to GitHub, it will start an Action which will automatically push the new release to PyPI. See [Versioning](#versioning) for information on how versioning works with `atk`. The Github Action only runs when the tag is pushed to main through a merge request. To create a tag, you may do the following:
 
 ```bash
 git tag <tag> # An example tag is v3.0.1
@@ -90,7 +90,7 @@ Commenting your code is not only _required_ when contributing to this repository
 Please follow [Google's guidelines for Python Styling](https://google.github.io/styleguide/pyguide.html). These comments are also used to automatically generate the documentation. For Visual Studio Code users, the [Python Docstring Generator](https://github.com/NilsJPWerner/autoDocstring) package may be helpful.
 
 ```{note}
-Any docstrings parsed by `autosimple`, such as the functions in [usage.md](./usage/cli.md), are parsed as markdown. Docstrings parsed by autoapi, such as in [atk.db](./usage/api/autonomy_toolkit/db/index), are parsed as reStructuredText.
+Any docstrings parsed by `autosimple`, such as the functions in [usage.md](./usage/cli.md), are parsed as markdown. Docstrings parsed by autoapi, such as in [atk.utils.atk_config](./usage/api/autonomy_toolkit/utils/atk_config/index), are parsed as reStructuredText.
 ```
 
 ### Editing the Documentation
