@@ -23,8 +23,8 @@ def _run_cmd(client, cmd, num_required_services=-1):
     except AttributeError:
         method = partial(client.run_cmd, cmd)
 
-    if not method():
-        LOGGER.fatal(f"Failed to run '{cmd}'.")
+    if returncode := method():
+        LOGGER.fatal(f"Failed to run '{cmd}' with returncode {returncode}.")
         return False
 
     LOGGER.info(f"Finished running '{cmd}'.")

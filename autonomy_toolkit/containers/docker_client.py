@@ -108,7 +108,7 @@ class DockerClient:
             bool: Whether the command succeeded.
         """
         # fmt: off
-        exec_cmd = "$(awk -F: -v user=\"$(whoami)\" '$1 == user {print $NF}' /etc/passwd)"
+        exec_cmd = "($(awk -F: -v user=\"$(whoami)\" '$1 == user {print $NF}' /etc/passwd) || true)"
         # fmt: on
         self._args += ["sh", "-c", exec_cmd]
 
@@ -169,4 +169,4 @@ class DockerClient:
 
         if return_output:
             return stdout, stderr
-        return stdout == "" and stderr == ""
+        return completed_process.returncode

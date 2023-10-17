@@ -119,7 +119,7 @@ class ATKConfig:
         with tempfile.NamedTemporaryFile("w") as temp_file:
             if not self.write(temp_file.name):
                 return False
-            client.run_compose_cmd(
+            returncode = client.run_compose_cmd(
                 "-f",
                 self.atk_yml_path,
                 *opts,
@@ -131,6 +131,9 @@ class ATKConfig:
                 "--no-normalize",
                 "--no-consistency",
             )
+            if returncode:
+                LOGGER.error("Could not parse the config file.")
+                return False
             if not self.read(temp_file.name):
                 return False
         return True
