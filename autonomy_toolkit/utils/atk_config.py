@@ -24,7 +24,8 @@ class ATKConfig:
         services (List[str]): List of services to use when running the ``docker compose`` command.
 
     Keyword Args:
-        compose_file (Union[Path, str]): The name of the compose file to use. Defaults to ``.atk-compose.yml``.
+        compose_file (Union[Path, str]): The name of the compose file to use. Relative to ``filename``. Defaults to ``.atk-compose.yml``.
+        env_files (List[Union[Path, str]]): env_files that are passed to docker compose using the ``--env-file`` flag. Defaults to ``[atk.env, .env]``.
     """
 
     def __init__(
@@ -32,8 +33,8 @@ class ATKConfig:
         filename: Union[Path, str],
         services: List[str],
         *,
-        env_filename: Union[Path, str] = "atk.env",
         compose_file: Union[Path, str] = ".atk-compose.yml",
+        env_files: List[Union[Path, str]] = ["atk.env", ".env"],
     ):
         self.services = services
 
@@ -44,9 +45,9 @@ class ATKConfig:
                 f"No '{filename}' file was found in this directory or any parent directories. Make sure you are running this command in an autonomy-toolkit compatible repository. Cannot continue."
             )
 
-        # Set the path of the generated compose file and the env file at the same level as the atk.yml file
+        # Set the path of the generated compose file
         self.compose_file = self.atk_yml_path.parent / compose_file
-        self.env_file = self.atk_yml_path.parent / env_filename
+        self.env_files = [self.atk_yml_path.parent / env_file for env_file in env_files]
 
         # Parse the atk yml file
         self.read()

@@ -36,9 +36,7 @@ def _run_dev(args):
 
     # Find the atk.yml file
     try:
-        config = ATKConfig(
-            args.filename_override, args.services, env_filename=args.env_file_override
-        )
+        config = ATKConfig(args.filename_override, args.services)
     except Exception as e:
         LOGGER.fatal(e)
         return False
@@ -143,11 +141,6 @@ def _init(subparser):
         "--filename-override",
         help="Override the default ATK config filename. Will search upwards for file. Defaults to 'atk.yml'",
         default="atk.yml",
-    )
-    subparser.add_argument(
-        "--env-file-override",
-        help="Override the default ATK environment filename. Will search upwards for file. Defaults to 'atk.env'",
-        default="atk.env",
     )
     subparser.add_argument(
         "--optionals",

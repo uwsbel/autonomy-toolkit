@@ -50,16 +50,16 @@ class DockerClient:
         args: List[str] = [],
     ):
         self.config = config
-        self.compose_file = config.compose_file
         self.dry_run = dry_run
         self.services = config.services
 
         # Options passed to the compose command
         # i.e. .. compose ..opts <command>
         self._opts = opts
-        self._opts = ["-f", self.compose_file] + self._opts
-        if file_exists(config.env_file):
-            self._opts = ["--env-file", config.env_file] + self._opts
+        self._opts = ["-f", self.config.compose_file] + self._opts
+        for env_file in self.config.env_files:
+            if file_exists(env_file):
+                self._opts = ["--env-file", env_file] + self._opts
 
         # Args passed to the compose subcommand
         # i.e. .. compose <command> ...args
