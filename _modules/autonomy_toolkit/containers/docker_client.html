@@ -369,7 +369,7 @@
 <span class="sd">            bool: Whether the command succeeded.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># fmt: off</span>
-        <span class="n">exec_cmd</span> <span class="o">=</span> <span class="s2">&quot;$(awk -F: -v user=</span><span class="se">\&quot;</span><span class="s2">$(whoami)</span><span class="se">\&quot;</span><span class="s2"> &#39;$1 == user {print $NF}&#39; /etc/passwd)&quot;</span>
+        <span class="n">exec_cmd</span> <span class="o">=</span> <span class="s2">&quot;($(awk -F: -v user=</span><span class="se">\&quot;</span><span class="s2">$(whoami)</span><span class="se">\&quot;</span><span class="s2"> &#39;$1 == user {print $NF}&#39; /etc/passwd) || true)&quot;</span>
         <span class="c1"># fmt: on</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_args</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;sh&quot;</span><span class="p">,</span> <span class="s2">&quot;-c&quot;</span><span class="p">,</span> <span class="n">exec_cmd</span><span class="p">]</span>
 
@@ -437,7 +437,7 @@
 
         <span class="k">if</span> <span class="n">return_output</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">stdout</span><span class="p">,</span> <span class="n">stderr</span>
-        <span class="k">return</span> <span class="n">stdout</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span> <span class="ow">and</span> <span class="n">stderr</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span></div>
+        <span class="k">return</span> <span class="n">completed_process</span><span class="o">.</span><span class="n">returncode</span></div>
 
 </pre></div>
         </article>
