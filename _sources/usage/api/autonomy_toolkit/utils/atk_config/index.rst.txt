@@ -22,7 +22,7 @@ Classes
 
 
 
-.. py:class:: ATKConfig(filename: Union[pathlib.Path, str], services: List[str], *, env_filename: Union[pathlib.Path, str] = 'atk.env', compose_file: Union[pathlib.Path, str] = '.atk-compose.yml')
+.. py:class:: ATKConfig(filename: Union[pathlib.Path, str], services: List[str], *, compose_file: Union[pathlib.Path, str] = '.atk-compose.yml', env_files: List[Union[pathlib.Path, str]] = ['atk.env', '.env'])
 
 
    Helper class that abstracts reading the ``atk.yml`` file that defines configurations.
@@ -30,8 +30,10 @@ Classes
    :Parameters: * **filename** (*Union[Path, str]*) -- The name of the file to read. This can be a path or just the name of the file. The file should be located at or above the current working directory.
                 * **services** (*List[str]*) -- List of services to use when running the ``docker compose`` command.
 
-   :keyword compose_file: The name of the compose file to use. Defaults to ``.atk-compose.yml``.
+   :keyword compose_file: The name of the compose file to use. Relative to ``filename``. Defaults to ``.atk-compose.yml``.
    :kwtype compose_file: Union[Path, str]
+   :keyword env_files: env_files that are passed to docker compose using the ``--env-file`` flag. Defaults to ``[atk.env, .env]``.
+   :kwtype env_files: List[Union[Path, str]]
 
    .. py:method:: update_services(arg)
 

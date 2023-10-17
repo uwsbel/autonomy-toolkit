@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
     <link rel="shortcut icon" href="../../../_static/cropped-SBEL-32x32.png"/><!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
-        <title>autonomy_toolkit.utils.atk_config - Autonomous Vehicle Toolbox 2.0.9 documentation</title>
+        <title>autonomy_toolkit.utils.atk_config - Autonomous Vehicle Toolbox 2.0.10 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=649a27d8" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
@@ -135,7 +135,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">Autonomous Vehicle Toolbox 2.0.9 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">Autonomous Vehicle Toolbox 2.0.10 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -268,7 +268,8 @@
 <span class="sd">        services (List[str]): List of services to use when running the ``docker compose`` command.</span>
 
 <span class="sd">    Keyword Args:</span>
-<span class="sd">        compose_file (Union[Path, str]): The name of the compose file to use. Defaults to ``.atk-compose.yml``.</span>
+<span class="sd">        compose_file (Union[Path, str]): The name of the compose file to use. Relative to ``filename``. Defaults to ``.atk-compose.yml``.</span>
+<span class="sd">        env_files (List[Union[Path, str]]): env_files that are passed to docker compose using the ``--env-file`` flag. Defaults to ``[atk.env, .env]``.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
@@ -276,8 +277,8 @@
         <span class="n">filename</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Path</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
         <span class="n">services</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
         <span class="o">*</span><span class="p">,</span>
-        <span class="n">env_filename</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Path</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;atk.env&quot;</span><span class="p">,</span>
         <span class="n">compose_file</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Path</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;.atk-compose.yml&quot;</span><span class="p">,</span>
+        <span class="n">env_files</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Path</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;atk.env&quot;</span><span class="p">,</span> <span class="s2">&quot;.env&quot;</span><span class="p">],</span>
     <span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">services</span> <span class="o">=</span> <span class="n">services</span>
 
@@ -288,9 +289,9 @@
                 <span class="sa">f</span><span class="s2">&quot;No &#39;</span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">&#39; file was found in this directory or any parent directories. Make sure you are running this command in an autonomy-toolkit compatible repository. Cannot continue.&quot;</span>
             <span class="p">)</span>
 
-        <span class="c1"># Set the path of the generated compose file and the env file at the same level as the atk.yml file</span>
+        <span class="c1"># Set the path of the generated compose file</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">compose_file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">atk_yml_path</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="n">compose_file</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">env_file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">atk_yml_path</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="n">env_filename</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">env_files</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">atk_yml_path</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="n">env_file</span> <span class="k">for</span> <span class="n">env_file</span> <span class="ow">in</span> <span class="n">env_files</span><span class="p">]</span>
 
         <span class="c1"># Parse the atk yml file</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
@@ -429,7 +430,7 @@
       
     </aside>
   </div>
-</div><script src="../../../_static/documentation_options.js?v=d65cc7a5"></script>
+</div><script src="../../../_static/documentation_options.js?v=4dc8cd5f"></script>
     <script src="../../../_static/doctools.js?v=888ff710"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/furo.js?v=32e29ea5"></script>
