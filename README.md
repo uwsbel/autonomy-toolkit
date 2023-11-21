@@ -1,19 +1,10 @@
 # Autonomy Toolkit
 
-Autonomy Toolkit, dubbed `autonomy-toolkit`, is meant to be a simplified mechansim for quickly setting up and developing a ROS 2 based control stack. The `autonomy-toolkit` platform is under activate development by the [Simulation Based Engineering Laboratory](https://sbel.wisc.edu) at the [University of Wisconsin-Madison](https://wisc.edu).
+`autonomy-toolkit` is a simple wrapper around `docker compose` with some minor features which enhance the usability across multiple users and operating systems. The initial design goal was to aid in development of robotics projects that involve autonomy (hence the name), however it has since reduced in scale and is just a wrapper of `docker compose`.
 
-## Background
+The `autonomy-toolkit` package is under active development by the [Simulation Based Engineering Laboratory](https://sbel.wisc.edu) at the [University of Wisconsin-Madison](https://wisc.edu).
 
-The `autonomy-toolkit` platform provides the following resources for expediting development of autonomous algorithms:
-1. A development workflow for writing and testing ROS 2 code
-2. A mechansim for easily generating custom container-based images (think Docker) for use with the ROS 2 stack
-3. A wrapper for container compose mechanisms (i.e. Docker Compose, singularity-compose) to improve user experience
-
-Furthermore, the [Autonomy Research Testbed](https://github.com/uwsbel/autonomy-research-testbed), which utilizes this toolbox, provides the following functionality:
-1. A parts list and instructions on how to build the physical platform
-2. A high-fidelity simulation environment built using [Chrono](https://projectchrono.org) to test autonomous algorithms
-
-For more information about the design considerations and purpose for this project, see the [background](https://projects.sbel.org/autonomy-toolkit/background.html) section.
+Please see [the official documentation](https://projects.sbel.org/autonomy-toolkit/) (or on [github](https://github.com/uwsbel/autonomy-toolkit/blob/master/docs)) for more details.
 
 ## Support
 
@@ -21,7 +12,7 @@ Contact the [Simulation Based Engineering Laboratory](mailto:negrut@wisc.edu) fo
 
 ## See Also
 
-Visit our website at [sbel.wisc.edu](https://sbel.wisc.edu)!
+Visit our website at [https://sbel.wisc.edu](https://sbel.wisc.edu)!
 
 <br>
 

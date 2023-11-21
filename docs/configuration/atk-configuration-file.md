@@ -70,7 +70,7 @@ The above example `atk.yml` file showcases many of the usages and features of th
 
 ## `atk.yml` Fields
 
-The `atk.yml` file is populated with various fields at the root level of the yaml. All are prefixed with `x-`, as this is reserved in `docker compose` and will not throw an error when reading.
+The `atk.yml` file is populated with various fields at the root level of the yaml. All that are specific to `atk` (or more accurately, ignored by `docker compose`) are prefixed with `x-`, as this is reserved in `docker compose` and will not throw an error when reading.
 
 ### `name`
 
@@ -82,9 +82,7 @@ This field specifies the name of the project. It is part of the `docker compse` 
 Note that [extensions](https://docs.docker.com/compose/compose-file/11-extension/) (the `docker compose` name in the specification for `x-<variable>`) are not carried over with the [`include`](https://docs.docker.com/compose/compose-file/14-include/) keyword.
 ```
 
-This field is the primary advantage of using `autonomy-toolkit` over other container orchestrations. This field provides users the ability to, at runtime, specify custom configuration variables to be used that are not used by default.
-
-Use cases here include activating hardware-specific flags for the container orchestration, build flag augmentation, optional container adjustments, etc.
+This field is the primary advantage of using `autonomy-toolkit` over other container orchestrations (e.g. vanilla `docker compose`). This field provides users the ability to, at runtime, specify custom configuration variables to be used that are not used by default. Use cases here include activating hardware-specific flags for the container orchestration, build flag augmentation, optional container adjustments, etc.
 
 ```yaml
 x-optionals:

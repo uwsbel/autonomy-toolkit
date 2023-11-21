@@ -10,7 +10,6 @@ Home <self>
 background
 setup
 configuration/index
-tutorials/index
 usage/index
 contributing
 ```

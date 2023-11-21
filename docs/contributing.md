@@ -8,7 +8,7 @@ If you're contributing to the repository, it can be assumed you know what you're
 
 ## Setup
 
-There are two forms of contributions: source code or documentation. Editing the documentation is as simple as cloning the repo and adding/editing content within the `docs` folder. All documentation is written in `markdown` and converted to `html` through `myst_parser` and `sphinx`. To edit the source code, as well as the documentation, you will want to install the package through a symlink.
+There are two forms of contributions: source code or documentation. Editing the documentation is as simple as cloning the repo and adding/editing content within the `docs` folder. All documentation is written in `markdown` and converted to `html` through `myst_parser` and `sphinx`. To edit the source code, as well as the documentation, you will want to install the package [through a symlink](./setup.md#from-sources).
 
 ```{note}
 A `conda` or `virtualenv` will add isolation to your python environments and reduce conflicts amongst packages. It is _highly_ recommended to use one!!
@@ -60,10 +60,10 @@ The repository is structured as follows:
 ```
 autonomy-toolkit
 ├── LICENSE
-├── demos/										# Contains demos for the autonomy-toolkit package
-├── docs/											# Contains documentation
-├── autonomy_toolkit/			    # Source code
-└── setup.py									# Package description and installation instructions for pip
+├── demos/             # Contains demos for the autonomy-toolkit package
+├── docs/              # Contains documentation
+├── autonomy_toolkit/  # Source code
+└── setup.py           # Package description and installation instructions for pip
 ```
 
 ### Editing the Source Code
@@ -72,16 +72,14 @@ If you plan on editing the source code, please visit the `autonomy_toolkit/` fol
 
 ```
 autonomy_toolkit/
-├── utils/					# Utility files for use by the rest of the package
+├── utils/              # Utility files for use by the rest of the package
 │   └── ...
-├── ros/						# ROS related utilities, methods, or classes
+├── containers/         # Containers related utilities, methods, or classes
 │   └── ...
-├── containers/			# Containers related utilities, methods, or classes
-│   └── ...
-└── ...							# Core autonomy-toolkit code
+└── ...                 # Core autonomy-toolkit code
 ```
 
-As stated earlier, unless given approval by the managers of the repository, there should be no need to edit the source code. The Object Oriented nature of the package means you can just inherit the base classes and add your own logic _outside_ the repo (no need to edit the source). However, bugs or nice features may be added. See [this section](#installing-a-symbolic-linked-version-for-testing) to install the repo for development purposes.
+Unless given approval by the developers of the repository, there should be no need to edit the source code. The Object Oriented nature of the package means you can just inherit the base classes and add your own logic _outside_ the repo (no need to edit the source). However, bugs or nice features may be added. See [this section](#installing-a-symbolic-linked-version-for-testing) to install the repo for development purposes.
 
 #### Commenting
 
@@ -99,14 +97,15 @@ If you plan on editing the documentation pages (i.e. adding a tutorial or fixing
 
 ```
 docs/
-├── _static/						# Static files that persist through the build process
+├── _static/            # Static files that persist through the build process
 │   ├── css/custom.css  # Custom css changes that are different from the default furo theme
-│   └── ...        			# Images, favicons, etc.
-├── usage.md						# Usage reference guide for the autonomy-toolkit
-├── installation.md			# Installation build instructions
-├── contributing.md			# Contributing tab with instructions on how to contribute to the repo
-├── conf.py							# Settings related to extensions, themes, etc.
-└── index.md						# The "home" page
+│   └── ...             # Images, favicons, etc.
+├── usage/              # Usage reference guide for the autonomy-toolkit
+│   └── ...
+├── setup.md            # Installation build instructions
+├── contributing.md     # Contributing tab with instructions on how to contribute to the repo
+├── conf.py             # Settings related to extensions, themes, etc.
+└── index.md            # The "home" page
 ```
 
 Please try to maintain the file structure as described above. All tabs with only a single page (i.e. background or contributing), should have their `markdown` file with in the `docs/` folder. If the tab has or will have multiple pages (i.e. a tutorials tab), create a folder titled the same as that tab. To add pages, insert the name of the file without the `.md` extension within the table of contents inside `index.md`. Each folder should also contain an `index.md` used as the home page of that tab.

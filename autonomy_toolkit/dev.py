@@ -79,9 +79,6 @@ def _run_dev(args):
     if args.command and not _run_cmd(client, args.command, 1):
         return False
 
-    if args.run and not _run_cmd(client, "run", 1):
-        return False
-
     LOGGER.info("Finished running 'dev' entrypoint.")
 
 
@@ -123,13 +120,6 @@ def _init(subparser):
         default=False,
     )
     subparser.add_argument(
-        "-r",
-        "--run",
-        action="store_true",
-        help="Run a command in the provided service. Only one service may be provided.",
-        default=False,
-    )
-    subparser.add_argument(
         "-c",
         "--cmd",
         dest="command",
@@ -143,6 +133,7 @@ def _init(subparser):
         default="atk.yml",
     )
     subparser.add_argument(
+        "-o",
         "--optionals",
         nargs="+",
         help="Custom CLI arguments that are cross referenced with the 'x-optionals' field in the ATK config file.",
