@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="autonomy_toolkit" href="api/autonomy_toolkit/index.html" /><link rel="prev" title="API Reference" href="index.html" />
 
     <link rel="shortcut icon" href="../_static/cropped-SBEL-32x32.png"/><!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
-        <title>CLI Documentation - Autonomous Vehicle Toolbox 2.0.11 documentation</title>
+        <title>CLI Documentation - Autonomous Vehicle Toolbox 2.0.12 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=649a27d8" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
@@ -136,7 +136,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">Autonomous Vehicle Toolbox 2.0.11 documentation</div></a>
+      <a href="../index.html"><div class="brand">Autonomous Vehicle Toolbox 2.0.12 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -269,10 +269,10 @@
 <p>Subcommands immediately succeed the <code class="docutils literal notranslate"><span class="pre">atk</span></code> command. They implement additional logic. Having subcommands rather than arguments directly to <code class="docutils literal notranslate"><span class="pre">atk</span></code> increases expandability as it will allow for additional features to be implemented without convoluting the help menu of the base <code class="docutils literal notranslate"><span class="pre">atk</span></code> command.</p>
 <section id="dev">
 <h3><code class="docutils literal notranslate"><span class="pre">dev</span></code><a class="headerlink" href="#dev" title="Link to this heading">#</a></h3>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">usage</span><span class="p">:</span> <span class="n">atk</span> <span class="n">dev</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="o">-</span><span class="n">s</span> <span class="n">SERVICES</span> <span class="p">[</span><span class="n">SERVICES</span> <span class="o">...</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">b</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">u</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">d</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">a</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">r</span><span class="p">]</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">usage</span><span class="p">:</span> <span class="n">atk</span> <span class="n">dev</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="o">-</span><span class="n">s</span> <span class="n">SERVICES</span> <span class="p">[</span><span class="n">SERVICES</span> <span class="o">...</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">b</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">u</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">d</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">a</span><span class="p">]</span>
                <span class="p">[</span><span class="o">-</span><span class="n">c</span> <span class="n">COMMAND</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">filename</span><span class="o">-</span><span class="n">override</span> <span class="n">FILENAME_OVERRIDE</span><span class="p">]</span>
-               <span class="p">[</span><span class="o">--</span><span class="n">optionals</span> <span class="n">OPTIONALS</span> <span class="p">[</span><span class="n">OPTIONALS</span> <span class="o">...</span><span class="p">]]</span>
-               <span class="p">[</span><span class="o">--</span><span class="n">compose</span><span class="o">-</span><span class="n">arg</span> <span class="n">COMPOSE_ARGS</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">compose</span><span class="o">-</span><span class="n">opt</span> <span class="n">COMPOSE_OPTS</span><span class="p">]</span>
+               <span class="p">[</span><span class="o">-</span><span class="n">o</span> <span class="n">OPTIONALS</span> <span class="p">[</span><span class="n">OPTIONALS</span> <span class="o">...</span><span class="p">]]</span> <span class="p">[</span><span class="o">--</span><span class="n">compose</span><span class="o">-</span><span class="n">arg</span> <span class="n">COMPOSE_ARGS</span><span class="p">]</span>
+               <span class="p">[</span><span class="o">--</span><span class="n">compose</span><span class="o">-</span><span class="n">opt</span> <span class="n">COMPOSE_OPTS</span><span class="p">]</span>
 </pre></div>
 </div>
 <section id="named-arguments">
@@ -298,10 +298,6 @@
 <dd><p>Attach to the container. Only one service may be provided.</p>
 <p>Default: False</p>
 </dd>
-<dt><kbd>-r, --run</kbd></dt>
-<dd><p>Run a command in the provided service. Only one service may be provided.</p>
-<p>Default: False</p>
-</dd>
 <dt><kbd>-c, --cmd</kbd></dt>
 <dd><p>A tool to circumvent the atk interface and directly run a docker compose command. Example: <cite>atk dev -c config -s dev</cite> is equivalent to <cite>docker compose -f &lt;path-in-parent&gt;/atk.yml config dev</cite>.</p>
 </dd>
@@ -309,7 +305,7 @@
 <dd><p>Override the default ATK config filename. Will search upwards for file. Defaults to ‘atk.yml’</p>
 <p>Default: “atk.yml”</p>
 </dd>
-<dt><kbd>--optionals</kbd></dt>
+<dt><kbd>-o, --optionals</kbd></dt>
 <dd><p>Custom CLI arguments that are cross referenced with the ‘x-optionals’ field in the ATK config file.</p>
 <p>Default: []</p>
 </dd>
@@ -405,7 +401,7 @@
       
     </aside>
   </div>
-</div><script src="../_static/documentation_options.js?v=e9b04946"></script>
+</div><script src="../_static/documentation_options.js?v=de48c32c"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/scripts/furo.js?v=32e29ea5"></script>

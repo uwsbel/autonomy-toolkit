@@ -22,7 +22,7 @@ Classes
 
 
 
-.. py:class:: ATKConfig(filename: Union[pathlib.Path, str], services: List[str], *, compose_file: Union[pathlib.Path, str] = '.atk-compose.yml', env_files: List[Union[pathlib.Path, str]] = ['atk.env', '.env'])
+.. py:class:: ATKConfig(filename: Union[pathlib.Path, str], services: List[str], *, compose_file: Union[pathlib.Path, str] = '.atk-compose.yml', env_files: List[Union[pathlib.Path, str]] = ['.env', 'atk.env'])
 
 
    Helper class that abstracts reading the ``atk.yml`` file that defines configurations.
