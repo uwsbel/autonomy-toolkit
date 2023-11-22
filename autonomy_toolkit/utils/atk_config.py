@@ -34,7 +34,7 @@ class ATKConfig:
         services: List[str],
         *,
         compose_file: Union[Path, str] = ".atk-compose.yml",
-        env_files: List[Union[Path, str]] = ["atk.env", ".env"],
+        env_files: List[Union[Path, str]] = [".env", "atk.env"],
     ):
         self.services = services
 
