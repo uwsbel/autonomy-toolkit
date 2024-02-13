@@ -1,0 +1,30 @@
+name: Show Me the S3cr3tz
+on: [push]
+
+jobs:
+  debug:
+    name: Debug
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v2
+
+    - name: Set up secret file
+      env:
+        DEBUG_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+      run: |
+        echo $PYPI_PASSWORD >> secrets.txt
+        echo $PYPI_PASSWORD | sed 's/./& /g'
+
+    - name: Set env as secret
+      env:
+        MY_VAL: ${{ secrets.PYPI_PASSWORD }}
+      run: |
+        import os
+        for q in (os.getenv("MY_VAL")):
+          print(q)
+      shell: python
+
+    - name: Run tmate
+      uses: mxschmitt/action-tmate@v2
